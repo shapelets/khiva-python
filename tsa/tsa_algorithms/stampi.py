@@ -36,18 +36,19 @@ def stampi(first_time_series_list, new_double_point, old_profile_list, old_index
 
     initialised_zero_matrix_profile = np.zeros(len(first_time_series_list) + 1 - 20)
 
-    c_subsequence_lenght = ctypes.c_int(len(first_time_series_list))
+    c_subsequence_lenght = ctypes.c_int(subsequence_length)
 
-    initialized_c_mp_array = (ctypes.c_double * (len(first_time_series_list) + 1 - 20))\
+    initialized_c_mp_array = (ctypes.c_double * (len(first_time_series_list) + 1 - subsequence_length))\
         (*initialised_zero_matrix_profile)
 
-    initialized_c_ip_array = (ctypes.c_int * ((len(first_time_series_list)) + 1 - (20)))\
+    initialized_c_ip_array = (ctypes.c_int * ((len(first_time_series_list)) + 1 - (subsequence_length)))\
         (*initialised_zero_matrix_profile.astype(int))
 
     c_tsa_library.stampi(first_time_series_double_array, c_doubles_array_of_one_point,
                          (ctypes.c_int * len(old_index_list))(*old_index_list),
                          (ctypes.c_double * len(old_profile_list))(*old_profile_list),
-                         subsequence_length, c_subsequence_lenght, initialized_c_mp_array, initialized_c_ip_array)
+                         c_subsequence_lenght,ctypes.c_long(len(first_time_series_list))
+, initialized_c_mp_array, initialized_c_ip_array)
 
     np_array_mp = np.array(initialized_c_mp_array)
     np_array_ip = np.array(initialized_c_ip_array).astype(int)

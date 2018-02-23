@@ -30,7 +30,8 @@ def stamp(first_time_series_list, second_time_series_list, subsequence_length,c_
 
     second_time_series_double_array = (ctypes.c_double * len(second_time_series_list))(*second_time_series_list)
 
-    c_subsequence_length = ctypes.c_int(len(first_time_series_list))
+    c_subsequence_length = ctypes.c_long(subsequence_length)
+    length = ctypes.c_int(len(first_time_series_list))
 
     initialized_mp_numpy_array = np.zeros(len(first_time_series_list) - subsequence_length)
     initializes_ip_numpy_array = np.zeros(len(first_time_series_list) - subsequence_length)
@@ -41,8 +42,8 @@ def stamp(first_time_series_list, second_time_series_list, subsequence_length,c_
     initialized_c_ip_array = (ctypes.c_int * ((len(first_time_series_list)) - (subsequence_length)))\
         (*initializes_ip_numpy_array.astype(int))
 
-    c_tsa_library.stamp(first_time_series_double_array, second_time_series_double_array, subsequence_length,
-                        c_subsequence_length, ctypes.pointer(initialized_c_mp_array),
+    c_tsa_library.stamp(first_time_series_double_array, second_time_series_double_array, c_subsequence_length,
+                        length, ctypes.pointer(initialized_c_mp_array),
                         ctypes.pointer(initialized_c_ip_array))
     np_array_mp = np.array(initialized_c_mp_array)
     np_array_ip = np.array(initialized_c_ip_array).astype(int)
