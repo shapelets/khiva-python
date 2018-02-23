@@ -17,13 +17,15 @@ import os
 import tsa
 ########################################################################################################################
 
-def stampi(first_time_series_list, new_double_point, old_profile_list, old_index_list, subsequence_length):
+def stampi(first_time_series_list, new_double_point, old_profile_list, old_index_list, subsequence_length,c_tsa_library):
     """
+
     :param first_time_series_list:
     :param new_double_point:
     :param old_profile_list:
     :param old_index_list:
     :param subsequence_length:
+    :param c_tsa_library:
     :return:
     """
     first_time_series_double_array = (ctypes.c_double * len(first_time_series_list))(*first_time_series_list)
@@ -36,12 +38,10 @@ def stampi(first_time_series_list, new_double_point, old_profile_list, old_index
 
     c_subsequence_lenght = ctypes.c_int(len(first_time_series_list))
 
-    c_tsa_library = ctypes.CDLL(os.path.join(tsa.tsa_libraries.__path__[0], 'libmylib-cpu.dylib'))
-
     initialized_c_mp_array = (ctypes.c_double * (len(first_time_series_list) + 1 - 20))\
         (*initialised_zero_matrix_profile)
 
-    initialized_c_ip_array = (ctypes.c_int * (int(len(first_time_series_list)) + 1 - int(20)))\
+    initialized_c_ip_array = (ctypes.c_int * ((len(first_time_series_list)) + 1 - (20)))\
         (*initialised_zero_matrix_profile.astype(int))
 
     c_tsa_library.stampi(first_time_series_double_array, c_doubles_array_of_one_point,

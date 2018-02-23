@@ -22,5 +22,5 @@ data = pd.read_csv(os.path.join(a.__path__[0], 'random_dataset_1000'), sep=',', 
 label = data.pop(data.columns[0])
 ta = (data[label == 0].iloc[[0]].values.flatten())
 tb = (data[label == 1].iloc[[0]].values.flatten())
-mp = scrimp(ta,20)
+mp = scrimp(ta,20,"opencl")
 visualisation.plot_stamp(ta,ta,mp["matrix_profile"],mp["index_profile"],20)
