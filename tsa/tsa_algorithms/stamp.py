@@ -44,7 +44,7 @@ def stamp(first_time_series_list, second_time_series_list, subsequence_length,c_
 
     c_tsa_library.stamp(ctypes.pointer(first_time_series_double_array), ctypes.pointer(second_time_series_double_array),
                         ctypes.pointer(c_subsequence_length),
-                        length, ctypes.pointer(initialized_c_mp_array),
+                        ctypes.pointer(length), ctypes.pointer(initialized_c_mp_array),
                         ctypes.pointer(initialized_c_ip_array))
     np_array_mp = np.array(initialized_c_mp_array)
     np_array_ip = np.array(initialized_c_ip_array).astype(int)

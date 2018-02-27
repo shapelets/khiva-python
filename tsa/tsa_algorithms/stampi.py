@@ -44,10 +44,10 @@ def stampi(first_time_series_list, new_double_point, old_profile_list, old_index
     initialized_c_ip_array = (ctypes.c_int * ((len(first_time_series_list)) + 1 - (subsequence_length)))\
         (*initialised_zero_matrix_profile.astype(int))
 
-    c_tsa_library.stampi(first_time_series_double_array, c_doubles_array_of_one_point,
-                         (ctypes.c_int * len(old_index_list))(*old_index_list),
-                         (ctypes.c_double * len(old_profile_list))(*old_profile_list),
-                         c_subsequence_lenght,ctypes.c_long(len(first_time_series_list))
+    c_tsa_library.stampi(ctypes.pointer(first_time_series_double_array), ctypes.pointer(c_doubles_array_of_one_point),
+                         ctypes.pointer((ctypes.c_int * len(old_index_list))(*old_index_list)),
+                         ctypes.pointer((ctypes.c_double * len(old_profile_list))(*old_profile_list)),
+                         ctypes.pointer(c_subsequence_lenght),ctypes.pointer(ctypes.c_long(len(first_time_series_list)))
 , initialized_c_mp_array, initialized_c_ip_array)
 
     np_array_mp = np.array(initialized_c_mp_array)
