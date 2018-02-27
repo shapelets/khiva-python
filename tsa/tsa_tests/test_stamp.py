@@ -19,6 +19,7 @@ import os
 import tsa.tsa_libraries
 from tsa.tsa_algorithms.stamp import stamp
 import tsa.tsa_datasets as a
+from tsa.grumpy import grumpyAnaliser
 ########################################################################################################################
 data = pd.read_csv(os.path.join(a.__path__[0], 'random_dataset_1000'), sep=',', header=None)
 label = data.pop(data.columns[0])
@@ -26,6 +27,7 @@ c_tsa_library = ctypes.CDLL(os.path.join(tsa.tsa_libraries.__path__[0], 'libmyli
 
 ta = (data[label == 0].iloc[[0]].values.flatten())
 tb = (data[label == 1].iloc[[0]].values.flatten())
+
 start = time.time()
 c_tsa_library.set_cpu()
 
