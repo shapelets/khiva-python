@@ -5,7 +5,7 @@ import time
 from tsa.tsa_algorithms.stamp import stamp
 import tsa.tsa_datasets as a
 from tsa.tsa_algorithms.scrimp import scrimp
-
+"""
 data = pd.read_csv(os.path.join(a.__path__[0], 'random_dataset_1000'), sep=',', header=None)
 label = data.pop(data.columns[0])
 ta = (data[label == 0].iloc[[0]].values.flatten())
@@ -100,3 +100,4 @@ def test_scrimp_gpu(benchmark):
 
 
 
+"""

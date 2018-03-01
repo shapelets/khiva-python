@@ -12,30 +12,56 @@
 ########################################################################################################################
 from scipy.io import loadmat
 import os
-
+import time
 import tsa.tsa_datasets as a
-from tsa.tsa_visualisation import visualisation
-from tsa.tsa_algorithms.scrimp import scrimp
 from tsa.grumpy import grumpyAnaliser
 ########################################################################################################################
 
 #data preprocessing
 data = loadmat(os.path.join(a.__path__[0], 'sel102m.mat'))
-ta=data["val"][0][2500:7500]
-
+ta=data["val"][0]
+print(len(ta))
 #configuration
 analiser_cat = grumpyAnaliser()
-analiser_cat.set_cpu()
-
-
+print("1000")
+start = time.time()
 #data analysis
-mp = analiser_cat.scrimp(ta,200)
-print(mp["matrix_profile"])
-#visualisation.plot_stamp(ta,ta,mp["matrix_profile"],mp["index_profile"],200)
+mp = analiser_cat.stamp(ta[0:1000],ta[0:1000],200)
+print(str(time.time() -start))
 
-analiser_cat.set_opencl()
-
-
+print("5000")
+start = time.time()
 #data analysis
-mp = analiser_cat.scrimp(ta,200)
-print(mp["matrix_profile"])
+mp = analiser_cat.stamp(ta[0:5000],ta[0:5000],200)
+print(str(time.time() -start))
+
+print("10000")
+start = time.time()
+#data analysis
+mp = analiser_cat.stamp(ta[0:10000],ta[0:10000],200)
+print(str(time.time() -start))
+
+print("20000")
+start = time.time()
+#data analysis
+mp = analiser_cat.stamp(ta[0:20000],ta[0:20000],200)
+print(str(time.time() -start))
+
+print("50000")
+start = time.time()
+#data analysis
+mp = analiser_cat.stamp(ta[0:50000],ta[0:50000],200)
+print(str(time.time() -start))
+
+print("100000")
+start = time.time()
+#data analysis
+mp = analiser_cat.stamp(ta[0:100000],ta[0:100000],200)
+print(str(time.time() -start))
+
+
+print("225000")
+start = time.time()
+#data analysis
+mp = analiser_cat.stamp(ta,ta,200)
+print(str(time.time() -start))

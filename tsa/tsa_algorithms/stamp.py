@@ -1,5 +1,5 @@
 #
-# title           :test_stamp.py
+# title           :stamp.py
 # description     :
 # author          :David Cuesta
 # company         :Grumpy Cat Software
@@ -13,45 +13,48 @@
 
 import ctypes
 import numpy as np
-import os
-import tsa.tsa_libraries
 
 ########################################################################################################################
 def stamp(first_time_series_list, second_time_series_list, subsequence_length,c_tsa_library):
     """
-
-    :param first_time_series_list:
-    :param second_time_series_list:
-    :param subsequence_length:
-    :param c_tsa_library:
-    :return:
+    STAMP algorithm to calculate the matrix profile between 'ta' and 'tb' using a subsequence length
+          of 'm'.
+    :param first_time_series_list: List with the first time series.
+    :param second_time_series_list: List with the second time series.
+    :param subsequence_length: Length of the subsequence.
+    :param c_tsa_library: Dynamic library of TSA.
+    :return: Matrix profile in dictionary format.
     """
     first_time_series_double_array = (ctypes.c_double * len(first_time_series_list))(*first_time_series_list)
 
     second_time_series_double_array = (ctypes.c_double * len(second_time_series_list))(*second_time_series_list)
 
-    c_subsequence_length = ctypes.c_long(subsequence_length)
-    length = ctypes.c_int(len(first_time_series_list))
 
-    initialized_mp_numpy_array = np.zeros(len(first_time_series_list) - subsequence_length)
-    initializes_ip_numpy_array = np.zeros(len(first_time_series_list) - subsequence_length)
+    initialized_mp_numpy_array = np.zeros(len(second_time_series_list) - subsequence_length).astype(np.double)
+    initializes_ip_numpy_array = np.zeros(len(second_time_series_list) - subsequence_length).astype(np.uint32)
 
-    initialized_c_mp_array = (ctypes.c_double * (len(first_time_series_list) - subsequence_length))\
+    initialized_c_mp_array = (ctypes.c_double * (len(second_time_series_list) - subsequence_length + 1))\
         (*initialized_mp_numpy_array)
 
-    initialized_c_ip_array = (ctypes.c_int * ((len(first_time_series_list)) - (subsequence_length)))\
-        (*initializes_ip_numpy_array.astype(int))
+    initialized_c_ip_array = (ctypes.c_uint32 * ((len(second_time_series_list)) - subsequence_length +1))\
+        (*initializes_ip_numpy_array)
 
-    c_tsa_library.stamp(ctypes.pointer(first_time_series_double_array), ctypes.pointer(second_time_series_double_array),
-                        ctypes.pointer(c_subsequence_length),
-                        ctypes.pointer(length), ctypes.pointer(initialized_c_mp_array),
-                        ctypes.pointer(initialized_c_ip_array))
+
+
+
+    c_tsa_library.stamp(ctypes.pointer(first_time_series_double_array),
+                       ctypes.pointer(second_time_series_double_array),
+                       ctypes.pointer(ctypes.c_int(len(first_time_series_list))),
+                       ctypes.pointer(ctypes.c_int(len(second_time_series_list))),
+                       ctypes.pointer(ctypes.c_long(subsequence_length)),
+                       ctypes.pointer(initialized_c_mp_array),
+                       ctypes.pointer(initialized_c_ip_array))
+
+
+
     np_array_mp = np.array(initialized_c_mp_array)
     np_array_ip = np.array(initialized_c_ip_array).astype(int)
 
 
 
     return {'matrix_profile': np_array_mp, 'index_profile': np_array_ip}
-
-
-

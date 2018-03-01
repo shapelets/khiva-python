@@ -11,7 +11,7 @@ def plot_stamp(ta, tb, matrix_profile, indexes, m):
 
     plt.subplot(411)
     plt.plot(ta)
-    plt.xlim((0, len(tb)))
+    plt.xlim((0, len(ta)))
     plt.title('TimeSeries A')
 
     plt.subplot(412)
@@ -63,3 +63,4 @@ def motif(ta, matrix_profile, indexes, m):
 
     ####################################################
     plt.show()
+

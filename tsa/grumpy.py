@@ -1,41 +1,32 @@
-import pandas as pd
-import os
-import time
+#
+# title           :grumpy.py
+# description     :
+# author          :David Cuesta
+# company         :Grumpy Cat Software
+# date            :
+# usage           :
+# python_version  :3.6
+# ======================================================================================================================
+########################################################################################################################
+# IMPORT
+########################################################################################################################
 import ctypes
-import numpy as np
 import os
 import tsa.tsa_libraries
 from tsa.tsa_algorithms.stamp import stamp
-from tsa.tsa_algorithms.scrimp import scrimp
-from tsa.tsa_algorithms.stampi import stampi
-
-import tsa.tsa_datasets as a
+from tsa.tsa_algorithms.stamp_self_join import stamp_self_join
+########################################################################################################################
 
 
 class grumpyAnaliser:
     def __init__(self):
-         self._c_tsa_library = ctypes.CDLL(os.path.join(tsa.tsa_libraries.__path__[0], 'libmylib-unified.dylib'))
+         self._c_tsa_library = ctypes.CDLL(os.path.join(tsa.tsa_libraries.__path__[0], 'libTSALIB.dylib'))
 
     def stamp(self,first_time_series_list, second_time_series_list, subsequence_length):
         return stamp(first_time_series_list, second_time_series_list, subsequence_length, self._c_tsa_library)
+    def stamp_self_join(self,first_time_series_list, subsequence_length):
+        return stamp_self_join(first_time_series_list, subsequence_length, self._c_tsa_library)
 
-    def scrimp(self, time_series_list, subsequence_lenght):
-        return scrimp(time_series_list, subsequence_lenght, self._c_tsa_library)
-
-    def stampi(self,first_time_series_list, new_double_point, old_profile_list, old_index_list, subsequence_length):
-        return stampi(first_time_series_list, new_double_point, old_profile_list, old_index_list,
-                      subsequence_length,self._c_tsa_library)
-
-    def set_cpu(self):
-        self._c_tsa_library.set_backend(ctypes.c_int(0))
-    def set_opencl(self):
-        self._c_tsa_library.set_backend(ctypes.c_int(1))
-    def set_cuda(self):
-        self._c_tsa_library.set_backend(ctypes.c_int(2))
-    def set_devices(self, device=0):
-        self._c_tsa_library.set_device(ctypes.c_int(device))
-    def get_info(self):
-        self._c_tsa_library.get_info()
 
 
 
