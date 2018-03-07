@@ -12,4 +12,4 @@
 ########################################################################################################################
 from tsa.tsa_datasets.dataset_generator import section_defined_dataset_generator
 ########################################################################################################################
-section_defined_dataset_generator("peak_dataset_1000", 1000)
+section_defined_dataset_generator("peak_dataset_16000", 16000)

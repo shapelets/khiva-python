@@ -1,16 +1,19 @@
 # README #
 
-This README would normally document whatever steps are necessary to get your application up and running.
+This is the TSA library for Python. 
+This project provides the Python wrapper for the original TSA library written in C++ programming language. 
 
 ### What is this repository for? ###
 
-* Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
+* This repository provides the full installable Python Package for using the TSA library with the target of analyse 
+time series in a super-efficient fashion, giving a solution for time series analysis in the Big Data Ecosystem. 
+
+
 
 ### How do I get set up? ###
 
-* Summary of set up
+* For installing this package, please, first it is necessary to satisfy the reuqirements indicated in the requirements.txt file.
+
 * Configuration
 * Dependencies
 * Database configuration

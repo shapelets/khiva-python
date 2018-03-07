@@ -31,6 +31,6 @@ for a in range(0,300):
     tc.append(0)
 g_cat_analiser = grumpyAnaliser();
 
-a= g_cat_analiser.stamp_self_join(ta,200)
+a= g_cat_analiser.stomp_self_join(ta,200)
 print(a)
 
