@@ -32,13 +32,13 @@ def stomp_self_join(time_series_list, subsequence_length, c_tsa_library):
     first_time_series_double_array = (ctypes.c_double * len(time_series_list))(*time_series_list)
 
     initialized_mp_numpy_array = np.zeros(len(time_series_list) - subsequence_length +1).astype(np.double)
-    initializes_ip_numpy_array = np.zeros(len(time_series_list) - subsequence_length +1).astype(np.uint32)
+    initialized_ip_numpy_array = np.zeros(len(time_series_list) - subsequence_length +1).astype(np.uint32)
 
     initialized_c_mp_array = (ctypes.c_double * (len(time_series_list) - subsequence_length + 1))\
         (*initialized_mp_numpy_array)
 
     initialized_c_ip_array = (ctypes.c_uint32 * ((len(time_series_list)) - subsequence_length + 1))\
-        (*initializes_ip_numpy_array)
+        (*initialized_ip_numpy_array)
 
     logging.info("Time conversioning to C types:" + str(time.time() - start))
 

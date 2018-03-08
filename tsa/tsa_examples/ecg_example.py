@@ -30,6 +30,11 @@ for i in range(10):
     print("-----")
     start = time.time()
     #data analysis
-    mp = analiser_cat.stomp(ta[0:13000],ta[0:13000],256)
+    mp = analiser_cat.stomp(ta[0:1000],ta[1000:2000],256)
+    tp = analiser_cat.find_best_n_motifs(mp['matrix_profile'],mp['index_profile'],4)
+    dp = analiser_cat.find_best_n_discords(mp['matrix_profile'],mp['index_profile'],4)
+
+    print(tp)
+    print(dp)
     print(str(time.time() -start))
 
