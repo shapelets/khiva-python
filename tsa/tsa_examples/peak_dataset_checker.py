@@ -10,7 +10,7 @@ file, You can obtain one at http://mozilla.org/MPL/2.0/.
 ########################################################################################################################
 import os
 import tsa.tsa_datasets as a
-from tsa.grumpy import grumpyAnaliser
+from tsa.analyser import analiser
 import pandas as pd
 
 ########################################################################################################################
@@ -21,14 +21,13 @@ label = data.pop(data.columns[0])
 ta = (data[label == 0].iloc[[0]].values.flatten())
 tb = (data[label == 1].iloc[[0]].values.flatten())
 tc = []
-for a in range(0,220):
+for a in range(0, 220):
     tc.append(0.5)
 print(len(tc))
-for a in range(0,300):
+for a in range(0, 300):
     tc.append(1)
     tc.append(0)
-g_cat_analiser = grumpyAnaliser();
+g_cat_analiser = analiser();
 
-a= g_cat_analiser.stomp_self_join(ta,200)
+a = g_cat_analiser.stomp_self_join(ta, 200)
 print(a)
-

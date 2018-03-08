@@ -12,29 +12,28 @@ from scipy.io import loadmat
 import os
 import time
 import tsa.tsa_datasets as a
-from tsa.grumpy import grumpyAnaliser
+from tsa.analyser import analiser
 import pandas as pd
+
 ########################################################################################################################
 
-#data preprocessing
+# data preprocessing
 data = loadmat(os.path.join(a.__path__[0], 'sel102m.mat'))
-ta=data["val"][0]
+ta = data["val"][0]
 print(ta)
 print(len(ta))
 
-
-analiser_cat = grumpyAnaliser()
+analiser_cat = analiser()
 for i in range(10):
     print("-----")
     print("stomp")
     print("-----")
     start = time.time()
-    #data analysis
-    mp = analiser_cat.stomp(ta[0:1000],ta[1000:2000],256)
-    tp = analiser_cat.find_best_n_motifs(mp['matrix_profile'],mp['index_profile'],4)
-    dp = analiser_cat.find_best_n_discords(mp['matrix_profile'],mp['index_profile'],4)
+    # data analysis
+    mp = analiser_cat.stomp(ta[0:1000], ta[1000:2000], 256)
+    tp = analiser_cat.find_best_n_motifs(mp['matrix_profile'], mp['index_profile'], 4)
+    dp = analiser_cat.find_best_n_discords(mp['matrix_profile'], mp['index_profile'], 4)
 
     print(tp)
     print(dp)
-    print(str(time.time() -start))
-
+    print(str(time.time() - start))
