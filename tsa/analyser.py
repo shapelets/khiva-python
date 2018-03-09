@@ -16,10 +16,8 @@ from tsa.tsa_algorithms.stomp_self_join import _stomp_self_join
 from tsa.tsa_algorithms.binding_test import binding_test
 from tsa.tsa_algorithms.find_best_n_motifs import _find_best_n_motifs
 from tsa.tsa_algorithms.find_best_n_discords import _find_best_n_discords
-
-
+from tsa.tsa_features.absolute_sum_of_changes import _absolute_sum_of_changes
 ########################################################################################################################
-
 
 class analiser:
 
@@ -73,6 +71,15 @@ class analiser:
         :return: Dict with the discord distances, discord indices and indices in the other sequence.
         """
         return _find_best_n_discords(profile_list, index_list, n, self._c_tsa_library)
+
+    def absolute_sum_of_change(self,list_of_time_series):
+        """
+        This function extracts the absolute sum of change of a lsit of time series.
+
+        :param list_of_time_series:
+        :return: Absolute sum of change.
+        """
+        return _absolute_sum_of_changes(list_of_time_series,self._c_tsa_library)
 
     def binding_test(self, first_time_series_list):
         """

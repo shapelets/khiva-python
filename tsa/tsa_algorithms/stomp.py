@@ -8,16 +8,10 @@ file, You can obtain one at http://mozilla.org/MPL/2.0/.
 ########################################################################################################################
 # IMPORT
 ########################################################################################################################
-
 import ctypes
 import numpy as np
-import time
-import logging
-
-logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.INFO)
-
-
 ########################################################################################################################
+
 def _stomp(first_time_series_list, second_time_series_list, subsequence_length, c_tsa_library):
     """
     STOMP algorithm to calculate the matrix profile between 'ta' and 'tb' using a subsequence length
@@ -28,7 +22,6 @@ def _stomp(first_time_series_list, second_time_series_list, subsequence_length, 
     :param c_tsa_library: Dynamic library of TSA.
     :return: Matrix profile in dictionary format.
     """
-    start = time.time()
     first_time_series_double_array = (ctypes.c_double * len(first_time_series_list))(*first_time_series_list)
 
     second_time_series_double_array = (ctypes.c_double * len(second_time_series_list))(*second_time_series_list)
@@ -41,8 +34,6 @@ def _stomp(first_time_series_list, second_time_series_list, subsequence_length, 
 
     initialized_c_ip_array = (ctypes.c_uint32 * ((len(second_time_series_list)) - subsequence_length + 1)) \
         (*initialized_ip_numpy_array)
-
-    logging.info("Time conversioning to C types:" + str(time.time() - start))
 
     c_tsa_library.stomp(ctypes.pointer(first_time_series_double_array),
                         ctypes.pointer(second_time_series_double_array),

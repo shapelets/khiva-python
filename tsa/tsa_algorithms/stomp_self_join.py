@@ -11,13 +11,8 @@ file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import ctypes
 import numpy as np
-import time
-import logging
-
-logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.INFO)
-
-
 ########################################################################################################################
+
 def _stomp_self_join(time_series_list, subsequence_length, c_tsa_library):
     """
     STOMP algorithm to calculate the matrix profile between 't' and itself using a subsequence length
@@ -27,9 +22,6 @@ def _stomp_self_join(time_series_list, subsequence_length, c_tsa_library):
     :param c_tsa_library: Dynamic library of TSA
     :return: Matrix profile in dictionary format.
     """
-
-    start = time.time()
-
     first_time_series_double_array = (ctypes.c_double * len(time_series_list))(*time_series_list)
 
     initialized_mp_numpy_array = np.zeros(len(time_series_list) - subsequence_length + 1).astype(np.double)
@@ -40,8 +32,6 @@ def _stomp_self_join(time_series_list, subsequence_length, c_tsa_library):
 
     initialized_c_ip_array = (ctypes.c_uint32 * ((len(time_series_list)) - subsequence_length + 1)) \
         (*initializes_ip_numpy_array)
-
-    logging.info("Time conversioning to C types:" + str(time.time() - start))
 
     c_tsa_library.stomp_self_join(ctypes.pointer(first_time_series_double_array),
                                   ctypes.pointer(ctypes.c_int(len(time_series_list))),

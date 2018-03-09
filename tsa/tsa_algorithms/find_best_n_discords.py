@@ -11,12 +11,6 @@ file, You can obtain one at http://mozilla.org/MPL/2.0/.
 ########################################################################################################################
 import ctypes
 import numpy as np
-import time
-import logging
-
-logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.INFO)
-
-
 ########################################################################################################################
 
 def _find_best_n_discords(profile_list, index_list, n, c_tsa_library):
@@ -29,9 +23,6 @@ def _find_best_n_discords(profile_list, index_list, n, c_tsa_library):
     :param c_tsa_library: tsa Library
     :return: Dictionary with the discord distances, the discord indices and the subsequence indices
     """
-
-    start = time.time()
-
     profile_c_double_array = (ctypes.c_double * len(profile_list))(*profile_list)
     index_c_double_array = (ctypes.c_uint32 * len(index_list))(*index_list)
 
@@ -42,8 +33,6 @@ def _find_best_n_discords(profile_list, index_list, n, c_tsa_library):
     c_discord_distance = (ctypes.c_double * n)(*initialized_discord_distance_array)
     c_discord_index = (ctypes.c_int * n)(*initialized_discord_index_array)
     c_subsequence_index = (ctypes.c_int * n)(*initialized_subsequence_index_array)
-
-    logging.info("Time conversioning to C types:" + str(time.time() - start))
 
     c_tsa_library.find_best_n_discords(ctypes.pointer(profile_c_double_array),
                                        ctypes.pointer(index_c_double_array),
