@@ -36,7 +36,9 @@ for i in range(1):
     tp = analiser_cat.find_best_n_motifs(mp['matrix_profile'], mp['index_profile'], 4)
     dp = analiser_cat.find_best_n_discords(mp['matrix_profile'], mp['index_profile'], 4)
     print(analiser_cat.absolute_sum_of_change([[1, 2, 3, 5, 6, 7, 8, 10],
-        [4, 5, 6, 24, 24, 24, 3, 3]]))
+        [4, 5, 6, 24, 24, 24, 3, 3],[4, 5, 6, 24, 24, 24, 3, 3]]))
+    print(analiser_cat.abs_energy([[1, 2, 3, 5, 6, 7, 8, 10],
+                                               [4, 5, 6, 24, 24, 24, 3, 3]]))
     print(tp)
     print(dp)
     print(str(time.time() - start))

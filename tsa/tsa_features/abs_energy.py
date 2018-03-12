@@ -13,17 +13,17 @@ import ctypes
 import numpy as np
 ########################################################################################################################
 
-def _absolute_sum_of_changes(list_of_time_series, c_tsa_library):
+def _abs_energy(list_of_time_series, c_tsa_library):
     """
-    Primitive of the absolute_sum_of_changes function
+    Primitive of the abs_energy function
 
     :param list_of_time_series: List with the time series.
     :param c_tsa_library: TSA library.
-    :return: Numpy array with the absolute sum of changes.
+    :return: Numpy array with the absEnergy.
     """
-    list_of_time_series= list(list_of_time_series)
+    list_of_time_series = list(list_of_time_series)
     n = len(list_of_time_series)
-    time_series_length= len(list_of_time_series[0])
+    time_series_length = len(list_of_time_series[0])
     c_number_of_time_series = ctypes.c_long(n)
 
     c_time_series_length = ctypes.c_long(time_series_length)
@@ -38,10 +38,10 @@ def _absolute_sum_of_changes(list_of_time_series, c_tsa_library):
 
     c_time_series_joint = (ctypes.c_double * len(time_series_joint))(*time_series_joint)
 
-    c_tsa_library.absolute_sum_of_changes(ctypes.pointer(c_time_series_joint),
-                                     ctypes.pointer(c_time_series_length),
-                                     ctypes.pointer(c_number_of_time_series),
-                                     ctypes.pointer(c_result_array))
+    c_tsa_library.abs_energy(ctypes.pointer(c_time_series_joint),
+                             ctypes.pointer(c_time_series_length),
+                             ctypes.pointer(c_number_of_time_series),
+                             ctypes.pointer(c_result_array))
 
     np_result = np.array(c_result_array)
 

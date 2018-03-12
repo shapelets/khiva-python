@@ -17,6 +17,8 @@ from tsa.tsa_algorithms.binding_test import binding_test
 from tsa.tsa_algorithms.find_best_n_motifs import _find_best_n_motifs
 from tsa.tsa_algorithms.find_best_n_discords import _find_best_n_discords
 from tsa.tsa_features.absolute_sum_of_changes import _absolute_sum_of_changes
+from tsa.tsa_features.abs_energy import _abs_energy
+
 ########################################################################################################################
 
 class analiser:
@@ -74,15 +76,27 @@ class analiser:
 
     def absolute_sum_of_change(self,list_of_time_series):
         """
-        This function extracts the absolute sum of change of a lsit of time series.
+        This function extracts the absolute sum of change of a list of time series.
 
         :param list_of_time_series:
         :return: Absolute sum of change.
         """
         return _absolute_sum_of_changes(list_of_time_series,self._c_tsa_library)
 
+    def abs_energy(self,list_of_time_series):
+        """
+
+        This function extracts the Absolute Energy of a list of time series.
+
+        :param list_of_time_series: list of lists of doubles containing the time series.
+        :return: Abs Energy.
+        """
+        return _abs_energy(list_of_time_series,self._c_tsa_library)
+
     def binding_test(self, first_time_series_list):
         """
+
+        This is a function just to check the bindings performance.
 
         :param first_time_series_list:
         :return: Dict with the distance, indices and indices in the other sequence.

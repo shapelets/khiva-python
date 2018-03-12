@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
-
+"""
 def plot_stamp(ta, tb, matrix_profile, indexes, m):
     fig_width = 16
     fig_height = 10
@@ -63,4 +63,4 @@ def motif(ta, matrix_profile, indexes, m):
 
     ####################################################
     plt.show()
-
+"""
