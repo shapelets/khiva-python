@@ -13,9 +13,10 @@ import os
 
 import tsa.tsa_datasets as a
 
+
 ########################################################################################################################
 
-def random_dataset_generator(name,points):
+def random_dataset_generator(name, points):
     """
     Generates a dataset of the desired number of points with a desired name indicated when calling the function.
     The dataset is composed by random doubles between 0 and 1.
@@ -24,18 +25,19 @@ def random_dataset_generator(name,points):
     """
     file = open(os.path.join(a.__path__[0], name), 'w')
     file.write("0,")
-    for i in range(1,points):
+    for i in range(1, points):
         print("0," + str(i))
         file.write(str(random.uniform(0, 1)))
         file.write(',')
     file.write('1')
     file.write('\n')
     file.write("1,")
-    for i in range(1,points):
+    for i in range(1, points):
         print("1," + str(i))
         file.write(str(random.uniform(0, 1)))
         file.write(',')
     file.write('1')
+
 
 def section_defined_dataset_generator(name, points):
     """
@@ -47,8 +49,8 @@ def section_defined_dataset_generator(name, points):
     """
     file = open(os.path.join(a.__path__[0], name), 'w')
     file.write("0,")
-    for i in range(1,points):
-        if (i>500 and i < 700):
+    for i in range(1, points):
+        if (i > 500 and i < 700):
             print("0," + str(i))
             file.write(str(0.9))
             file.write(',')
@@ -59,8 +61,8 @@ def section_defined_dataset_generator(name, points):
     file.write('1')
     file.write('\n')
     file.write("1,")
-    for i in range(1,points):
-        if (i>200 and i<400):
+    for i in range(1, points):
+        if (i > 200 and i < 400):
             print("1," + str(i))
             file.write(str(0.9))
             file.write(',')

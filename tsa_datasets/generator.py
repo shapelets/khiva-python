@@ -8,26 +8,7 @@ file, You can obtain one at http://mozilla.org/MPL/2.0/.
 ########################################################################################################################
 # IMPORT
 ########################################################################################################################
-import os
-import tsa.tsa_datasets as a
-from tsa.analyser import analiser
-import pandas as pd
+from tsa_datasets.dataset_generator import section_defined_dataset_generator
 
 ########################################################################################################################
-
-data = pd.read_csv(os.path.join(a.__path__[0], 'peak_dataset_1000'), sep=',', header=None)
-label = data.pop(data.columns[0])
-
-ta = (data[label == 0].iloc[[0]].values.flatten())
-tb = (data[label == 1].iloc[[0]].values.flatten())
-tc = []
-for a in range(0, 220):
-    tc.append(0.5)
-print(len(tc))
-for a in range(0, 300):
-    tc.append(1)
-    tc.append(0)
-g_cat_analiser = analiser();
-
-a = g_cat_analiser.stomp_self_join(ta, 200)
-print(a)
+section_defined_dataset_generator("peak_dataset_16000", 16000)

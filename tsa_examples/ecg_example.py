@@ -6,15 +6,17 @@ License, v. 2.0. If a copy of the MPL was not distributed with this
 file, You can obtain one at http://mozilla.org/MPL/2.0/.
 """
 ########################################################################################################################
-# IMPORTS
+# IMPORT
 ########################################################################################################################
-import ctypes
-import tsa.tsa_libraries
+from scipy.io import loadmat
 import os
-import time
-"""
-c_performance_checker = ctypes.CDLL(os.path.join(tsa.tsa_libraries.__path__[0], 'libc_performance.dylib'))
-start = time.time()
-c_performance_checker.c_performance(ctypes.pointer(ctypes.c_int(1000)))
-print(time.time() -start)
-"""
+import tsa_datasets as a
+from tsa.algorithms.matrix import stomp_self_join
+
+########################################################################################################################
+
+data = loadmat(os.path.join(a.__path__[0], 'sel102m.mat'))
+ta = data["val"][0]
+
+mp = stomp_self_join(ta[0:1000], 256)
+print(mp)
