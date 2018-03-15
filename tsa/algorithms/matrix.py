@@ -120,7 +120,7 @@ def stomp(first_time_series_list, second_time_series_list, subsequence_length):
                                      ctypes.pointer(initialized_c_ip_array))
 
     np_array_mp = np.array(initialized_c_mp_array)
-    np_array_ip = np.array(initialized_c_ip_array).astype(int)
+    np_array_ip = np.array(initialized_c_ip_array).astype(np.uint32)
 
     return {'matrix_profile': np_array_mp, 'index_profile': np_array_ip}
 
