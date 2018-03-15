@@ -41,7 +41,7 @@ class FeatureTest(unittest.TestCase):
         self.assertEqual(abs_sum_of_changes_result[1], 6)
         self.assertEqual(abs_sum_of_changes_result[2], 9)
 
-    def test_absolute_sum_of_changes(self):
+    def test_abs_energy(self):
         abs_energy_result = abs_energy([[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]])
         self.assertAlmostEqual(abs_energy_result, 385, delta=0.00000001)
 

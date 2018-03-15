@@ -113,8 +113,8 @@ def stomp(first_time_series_list, second_time_series_list, subsequence_length):
 
     tsaLibrary().c_tsa_library.stomp(ctypes.pointer(first_time_series_double_array),
                                      ctypes.pointer(second_time_series_double_array),
-                                     ctypes.pointer(ctypes.c_int(len(first_time_series_list))),
-                                     ctypes.pointer(ctypes.c_int(len(second_time_series_list))),
+                                     ctypes.pointer(ctypes.c_long(len(first_time_series_list))),
+                                     ctypes.pointer(ctypes.c_long(len(second_time_series_list))),
                                      ctypes.pointer(ctypes.c_long(subsequence_length)),
                                      ctypes.pointer(initialized_c_mp_array),
                                      ctypes.pointer(initialized_c_ip_array))
@@ -145,7 +145,7 @@ def stomp_self_join(time_series_list, subsequence_length):
         (*initializes_ip_numpy_array)
 
     tsaLibrary().c_tsa_library.stomp_self_join(ctypes.pointer(first_time_series_double_array),
-                                               ctypes.pointer(ctypes.c_int(len(time_series_list))),
+                                               ctypes.pointer(ctypes.c_long(len(time_series_list))),
                                                ctypes.pointer(ctypes.c_long(subsequence_length)),
                                                ctypes.pointer(initialized_c_mp_array),
                                                ctypes.pointer(initialized_c_ip_array))
