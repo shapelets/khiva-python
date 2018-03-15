@@ -30,6 +30,21 @@ class FeatureTest(unittest.TestCase):
         self.assertAlmostEqual(cid_ce_result[0], 1.30930734141595, delta=self.DELTA)
         self.assertAlmostEqual(cid_ce_result[1], 1.30930734141595, delta=self.DELTA)
 
+    def test_c3(self):
+        c3_result = c3([[0, 1, 2, 3, 4, 5], [6, 7, 8, 9, 10, 11]], 2)
+        self.assertEqual(c3_result[0], 7.5)
+        self.assertEqual(c3_result[1], 586.5)
+
+    def test_abs_sum_of_changes(self):
+        abs_sum_of_changes_result = absolute_sum_of_changes([[0, 1, 2, 3], [4, 6, 8, 10], [11, 14, 17, 20]])
+        self.assertEqual(abs_sum_of_changes_result[0], 3)
+        self.assertEqual(abs_sum_of_changes_result[1], 6)
+        self.assertEqual(abs_sum_of_changes_result[2], 9)
+
+    def test_absolute_sum_of_changes(self):
+        abs_energy_result = abs_energy([[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]])
+        self.assertAlmostEqual(abs_energy_result, 385, delta=0.00000001)
+
 
 if __name__ == '__main__':
     unittest.main()
