@@ -33,3 +33,28 @@ class tsaLibrary(object):
 
     def __setattr__(self, name):
         return setattr(self.instance, name)
+
+
+def info():
+    """
+    Get the devices info.
+    """
+    tsaLibrary().c_tsa_library.info()
+
+
+def set_device(device):
+    """
+    Set the device.
+
+    :param device: The desired device.
+    """
+    tsaLibrary().c_tsa_library.set_device(ctypes.pointer(ctypes.c_int(device)))
+
+
+def set_backend(backend):
+    """
+    Set the back-end.
+
+    :param backend: The desired back-end.
+    """
+    tsaLibrary().c_tsa_library.set_backend(ctypes.pointer(ctypes.c_int(backend)))
