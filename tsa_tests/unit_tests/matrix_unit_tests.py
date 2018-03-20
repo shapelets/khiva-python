@@ -52,8 +52,8 @@ class MatrixTest(unittest.TestCase):
         self.assertEqual(find_best_n_motifs_result["subsequence_index"][1], 10)
 
     def test_find_best_n_discords(self):
-        stomp_result = stomp([10, 11, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 11, 10],
-                             [10, 9, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 9, 10],
+        stomp_result = stomp(np.array([10, 11, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 11, 10]),
+                             np.array([10, 9, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 9, 10]),
                              3)
 
         find_best_n_discords_result = find_best_n_discords(stomp_result['matrix_profile'],
