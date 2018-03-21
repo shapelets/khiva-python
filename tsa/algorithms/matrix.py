@@ -11,7 +11,7 @@ file, You can obtain one at http://mozilla.org/MPL/2.0/.
 ########################################################################################################################
 import ctypes
 import numpy as np
-from tsa.tsa_libraries.library import tsaLibrary
+from tsa.tsa_libraries.library import TsaLibrary
 
 
 ########################################################################################################################
@@ -40,7 +40,7 @@ def find_best_n_discords(profile, index, n):
     c_discord_index = (ctypes.c_int * n)(*initialized_discord_index_array)
     c_subsequence_index = (ctypes.c_int * n)(*initialized_subsequence_index_array)
 
-    tsaLibrary().c_tsa_library.find_best_n_discords(ctypes.pointer(profile_c_double_array),
+    TsaLibrary().c_tsa_library.find_best_n_discords(ctypes.pointer(profile_c_double_array),
                                                     ctypes.pointer(index_c_double_array),
                                                     ctypes.pointer(ctypes.c_long(len(profile))),
                                                     ctypes.pointer(ctypes.c_long(n)),
@@ -80,7 +80,7 @@ def find_best_n_motifs(profile, index, n):
     c_motif_index = (ctypes.c_int * n)(*initialized_motif_index_array)
     c_subsequence_index = (ctypes.c_int * n)(*initialized_subsequence_index_array)
 
-    tsaLibrary().c_tsa_library.find_best_n_motifs(ctypes.pointer(profile_c_double_array),
+    TsaLibrary().c_tsa_library.find_best_n_motifs(ctypes.pointer(profile_c_double_array),
                                                   ctypes.pointer(index_c_int_array),
                                                   ctypes.pointer(ctypes.c_long(len(profile))),
                                                   ctypes.pointer(ctypes.c_long(n)),
@@ -123,7 +123,7 @@ def stomp(first_time_series, second_time_series, subsequence_length):
     initialized_c_ip_array = (ctypes.c_uint32 * ((len(second_time_series)) - subsequence_length + 1)) \
         (*initialized_ip_numpy_array)
 
-    tsaLibrary().c_tsa_library.stomp(ctypes.pointer(first_time_series_double_array),
+    TsaLibrary().c_tsa_library.stomp(ctypes.pointer(first_time_series_double_array),
                                      ctypes.pointer(second_time_series_double_array),
                                      ctypes.pointer(ctypes.c_long(len(first_time_series))),
                                      ctypes.pointer(ctypes.c_long(len(second_time_series))),
@@ -159,7 +159,7 @@ def stomp_self_join(time_series, subsequence_length):
     initialized_c_ip_array = (ctypes.c_uint32 * ((len(time_series)) - subsequence_length + 1)) \
         (*initializes_ip_numpy_array)
 
-    tsaLibrary().c_tsa_library.stomp_self_join(ctypes.pointer(first_time_series_double_array),
+    TsaLibrary().c_tsa_library.stomp_self_join(ctypes.pointer(first_time_series_double_array),
                                                ctypes.pointer(ctypes.c_long(len(time_series))),
                                                ctypes.pointer(ctypes.c_long(subsequence_length)),
                                                ctypes.pointer(initialized_c_mp_array),

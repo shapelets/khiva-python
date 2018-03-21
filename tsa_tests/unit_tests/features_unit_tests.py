@@ -62,7 +62,7 @@ class FeatureTest(unittest.TestCase):
 
     def test_auto_covariance(self):
 
-        auto_covariance_result = auto_covariance([[0, 1, 2, 3, ], [10, 11, 12, 13]], False)
+        auto_covariance_result = auto_covariance([[0, 1, 2, 3], [10, 11, 12, 13]], False)
 
         self.assertAlmostEqual(auto_covariance_result[0], 1.25, self.DELTA)
         self.assertAlmostEqual(auto_covariance_result[1], 0.3125, self.DELTA)
@@ -89,8 +89,8 @@ class FeatureTest(unittest.TestCase):
         approximate_entropy_result = approximate_entropy(
             [[1, 2, 3, 4, 5, 6, 7, 8, 9, 10], [11, 12, 13, 14, 15, 16, 17, 18, 19, 20]], 4, 0.5)
 
-        self.assertAlmostEqual(approximate_entropy_result[0], 0.13484275341033936, delta=self.DELTA)
-        self.assertAlmostEqual(approximate_entropy_result[1], 0.13484275341033936, delta=self.DELTA)
+        self.assertAlmostEqual(approximate_entropy_result[0], 0.13484281753639338, delta=self.DELTA)
+        self.assertAlmostEqual(approximate_entropy_result[1], 0.13484281753639338, delta=self.DELTA)
 
     def test_cross_correlation(self):
 
@@ -104,7 +104,7 @@ class FeatureTest(unittest.TestCase):
 
     def test_auto_covariance(self):
 
-        auto_covariance_result = auto_covariance([[0, 1, 2, 3, ], [10, 11, 12, 13]], False)
+        auto_covariance_result = auto_covariance([[0, 1, 2, 3], [10, 11, 12, 13]], False)
 
         self.assertAlmostEqual(auto_covariance_result[0], 1.25, delta=self.DELTA)
         self.assertAlmostEqual(auto_covariance_result[1], 0.3125, delta=self.DELTA)
@@ -125,13 +125,6 @@ class FeatureTest(unittest.TestCase):
             self.assertAlmostEqual(cross_covariance_result[(i * 5) + 2], 0.25, delta=self.DELTA)
             self.assertAlmostEqual(cross_covariance_result[(i * 5) + 3], -1.25, delta=self.DELTA)
             self.assertAlmostEqual(cross_covariance_result[(i * 5) + 4], -1.5, delta=self.DELTA)
-
-    def test_approximate_entropy(self):
-
-        approximate_entropy_result = approximate_entropy(
-            [[1, 2, 3, 4, 5, 6, 7, 8, 9, 10], [11, 12, 13, 14, 15, 16, 17, 18, 19, 20]], 4, 0.5)
-        self.assertAlmostEqual(approximate_entropy_result[0], 0.13484275341033936, delta=1e-6)
-        self.assertAlmostEqual(approximate_entropy_result[1], 0.13484275341033936, delta=1e-6)
 
 
 if __name__ == '__main__':

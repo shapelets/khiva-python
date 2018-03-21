@@ -11,7 +11,7 @@ file, You can obtain one at http://mozilla.org/MPL/2.0/.
 ########################################################################################################################
 import ctypes
 import numpy as np
-from tsa.tsa_libraries.library import tsaLibrary
+from tsa.tsa_libraries.library import TsaLibrary
 
 
 ########################################################################################################################
@@ -35,7 +35,7 @@ def abs_energy(time_series):
     time_series_joint = np.concatenate(time_series, axis=0)
     c_time_series_joint = (ctypes.c_double * len(time_series_joint))(*time_series_joint)
 
-    tsaLibrary().c_tsa_library.abs_energy(ctypes.pointer(c_time_series_joint),
+    TsaLibrary().c_tsa_library.abs_energy(ctypes.pointer(c_time_series_joint),
                                           ctypes.pointer(c_time_series_length),
                                           ctypes.pointer(c_number_of_time_series),
                                           ctypes.pointer(c_result_array))
@@ -66,7 +66,7 @@ def absolute_sum_of_changes(time_series):
     time_series_joint = np.concatenate(time_series, axis=0)
     c_time_series_joint = (ctypes.c_double * len(time_series_joint))(*time_series_joint)
 
-    tsaLibrary().c_tsa_library.absolute_sum_of_changes(ctypes.pointer(c_time_series_joint),
+    TsaLibrary().c_tsa_library.absolute_sum_of_changes(ctypes.pointer(c_time_series_joint),
                                                        ctypes.pointer(c_time_series_length),
                                                        ctypes.pointer(c_number_of_time_series),
                                                        ctypes.pointer(c_result_array))
@@ -98,7 +98,7 @@ def c3(tss, lag):
     result_c_initialized = (ctypes.c_double * tss_number_of_ts)(*result_initialized)
     lag_c = ctypes.c_long(lag)
 
-    tsaLibrary().c_tsa_library.c3(ctypes.pointer(tss_c_joint), ctypes.pointer(tss_c_length),
+    TsaLibrary().c_tsa_library.c3(ctypes.pointer(tss_c_joint), ctypes.pointer(tss_c_length),
                                   ctypes.pointer(tss_c_number_of_ts),
                                   ctypes.pointer(lag_c), ctypes.pointer(result_c_initialized))
 
@@ -128,7 +128,7 @@ def cid_ce(tss, z_normalize):
     result_c_initialized = (ctypes.c_double * tss_number_of_ts)(*result_initialized)
     z_normalize_c = ctypes.c_bool(z_normalize)
 
-    tsaLibrary().c_tsa_library.cidCe(ctypes.pointer(tss_c_joint), ctypes.pointer(tss_c_length),
+    TsaLibrary().c_tsa_library.cidCe(ctypes.pointer(tss_c_joint), ctypes.pointer(tss_c_length),
                                      ctypes.pointer(tss_c_number_of_ts),
                                      ctypes.pointer(z_normalize_c), ctypes.pointer(result_c_initialized))
 
@@ -168,7 +168,7 @@ def cross_correlation(xss, yss, unbiased):
     result_c_initialized = (ctypes.c_double * max(xss_length, yss_length))(*result_initialized)
     unbiased_c = ctypes.c_bool(unbiased)
 
-    tsaLibrary().c_tsa_library.cross_correlation(ctypes.pointer(xss_c_joint), ctypes.pointer(xss_c_length),
+    TsaLibrary().c_tsa_library.cross_correlation(ctypes.pointer(xss_c_joint), ctypes.pointer(xss_c_length),
                                                  ctypes.pointer(xss_c_number_of_ts), ctypes.pointer(yss_c_joint),
                                                  ctypes.pointer(yss_c_length), ctypes.pointer(yss_c_number_of_ts),
                                                  ctypes.pointer(unbiased_c), ctypes.pointer(result_c_initialized))
@@ -178,7 +178,7 @@ def cross_correlation(xss, yss, unbiased):
 
 def cross_covariance(xss, yss, unbiased):
     """
-    Calculates the cross-covariance of the given time series
+    Calculates the cross-covariance of the given time series.
 
     :param xss: Time series.
     :param yss: Time series.
@@ -208,7 +208,7 @@ def cross_covariance(xss, yss, unbiased):
     result_c_initialized = (ctypes.c_double * (xss_length * yss_length))(*result_initialized)
     unbiased_c = ctypes.c_bool(unbiased)
 
-    tsaLibrary().c_tsa_library.cross_covariance(ctypes.pointer(xss_c_joint), ctypes.pointer(xss_c_length),
+    TsaLibrary().c_tsa_library.cross_covariance(ctypes.pointer(xss_c_joint), ctypes.pointer(xss_c_length),
                                                 ctypes.pointer(xss_c_number_of_ts), ctypes.pointer(yss_c_joint),
                                                 ctypes.pointer(yss_c_length), ctypes.pointer(yss_c_number_of_ts),
                                                 ctypes.pointer(unbiased_c), ctypes.pointer(result_c_initialized))
@@ -237,7 +237,7 @@ def auto_covariance(xss, unbiased):
     result_c_initialized = (ctypes.c_double * (xss_number_of_ts * xss_length))(*result_initialized)
     unbiased_c = ctypes.c_bool(unbiased)
 
-    tsaLibrary().c_tsa_library.auto_covariance(ctypes.pointer(xss_c_joint), ctypes.pointer(xss_c_length),
+    TsaLibrary().c_tsa_library.auto_covariance(ctypes.pointer(xss_c_joint), ctypes.pointer(xss_c_length),
                                                ctypes.pointer(xss_c_number_of_ts), ctypes.pointer(unbiased_c),
                                                ctypes.pointer(result_c_initialized))
 
@@ -269,12 +269,12 @@ def approximate_entropy(tss, m, r):
     tss_c_length = ctypes.c_long(tss_length)
     tss_joint = np.concatenate(tss, axis=0)
     tss_c_joint = (ctypes.c_double * len(tss_joint))(*tss_joint)
-    result_initialized = np.zeros(tss_number_of_ts).astype(np.float)
-    result_c_initialized = (ctypes.c_float * tss_number_of_ts)(*result_initialized)
+    result_initialized = np.zeros(tss_number_of_ts).astype(np.double)
+    result_c_initialized = (ctypes.c_double * tss_number_of_ts)(*result_initialized)
     m_c = ctypes.c_int(m)
-    r_c = ctypes.c_float(r)
+    r_c = ctypes.c_double(r)
 
-    tsaLibrary().c_tsa_library.approximate_entropy(ctypes.pointer(tss_c_joint), ctypes.pointer(tss_c_length),
+    TsaLibrary().c_tsa_library.approximate_entropy(ctypes.pointer(tss_c_joint), ctypes.pointer(tss_c_length),
                                                    ctypes.pointer(tss_c_number_of_ts), ctypes.pointer(m_c),
                                                    ctypes.pointer(r_c),
                                                    ctypes.pointer(result_c_initialized))

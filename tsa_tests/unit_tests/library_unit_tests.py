@@ -20,20 +20,43 @@ class LibraryTest(unittest.TestCase):
     def setUp(self):
         pass
 
-    def test_info(self):
-        info()
+    def test_set_backend(self):
+        backends = get_backends()
+        cuda = backends & 2
+        opencl = backends & 4
+        cpu = backends & 1
+        
+        if cuda:
+            set_backend(2)
+            self.assertEqual(get_backend(), 2)
+        if opencl:
+            set_backend(4)
+            self.assertEqual(get_backend(), 4)
+        if cpu:
+            set_backend(1)
+            self.assertEqual(get_backend(), 1)
 
-    def test_setBackend(self):
-        set_backend(1)
-        info()
+    def test_get_device(self):
+        backends = get_backends()
+        cuda = backends & 2
+        opencl = backends & 4
+        cpu = backends & 1
 
-    def test_setDevice(self):
-        set_device(1)
-        info()
+        if cuda:
+            set_backend(2)
+            set_device(0)
+            self.assertEqual(get_device(), 0)
+        if opencl:
+            set_backend(4)
+            set_device(0)
+            self.assertEqual(get_device(), 0)
+            set_device(1)
+            self.assertEqual(get_device(), 1)
+        if cpu:
+            set_backend(1)
+            set_device(0)
+            self.assertEqual(get_device(), 0)
 
-    def test_setBackendCPU(self):
-        set_backend(0)
-        info()
 
 if __name__ == '__main__':
     unittest.main()

@@ -12,21 +12,27 @@ file, You can obtain one at http://mozilla.org/MPL/2.0/.
 import ctypes
 import os
 import tsa.tsa_libraries
+import platform
 
 
 ########################################################################################################################
 
-class tsaLibrary(object):
-    class __tsaLibrary:
+class TsaLibrary(object):
+    class __TsaLibrary:
         def __init__(self):
-            self.c_tsa_library = ctypes.CDLL(os.path.join(tsa.tsa_libraries.__path__[0], 'libTSALIB.dylib'))
+            if platform.system() == 'Darwin':
+                self.c_tsa_library = ctypes.CDLL(os.path.join(tsa.tsa_libraries.__path__[0], 'libtsa_c.dylib'))
+            if platform.system() == 'Windows':
+                self.c_tsa_library = ctypes.CDLL(os.path.join(tsa.tsa_libraries.__path__[0], 'libtsa_c.dll'))
+            if platform.system() == 'Linux':
+                self.c_tsa_library = ctypes.CDLL(os.path.join(tsa.tsa_libraries.__path__[0], 'libtsa_c.so'))
 
     instance = None
 
     def __new__(cls):
-        if not tsaLibrary.instance:
-            tsaLibrary.instance = tsaLibrary.__tsaLibrary()
-        return tsaLibrary.instance
+        if not TsaLibrary.instance:
+            TsaLibrary.instance = TsaLibrary.__TsaLibrary()
+        return TsaLibrary.instance
 
     def __getattr__(self, name):
         return getattr(self.instance, name)
@@ -39,7 +45,40 @@ def info():
     """
     Get the devices info.
     """
-    tsaLibrary().c_tsa_library.info()
+    TsaLibrary().c_tsa_library.info()
+
+
+def set_backend(backend):
+    """
+    Set the backend.
+
+    :param backend: The desired back-end.
+    """
+    TsaLibrary().c_tsa_library.set_backend(ctypes.pointer(ctypes.c_int(backend)))
+
+
+def get_backend():
+    """
+    Get the active backend.
+
+    :return The active backend.
+    """
+    backend = (ctypes.c_int * 1)(*[0])
+
+    TsaLibrary().c_tsa_library.get_backend(ctypes.pointer(backend))
+
+    return backend[0]
+
+
+def get_backends():
+    """
+    Get the available backends.
+
+    :return The available backends.
+    """
+    backends = (ctypes.c_int * 1)(*[0])
+    TsaLibrary().c_tsa_library.get_backends(ctypes.pointer(backends))
+    return backends[0]
 
 
 def set_device(device):
@@ -48,13 +87,15 @@ def set_device(device):
 
     :param device: The desired device.
     """
-    tsaLibrary().c_tsa_library.set_device(ctypes.pointer(ctypes.c_int(device)))
+    TsaLibrary().c_tsa_library.set_device(ctypes.pointer(ctypes.c_int(device)))
 
 
-def set_backend(backend):
+def get_device():
     """
-    Set the back-end.
+    Get the active device.
 
-    :param backend: The desired back-end.
+    :return The active device.
     """
-    tsaLibrary().c_tsa_library.set_backend(ctypes.pointer(ctypes.c_int(backend)))
+    device = (ctypes.c_int * 1)(*[0])
+    TsaLibrary().c_tsa_library.get_device(ctypes.pointer(device))
+    return device[0]
