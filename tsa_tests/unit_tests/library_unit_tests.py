@@ -22,40 +22,42 @@ class LibraryTest(unittest.TestCase):
 
     def test_set_backend(self):
         backends = get_backends()
-        cuda = backends & 2
-        opencl = backends & 4
-        cpu = backends & 1
-        
+        cuda = backends & TSABackend.TSA_BACKEND_CUDA.value
+        opencl = backends & TSABackend.TSA_BACKEND_OPENCL.value
+        cpu = backends & TSABackend.TSA_BACKEND_CPU.value
+
         if cuda:
-            set_backend(2)
-            self.assertEqual(get_backend(), 2)
+            set_backend(TSABackend.TSA_BACKEND_CUDA)
+            self.assertEqual(get_backend(), TSABackend.TSA_BACKEND_CUDA)
         if opencl:
-            set_backend(4)
-            self.assertEqual(get_backend(), 4)
+            set_backend(TSABackend.TSA_BACKEND_OPENCL)
+            self.assertEqual(get_backend(), TSABackend.TSA_BACKEND_OPENCL)
         if cpu:
-            set_backend(1)
-            self.assertEqual(get_backend(), 1)
+            set_backend(TSABackend.TSA_BACKEND_CPU)
+            self.assertEqual(get_backend(), TSABackend.TSA_BACKEND_CPU)
 
     def test_get_device(self):
         backends = get_backends()
-        cuda = backends & 2
-        opencl = backends & 4
-        cpu = backends & 1
+        cuda = backends & TSABackend.TSA_BACKEND_CUDA.value
+        opencl = backends & TSABackend.TSA_BACKEND_OPENCL.value
+        cpu = backends & TSABackend.TSA_BACKEND_CPU.value
 
         if cuda:
-            set_backend(2)
-            set_device(0)
-            self.assertEqual(get_device(), 0)
+            set_backend(TSABackend.TSA_BACKEND_CUDA)
+            for i in range(get_device_count()):
+                set_device(i)
+                self.assertEqual(get_device_id(), i)
         if opencl:
-            set_backend(4)
-            set_device(0)
-            self.assertEqual(get_device(), 0)
-            set_device(1)
-            self.assertEqual(get_device(), 1)
+            set_backend(TSABackend.TSA_BACKEND_OPENCL)
+            for i in range(get_device_count()):
+                set_device(i)
+                self.assertEqual(get_device_id(), i)
+
         if cpu:
-            set_backend(1)
-            set_device(0)
-            self.assertEqual(get_device(), 0)
+            set_backend(TSABackend.TSA_BACKEND_CPU)
+            for i in range(get_device_count()):
+                set_device(i)
+                self.assertEqual(get_device_id(), i)
 
 
 if __name__ == '__main__':

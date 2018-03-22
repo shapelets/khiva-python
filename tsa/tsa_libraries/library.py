@@ -9,6 +9,7 @@ file, You can obtain one at http://mozilla.org/MPL/2.0/.
 ########################################################################################################################
 # IMPORT
 ########################################################################################################################
+from enum import Enum
 import ctypes
 import os
 import tsa.tsa_libraries
@@ -41,6 +42,13 @@ class TsaLibrary(object):
         return setattr(self.instance, name)
 
 
+class TSABackend(Enum):
+    TSA_BACKEND_DEFAULT = 0
+    TSA_BACKEND_CPU = 1
+    TSA_BACKEND_CUDA = 2
+    TSA_BACKEND_OPENCL = 4
+
+
 def info():
     """
     Get the devices info.
@@ -50,24 +58,25 @@ def info():
 
 def set_backend(backend):
     """
-    Set the backend.
+    Set the TSABackend.
 
-    :param backend: The desired back-end.
+    :param backend: The desired backend. TSABackend type.
     """
-    TsaLibrary().c_tsa_library.set_backend(ctypes.pointer(ctypes.c_int(backend)))
+    TsaLibrary().c_tsa_library.set_backend(ctypes.pointer(ctypes.c_int(backend.value)))
 
 
 def get_backend():
     """
     Get the active backend.
 
-    :return The active backend.
+    :return The active backend. TSABackend type.
+
     """
     backend = (ctypes.c_int * 1)(*[0])
 
     TsaLibrary().c_tsa_library.get_backend(ctypes.pointer(backend))
 
-    return backend[0]
+    return TSABackend(backend[0])
 
 
 def get_backends():
@@ -90,12 +99,23 @@ def set_device(device):
     TsaLibrary().c_tsa_library.set_device(ctypes.pointer(ctypes.c_int(device)))
 
 
-def get_device():
+def get_device_id():
     """
     Get the active device.
 
     :return The active device.
     """
     device = (ctypes.c_int * 1)(*[0])
-    TsaLibrary().c_tsa_library.get_device(ctypes.pointer(device))
+    TsaLibrary().c_tsa_library.get_device_id(ctypes.pointer(device))
     return device[0]
+
+
+def get_device_count():
+    """
+    Get the active device.
+
+    :return The active device.
+    """
+    device_count = (ctypes.c_int * 1)(*[0])
+    TsaLibrary().c_tsa_library.get_device_count(ctypes.pointer(device_count))
+    return device_count[0]
