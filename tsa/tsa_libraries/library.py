@@ -112,9 +112,9 @@ def get_device_id():
 
 def get_device_count():
     """
-    Get the active device.
+    Get the devices count.
 
-    :return The active device.
+    :return The devices count.
     """
     device_count = (ctypes.c_int * 1)(*[0])
     TsaLibrary().c_tsa_library.get_device_count(ctypes.pointer(device_count))

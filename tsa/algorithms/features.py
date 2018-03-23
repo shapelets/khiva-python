@@ -20,7 +20,7 @@ def abs_energy(time_series):
     """
     Calculates the sum over the square values of the timeseries
 
-    :param time_series: Time series.
+    :param time_series: Time series. It accepts a list of lists or a numpy array with one or several time series.
     :return: Numpy array with the absEnergy.
     """
     if isinstance(time_series, list):
@@ -51,7 +51,7 @@ def absolute_sum_of_changes(time_series):
     (Compare to http://en.wikipedia.org/wiki/Autocorrelation#Estimation), taken over different all possible
     lags (1 to length of x)
 
-    :param time_series: Time series.
+    :param time_series: Time series. It accepts a list of lists or a numpy array with one or several time series.
     :return: Numpy array with the absolute sum of changes.
     """
     if isinstance(time_series, list):
@@ -81,7 +81,7 @@ def c3(tss, lag):
     Calculates the Schreiber, T. and Schmitz, A. (1997) measure of non-linearity
     for the given time series
 
-    :param tss: Time series.
+    :param tss: Time series. It accepts a list of lists or a numpy array with one or several time series.
     :param lag: The lag.
     :return: Numpy array with non-linearity value for the given time series.
     """
@@ -111,7 +111,7 @@ def cid_ce(tss, z_normalize):
     Batista, Gustavo EAPA, et al (2014). (A more complex time series has more peaks,
     valleys, etc.)
 
-    :param tss: Time series.
+    :param tss: Time series. It accepts a list of lists or a numpy array with one or several time series.
     :param z_normalize: Controls wheter the time series should be z-normalized or not.
     :return: Numpy array with the complexity value for the given time series.
     """
@@ -140,8 +140,8 @@ def cross_correlation(xss, yss, unbiased):
     Calculates the cross-correlation of the given time series.
 
 
-    :param xss: Time series.
-    :param yss: Time series.
+    :param xss: Time series. It accepts a list of lists or a numpy array with one or several time series.
+    :param yss: Time series. It accepts a list of lists or a numpy array with one or several time series.
     :param unbiased: Determines whether it divides by n - lag (if true) or n (if false).
     :return: Numpy array with cross-correlation value for the given time series.
     """
@@ -180,8 +180,8 @@ def cross_covariance(xss, yss, unbiased):
     """
     Calculates the cross-covariance of the given time series.
 
-    :param xss: Time series.
-    :param yss: Time series.
+    :param xss: Time series. It accepts a list of lists or a numpy array with one or several time series.
+    :param yss: Time series. It accepts a list of lists or a numpy array with one or several time series.
     :param unbiased: Determines whether it divides by n - lag (if true) or n (if false).
     :return: Numpy array with the cross-covariance value for the given time series.
     """
@@ -220,7 +220,7 @@ def auto_covariance(xss, unbiased):
     """
     Calculates the auto-covariance the given time series.
 
-    :param xss: Time series.
+    :param xss: Time series. It accepts a list of lists or a numpy array with one or several time series.
     :param unbiased: Determines whether it divides by n - lag (if true) or n (if false).
     :return: Numpy array with the auto-covariance value for the given time series.
     """
@@ -254,7 +254,7 @@ def approximate_entropy(tss, m, r):
     Richman & Moorman (2000) - Physiological time-series analysis using approximate entropy and sample entropy
 
 
-    :param tss: Time series.
+    :param tss: Time series. It accepts a list of lists or a numpy array with one or several time series.
     :param m: Length of compared run of data.
     :param r: Filtering level, must be positive.
     :return: Numpy array with the vectorized approximate entropy for all the input time series in tss.
@@ -280,3 +280,140 @@ def approximate_entropy(tss, m, r):
                                                    ctypes.pointer(result_c_initialized))
 
     return np.array(result_c_initialized)
+
+
+def auto_correlation(tss, max_lag, unbiased):
+    """
+    Calculates the autocorrelation of the specified lag for the given time series.
+
+    :param tss: Time series. It accepts a list of lists or a numpy array with one or several time series.
+    :param max_lag: The maximum lag to compute.
+    :param unbiased: Determines whether it divides by n - lag (if true) or n (if false)
+    :return: The autocorrelation value for the given time series
+    """
+    if isinstance(tss, list):
+        tss = np.array(tss)
+
+    tss_number_of_ts = len(tss)
+    tss_length = len(tss[0])
+    tss_c_number_of_ts = ctypes.c_long(tss_number_of_ts)
+    tss_c_length = ctypes.c_long(tss_length)
+    tss_joint = np.concatenate(tss, axis=0)
+    tss_c_joint = (ctypes.c_double * len(tss_joint))(*tss_joint)
+    result_initialized = np.zeros(tss_number_of_ts * tss_length).astype(np.double)
+    result_c_initialized = (ctypes.c_double * (tss_number_of_ts * tss_length))(*result_initialized)
+    max_lag_c = ctypes.c_long(max_lag)
+    unbiased_c = ctypes.c_bool(unbiased)
+    TsaLibrary().c_tsa_library.auto_correlation(ctypes.pointer(tss_c_joint), ctypes.pointer(tss_c_length),
+                                                ctypes.pointer(tss_c_number_of_ts), ctypes.pointer(max_lag_c),
+                                                ctypes.pointer(unbiased_c),
+                                                ctypes.pointer(result_c_initialized))
+
+    return np.array(result_c_initialized)
+
+
+def binned_entropy(tss, max_bins):
+    """
+    Calculates the binned entropy for the given time series and number of bins.
+
+    :param tss: Time series. It accepts a list of lists or a numpy array with one or several time series.
+    :param max_bins: The number of bins
+    :return: The binned entropy value for the given time series.
+    """
+    if isinstance(tss, list):
+        tss = np.array(tss)
+    tss_number_of_ts = len(tss)
+    tss_length = len(tss[0])
+    tss_c_number_of_ts = ctypes.c_long(tss_number_of_ts)
+    tss_c_length = ctypes.c_long(tss_length)
+    tss_joint = np.concatenate(tss, axis=0)
+    tss_c_joint = (ctypes.c_double * len(tss_joint))(*tss_joint)
+    result_initialized = np.zeros(tss_number_of_ts).astype(np.double)
+    result_c_initialized = (ctypes.c_double * tss_number_of_ts)(*result_initialized)
+    max_bins_c = ctypes.c_int(max_bins)
+    TsaLibrary().c_tsa_library.binned_entropy(ctypes.pointer(tss_c_joint), ctypes.pointer(tss_c_length),
+                                              ctypes.pointer(tss_c_number_of_ts), ctypes.pointer(max_bins_c),
+                                              ctypes.pointer(result_c_initialized))
+
+    return np.array(result_c_initialized);
+
+
+def count_above_mean(tss):
+    """
+    Calculates the number of values in the time series that are higher than
+    the mean
+
+    :param tss: Time series. It accepts a list of lists or a numpy array with one or several time series.
+    :return: The number of values in the time series that are higher than the mean
+    """
+    if isinstance(tss, list):
+        tss = np.array(tss)
+    tss_number_of_ts = len(tss)
+    tss_length = len(tss[0])
+    tss_c_number_of_ts = ctypes.c_long(tss_number_of_ts)
+    tss_c_length = ctypes.c_long(tss_length)
+    tss_joint = np.concatenate(tss, axis=0)
+    tss_c_joint = (ctypes.c_double * len(tss_joint))(*tss_joint)
+    result_initialized = np.zeros(tss_number_of_ts).astype(np.uint32)
+    result_c_initialized = (ctypes.c_uint32 * tss_number_of_ts)(*result_initialized)
+    TsaLibrary().c_tsa_library.count_above_mean(ctypes.pointer(tss_c_joint), ctypes.pointer(tss_c_length),
+                                                ctypes.pointer(tss_c_number_of_ts),
+                                                ctypes.pointer(result_c_initialized))
+
+    return np.array(result_c_initialized);
+
+
+def count_below_mean(tss):
+    """
+    Calculates the number of values in the time series that are lower than
+    the mean
+
+    :param tss: Time series. It accepts a list of lists or a numpy array with one or several time series.
+    :return: The number of values in the time series that are lower than the mean
+    """
+    if isinstance(tss, list):
+        tss = np.array(tss)
+    tss_number_of_ts = len(tss)
+    tss_length = len(tss[0])
+    tss_c_number_of_ts = ctypes.c_long(tss_number_of_ts)
+    tss_c_length = ctypes.c_long(tss_length)
+    tss_joint = np.concatenate(tss, axis=0)
+    tss_c_joint = (ctypes.c_double * len(tss_joint))(*tss_joint)
+    result_initialized = np.zeros(tss_number_of_ts).astype(np.uint32)
+    result_c_initialized = (ctypes.c_uint32 * tss_number_of_ts)(*result_initialized)
+    TsaLibrary().c_tsa_library.count_below_mean(ctypes.pointer(tss_c_joint), ctypes.pointer(tss_c_length),
+                                                ctypes.pointer(tss_c_number_of_ts),
+                                                ctypes.pointer(result_c_initialized))
+
+    return np.array(result_c_initialized);
+
+
+def energy_ratio_by_chunks(tss, num_segments, segment_focus):
+    """
+    Calculates the sum of squares of chunk i out of N chunks expressed as a ratio
+    with the sum of squares over the whole series. segmentFocus should be lower
+    than the number of segments
+
+    :param tss: Time series. It accepts a list of lists or a numpy array with one or several time series.
+    :param num_segments: The number of segments to divide the series into.
+    :param segment_focus: The segment number (starting at zero) to return a feature on.
+    :return: The energy ratio by chunk of the time series.
+    """
+    if isinstance(tss, list):
+        tss = np.array(tss)
+    tss_number_of_ts = len(tss)
+    tss_length = len(tss[0])
+    tss_c_number_of_ts = ctypes.c_long(tss_number_of_ts)
+    tss_c_length = ctypes.c_long(tss_length)
+    tss_joint = np.concatenate(tss, axis=0)
+    tss_c_joint = (ctypes.c_double * len(tss_joint))(*tss_joint)
+    result_initialized = np.zeros(tss_number_of_ts).astype(np.double)
+    result_c_initialized = (ctypes.c_double * tss_number_of_ts)(*result_initialized)
+    num_segments_c = ctypes.c_long(num_segments)
+    segment_focus_c = ctypes.c_long(segment_focus)
+    TsaLibrary().c_tsa_library.energy_ratio_by_chunks(ctypes.pointer(tss_c_joint), ctypes.pointer(tss_c_length),
+                                                      ctypes.pointer(tss_c_number_of_ts), ctypes.pointer(num_segments_c),
+                                                      ctypes.pointer(segment_focus_c),
+                                                      ctypes.pointer(result_c_initialized))
+
+    return np.array(result_c_initialized);

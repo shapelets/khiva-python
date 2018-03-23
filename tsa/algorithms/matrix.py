@@ -101,8 +101,11 @@ def stomp(first_time_series, second_time_series, subsequence_length):
     STOMP algorithm to calculate the matrix profile between 'ta' and 'tb' using a subsequence length
           of 'm'.
 
-    :param first_time_series: First time series.
-    :param second_time_series: Second time series.
+    :param first_time_series: First time series. It accepts a list of lists or a numpy array with one or
+    several time series.
+    :param second_time_series: Second time series. It accepts a list of lists or a numpy array with one or
+    several time series.
+    or a numpy array with the several time series in ndarray format.
     :param subsequence_length: Length of the subsequence.
     :return: Matrix profile in dictionary format.
     """
@@ -142,7 +145,8 @@ def stomp_self_join(time_series, subsequence_length):
     STOMP algorithm to calculate the matrix profile between 't' and itself using a subsequence length
           of 'm'. This method filters the trivial matches.
 
-    :param time_series: The query and reference time series.
+    :param time_series: The query and reference time series. It accepts a list of lists or a numpy array with
+    one or several time series.
     :param subsequence_length: Lenght of the subsequence
     :return: Matrix profile in dictionary format.
     """
