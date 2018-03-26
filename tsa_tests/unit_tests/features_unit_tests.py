@@ -162,6 +162,33 @@ class FeatureTest(unittest.TestCase):
         self.assertAlmostEqual(energy_ratio_by_chunks_result[0], 0.909090909, delta=self.DELTA)
         self.assertAlmostEqual(energy_ratio_by_chunks_result[1], 0.669623060, delta=self.DELTA)
 
+    def test_first_location_of_maximum(self):
+        first_location_of_maximum_result = first_location_of_maximum(
+            [[5, 4, 3, 5, 0, 1, 5, 3, 2, 1], [2, 4, 3, 5, 2, 5, 4, 3, 5, 2]])
+        self.assertEqual(first_location_of_maximum_result[0], 0.0)
+        self.assertEqual(first_location_of_maximum_result[1], 0.3)
+
+    def test_first_location_of_minimum(self):
+        first_location_of_minimum_result = first_location_of_minimum([[5, 4, 3, 0, 0, 1], [5, 4, 3, 0, 2, 1]])
+        self.assertEqual(first_location_of_minimum_result[0], 0.5)
+        self.assertEqual(first_location_of_minimum_result[1], 0.5)
+
+    def test_has_duplicates(self):
+        has_duplicates_result = has_duplicates([[5, 4, 3, 0, 0, 1], [5, 4, 3, 0, 2, 1]])
+        self.assertEqual(has_duplicates_result[0], True)
+        self.assertEqual(has_duplicates_result[1], False)
+
+    def test_has_duplicate_max(self):
+        has_duplicate_max_result = has_duplicate_max([[5, 4, 3, 0, 5, 1], [5, 4, 3, 0, 2, 1]])
+        self.assertEqual(has_duplicate_max_result[0], True)
+        self.assertEqual(has_duplicate_max_result[1], False)
+
+    def test_index_max_quantile(self):
+        index_max_quantile_result = index_max_quantile([[5, 4, 3, 0, 0, 1], [5, 4, 0, 0, 2, 1]], 0.5)
+
+        self.assertAlmostEqual(index_max_quantile_result[0], 0.333333333, delta=self.DELTA)
+        self.assertAlmostEqual(index_max_quantile_result[1], 0.333333333, delta=self.DELTA)
+
 
 if __name__ == '__main__':
     unittest.main()

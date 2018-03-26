@@ -288,8 +288,8 @@ def auto_correlation(tss, max_lag, unbiased):
 
     :param tss: Time series. It accepts a list of lists or a numpy array with one or several time series.
     :param max_lag: The maximum lag to compute.
-    :param unbiased: Determines whether it divides by n - lag (if true) or n (if false)
-    :return: The autocorrelation value for the given time series
+    :param unbiased: Determines whether it divides by n - lag (if true) or n (if false).
+    :return: The autocorrelation value for the given time series.
     """
     if isinstance(tss, list):
         tss = np.array(tss)
@@ -317,7 +317,7 @@ def binned_entropy(tss, max_bins):
     Calculates the binned entropy for the given time series and number of bins.
 
     :param tss: Time series. It accepts a list of lists or a numpy array with one or several time series.
-    :param max_bins: The number of bins
+    :param max_bins: The number of bins.
     :return: The binned entropy value for the given time series.
     """
     if isinstance(tss, list):
@@ -341,10 +341,10 @@ def binned_entropy(tss, max_bins):
 def count_above_mean(tss):
     """
     Calculates the number of values in the time series that are higher than
-    the mean
+    the mean.
 
     :param tss: Time series. It accepts a list of lists or a numpy array with one or several time series.
-    :return: The number of values in the time series that are higher than the mean
+    :return: The number of values in the time series that are higher than the mean.
     """
     if isinstance(tss, list):
         tss = np.array(tss)
@@ -366,10 +366,10 @@ def count_above_mean(tss):
 def count_below_mean(tss):
     """
     Calculates the number of values in the time series that are lower than
-    the mean
+    the mean.
 
     :param tss: Time series. It accepts a list of lists or a numpy array with one or several time series.
-    :return: The number of values in the time series that are lower than the mean
+    :return: The number of values in the time series that are lower than the mean.
     """
     if isinstance(tss, list):
         tss = np.array(tss)
@@ -392,8 +392,7 @@ def energy_ratio_by_chunks(tss, num_segments, segment_focus):
     """
     Calculates the sum of squares of chunk i out of N chunks expressed as a ratio
     with the sum of squares over the whole series. segmentFocus should be lower
-    than the number of segments
-
+    than the number of segments.
     :param tss: Time series. It accepts a list of lists or a numpy array with one or several time series.
     :param num_segments: The number of segments to divide the series into.
     :param segment_focus: The segment number (starting at zero) to return a feature on.
@@ -412,8 +411,135 @@ def energy_ratio_by_chunks(tss, num_segments, segment_focus):
     num_segments_c = ctypes.c_long(num_segments)
     segment_focus_c = ctypes.c_long(segment_focus)
     TsaLibrary().c_tsa_library.energy_ratio_by_chunks(ctypes.pointer(tss_c_joint), ctypes.pointer(tss_c_length),
-                                                      ctypes.pointer(tss_c_number_of_ts), ctypes.pointer(num_segments_c),
+                                                      ctypes.pointer(tss_c_number_of_ts),
+                                                      ctypes.pointer(num_segments_c),
+
                                                       ctypes.pointer(segment_focus_c),
                                                       ctypes.pointer(result_c_initialized))
 
     return np.array(result_c_initialized);
+
+
+def first_location_of_maximum(tss):
+    """
+    Calculates the first relative location of the maximal value for each timeseries.
+
+    :param tss: Time series. It accepts a list of lists or a numpy array with one or several time series.
+    :return: The first relative location of the maximum value to the length of the timeseries,
+    for each timeseries.
+    """
+    if isinstance(tss, list):
+        tss = np.array(tss)
+    tss_number_of_ts = len(tss)
+    tss_length = len(tss[0])
+    tss_c_number_of_ts = ctypes.c_long(tss_number_of_ts)
+    tss_c_length = ctypes.c_long(tss_length)
+    tss_joint = np.concatenate(tss, axis=0)
+    tss_c_joint = (ctypes.c_double * len(tss_joint))(*tss_joint)
+    result_initialized = np.zeros(tss_number_of_ts).astype(np.double)
+    result_c_initialized = (ctypes.c_double * tss_number_of_ts)(*result_initialized)
+    TsaLibrary().c_tsa_library.first_location_of_maximum(ctypes.pointer(tss_c_joint), ctypes.pointer(tss_c_length),
+                                                         ctypes.pointer(tss_c_number_of_ts),
+                                                         ctypes.pointer(result_c_initialized))
+
+    return np.array(result_c_initialized)
+
+
+def first_location_of_minimum(tss):
+    """
+    Calculates the first location of the minimal value of each time series. The position
+    is calculated relatively to the length of the series.
+
+    :param tss: Time series. It accepts a list of lists or a numpy array with one or several time series.
+    :return: The first relative location of the minimal value of each series.
+    """
+    if isinstance(tss, list):
+        tss = np.array(tss)
+    tss_number_of_ts = len(tss)
+    tss_length = len(tss[0])
+    tss_c_number_of_ts = ctypes.c_long(tss_number_of_ts)
+    tss_c_length = ctypes.c_long(tss_length)
+    tss_joint = np.concatenate(tss, axis=0)
+    tss_c_joint = (ctypes.c_double * len(tss_joint))(*tss_joint)
+    result_initialized = np.zeros(tss_number_of_ts).astype(np.double)
+    result_c_initialized = (ctypes.c_double * tss_number_of_ts)(*result_initialized)
+    TsaLibrary().c_tsa_library.first_location_of_minimum(ctypes.pointer(tss_c_joint), ctypes.pointer(tss_c_length),
+                                                         ctypes.pointer(tss_c_number_of_ts),
+                                                         ctypes.pointer(result_c_initialized))
+
+    return np.array(result_c_initialized)
+
+
+def has_duplicates(tss):
+    """
+    Calculates if the input time series contain duplicated elements.
+
+    :param tss: Time series. It accepts a list of lists or a numpy array with one or several time series.
+    :return: Array containing True if the time series contains duplicated elements
+     and false otherwise.
+    """
+    if isinstance(tss, list):
+        tss = np.array(tss)
+    tss_number_of_ts = len(tss)
+    tss_length = len(tss[0])
+    tss_c_number_of_ts = ctypes.c_long(tss_number_of_ts)
+    tss_c_length = ctypes.c_long(tss_length)
+    tss_joint = np.concatenate(tss, axis=0)
+    tss_c_joint = (ctypes.c_double * len(tss_joint))(*tss_joint)
+    result_initialized = np.zeros(tss_number_of_ts).astype(np.bool)
+    result_c_initialized = (ctypes.c_bool * tss_number_of_ts)(*result_initialized)
+    TsaLibrary().c_tsa_library.has_duplicates(ctypes.pointer(tss_c_joint), ctypes.pointer(tss_c_length),
+                                              ctypes.pointer(tss_c_number_of_ts), ctypes.pointer(result_c_initialized))
+
+    return np.array(result_c_initialized)
+
+
+def has_duplicate_max(tss):
+    """
+    Calculates if the maximum within input time series is duplicated.
+
+    :param tss: Time series. It accepts a list of lists or a numpy array with one or several time series.
+    :return: Array containing True if the maximum value of the time series is duplicated
+    and false otherwise.
+    """
+    if isinstance(tss, list):
+        tss = np.array(tss)
+    tss_number_of_ts = len(tss)
+    tss_length = len(tss[0])
+    tss_c_number_of_ts = ctypes.c_long(tss_number_of_ts)
+    tss_c_length = ctypes.c_long(tss_length)
+    tss_joint = np.concatenate(tss, axis=0)
+    tss_c_joint = (ctypes.c_double * len(tss_joint))(*tss_joint)
+    result_initialized = np.zeros(tss_number_of_ts).astype(np.bool)
+    result_c_initialized = (ctypes.c_bool * tss_number_of_ts)(*result_initialized)
+    TsaLibrary().c_tsa_library.has_duplicate_max(ctypes.pointer(tss_c_joint), ctypes.pointer(tss_c_length),
+                                                 ctypes.pointer(tss_c_number_of_ts),
+                                                 ctypes.pointer(result_c_initialized))
+
+    return np.array(result_c_initialized)
+
+
+def index_max_quantile(tss, q):
+    """
+    Calculates the index of the max quantile.
+
+    :param tss: Time series. It accepts a list of lists or a numpy array with one or several time series.
+    :param q: The quantile.
+    :return: The index of the max quantile q.
+    """
+    if isinstance(tss, list):
+        tss = np.array(tss)
+    tss_number_of_ts = len(tss)
+    tss_length = len(tss[0])
+    tss_c_number_of_ts = ctypes.c_long(tss_number_of_ts)
+    tss_c_length = ctypes.c_long(tss_length)
+    tss_joint = np.concatenate(tss, axis=0)
+    tss_c_joint = (ctypes.c_double * len(tss_joint))(*tss_joint)
+    result_initialized = np.zeros(tss_number_of_ts).astype(np.double)
+    result_c_initialized = (ctypes.c_double * tss_number_of_ts)(*result_initialized)
+    q_c = ctypes.c_double(q)
+    TsaLibrary().c_tsa_library.index_max_quantile(ctypes.pointer(tss_c_joint), ctypes.pointer(tss_c_length),
+                                                  ctypes.pointer(tss_c_number_of_ts), ctypes.pointer(q_c),
+                                                  ctypes.pointer(result_c_initialized))
+
+    return np.array(result_c_initialized)
