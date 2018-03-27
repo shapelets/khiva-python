@@ -189,6 +189,49 @@ class FeatureTest(unittest.TestCase):
         self.assertAlmostEqual(index_max_quantile_result[0], 0.333333333, delta=self.DELTA)
         self.assertAlmostEqual(index_max_quantile_result[1], 0.333333333, delta=self.DELTA)
 
+    def test_kurtosis(self):
+        kurtosis_result = kurtosis([[0, 1, 2, 3, 4, 5], [2, 2, 2, 20, 30, 25]])
+        self.assertAlmostEqual(kurtosis_result[0], -1.2, delta=self.DELTA)
+        self.assertAlmostEqual(kurtosis_result[1], -2.66226722, delta=self.DELTA)
+
+    def test_large_standard_deviation(self):
+        large_standard_deviation_result = large_standard_deviation([[-1, -1, -1, 1, 1, 1], [4, 6, 8, 4, 5, 4]], 0.4)
+        self.assertEqual(large_standard_deviation_result[0], True)
+        self.assertEqual(large_standard_deviation_result[1], False)
+
+    def test_last_location_of_maximum(self):
+        last_location_of_maximum_result = last_location_of_maximum([[0, 4, 3, 5, 5, 1], [0, 4, 3, 2, 5, 1]])
+        self.assertAlmostEqual(last_location_of_maximum_result[0], 0.8333333333333334, self.DELTA)
+        self.assertAlmostEqual(last_location_of_maximum_result[1], 0.8333333333333334, self.DELTA)
+
+    def test_last_location_of_minimum(self):
+        last_location_of_minimum_result = last_location_of_minimum([[0, 4, 3, 5, 5, 1, 0, 4], [3, 2, 5, 1, 4, 5, 1, 2]])
+        self.assertAlmostEqual(last_location_of_minimum_result[0], 0.875, self.DELTA)
+        self.assertAlmostEqual(last_location_of_minimum_result[1], 0.875, self.DELTA)
+
+    def test_length(self):
+        length_result = length([[0, 4, 3, 5, 5, 1], [0, 4, 3, 2, 5, 1]])
+
+        self.assertEqual(length_result[0], 6)
+        self.assertEqual(length_result[1], 6)
+
+    def test_linear_trend(self):
+        linear_trend_result = linear_trend([[0, 4, 3, 5, 5, 1], [2, 4, 1, 2, 5, 3]])
+        self.assertAlmostEqual(linear_trend_result[0][0], 0.6260380997892747, delta=self.DELTA)
+        self.assertAlmostEqual(linear_trend_result[0][1], 0.5272201945463578, delta=self.DELTA)
+
+        self.assertAlmostEqual(linear_trend_result[1][0], 0.2548235957188128, delta=self.DELTA)
+        self.assertAlmostEqual(linear_trend_result[1][1], 0.3268228676411533, delta=self.DELTA)
+
+        self.assertAlmostEqual(linear_trend_result[2][0], 2.2857142857142856, delta=self.DELTA)
+        self.assertAlmostEqual(linear_trend_result[2][1], 2.1904761904761907, delta=self.DELTA)
+
+        self.assertAlmostEqual(linear_trend_result[3][0], 0.2857142857142857, delta=self.DELTA)
+        self.assertAlmostEqual(linear_trend_result[3][1], 0.2571428571428572, delta=self.DELTA)
+
+        self.assertAlmostEqual(linear_trend_result[4][0], 0.5421047417431507, delta=self.DELTA)
+        self.assertAlmostEqual(linear_trend_result[4][1], 0.37179469135129783, delta=self.DELTA)
+
 
 if __name__ == '__main__':
     unittest.main()

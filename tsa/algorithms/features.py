@@ -18,7 +18,7 @@ from tsa.tsa_libraries.library import TsaLibrary
 
 def abs_energy(time_series):
     """
-    Calculates the sum over the square values of the timeseries
+    Calculates the sum over the square values of the time series
 
     :param time_series: Time series. It accepts a list of lists or a numpy array with one or several time series.
     :return: Numpy array with the absEnergy.
@@ -422,11 +422,11 @@ def energy_ratio_by_chunks(tss, num_segments, segment_focus):
 
 def first_location_of_maximum(tss):
     """
-    Calculates the first relative location of the maximal value for each timeseries.
+    Calculates the first relative location of the maximal value for each time series.
 
     :param tss: Time series. It accepts a list of lists or a numpy array with one or several time series.
-    :return: The first relative location of the maximum value to the length of the timeseries,
-    for each timeseries.
+    :return: The first relative location of the maximum value to the length of the time series,
+    for each time series.
     """
     if isinstance(tss, list):
         tss = np.array(tss)
@@ -543,3 +543,179 @@ def index_max_quantile(tss, q):
                                                   ctypes.pointer(result_c_initialized))
 
     return np.array(result_c_initialized)
+
+
+def kurtosis(tss):
+    """
+    @brief Returns the kurtosis of tss (calculated with the adjusted Fisher-Pearson
+    standardized moment coefficient G2).
+
+    :param tss: Time series. It accepts a list of lists or a numpy array with one or several time series.
+    :return: The kurtosis of each tss.
+    """
+    if isinstance(tss, list):
+        tss = np.array(tss)
+    tss_number_of_ts = len(tss)
+    tss_length = len(tss[0])
+    tss_c_number_of_ts = ctypes.c_long(tss_number_of_ts)
+    tss_c_length = ctypes.c_long(tss_length)
+    tss_joint = np.concatenate(tss, axis=0)
+    tss_c_joint = (ctypes.c_double * len(tss_joint))(*tss_joint)
+    result_initialized = np.zeros(tss_number_of_ts).astype(np.double)
+    result_c_initialized = (ctypes.c_double * tss_number_of_ts)(*result_initialized)
+    TsaLibrary().c_tsa_library.kurtosis(ctypes.pointer(tss_c_joint), ctypes.pointer(tss_c_length),
+                                        ctypes.pointer(tss_c_number_of_ts),
+                                        ctypes.pointer(result_c_initialized))
+
+    return np.array(result_c_initialized)
+
+
+def large_standard_deviation(tss, r):
+    """
+    Checks if the time series within tss have a large standard deviation.
+
+    :param tss: Time series. It accepts a list of lists or a numpy array with one or several time series.
+    :param r: The threshold.
+    :return: Array containing True for those time series in tss that have a large standard deviation.
+    """
+    if isinstance(tss, list):
+        tss = np.array(tss)
+    tss_number_of_ts = len(tss)
+    tss_length = len(tss[0])
+    tss_c_number_of_ts = ctypes.c_long(tss_number_of_ts)
+    tss_c_length = ctypes.c_long(tss_length)
+    tss_joint = np.concatenate(tss, axis=0)
+    tss_c_joint = (ctypes.c_double * len(tss_joint))(*tss_joint)
+    result_initialized = np.zeros(tss_number_of_ts).astype(np.bool)
+    result_c_initialized = (ctypes.c_bool * tss_number_of_ts)(*result_initialized)
+    r_c = ctypes.c_double(r)
+    TsaLibrary().c_tsa_library.large_standard_deviation(ctypes.pointer(tss_c_joint), ctypes.pointer(tss_c_length),
+                                                        ctypes.pointer(tss_c_number_of_ts), ctypes.pointer(r_c),
+                                                        ctypes.pointer(result_c_initialized))
+
+    return np.array(result_c_initialized)
+
+
+def last_location_of_maximum(tss):
+    """
+    Calculates the last location of the maximum value of each time series. The position
+    is calculated relatively to the length of the series.
+
+    :param tss: Time series. It accepts a list of lists or a numpy array with one or several time series.
+    :return: The last relative location of the maximum value of each series.
+    """
+    if isinstance(tss, list):
+        tss = np.array(tss)
+    tss_number_of_ts = len(tss)
+    tss_length = len(tss[0])
+    tss_c_number_of_ts = ctypes.c_long(tss_number_of_ts)
+    tss_c_length = ctypes.c_long(tss_length)
+    tss_joint = np.concatenate(tss, axis=0)
+    tss_c_joint = (ctypes.c_double * len(tss_joint))(*tss_joint)
+    result_initialized = np.zeros(tss_number_of_ts).astype(np.double)
+    result_c_initialized = (ctypes.c_double * tss_number_of_ts)(*result_initialized)
+    TsaLibrary().c_tsa_library.last_location_of_maximum(ctypes.pointer(tss_c_joint), ctypes.pointer(tss_c_length),
+                                                        ctypes.pointer(tss_c_number_of_ts),
+                                                        ctypes.pointer(result_c_initialized))
+
+    return np.array(result_c_initialized)
+
+
+def last_location_of_minimum(tss):
+    """
+    Calculates the last location of the minimum value of each time series. The position
+    is calculated relatively to the length of the series.
+
+    :param tss: Time series. It accepts a list of lists or a numpy array with one or several time series.
+    :return: The last relative location of the minimum value of each series.
+    """
+    if isinstance(tss, list):
+        tss = np.array(tss)
+    tss_number_of_ts = len(tss)
+    tss_length = len(tss[0])
+    tss_c_number_of_ts = ctypes.c_long(tss_number_of_ts)
+    tss_c_length = ctypes.c_long(tss_length)
+    tss_joint = np.concatenate(tss, axis=0)
+    tss_c_joint = (ctypes.c_double * len(tss_joint))(*tss_joint)
+    result_initialized = np.zeros(tss_number_of_ts).astype(np.double)
+    result_c_initialized = (ctypes.c_double * tss_number_of_ts)(*result_initialized)
+    TsaLibrary().c_tsa_library.last_location_of_minimum(ctypes.pointer(tss_c_joint), ctypes.pointer(tss_c_length),
+                                                        ctypes.pointer(tss_c_number_of_ts),
+                                                        ctypes.pointer(result_c_initialized))
+
+    return np.array(result_c_initialized)
+
+
+def length(tss):
+    """
+    Returns the length of the input time series.
+
+    :param tss: Time series. It accepts a list of lists or a numpy array with one or several time series.
+    :return: The length of tss.
+    """
+    if isinstance(tss, list):
+        tss = np.array(tss)
+    tss_number_of_ts = len(tss)
+    tss_length = len(tss[0])
+    tss_c_number_of_ts = ctypes.c_long(tss_number_of_ts)
+    tss_c_length = ctypes.c_long(tss_length)
+    tss_joint = np.concatenate(tss, axis=0)
+    tss_c_joint = (ctypes.c_double * len(tss_joint))(*tss_joint)
+    result_initialized = np.zeros(tss_number_of_ts).astype(np.int)
+    result_c_initialized = (ctypes.c_int * tss_number_of_ts)(*result_initialized)
+    TsaLibrary().c_tsa_library.length(ctypes.pointer(tss_c_joint), ctypes.pointer(tss_c_length),
+                                      ctypes.pointer(tss_c_number_of_ts),
+                                      ctypes.pointer(result_c_initialized))
+
+    return np.array(result_c_initialized)
+
+
+def linear_trend(tss):
+    """
+    Calculate a linear least-squares regression for the values of the time series versus the sequence from 0 to
+    length of the time series minus one.
+
+    :param tss: Time series. It accepts a list of lists or a numpy array with one or several time series.
+    :return  a tuple with:
+        pvalue: The pvalues for all time series.
+        rvalue: The rvalues for all time series.
+        intercept: The intercept values for all time series.
+        slope: The slope for all time series.
+        stdrr: The stderr values for all time series.
+    """
+    if isinstance(tss, list):
+        tss = np.array(tss)
+    tss_number_of_ts = len(tss)
+    tss_length = len(tss[0])
+    tss_c_number_of_ts = ctypes.c_long(tss_number_of_ts)
+    tss_c_length = ctypes.c_long(tss_length)
+    tss_joint = np.concatenate(tss, axis=0)
+    tss_c_joint = (ctypes.c_double * len(tss_joint))(*tss_joint)
+
+    pvalue_initialized = np.zeros(tss_number_of_ts).astype(np.double)
+    pvalue_c_initialized = (ctypes.c_double * tss_number_of_ts)(*pvalue_initialized)
+
+    rvalue_initialized = np.zeros(tss_number_of_ts).astype(np.double)
+    rvalue_c_initialized = (ctypes.c_double * tss_number_of_ts)(*rvalue_initialized)
+
+    intercept_initialized = np.zeros(tss_number_of_ts).astype(np.double)
+    intercept_c_initialized = (ctypes.c_double * tss_number_of_ts)(*intercept_initialized)
+
+    slope_initialized = np.zeros(tss_number_of_ts).astype(np.double)
+    slope_c_initialized = (ctypes.c_double * tss_number_of_ts)(*slope_initialized)
+
+    stdrr_initialized = np.zeros(tss_number_of_ts).astype(np.double)
+    stdrr_c_initialized = (ctypes.c_double * tss_number_of_ts)(*stdrr_initialized)
+
+    TsaLibrary().c_tsa_library.linear_trend(ctypes.pointer(tss_c_joint), ctypes.pointer(tss_c_length),
+                                            ctypes.pointer(tss_c_number_of_ts),
+                                            ctypes.pointer(pvalue_c_initialized),
+                                            ctypes.pointer(rvalue_c_initialized),
+                                            ctypes.pointer(intercept_c_initialized),
+                                            ctypes.pointer(slope_c_initialized),
+                                            ctypes.pointer(stdrr_c_initialized)
+                                            )
+
+    return (np.array(pvalue_c_initialized), np.array(rvalue_c_initialized),
+            np.array(intercept_c_initialized), np.array(slope_c_initialized),
+            np.array(stdrr_c_initialized))
