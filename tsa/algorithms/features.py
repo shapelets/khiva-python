@@ -719,3 +719,179 @@ def linear_trend(tss):
     return (np.array(pvalue_c_initialized), np.array(rvalue_c_initialized),
             np.array(intercept_c_initialized), np.array(slope_c_initialized),
             np.array(stdrr_c_initialized))
+
+
+def has_duplicate_min(tss):
+    """
+    Calculates if the minimum of the input time series is duplicated.
+
+    :param tss: Time series. It accepts a list of lists or a numpy array with one or several time series.
+    :return: Array containing True if the minimum of the time series is duplicated
+    and False otherwise.
+    """
+    if isinstance(tss, list):
+        tss = np.array(tss)
+    tss_number_of_ts = len(tss)
+    tss_length = len(tss[0])
+    tss_c_number_of_ts = ctypes.c_long(tss_number_of_ts)
+    tss_c_length = ctypes.c_long(tss_length)
+    tss_joint = np.concatenate(tss, axis=0)
+
+    tss_c_joint = (ctypes.c_double * len(tss_joint))(*tss_joint)
+    result_initialized = np.zeros(tss_number_of_ts).astype(np.bool)
+    result_c_initialized = (ctypes.c_bool * tss_number_of_ts)(*result_initialized)
+    TsaLibrary().c_tsa_library.has_duplicate_min(ctypes.pointer(tss_c_joint), ctypes.pointer(tss_c_length),
+                                                 ctypes.pointer(tss_c_number_of_ts),
+                                                 ctypes.pointer(result_c_initialized))
+
+    return np.array(result_c_initialized)
+
+
+def longest_strike_above_mean(tss):
+    """
+    Calculates the length of the longest consecutive subsequence in tss that is bigger than the mean of tss.
+
+    :param tss: Time series. It accepts a list of lists or a numpy array with one or several time series.
+    :return: The length of the longest consecutive subsequence in the input time series that is bigger than the mean.
+    """
+    if isinstance(tss, list):
+        tss = np.array(tss)
+    tss_number_of_ts = len(tss)
+    tss_length = len(tss[0])
+    tss_c_number_of_ts = ctypes.c_long(tss_number_of_ts)
+    tss_c_length = ctypes.c_long(tss_length)
+    tss_joint = np.concatenate(tss, axis=0)
+
+    tss_c_joint = (ctypes.c_double * len(tss_joint))(*tss_joint)
+    result_initialized = np.zeros(tss_number_of_ts).astype(np.double)
+    result_c_initialized = (ctypes.c_double * tss_number_of_ts)(*result_initialized)
+    TsaLibrary().c_tsa_library.longest_strike_above_mean(ctypes.pointer(tss_c_joint), ctypes.pointer(tss_c_length),
+                                                         ctypes.pointer(tss_c_number_of_ts),
+                                                         ctypes.pointer(result_c_initialized))
+
+    return np.array(result_c_initialized)
+
+
+def longest_strike_below_mean(tss):
+    """
+    Calculates the length of the longest consecutive subsequence in tss that is below the mean of tss.
+
+    :param tss: Time series. It accepts a list of lists or a numpy array with one or several time series.
+    :return: The length of the longest consecutive subsequence in the input time series that is below the mean.
+    """
+    if isinstance(tss, list):
+        tss = np.array(tss)
+    tss_number_of_ts = len(tss)
+    tss_length = len(tss[0])
+    tss_c_number_of_ts = ctypes.c_long(tss_number_of_ts)
+    tss_c_length = ctypes.c_long(tss_length)
+    tss_joint = np.concatenate(tss, axis=0)
+
+    tss_c_joint = (ctypes.c_double * len(tss_joint))(*tss_joint)
+    result_initialized = np.zeros(tss_number_of_ts).astype(np.double)
+    result_c_initialized = (ctypes.c_double * tss_number_of_ts)(*result_initialized)
+    TsaLibrary().c_tsa_library.longest_strike_below_mean(ctypes.pointer(tss_c_joint), ctypes.pointer(tss_c_length),
+                                                         ctypes.pointer(tss_c_number_of_ts),
+                                                         ctypes.pointer(result_c_initialized))
+
+    return np.array(result_c_initialized)
+
+
+def maximum(tss):
+    """
+    Calculates the maximum value for each time series within tss.
+
+    :param tss: Time series. It accepts a list of lists or a numpy array with one or several time series.
+    :return: The maximum value of each time series within tss.
+    """
+    if isinstance(tss, list):
+        tss = np.array(tss)
+    tss_number_of_ts = len(tss)
+    tss_length = len(tss[0])
+    tss_c_number_of_ts = ctypes.c_long(tss_number_of_ts)
+    tss_c_length = ctypes.c_long(tss_length)
+    tss_joint = np.concatenate(tss, axis=0)
+
+    tss_c_joint = (ctypes.c_double * len(tss_joint))(*tss_joint)
+    result_initialized = np.zeros(tss_number_of_ts).astype(np.double)
+    result_c_initialized = (ctypes.c_double * tss_number_of_ts)(*result_initialized)
+    TsaLibrary().c_tsa_library.maximum(ctypes.pointer(tss_c_joint), ctypes.pointer(tss_c_length),
+                                       ctypes.pointer(tss_c_number_of_ts),
+                                       ctypes.pointer(result_c_initialized))
+
+    return np.array(result_c_initialized)
+
+
+def mean_absolute_change(tss):
+    """
+    Calculates the mean over the absolute differences between subsequent time series values in tss.
+
+    :param tss: Time series. It accepts a list of lists or a numpy array with one or several time series.
+    :return: The mean over the absolute differences between subsequent time series values.
+    """
+    if isinstance(tss, list):
+        tss = np.array(tss)
+    tss_number_of_ts = len(tss)
+    tss_length = len(tss[0])
+    tss_c_number_of_ts = ctypes.c_long(tss_number_of_ts)
+    tss_c_length = ctypes.c_long(tss_length)
+    tss_joint = np.concatenate(tss, axis=0)
+
+    tss_c_joint = (ctypes.c_double * len(tss_joint))(*tss_joint)
+    result_initialized = np.zeros(tss_number_of_ts).astype(np.double)
+    result_c_initialized = (ctypes.c_double * tss_number_of_ts)(*result_initialized)
+    TsaLibrary().c_tsa_library.mean_absolute_change(ctypes.pointer(tss_c_joint), ctypes.pointer(tss_c_length),
+                                                    ctypes.pointer(tss_c_number_of_ts),
+                                                    ctypes.pointer(result_c_initialized))
+
+    return np.array(result_c_initialized)
+
+
+def fftCoefficient(tss, coefficient):
+    """
+    Calculates the fourier coefficients of the one-dimensional discrete
+    Fourier Transform for real input by fast fourier transformation algorithm.
+
+    :param tss: Time series. It accepts a list of lists or a numpy array with one or several time series.
+    :param coefficient: The coefficient to extract from the FFT.
+    :return: Tuple with:
+        real: The real part of the coefficient.
+        imag: The imaginary part of the coefficient.
+        abs: The absolute value of the coefficient.
+        angle: The angle of the coefficient.
+    """
+    if isinstance(tss, list):
+        tss = np.array(tss)
+
+    tss_number_of_ts = len(tss)
+    tss_length = len(tss[0])
+    tss_c_number_of_ts = ctypes.c_long(tss_number_of_ts)
+    tss_c_length = ctypes.c_long(tss_length)
+    tss_joint = np.concatenate(tss, axis=0)
+    tss_c_joint = (ctypes.c_double * len(tss_joint))(*tss_joint)
+
+    coefficient_c = ctypes.c_long(coefficient)
+
+    real_initialized = np.zeros(tss_number_of_ts).astype(np.double)
+    real_c_initialized = (ctypes.c_double * tss_number_of_ts)(*real_initialized)
+
+    imag_initialized = np.zeros(tss_number_of_ts).astype(np.double)
+    imag_c_initialized = (ctypes.c_double * tss_number_of_ts)(*imag_initialized)
+
+    absolute_initialized = np.zeros(tss_number_of_ts).astype(np.double)
+    absolute_c_initialized = (ctypes.c_double * tss_number_of_ts)(*absolute_initialized)
+
+    angle_initialized = np.zeros(tss_number_of_ts).astype(np.double)
+    angle_c_initialized = (ctypes.c_double * tss_number_of_ts)(*angle_initialized)
+
+    TsaLibrary().c_tsa_library.fftCoefficient(ctypes.pointer(tss_c_joint), ctypes.pointer(tss_c_length),
+                                              ctypes.pointer(tss_c_number_of_ts),
+                                              ctypes.pointer(coefficient_c),
+                                              ctypes.pointer(real_c_initialized),
+                                              ctypes.pointer(imag_c_initialized),
+                                              ctypes.pointer(absolute_c_initialized),
+                                              ctypes.pointer(angle_c_initialized)
+                                              )
+
+    return (np.array(real_c_initialized), np.array(imag_c_initialized),
+            np.array(absolute_c_initialized), np.array(angle_c_initialized))

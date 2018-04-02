@@ -232,6 +232,53 @@ class FeatureTest(unittest.TestCase):
         self.assertAlmostEqual(linear_trend_result[4][0], 0.5421047417431507, delta=self.DELTA)
         self.assertAlmostEqual(linear_trend_result[4][1], 0.37179469135129783, delta=self.DELTA)
 
+    def test_has_duplicate_min(self):
+        has_duplicate_min_result = has_duplicate_min([[5, 4, 3, 0, 0, 1],[5, 4, 3, 0, 2, 1]])
+        self.assertEqual(has_duplicate_min_result[0], True)
+        self.assertEqual(has_duplicate_min_result[1], False)
+
+    def test_longest_strike_above_mean(self):
+        longest_strike_above_mean_result = longest_strike_above_mean([[20, 20, 20, 1, 1, 1, 20, 20, 20, 20, 1, 1, 1, 1,
+                                                                       1, 1, 1, 1, 20, 20],[20, 20, 20, 1, 1, 1, 20, 20,
+                                                                                            20, 1,  1, 1, 1, 1, 1, 1, 1,
+                                                                                            1, 20, 20]])
+        self.assertEqual(longest_strike_above_mean_result[0], 4)
+        self.assertEqual(longest_strike_above_mean_result[1], 3)
+
+    def test_longest_strike_below_mean(self):
+        longest_strike_below_mean_result = longest_strike_below_mean([[20, 20, 20, 1, 1, 1, 20, 20, 20, 20, 1, 1, 1, 1,
+                                                                       1, 1, 1, 1, 20, 20],[20, 20, 20, 1, 1, 1, 20, 20,
+                                                                                            20, 1,  1, 1, 1, 1, 1, 1, 1,
+                                                                                            1, 20, 20]])
+        self.assertEqual(longest_strike_below_mean_result[0], 8)
+        self.assertEqual(longest_strike_below_mean_result[1], 9)
+
+    def test_maximum(self):
+        maximum_result = maximum([[20, 20, 20, 18, 25, 19, 20, 20, 20, 20, 40, 30, 1,  50, 1, 1,  5, 1, 20, 20],
+                                  [20, 20, 20, 2,  19, 1,  20, 20, 20, 1,  15, 1,  30, 1,  1, 18, 4, 1, 20, 20]])
+        self.assertEqual(maximum_result[0], 50)
+        self.assertEqual(maximum_result[1], 30)
+
+    def test_mean_absolute_change(self):
+        mean_absolute_change_result = mean_absolute_change([[0, 1, 2, 3, 4, 5],[8, 10, 12, 14, 16, 18]])
+        r = 5/6
+        self.assertEqual(mean_absolute_change_result[0], r)
+        self.assertEqual(mean_absolute_change_result[1], r*2)
+
+    def test_fft_coefficient(self):
+        fftCoefficient_result= fftCoefficient([[0, 1, 2, 3, 4, 5],[6, 7, 8, 9, 10, 11]],0)
+        self.assertAlmostEqual(fftCoefficient_result[0][0], 15, delta=self.DELTA)
+        self.assertAlmostEqual(fftCoefficient_result[0][1], 51, delta=self.DELTA)
+
+        self.assertAlmostEqual(fftCoefficient_result[1][0], 0, delta=self.DELTA)
+        self.assertAlmostEqual(fftCoefficient_result[1][1], 0, delta=self.DELTA)
+
+        self.assertAlmostEqual(fftCoefficient_result[2][0], 15, delta=self.DELTA)
+        self.assertAlmostEqual(fftCoefficient_result[2][1], 51, delta=self.DELTA)
+
+        self.assertAlmostEqual(fftCoefficient_result[3][0], 0, delta=self.DELTA)
+        self.assertAlmostEqual(fftCoefficient_result[3][1], 0, delta=self.DELTA)
+
 
 if __name__ == '__main__':
     unittest.main()
