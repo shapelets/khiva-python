@@ -895,3 +895,222 @@ def fftCoefficient(tss, coefficient):
 
     return (np.array(real_c_initialized), np.array(imag_c_initialized),
             np.array(absolute_c_initialized), np.array(angle_c_initialized))
+
+
+def cwt_coefficients(tss, widths, coeff, w):
+    """
+    Calculates a Continuous wavelet transform for the Ricker wavelet, also known as
+    the "Mexican hat wavelet".
+
+    :param tss: Time series. It accepts a list of lists or a numpy array with one or several time series.
+    :param widths: Widths. It accepts a list of lists or a numpy array with one or several widths.
+    :param coeff: Coefficient of interest.
+    :param w: Width of interest.
+    :return: Result of calculated coefficients.
+    """
+    if isinstance(tss, list):
+        tss = np.array(tss)
+    tss_n = len(tss)
+    tss_l = len(tss[0])
+    tss_c_number_of_ts = ctypes.c_long(tss_n)
+    tss_c_length = ctypes.c_long(tss_l)
+    tss_joint = np.concatenate(tss, axis=0)
+    tss_c_joint = (ctypes.c_double * len(tss_joint))(*tss_joint)
+    if isinstance(widths, list):
+        widths = np.array(widths)
+    widths_n = len(widths)
+    widths_l = len(widths[0])
+    widths_c_number_of_ts = ctypes.c_long(widths_n)
+    widths_c_length = ctypes.c_long(widths_l)
+    widths_joint = np.concatenate(widths, axis=0)
+    widths_c_joint = (ctypes.c_int * len(widths_joint))(*widths_joint)
+
+    result_initialized = np.zeros(tss_n).astype(np.double)
+    result_c_initialized = (ctypes.c_double * tss_n)(*result_initialized)
+    TsaLibrary().c_tsa_library.cwt_coefficients(ctypes.pointer(tss_c_joint),
+                                                ctypes.pointer(tss_c_length),
+                                                ctypes.pointer(tss_c_number_of_ts),
+                                                ctypes.pointer(widths_c_joint),
+                                                ctypes.pointer(widths_c_length),
+                                                ctypes.pointer(widths_c_number_of_ts),
+                                                ctypes.pointer(ctypes.c_int(coeff)),
+                                                ctypes.pointer(ctypes.c_int(w)),
+                                                ctypes.pointer(result_c_initialized))
+
+    return np.array(result_c_initialized)
+
+
+def mean_second_derivative_central(tss):
+    """
+    Calculates mean value of a central approximation of the second derivative for each time series in tss.
+
+    :param tss: Time series. It accepts a list of lists or a numpy array with one or several time series.
+    :return: The mean value of a central approximation of the second derivative for each time series.
+    """
+    if isinstance(tss, list):
+        tss = np.array(tss)
+    tss_n = len(tss)
+    tss_l = len(tss[0])
+    tss_c_number_of_ts = ctypes.c_long(tss_n)
+    tss_c_length = ctypes.c_long(tss_l)
+    tss_joint = np.concatenate(tss, axis=0)
+    tss_c_joint = (ctypes.c_double * len(tss_joint))(*tss_joint)
+
+    result_initialized = np.zeros(tss_n).astype(np.double)
+    result_c_initialized = (ctypes.c_double * tss_n)(*result_initialized)
+    TsaLibrary().c_tsa_library.mean_second_derivative_central(ctypes.pointer(tss_c_joint),
+                                                              ctypes.pointer(tss_c_length),
+                                                              ctypes.pointer(tss_c_number_of_ts),
+                                                              ctypes.pointer(result_c_initialized))
+
+    return np.array(result_c_initialized)
+
+
+def minimum(tss):
+    """
+    Calculates the minimum value for each time series within tss.
+
+    :param tss: Time series. It accepts a list of lists or a numpy array with one or several time series.
+    :return: The minimum value of each time series within tss.
+    """
+    if isinstance(tss, list):
+        tss = np.array(tss)
+    tss_n = len(tss)
+    tss_l = len(tss[0])
+    tss_c_number_of_ts = ctypes.c_long(tss_n)
+    tss_c_length = ctypes.c_long(tss_l)
+    tss_joint = np.concatenate(tss, axis=0)
+    tss_c_joint = (ctypes.c_double * len(tss_joint))(*tss_joint)
+
+    result_initialized = np.zeros(tss_n).astype(np.double)
+    result_c_initialized = (ctypes.c_double * tss_n)(*result_initialized)
+    TsaLibrary().c_tsa_library.minimum(ctypes.pointer(tss_c_joint),
+
+                                       ctypes.pointer(tss_c_length), ctypes.pointer(tss_c_number_of_ts),
+                                       ctypes.pointer(result_c_initialized))
+
+    return np.array(result_c_initialized)
+
+
+def number_crossing_m(tss, m):
+    """
+    Calculates the number of m-crossings. A m-crossing is defined as two sequential values where the first
+    value is lower than m and the next is greater, or viceversa. If you set m to zero, you will get the number of
+    zero crossings.
+
+    :param tss: Time series. It accepts a list of lists or a numpy array with one or several time series.
+    :param m: The m value.
+    :return: The number of m-crossings of each time series within tss.
+    """
+    if isinstance(tss, list):
+        tss = np.array(tss)
+    tss_n = len(tss)
+    tss_l = len(tss[0])
+    tss_c_number_of_ts = ctypes.c_long(tss_n)
+    tss_c_length = ctypes.c_long(tss_l)
+    tss_joint = np.concatenate(tss, axis=0)
+    tss_c_joint = (ctypes.c_double * len(tss_joint))(*tss_joint)
+
+    result_initialized = np.zeros(tss_n).astype(np.double)
+    result_c_initialized = (ctypes.c_double * tss_n)(*result_initialized)
+    TsaLibrary().c_tsa_library.number_crossing_m(ctypes.pointer(tss_c_joint),
+                                                 ctypes.pointer(tss_c_length), ctypes.pointer(tss_c_number_of_ts),
+                                                 ctypes.pointer(ctypes.c_int(m)),
+                                                 ctypes.pointer(result_c_initialized))
+
+    return np.array(result_c_initialized)
+
+
+def aggregated_autocorrelation(tss, aggregation_function):
+    """
+    Calculates a linear least-squares regression for values of the time series that were aggregated
+    over chunks versus the sequence from 0 up to the number of chunks minus one.
+
+    :param tss: Time series. It accepts a list of lists or a numpy array with one or several time series.
+    :param aggregation_function: Function to be used in the aggregation. It receives an integer which indicates the
+    function to be applied:
+              {
+                  0 : mean,
+                  1 : median
+                  2 : min,
+                  3 : max,
+                  4 : stdev,
+                  5 : var,
+                  default : mean
+              }
+    :return: A numpy array whose values contains the aggregated correlation for each time series.
+    """
+    if isinstance(tss, list):
+        tss = np.array(tss)
+    tss_n = len(tss)
+    tss_l = len(tss[0])
+    tss_c_number_of_ts = ctypes.c_long(tss_n)
+    tss_c_length = ctypes.c_long(tss_l)
+    tss_joint = np.concatenate(tss, axis=0)
+    tss_c_joint = (ctypes.c_double * len(tss_joint))(*tss_joint)
+    result_initialized = np.zeros(tss_n).astype(np.double)
+    result_c_initialized = (ctypes.c_double * tss_n)(*result_initialized)
+    TsaLibrary().c_tsa_library.aggregated_autocorrelation(ctypes.pointer(tss_c_joint),
+                                                          ctypes.pointer(tss_c_length),
+                                                          ctypes.pointer(tss_c_number_of_ts),
+                                                          ctypes.pointer(ctypes.c_int(aggregation_function)),
+                                                          ctypes.pointer(result_c_initialized))
+
+    return np.array(result_c_initialized)
+
+
+def aggregated_linear_trend(tss, chunk_size, aggregation_function):
+    """
+    Calculates a linear least-squares regression for values of the time series that were aggregated
+    over chunks versus the sequence from 0 up to the number of chunks minus one.
+
+    :param tss: Time series. It accepts a list of lists or a numpy array with one or several time series.
+    :param chunk_size: The chunk size used to aggregate the data.
+    :param aggregation_function: Function to be used in the aggregation. It receives an integer which indicates the
+    function to be applied:
+              {
+                  0 : mean,
+                  1 : median
+                  2 : min,
+                  3 : max,
+                  4 : stdev,
+                  default : mean
+              }
+    :return: a tuple with:
+        pvalue: The pvalues for all time series.
+        rvalue: The rvalues for all time series.
+        intercept: The intercept values for all time series.
+        slope: The slope for all time series.
+        stdrr: The stderr values for all time series.
+    """
+    if isinstance(tss, list):
+        tss = np.array(tss)
+    tss_n = len(tss)
+    tss_l = len(tss[0])
+    tss_c_number_of_ts = ctypes.c_long(tss_n)
+    tss_c_length = ctypes.c_long(tss_l)
+    tss_joint = np.concatenate(tss, axis=0)
+    tss_c_joint = (ctypes.c_double * len(tss_joint))(*tss_joint)
+
+    slope_initialized = np.zeros(tss_n).astype(np.double)
+    slope_c_initialized = (ctypes.c_double * tss_n)(*slope_initialized)
+    intercept_initialized = np.zeros(tss_n).astype(np.double)
+    intercept_c_initialized = (ctypes.c_double * tss_n)(*intercept_initialized)
+    rvalue_initialized = np.zeros(tss_n).astype(np.double)
+    rvalue_c_initialized = (ctypes.c_double * tss_n)(*rvalue_initialized)
+    pvalue_initialized = np.zeros(tss_n).astype(np.double)
+    pvalue_c_initialized = (ctypes.c_double * tss_n)(*pvalue_initialized)
+    stderrest_initialized = np.zeros(tss_n).astype(np.double)
+    stderrest_c_initialized = (ctypes.c_double * tss_n)(*stderrest_initialized)
+    TsaLibrary().c_tsa_library.aggregated_linear_trend(ctypes.pointer(tss_c_joint), ctypes.pointer(tss_c_length),
+                                                       ctypes.pointer(tss_c_number_of_ts),
+                                                       ctypes.pointer(ctypes.c_long(chunk_size)),
+                                                       ctypes.pointer(ctypes.c_int(aggregation_function)),
+                                                       ctypes.pointer(slope_c_initialized),
+                                                       ctypes.pointer(intercept_c_initialized),
+                                                       ctypes.pointer(rvalue_c_initialized),
+                                                       ctypes.pointer(pvalue_c_initialized),
+                                                       ctypes.pointer(stderrest_c_initialized))
+
+    return np.array(slope_c_initialized), np.array(intercept_c_initialized), np.array(rvalue_c_initialized), np.array(
+        pvalue_c_initialized), np.array(stderrest_c_initialized)

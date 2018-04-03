@@ -233,40 +233,42 @@ class FeatureTest(unittest.TestCase):
         self.assertAlmostEqual(linear_trend_result[4][1], 0.37179469135129783, delta=self.DELTA)
 
     def test_has_duplicate_min(self):
-        has_duplicate_min_result = has_duplicate_min([[5, 4, 3, 0, 0, 1],[5, 4, 3, 0, 2, 1]])
+        has_duplicate_min_result = has_duplicate_min([[5, 4, 3, 0, 0, 1], [5, 4, 3, 0, 2, 1]])
         self.assertEqual(has_duplicate_min_result[0], True)
         self.assertEqual(has_duplicate_min_result[1], False)
 
     def test_longest_strike_above_mean(self):
         longest_strike_above_mean_result = longest_strike_above_mean([[20, 20, 20, 1, 1, 1, 20, 20, 20, 20, 1, 1, 1, 1,
-                                                                       1, 1, 1, 1, 20, 20],[20, 20, 20, 1, 1, 1, 20, 20,
-                                                                                            20, 1,  1, 1, 1, 1, 1, 1, 1,
-                                                                                            1, 20, 20]])
+                                                                       1, 1, 1, 1, 20, 20],
+                                                                      [20, 20, 20, 1, 1, 1, 20, 20,
+                                                                       20, 1, 1, 1, 1, 1, 1, 1, 1,
+                                                                       1, 20, 20]])
         self.assertEqual(longest_strike_above_mean_result[0], 4)
         self.assertEqual(longest_strike_above_mean_result[1], 3)
 
     def test_longest_strike_below_mean(self):
         longest_strike_below_mean_result = longest_strike_below_mean([[20, 20, 20, 1, 1, 1, 20, 20, 20, 20, 1, 1, 1, 1,
-                                                                       1, 1, 1, 1, 20, 20],[20, 20, 20, 1, 1, 1, 20, 20,
-                                                                                            20, 1,  1, 1, 1, 1, 1, 1, 1,
-                                                                                            1, 20, 20]])
+                                                                       1, 1, 1, 1, 20, 20],
+                                                                      [20, 20, 20, 1, 1, 1, 20, 20,
+                                                                       20, 1, 1, 1, 1, 1, 1, 1, 1,
+                                                                       1, 20, 20]])
         self.assertEqual(longest_strike_below_mean_result[0], 8)
         self.assertEqual(longest_strike_below_mean_result[1], 9)
 
     def test_maximum(self):
-        maximum_result = maximum([[20, 20, 20, 18, 25, 19, 20, 20, 20, 20, 40, 30, 1,  50, 1, 1,  5, 1, 20, 20],
-                                  [20, 20, 20, 2,  19, 1,  20, 20, 20, 1,  15, 1,  30, 1,  1, 18, 4, 1, 20, 20]])
+        maximum_result = maximum([[20, 20, 20, 18, 25, 19, 20, 20, 20, 20, 40, 30, 1, 50, 1, 1, 5, 1, 20, 20],
+                                  [20, 20, 20, 2, 19, 1, 20, 20, 20, 1, 15, 1, 30, 1, 1, 18, 4, 1, 20, 20]])
         self.assertEqual(maximum_result[0], 50)
         self.assertEqual(maximum_result[1], 30)
 
     def test_mean_absolute_change(self):
-        mean_absolute_change_result = mean_absolute_change([[0, 1, 2, 3, 4, 5],[8, 10, 12, 14, 16, 18]])
-        r = 5/6
+        mean_absolute_change_result = mean_absolute_change([[0, 1, 2, 3, 4, 5], [8, 10, 12, 14, 16, 18]])
+        r = 5 / 6
         self.assertEqual(mean_absolute_change_result[0], r)
-        self.assertEqual(mean_absolute_change_result[1], r*2)
+        self.assertEqual(mean_absolute_change_result[1], r * 2)
 
     def test_fft_coefficient(self):
-        fftCoefficient_result= fftCoefficient([[0, 1, 2, 3, 4, 5],[6, 7, 8, 9, 10, 11]],0)
+        fftCoefficient_result = fftCoefficient([[0, 1, 2, 3, 4, 5], [6, 7, 8, 9, 10, 11]], 0)
         self.assertAlmostEqual(fftCoefficient_result[0][0], 15, delta=self.DELTA)
         self.assertAlmostEqual(fftCoefficient_result[0][1], 51, delta=self.DELTA)
 
@@ -278,6 +280,75 @@ class FeatureTest(unittest.TestCase):
 
         self.assertAlmostEqual(fftCoefficient_result[3][0], 0, delta=self.DELTA)
         self.assertAlmostEqual(fftCoefficient_result[3][1], 0, delta=self.DELTA)
+
+    def test_aggregated_autocorrelation_mean(self):
+        aggregated_autocorrelation_result = aggregated_autocorrelation([[1, 2, 3, 4, 5, 6], [7, 8, 9, 10, 11, 12]], 0)
+        self.assertAlmostEqual(aggregated_autocorrelation_result[0], -0.6571428571428571, delta=self.DELTA)
+        self.assertAlmostEqual(aggregated_autocorrelation_result[1], -0.6571428571428571, delta=self.DELTA)
+
+    def test_aggregated_autocorrelation_median(self):
+        aggregated_autocorrelation_result = aggregated_autocorrelation([[1, 2, 3, 4, 5, 6], [7, 8, 9, 10, 11, 12]], 1)
+        self.assertAlmostEqual(aggregated_autocorrelation_result[0], -0.54285717010498047, delta=self.DELTA)
+        self.assertAlmostEqual(aggregated_autocorrelation_result[1], -0.54285717010498047, delta=self.DELTA)
+
+    def test_aggregated_autocorrelation_min(self):
+        aggregated_autocorrelation_result = aggregated_autocorrelation([[1, 2, 3, 4, 5, 6], [7, 8, 9, 10, 11, 12]], 2)
+        self.assertAlmostEqual(aggregated_autocorrelation_result[0], -2.142857142857143, delta=self.DELTA)
+        self.assertAlmostEqual(aggregated_autocorrelation_result[1], -2.142857142857143, delta=self.DELTA)
+
+    def test_aggregated_autocorrelation_max(self):
+        aggregated_autocorrelation_result = aggregated_autocorrelation([[1, 2, 3, 4, 5, 6], [7, 8, 9, 10, 11, 12]], 3)
+        self.assertAlmostEqual(aggregated_autocorrelation_result[0], 0.6, delta=self.DELTA)
+        self.assertAlmostEqual(aggregated_autocorrelation_result[1], 0.6, delta=self.DELTA)
+
+    def test_aggregated_autocorrelation_stdev(self):
+        aggregated_autocorrelation_result = aggregated_autocorrelation([[1, 2, 3, 4, 5, 6], [7, 8, 9, 10, 11, 12]], 4)
+        self.assertAlmostEqual(aggregated_autocorrelation_result[0], 0.9744490855905009, delta=self.DELTA)
+        self.assertAlmostEqual(aggregated_autocorrelation_result[1], 0.9744490855905009, delta=self.DELTA)
+
+    def test_aggregated_autocorrelation_var(self):
+        aggregated_autocorrelation_result = aggregated_autocorrelation([[1, 2, 3, 4, 5, 6], [7, 8, 9, 10, 11, 12]], 5)
+        self.assertAlmostEqual(aggregated_autocorrelation_result[0], 0.9495510204081633, delta=self.DELTA)
+        self.assertAlmostEqual(aggregated_autocorrelation_result[1], 0.9495510204081633, delta=self.DELTA)
+
+    def test_aggregated_linear_trend_mean(self):
+        aggregated_linear_trend_result = aggregated_linear_trend([[2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5]], 3, 0)
+        self.assertAlmostEqual(aggregated_linear_trend_result[0][0], 1, delta=self.DELTA)
+        self.assertAlmostEqual(aggregated_linear_trend_result[1][0], 2, delta=self.DELTA)
+        self.assertAlmostEqual(aggregated_linear_trend_result[2][0], 1, delta=self.DELTA)
+        self.assertAlmostEqual(aggregated_linear_trend_result[3][0], 0, delta=self.DELTA)
+        self.assertAlmostEqual(aggregated_linear_trend_result[4][0], 0, delta=self.DELTA)
+
+    def test_aggregated_linear_trend_min(self):
+        aggregated_linear_trend_result = aggregated_linear_trend([[2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5]], 3, 2)
+        self.assertAlmostEqual(aggregated_linear_trend_result[0][0], 1, delta=self.DELTA)
+        self.assertAlmostEqual(aggregated_linear_trend_result[1][0], 2, delta=self.DELTA)
+        self.assertAlmostEqual(aggregated_linear_trend_result[2][0], 1, delta=self.DELTA)
+        self.assertAlmostEqual(aggregated_linear_trend_result[3][0], 0, delta=self.DELTA)
+        self.assertAlmostEqual(aggregated_linear_trend_result[4][0], 0, delta=self.DELTA)
+
+    def test_cwt_coefficients(self):
+        cwt_coefficients_result = cwt_coefficients([[0.1, 0.2, 0.3], [0.1, 0.2, 0.3]], [[1, 2, 3]], 2, 2)
+        self.assertAlmostEqual(cwt_coefficients_result[0], 0.26517161726951599, delta=self.DELTA)
+        self.assertAlmostEqual(cwt_coefficients_result[1], 0.26517161726951599, delta=self.DELTA)
+
+    def test_mean_second_derivative_central(self):
+        mean_second_derivative_central_result = mean_second_derivative_central([[1, 3, 7, 4, 8], [2, 5, 1, 7, 4]])
+        self.assertAlmostEqual(mean_second_derivative_central_result[0], 1.0 / 5.0, delta=self.DELTA)
+        self.assertAlmostEqual(mean_second_derivative_central_result[1], -3.0 / 5.0, delta=self.DELTA)
+
+    def test_minimum(self):
+        minimum_result = minimum([[20, 20, 20, 18, 25, 19, 20, 20, 20, 20, 40, 30, 1, 50, 13, 15, 5, 16, 20, 20],
+                                  [20, 20, 20, 2, 19, 4, 20, 20, 20, 4, 15, 6, 30, 7, 9, 18, 4, 10, 20, 20]])
+        self.assertAlmostEqual(minimum_result[0], 1, delta=self.DELTA)
+        self.assertAlmostEqual(minimum_result[1], 2, delta=self.DELTA)
+
+    def test_number_crossing_m(self):
+        number_crossing_m_result = number_crossing_m([[1, 2, 1, 1, -3, -4, 7, 8, 9, 10, -2, 1, -3, 5, 6, 7, -10],
+                                                      [1, 2, 1, 1, -3, -4, 7, 8, 9, 10, -2, 1, -3, 5, 6, 7, -10]], 0)
+
+        self.assertAlmostEqual(number_crossing_m_result[0], 7, delta=self.DELTA)
+        self.assertAlmostEqual(number_crossing_m_result[1], 7, delta=self.DELTA)
 
 
 if __name__ == '__main__':
