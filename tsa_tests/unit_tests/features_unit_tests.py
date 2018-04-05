@@ -350,6 +350,29 @@ class FeatureTest(unittest.TestCase):
         self.assertAlmostEqual(number_crossing_m_result[0], 7, delta=self.DELTA)
         self.assertAlmostEqual(number_crossing_m_result[1], 7, delta=self.DELTA)
 
+    def test_mean(self):
+        mean_result = mean([[20, 20, 20, 18, 25, 19, 20, 20, 20, 20, 40, 30, 1, 50, 1, 1, 5, 1, 20, 20],
+                            [20, 20, 20, 2, 19, 1, 20, 20, 20, 1, 15, 1, 30, 1, 1, 18, 4, 1, 20, 20]])
+        self.assertAlmostEqual(mean_result[0], 18.55, delta=self.DELTA)
+        self.assertAlmostEqual(mean_result[1], 12.7, delta=self.DELTA)
+
+    def test_median(self):
+        median_result = median([[20, 20, 20, 18, 25, 19, 20, 20, 20, 20, 40, 30, 1, 50, 1, 1, 5, 1, 20, 20],
+                                [20, 20, 20, 2, 19, 1, 20, 20, 20, 1, 15, 1, 30, 1, 1, 18, 4, 1, 20, 20]])
+        self.assertAlmostEqual(median_result[0], 20, delta=self.DELTA)
+        self.assertAlmostEqual(median_result[1], 18.5, delta=self.DELTA)
+
+    def test_mean_change(self):
+        mean_change_result = mean_change([[0, 1, 2, 3, 4, 5],
+                                          [8, 10, 12, 14, 16, 18]])
+        self.assertAlmostEqual(mean_change_result[0], 5 / 6, delta=self.DELTA)
+        self.assertAlmostEqual(mean_change_result[1], 10 / 6, delta=self.DELTA)
+
+    def test_max_langevin_fixed_point(self):
+        max_langevin_fixed_point_result = max_langevin_fixed_point([[0, 1, 2, 3, 4, 5], [0, 1, 2, 3, 4, 5]], 7, 2)
+        self.assertAlmostEqual(max_langevin_fixed_point_result[0], 4.562970585, delta=1e-4)
+        self.assertAlmostEqual(max_langevin_fixed_point_result[1], 4.562970585, delta=1e-4)
+
 
 if __name__ == '__main__':
     unittest.main()
