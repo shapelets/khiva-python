@@ -1,10 +1,9 @@
-"""
-Copyright (c) 2018 Grumpy Cat Software S.L.
+# Copyright (c) 2018 Grumpy Cat Software S.L.
+#
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-This Source Code Form is subject to the terms of the Mozilla Public
-License, v. 2.0. If a copy of the MPL was not distributed with this
-file, You can obtain one at http://mozilla.org/MPL/2.0/.
-"""
 
 ########################################################################################################################
 # IMPORT
@@ -17,15 +16,13 @@ from tsa.tsa_libraries.library import TsaLibrary
 ########################################################################################################################
 
 def znorm(tss, epsilon=0.00000001):
-    """
-    Calculates a new set of timeseries with zero mean and standard deviation one.
+    """ Calculates a new set of timeseries with zero mean and standard deviation one.
 
     :param tss: Time series. It accepts a list of lists or a numpy array with one or several time series.
-    :param epsilon: Minimum standard deviation to consider.  It acts a a gatekeeper for
-    those time series that may be constant or near constant.
+    :param epsilon: Minimum standard deviation to consider.  It acts as a gatekeeper for those time series that
+           may be constant or near constant.
 
-    :return: Numpy array with the same dimensions as tss where the time series have been
-    adjusted for zero mean and one as standard deviation.
+    :return: Numpy array with the same dimensions as tss where the time series have been adjusted for zero mean and one as standard deviation.
     """
     if isinstance(tss, list):
         tss = np.array(tss)

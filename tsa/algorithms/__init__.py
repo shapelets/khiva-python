@@ -1,7 +1,9 @@
-"""
-Copyright (c) 2018 Grumpy Cat Software S.L.
+# Copyright (c) 2018 Grumpy Cat Software S.L.
+#
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-This Source Code Form is subject to the terms of the Mozilla Public
-License, v. 2.0. If a copy of the MPL was not distributed with this
-file, You can obtain one at http://mozilla.org/MPL/2.0/.
+"""
+The :mod:`tsa.algortihms` module contains methods to extract the features, lineal algebraic operations, matrix profile and normalization.
 """

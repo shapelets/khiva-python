@@ -1,10 +1,9 @@
-"""
-Copyright (c) 2018 Grumpy Cat Software S.L.
+# Copyright (c) 2018 Grumpy Cat Software S.L.
+#
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-This Source Code Form is subject to the terms of the Mozilla Public
-License, v. 2.0. If a copy of the MPL was not distributed with this
-file, You can obtain one at http://mozilla.org/MPL/2.0/.
-"""
 
 ########################################################################################################################
 # IMPORT
@@ -17,8 +16,7 @@ from tsa.tsa_libraries.library import TsaLibrary
 ########################################################################################################################
 
 def find_best_n_discords(profile, index, n):
-    """
-    This function extracts the best N motifs from a previously calculated matrix profile
+    """ This function extracts the best N motifs from a previously calculated matrix profile
 
     :param profile: The matrix profile containing the minimum distance of each subsequence
     :param index: The matrix profile index containing where each minimum occurs
@@ -57,8 +55,7 @@ def find_best_n_discords(profile, index, n):
 
 
 def find_best_n_motifs(profile, index, n):
-    """
-    This function extracts the best N discords from a previously calculated matrix profile.
+    """ This function extracts the best N discords from a previously calculated matrix profile.
 
     :param profile: The matrix profile containing the minimum distance of each subsequence
     :param index: The matrix profile index containing where each minimum occurs
@@ -97,15 +94,12 @@ def find_best_n_motifs(profile, index, n):
 
 
 def stomp(first_time_series, second_time_series, subsequence_length):
-    """
-    STOMP algorithm to calculate the matrix profile between 'ta' and 'tb' using a subsequence length
-          of 'm'.
+    """ Stomp algorithm to calculate the matrix profile between `ta` and `tb` using a subsequence length of `m`.
 
-    :param first_time_series: First time series. It accepts a list of lists or a numpy array with one or
-    several time series.
-    :param second_time_series: Second time series. It accepts a list of lists or a numpy array with one or
-    several time series.
-    or a numpy array with the several time series in ndarray format.
+    :param first_time_series: First time series. It accepts a list of lists or a numpy array with one or several
+            time series.
+    :param second_time_series: Second time series. It accepts a list of lists or a numpy array with one or several
+            time series.
     :param subsequence_length: Length of the subsequence.
     :return: Matrix profile in dictionary format.
     """
@@ -141,12 +135,11 @@ def stomp(first_time_series, second_time_series, subsequence_length):
 
 
 def stomp_self_join(time_series, subsequence_length):
-    """
-    STOMP algorithm to calculate the matrix profile between 't' and itself using a subsequence length
-          of 'm'. This method filters the trivial matches.
+    """ Stomp algorithm to calculate the matrix profile between `t` and itself using a subsequence length of `m`.
+    This method filters the trivial matches.
 
-    :param time_series: The query and reference time series. It accepts a list of lists or a numpy array with
-    one or several time series.
+    :param time_series: The query and reference time series. It accepts a list of lists or a numpy array with one
+            or several time series.
     :param subsequence_length: Lenght of the subsequence
     :return: Matrix profile in dictionary format.
     """

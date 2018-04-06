@@ -1,10 +1,9 @@
-"""
-Copyright (c) 2018 Grumpy Cat Software S.L.
+# Copyright (c) 2018 Grumpy Cat Software S.L.
+#
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-This Source Code Form is subject to the terms of the Mozilla Public
-License, v. 2.0. If a copy of the MPL was not distributed with this
-file, You can obtain one at http://mozilla.org/MPL/2.0/.
-"""
 
 ########################################################################################################################
 # IMPORT
@@ -50,15 +49,13 @@ class TSABackend(Enum):
 
 
 def info():
-    """
-    Get the devices info.
+    """ Get the devices info.
     """
     TsaLibrary().c_tsa_library.info()
 
 
 def set_backend(backend):
-    """
-    Set the TSABackend.
+    """ Set the TSABackend.
 
     :param backend: The desired backend. TSABackend type.
     """
@@ -66,8 +63,7 @@ def set_backend(backend):
 
 
 def get_backend():
-    """
-    Get the active backend.
+    """ Get the active backend.
 
     :return The active backend. TSABackend type.
 
@@ -80,8 +76,7 @@ def get_backend():
 
 
 def get_backends():
-    """
-    Get the available backends.
+    """ Get the available backends.
 
     :return The available backends.
     """
@@ -91,8 +86,7 @@ def get_backends():
 
 
 def set_device(device):
-    """
-    Set the device.
+    """ Set the device.
 
     :param device: The desired device.
     """
@@ -100,8 +94,7 @@ def set_device(device):
 
 
 def get_device_id():
-    """
-    Get the active device.
+    """ Get the active device.
 
     :return The active device.
     """
@@ -111,8 +104,7 @@ def get_device_id():
 
 
 def get_device_count():
-    """
-    Get the devices count.
+    """ Get the devices count.
 
     :return The devices count.
     """

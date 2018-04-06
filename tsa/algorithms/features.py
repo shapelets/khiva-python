@@ -1,10 +1,8 @@
-"""
-Copyright (c) 2018 Grumpy Cat Software S.L.
-
-This Source Code Form is subject to the terms of the Mozilla Public
-License, v. 2.0. If a copy of the MPL was not distributed with this
-file, You can obtain one at http://mozilla.org/MPL/2.0/.
-"""
+# Copyright (c) 2018 Grumpy Cat Software S.L.
+#
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 ########################################################################################################################
 # IMPORT
@@ -13,12 +11,10 @@ import ctypes
 import numpy as np
 from tsa.tsa_libraries.library import TsaLibrary
 
-
 ########################################################################################################################
 
 def abs_energy(time_series):
-    """
-    Calculates the sum over the square values of the time series
+    """ Calculates the sum over the square values of the time series
 
     :param time_series: Time series. It accepts a list of lists or a numpy array with one or several time series.
     :return: Numpy array with the absEnergy.
@@ -46,8 +42,7 @@ def abs_energy(time_series):
 
 
 def absolute_sum_of_changes(time_series):
-    """
-    Calculates the value of an aggregation function f_agg (e.g. var or mean) of the autocorrelation
+    """ Calculates the value of an aggregation function f_agg (e.g. var or mean) of the autocorrelation
     (Compare to http://en.wikipedia.org/wiki/Autocorrelation#Estimation), taken over different all possible
     lags (1 to length of x)
 
@@ -77,22 +72,20 @@ def absolute_sum_of_changes(time_series):
 
 
 def aggregated_autocorrelation(tss, aggregation_function):
-    """
-    Calculates a linear least-squares regression for values of the time series that were aggregated
+    """ Calculates a linear least-squares regression for values of the time series that were aggregated
     over chunks versus the sequence from 0 up to the number of chunks minus one.
 
     :param tss: Time series. It accepts a list of lists or a numpy array with one or several time series.
-    :param aggregation_function: Function to be used in the aggregation. It receives an integer which indicates the
-    function to be applied:
-              {
-                  0 : mean,
-                  1 : median
-                  2 : min,
-                  3 : max,
-                  4 : stdev,
-                  5 : var,
-                  default : mean
-              }
+    :param aggregation_function: Function to be used in the aggregation. It receives an integer which indicates
+                                the function to be applied.
+                                0 : mean,
+                                1 : median
+                                2 : min,
+                                3 : max,
+                                4 : stdev,
+                                5 : var,
+                                default : mean
+
     :return: A numpy array whose values contains the aggregated correlation for each time series.
     """
     if isinstance(tss, list):
@@ -115,28 +108,24 @@ def aggregated_autocorrelation(tss, aggregation_function):
 
 
 def aggregated_linear_trend(tss, chunk_size, aggregation_function):
-    """
-    Calculates a linear least-squares regression for values of the time series that were aggregated
+    """ Calculates a linear least-squares regression for values of the time series that were aggregated
     over chunks versus the sequence from 0 up to the number of chunks minus one.
 
     :param tss: Time series. It accepts a list of lists or a numpy array with one or several time series.
     :param chunk_size: The chunk size used to aggregate the data.
-    :param aggregation_function: Function to be used in the aggregation. It receives an integer which indicates the
-    function to be applied:
-              {
-                  0 : mean,
-                  1 : median
-                  2 : min,
-                  3 : max,
-                  4 : stdev,
-                  default : mean
-              }
+    :param aggregation_function: Function to be used in the aggregation. It receives an integer which indicates the function to be applied:
+                                  0 : mean,
+                                  1 : median
+                                  2 : min,
+                                  3 : max,
+                                  4 : stdev,
+                                  default : mean
     :return: a tuple with:
-        pvalue: The pvalues for all time series.
-        rvalue: The rvalues for all time series.
-        intercept: The intercept values for all time series.
-        slope: The slope for all time series.
-        stdrr: The stderr values for all time series.
+            pvalue: The pvalues for all time series.
+            rvalue: The rvalues for all time series.
+            intercept: The intercept values for all time series.
+            slope: The slope for all time series.
+            stdrr: The stderr values for all time series.
     """
     if isinstance(tss, list):
         tss = np.array(tss)
@@ -172,8 +161,7 @@ def aggregated_linear_trend(tss, chunk_size, aggregation_function):
 
 
 def approximate_entropy(tss, m, r):
-    """
-    Calculates a vectorized Approximate entropy algorithm.
+    """ Calculates a vectorized Approximate entropy algorithm.
     https://en.wikipedia.org/wiki/Approximate_entropy
     For short time-series this method is highly dependent on the parameters, but should be stable for N > 2000,
     see: Yentes et al. (2012) - The Appropriate Use of Approximate Entropy and Sample Entropy with Short Data Sets
@@ -210,8 +198,7 @@ def approximate_entropy(tss, m, r):
 
 
 def cross_covariance(xss, yss, unbiased):
-    """
-    Calculates the cross-covariance of the given time series.
+    """ Calculates the cross-covariance of the given time series.
 
     :param xss: Time series. It accepts a list of lists or a numpy array with one or several time series.
     :param yss: Time series. It accepts a list of lists or a numpy array with one or several time series.
@@ -250,8 +237,7 @@ def cross_covariance(xss, yss, unbiased):
 
 
 def auto_covariance(xss, unbiased):
-    """
-    Calculates the auto-covariance the given time series.
+    """ Calculates the auto-covariance the given time series.
 
     :param xss: Time series. It accepts a list of lists or a numpy array with one or several time series.
     :param unbiased: Determines whether it divides by n - lag (if true) or n (if false).
@@ -278,9 +264,7 @@ def auto_covariance(xss, unbiased):
 
 
 def cross_correlation(xss, yss, unbiased):
-    """
-    Calculates the cross-correlation of the given time series.
-
+    """ Calculates the cross-correlation of the given time series.
 
     :param xss: Time series. It accepts a list of lists or a numpy array with one or several time series.
     :param yss: Time series. It accepts a list of lists or a numpy array with one or several time series.
@@ -319,8 +303,7 @@ def cross_correlation(xss, yss, unbiased):
 
 
 def auto_correlation(tss, max_lag, unbiased):
-    """
-    Calculates the autocorrelation of the specified lag for the given time series.
+    """ Calculates the autocorrelation of the specified lag for the given time series.
 
     :param tss: Time series. It accepts a list of lists or a numpy array with one or several time series.
     :param max_lag: The maximum lag to compute.
@@ -349,8 +332,7 @@ def auto_correlation(tss, max_lag, unbiased):
 
 
 def binned_entropy(tss, max_bins):
-    """
-    Calculates the binned entropy for the given time series and number of bins.
+    """ Calculates the binned entropy for the given time series and number of bins.
 
     :param tss: Time series. It accepts a list of lists or a numpy array with one or several time series.
     :param max_bins: The number of bins.
@@ -375,8 +357,7 @@ def binned_entropy(tss, max_bins):
 
 
 def c3(tss, lag):
-    """
-    Calculates the Schreiber, T. and Schmitz, A. (1997) measure of non-linearity
+    """ Calculates the Schreiber, T. and Schmitz, A. (1997) measure of non-linearity
     for the given time series
 
     :param tss: Time series. It accepts a list of lists or a numpy array with one or several time series.
@@ -404,8 +385,7 @@ def c3(tss, lag):
 
 
 def cid_ce(tss, z_normalize):
-    """
-    Calculates an estimate for the time series complexity defined by
+    """ Calculates an estimate for the time series complexity defined by
     Batista, Gustavo EAPA, et al (2014). (A more complex time series has more peaks,
     valleys, etc.)
 
@@ -434,8 +414,7 @@ def cid_ce(tss, z_normalize):
 
 
 def count_above_mean(tss):
-    """
-    Calculates the number of values in the time series that are higher than
+    """ Calculates the number of values in the time series that are higher than
     the mean.
 
     :param tss: Time series. It accepts a list of lists or a numpy array with one or several time series.
@@ -459,8 +438,7 @@ def count_above_mean(tss):
 
 
 def count_below_mean(tss):
-    """
-    Calculates the number of values in the time series that are lower than
+    """ Calculates the number of values in the time series that are lower than
     the mean.
 
     :param tss: Time series. It accepts a list of lists or a numpy array with one or several time series.
@@ -484,8 +462,7 @@ def count_below_mean(tss):
 
 
 def cwt_coefficients(tss, widths, coeff, w):
-    """
-    Calculates a Continuous wavelet transform for the Ricker wavelet, also known as
+    """ Calculates a Continuous wavelet transform for the Ricker wavelet, also known as
     the "Mexican hat wavelet".
 
     :param tss: Time series. It accepts a list of lists or a numpy array with one or several time series.
@@ -527,10 +504,10 @@ def cwt_coefficients(tss, widths, coeff, w):
 
 
 def energy_ratio_by_chunks(tss, num_segments, segment_focus):
-    """
-    Calculates the sum of squares of chunk i out of N chunks expressed as a ratio
+    """ Calculates the sum of squares of chunk i out of N chunks expressed as a ratio
     with the sum of squares over the whole series. segmentFocus should be lower
     than the number of segments.
+
     :param tss: Time series. It accepts a list of lists or a numpy array with one or several time series.
     :param num_segments: The number of segments to divide the series into.
     :param segment_focus: The segment number (starting at zero) to return a feature on.
@@ -559,8 +536,7 @@ def energy_ratio_by_chunks(tss, num_segments, segment_focus):
 
 
 def fftCoefficient(tss, coefficient):
-    """
-    Calculates the fourier coefficients of the one-dimensional discrete
+    """ Calculates the fourier coefficients of the one-dimensional discrete
     Fourier Transform for real input by fast fourier transformation algorithm.
 
     :param tss: Time series. It accepts a list of lists or a numpy array with one or several time series.
@@ -609,12 +585,10 @@ def fftCoefficient(tss, coefficient):
 
 
 def first_location_of_maximum(tss):
-    """
-    Calculates the first relative location of the maximal value for each time series.
+    """ Calculates the first relative location of the maximal value for each time series.
 
     :param tss: Time series. It accepts a list of lists or a numpy array with one or several time series.
-    :return: The first relative location of the maximum value to the length of the time series,
-    for each time series.
+    :return: The first relative location of the maximum value to the length of the time series, for each time series.
     """
     if isinstance(tss, list):
         tss = np.array(tss)
@@ -634,9 +608,8 @@ def first_location_of_maximum(tss):
 
 
 def first_location_of_minimum(tss):
-    """
-    Calculates the first location of the minimal value of each time series. The position
-    is calculated relatively to the length of the series.
+    """ Calculates the first location of the minimal value of each time series. The position is calculated relatively
+    to the length of the series.
 
     :param tss: Time series. It accepts a list of lists or a numpy array with one or several time series.
     :return: The first relative location of the minimal value of each series.
@@ -659,8 +632,7 @@ def first_location_of_minimum(tss):
 
 
 def has_duplicates(tss):
-    """
-    Calculates if the input time series contain duplicated elements.
+    """ Calculates if the input time series contain duplicated elements.
 
     :param tss: Time series. It accepts a list of lists or a numpy array with one or several time series.
     :return: Array containing True if the time series contains duplicated elements
@@ -683,12 +655,10 @@ def has_duplicates(tss):
 
 
 def has_duplicate_max(tss):
-    """
-    Calculates if the maximum within input time series is duplicated.
+    """ Calculates if the maximum within input time series is duplicated.
 
     :param tss: Time series. It accepts a list of lists or a numpy array with one or several time series.
-    :return: Array containing True if the maximum value of the time series is duplicated
-    and false otherwise.
+    :return: Array containing True if the maximum value of the time series is duplicated and false otherwise.
     """
     if isinstance(tss, list):
         tss = np.array(tss)
@@ -708,12 +678,10 @@ def has_duplicate_max(tss):
 
 
 def has_duplicate_min(tss):
-    """
-    Calculates if the minimum of the input time series is duplicated.
+    """ Calculates if the minimum of the input time series is duplicated.
 
     :param tss: Time series. It accepts a list of lists or a numpy array with one or several time series.
-    :return: Array containing True if the minimum of the time series is duplicated
-    and False otherwise.
+    :return: Array containing True if the minimum of the time series is duplicated and False otherwise.
     """
     if isinstance(tss, list):
         tss = np.array(tss)
@@ -734,8 +702,7 @@ def has_duplicate_min(tss):
 
 
 def index_max_quantile(tss, q):
-    """
-    Calculates the index of the max quantile.
+    """ Calculates the index of the max quantile.
 
     :param tss: Time series. It accepts a list of lists or a numpy array with one or several time series.
     :param q: The quantile.
@@ -760,8 +727,7 @@ def index_max_quantile(tss, q):
 
 
 def kurtosis(tss):
-    """
-    @brief Returns the kurtosis of tss (calculated with the adjusted Fisher-Pearson
+    """ Returns the kurtosis of tss (calculated with the adjusted Fisher-Pearson
     standardized moment coefficient G2).
 
     :param tss: Time series. It accepts a list of lists or a numpy array with one or several time series.
@@ -785,8 +751,7 @@ def kurtosis(tss):
 
 
 def large_standard_deviation(tss, r):
-    """
-    Checks if the time series within tss have a large standard deviation.
+    """ Checks if the time series within tss have a large standard deviation.
 
     :param tss: Time series. It accepts a list of lists or a numpy array with one or several time series.
     :param r: The threshold.
@@ -811,8 +776,7 @@ def large_standard_deviation(tss, r):
 
 
 def last_location_of_maximum(tss):
-    """
-    Calculates the last location of the maximum value of each time series. The position
+    """ Calculates the last location of the maximum value of each time series. The position
     is calculated relatively to the length of the series.
 
     :param tss: Time series. It accepts a list of lists or a numpy array with one or several time series.
@@ -836,8 +800,7 @@ def last_location_of_maximum(tss):
 
 
 def last_location_of_minimum(tss):
-    """
-    Calculates the last location of the minimum value of each time series. The position
+    """ Calculates the last location of the minimum value of each time series. The position
     is calculated relatively to the length of the series.
 
     :param tss: Time series. It accepts a list of lists or a numpy array with one or several time series.
@@ -861,8 +824,7 @@ def last_location_of_minimum(tss):
 
 
 def length(tss):
-    """
-    Returns the length of the input time series.
+    """ Returns the length of the input time series.
 
     :param tss: Time series. It accepts a list of lists or a numpy array with one or several time series.
     :return: The length of tss.
@@ -885,17 +847,16 @@ def length(tss):
 
 
 def linear_trend(tss):
-    """
-    Calculate a linear least-squares regression for the values of the time series versus the sequence from 0 to
+    """ Calculate a linear least-squares regression for the values of the time series versus the sequence from 0 to
     length of the time series minus one.
 
     :param tss: Time series. It accepts a list of lists or a numpy array with one or several time series.
     :return  a tuple with:
-        pvalue: The pvalues for all time series.
-        rvalue: The rvalues for all time series.
-        intercept: The intercept values for all time series.
-        slope: The slope for all time series.
-        stdrr: The stderr values for all time series.
+            pvalue: The pvalues for all time series.
+            rvalue: The rvalues for all time series.
+            intercept: The intercept values for all time series.
+            slope: The slope for all time series.
+            stdrr: The stderr values for all time series.
     """
     if isinstance(tss, list):
         tss = np.array(tss)
@@ -936,8 +897,7 @@ def linear_trend(tss):
 
 
 def longest_strike_above_mean(tss):
-    """
-    Calculates the length of the longest consecutive subsequence in tss that is bigger than the mean of tss.
+    """ Calculates the length of the longest consecutive subsequence in tss that is bigger than the mean of tss.
 
     :param tss: Time series. It accepts a list of lists or a numpy array with one or several time series.
     :return: The length of the longest consecutive subsequence in the input time series that is bigger than the mean.
@@ -961,8 +921,7 @@ def longest_strike_above_mean(tss):
 
 
 def longest_strike_below_mean(tss):
-    """
-    Calculates the length of the longest consecutive subsequence in tss that is below the mean of tss.
+    """ Calculates the length of the longest consecutive subsequence in tss that is below the mean of tss.
 
     :param tss: Time series. It accepts a list of lists or a numpy array with one or several time series.
     :return: The length of the longest consecutive subsequence in the input time series that is below the mean.
@@ -986,16 +945,18 @@ def longest_strike_below_mean(tss):
 
 
 def max_langevin_fixed_point(tss, m, r):
-    """
-    Largest fixed point of dynamics \f$\max_x {h(x)=0}\f$ estimated from polynomial
-    \f$h(x)\f$, which has been fitted to the deterministic dynamics of Langevin model
-    \f[
-       \dot(x)(t) = h(x(t)) + R \mathcal(N)(0,1)
-    \f]
-    as described by
-    Friedrich et al. (2000): Physics Letters A 271, p. 217-222 *Extracting model equations from experimental data.
-    :param tss: Time series. It accepts a list of lists or a numpy array with one or several time series.
+    """ Largest fixed point of dynamics  :math:`argmax_x {h(x)=0}` estimated from polynomial :math:`h(x)`,
+    which has been fitted to the deterministic dynamics of Langevin model
 
+    .. math::
+        \dot(x)(t) = h(x(t)) + R \mathcal(N)(0,1)
+
+    as described by
+
+        Friedrich et al. (2000): Physics Letters A 271, p. 217-222
+        *Extracting model equations from experimental data*
+
+    :param tss: Time series. It accepts a list of lists or a numpy array with one or several time series.
     :param m: Order of polynom to fit for estimating fixed points of dynamics.
     :param r: Number of quantiles to use for averaging.
     :return: Largest fixed point of deterministic dynamics.
@@ -1021,8 +982,7 @@ def max_langevin_fixed_point(tss, m, r):
 
 
 def maximum(tss):
-    """
-    Calculates the maximum value for each time series within tss.
+    """ Calculates the maximum value for each time series within tss.
 
     :param tss: Time series. It accepts a list of lists or a numpy array with one or several time series.
     :return: The maximum value of each time series within tss.
@@ -1046,8 +1006,7 @@ def maximum(tss):
 
 
 def mean(tss):
-    """
-    Calculates the mean value for each time series within tss.
+    """ Calculates the mean value for each time series within tss.
 
     :param tss: Time series. It accepts a list of lists or a numpy array with one or several time series.
     :return: The mean value of each time series within tss.
@@ -1070,8 +1029,7 @@ def mean(tss):
 
 
 def mean_absolute_change(tss):
-    """
-    Calculates the mean over the absolute differences between subsequent time series values in tss.
+    """ Calculates the mean over the absolute differences between subsequent time series values in tss.
 
     :param tss: Time series. It accepts a list of lists or a numpy array with one or several time series.
     :return: The mean over the absolute differences between subsequent time series values.
@@ -1095,8 +1053,7 @@ def mean_absolute_change(tss):
 
 
 def mean_change(tss):
-    """
-    Calculates the mean over the differences between subsequent time series values in tss.
+    """ Calculates the mean over the differences between subsequent time series values in tss.
 
     :param tss: Time series. It accepts a list of lists or a numpy array with one or several time series.
     :return: The mean over the differences between subsequent time series values.
@@ -1119,8 +1076,7 @@ def mean_change(tss):
 
 
 def mean_second_derivative_central(tss):
-    """
-    Calculates mean value of a central approximation of the second derivative for each time series in tss.
+    """ Calculates mean value of a central approximation of the second derivative for each time series in tss.
 
     :param tss: Time series. It accepts a list of lists or a numpy array with one or several time series.
     :return: The mean value of a central approximation of the second derivative for each time series.
@@ -1145,8 +1101,7 @@ def mean_second_derivative_central(tss):
 
 
 def median(tss):
-    """
-    Calculates the median value for each time series within tss.
+    """ Calculates the median value for each time series within tss.
 
     :param tss: Time series. It accepts a list of lists or a numpy array with one or several time series.
     :return: The median value of each time series within tss.
@@ -1169,8 +1124,7 @@ def median(tss):
 
 
 def minimum(tss):
-    """
-    Calculates the minimum value for each time series within tss.
+    """ Calculates the minimum value for each time series within tss.
 
     :param tss: Time series. It accepts a list of lists or a numpy array with one or several time series.
     :return: The minimum value of each time series within tss.
@@ -1195,8 +1149,7 @@ def minimum(tss):
 
 
 def number_crossing_m(tss, m):
-    """
-    Calculates the number of m-crossings. A m-crossing is defined as two sequential values where the first
+    """ Calculates the number of m-crossings. A m-crossing is defined as two sequential values where the first
     value is lower than m and the next is greater, or viceversa. If you set m to zero, you will get the number of
     zero crossings.
 
