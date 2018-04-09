@@ -372,6 +372,40 @@ class FeatureTest(unittest.TestCase):
         self.assertAlmostEqual(max_langevin_fixed_point_result[0], 4.562970585, delta=1e-4)
         self.assertAlmostEqual(max_langevin_fixed_point_result[1], 4.562970585, delta=1e-4)
 
+    def test_fft_aggregated(self):
+        fft_aggregated_result = fft_aggregated([[0, 1, 2, 3, 4, 5, 6, 7, 8, 9], [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]])
+        self.assertAlmostEqual(fft_aggregated_result[0], 1.135143, delta=1e-4)
+        self.assertAlmostEqual(fft_aggregated_result[1], 2.368324, delta=1e-4)
+        self.assertAlmostEqual(fft_aggregated_result[2], 1.248777, delta=1e-4)
+        self.assertAlmostEqual(fft_aggregated_result[3], 3.642666, delta=1e-4)
+
+        self.assertAlmostEqual(fft_aggregated_result[4], 1.135143, delta=1e-4)
+        self.assertAlmostEqual(fft_aggregated_result[5], 2.368324, delta=1e-4)
+        self.assertAlmostEqual(fft_aggregated_result[6], 1.248777, delta=1e-4)
+        self.assertAlmostEqual(fft_aggregated_result[7], 3.642666, delta=1e-4)
+
+    def test_number_peaks(self):
+        result = number_peaks([[3, 0, 0, 4, 0, 0, 13], [3, 0, 0, 4, 0, 0, 13]], 2)
+        self.assertAlmostEqual(result[0], 1, delta=1e-4)
+        self.assertAlmostEqual(result[1], 1, delta=1e-4)
+
+    def test_percentage_of_reocurring_datapoints_to_all_datapoints(self):
+        result = percentage_of_reoccurring_datapoints_to_all_datapoints(
+            [[3, 0, 0, 4, 0, 0, 13], [3, 0, 0, 4, 0, 0, 13]], False)
+        self.assertAlmostEqual(result[0], 0.25, delta=1e-4)
+        self.assertAlmostEqual(result[1], 0.25, delta=1e-4)
+
+    def test_quantile(self):
+
+        result = quantile([[0, 0, 0, 0, 3, 4, 13], [0, 0, 0, 0, 3, 4, 13]], [0.6])
+        self.assertAlmostEqual(result[0], 1.79999999, delta=1e-4)
+        self.assertAlmostEqual(result[1], 1.79999999, delta=1e-4)
+
+    def test_ratio_beyond_r_sigma(self):
+        result = ratio_beyond_r_sigma([[3, 0, 0, 4, 0, 0, 13], [3, 0, 0, 4, 0, 0, 13]], 0.5)
+        self.assertAlmostEqual(result[0], 0.7142857142857143, delta=1e-4)
+        self.assertAlmostEqual(result[1], 0.7142857142857143, delta=1e-4)
+
 
 if __name__ == '__main__':
     unittest.main()

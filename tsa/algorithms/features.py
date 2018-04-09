@@ -11,6 +11,7 @@ import ctypes
 import numpy as np
 from tsa.tsa_libraries.library import TsaLibrary
 
+
 ########################################################################################################################
 
 def abs_energy(time_series):
@@ -531,6 +532,31 @@ def energy_ratio_by_chunks(tss, num_segments, segment_focus):
 
                                                       ctypes.pointer(segment_focus_c),
                                                       ctypes.pointer(result_c_initialized))
+
+    return np.array(result_c_initialized)
+
+
+def fft_aggregated(tss):
+    """ Calculates the spectral centroid(mean), variance, skew, and kurtosis of the absolute fourier transform
+    spectrum.
+
+    :param tss: Time series. It accepts a list of lists or a numpy array with one or several time series.
+    :return: The spectral centroid (mean), variance, skew, and kurtosis of the absolute fourier transform
+    spectrum.
+    """
+    if isinstance(tss, list):
+        tss = np.array(tss)
+    tss_n = len(tss)
+    tss_l = len(tss[0])
+    tss_c_number_of_ts = ctypes.c_long(tss_n)
+    tss_c_length = ctypes.c_long(tss_l)
+    tss_joint = np.concatenate(tss, axis=0)
+    tss_c_joint = (ctypes.c_double * len(tss_joint))(*tss_joint)
+
+    result_initialized = np.zeros((tss_n * tss_l)).astype(np.double)
+    result_c_initialized = (ctypes.c_double * (tss_n * tss_l))(*result_initialized)
+    TsaLibrary().c_tsa_library.fft_aggregated(ctypes.pointer(tss_c_joint), ctypes.pointer(tss_c_length),
+                                              ctypes.pointer(tss_c_number_of_ts), ctypes.pointer(result_c_initialized))
 
     return np.array(result_c_initialized)
 
@@ -1172,5 +1198,130 @@ def number_crossing_m(tss, m):
                                                  ctypes.pointer(tss_c_length), ctypes.pointer(tss_c_number_of_ts),
                                                  ctypes.pointer(ctypes.c_int(m)),
                                                  ctypes.pointer(result_c_initialized))
+
+    return np.array(result_c_initialized)
+
+
+def number_peaks(tss, n):
+    """Calculates the number of peaks of at least support :math: `n` in the time series :math: `tss`. A peak of support
+    :math: `n` is defined as a subsequence of :math: `tss where a value occurs, which is bigger than
+    its :math: `n` neighbours to the left and to the right.
+
+    :param tss: Time series. It accepts a list of lists or a numpy array with one or several time series.
+    :param n: The support of the peak.
+    :return: The number of peaks of at least support :math: `n`.
+    """
+    if isinstance(tss, list):
+        tss = np.array(tss)
+    tss_n = len(tss)
+    tss_l = len(tss[0])
+    tss_c_number_of_ts = ctypes.c_long(tss_n)
+    tss_c_length = ctypes.c_long(tss_l)
+    tss_joint = np.concatenate(tss, axis=0)
+    tss_c_joint = (ctypes.c_double * len(tss_joint))(*tss_joint)
+
+    result_initialized = np.zeros((tss_n)).astype(np.double)
+    result_c_initialized = (ctypes.c_double * tss_n)(*result_initialized)
+    TsaLibrary().c_tsa_library.number_peaks(ctypes.pointer(tss_c_joint), ctypes.pointer(tss_c_length),
+                                            ctypes.pointer(tss_c_number_of_ts), ctypes.pointer(ctypes.c_int(n)),
+                                            ctypes.pointer(result_c_initialized))
+
+    return np.array(result_c_initialized)
+
+
+def percentage_of_reoccurring_datapoints_to_all_datapoints(tss, is_sorted):
+    """Calculates the percentage of unique values, that are present in the time series more than once.
+
+    .. math::
+
+        len(different values occurring more than once) / len(different values)
+
+    This means the percentage is normalized to the number of unique values, in contrast to the
+    percentageOfReoccurringValuesToAllValues.
+
+    :param tss: Time series. It accepts a list of lists or a numpy array with one or several time series.
+    :param is_sorted: Indicates if the input time series is sorted or not. Defaults to false.
+    :return: Returns the percentage of unique values, that are present in the time series more than once.
+    """
+
+    if isinstance(tss, list):
+        tss = np.array(tss)
+    tss_n = len(tss)
+    tss_l = len(tss[0])
+    tss_c_number_of_ts = ctypes.c_long(tss_n)
+    tss_c_length = ctypes.c_long(tss_l)
+    tss_joint = np.concatenate(tss, axis=0)
+    tss_c_joint = (ctypes.c_double * len(tss_joint))(*tss_joint)
+
+    result_initialized = np.zeros((tss_n)).astype(np.double)
+    result_c_initialized = (ctypes.c_double * tss_n)(*result_initialized)
+    TsaLibrary().c_tsa_library.percentage_of_reoccurring_datapoints_to_all_datapoints(ctypes.pointer(tss_c_joint),
+                                                                                      ctypes.pointer(tss_c_length),
+                                                                                      ctypes.pointer(
+                                                                                          tss_c_number_of_ts),
+                                                                                      ctypes.pointer(
+                                                                                          ctypes.c_bool(is_sorted)),
+                                                                                      ctypes.pointer(
+                                                                                          result_c_initialized))
+
+    return np.array(result_c_initialized)
+
+
+def quantile(tss, q, precision=1e8):
+    """Returns values at the given quantile.
+
+    :param tss: Time series. It accepts a list of lists or a numpy array with one or several time series.
+    :param q: Percentile(s) at which to extract score(s). One or many.
+    :param precision: Number of decimals expected.
+    :return: Values at the given quantile.
+    """
+    if isinstance(tss, list):
+        tss = np.array(tss)
+    tss_n = len(tss)
+    tss_l = len(tss[0])
+    tss_c_number_of_ts = ctypes.c_long(tss_n)
+    tss_c_length = ctypes.c_long(tss_l)
+    tss_joint = np.concatenate(tss, axis=0)
+    tss_c_joint = (ctypes.c_double * len(tss_joint))(*tss_joint)
+    if isinstance(q, list):
+        q = np.array(q)
+    q_l = len(q)
+    q_c_length = ctypes.c_long(q_l)
+    q_c = (ctypes.c_double * len(q))(*q)
+
+    result_initialized = np.zeros((tss_n)).astype(np.double)
+    result_c_initialized = (ctypes.c_double * tss_n)(*result_initialized)
+    TsaLibrary().c_tsa_library.quantile(ctypes.pointer(tss_c_joint), ctypes.pointer(tss_c_length),
+                                        ctypes.pointer(tss_c_number_of_ts), ctypes.pointer(q_c),
+                                        ctypes.pointer(q_c_length), ctypes.pointer(ctypes.c_double(precision)),
+                                        ctypes.pointer(result_c_initialized))
+
+    return np.array(result_c_initialized)
+
+
+def ratio_beyond_r_sigma(tss, r):
+    """ Calculates the ratio of values that are more than :math: `r*std(x)` (so :math: `r` sigma) away from the mean of
+    :math: `x`.
+
+    :param tss: Time series. It accepts a list of lists or a numpy array with one or several time series.
+    :param r: Number of times that the values should be away from.
+    :return: The ratio of values that are more than :math: `r*std(x)` (so :math: `r` sigma) away from the mean of
+    :math: `x`.
+    """
+    if isinstance(tss, list):
+        tss = np.array(tss)
+    tss_n = len(tss)
+    tss_l = len(tss[0])
+    tss_c_number_of_ts = ctypes.c_long(tss_n)
+    tss_c_length = ctypes.c_long(tss_l)
+    tss_joint = np.concatenate(tss, axis=0)
+    tss_c_joint = (ctypes.c_double * len(tss_joint))(*tss_joint)
+
+    result_initialized = np.zeros((tss_n)).astype(np.double)
+    result_c_initialized = (ctypes.c_double * tss_n)(*result_initialized)
+    TsaLibrary().c_tsa_library.ratio_beyond_r_sigma(ctypes.pointer(tss_c_joint), ctypes.pointer(tss_c_length),
+                                                    ctypes.pointer(tss_c_number_of_ts),
+                                                    ctypes.pointer(ctypes.c_double(r)),
+                                                    ctypes.pointer(result_c_initialized))
 
     return np.array(result_c_initialized)

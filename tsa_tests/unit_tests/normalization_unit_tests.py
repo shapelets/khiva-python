@@ -27,6 +27,19 @@ class NormalizationTest(unittest.TestCase):
             self.assertAlmostEqual(znorm_result[i], expected[i])
             self.assertAlmostEqual(znorm_result[i + 4], expected[i])
 
+    def test_znorm_in_place(self):
+        tss = [[0, 1, 2, 3], [4, 5, 6, 7]]
+        tss = znorm_in_place(tss)
+        self.assertAlmostEqual(tss[0][0], -1.341640786499870, delta=self.DELTA)
+        self.assertAlmostEqual(tss[0][1], -0.447213595499958, delta=self.DELTA)
+        self.assertAlmostEqual(tss[0][2], 0.447213595499958, delta=self.DELTA)
+        self.assertAlmostEqual(tss[0][3], 1.341640786499870, delta=self.DELTA)
+
+        self.assertAlmostEqual(tss[1][0], -1.341640786499870, delta=self.DELTA)
+        self.assertAlmostEqual(tss[1][1], -0.447213595499958, delta=self.DELTA)
+        self.assertAlmostEqual(tss[1][2], 0.447213595499958, delta=self.DELTA)
+        self.assertAlmostEqual(tss[1][3], 1.341640786499870, delta=self.DELTA)
+
 
 if __name__ == '__main__':
     unittest.main()
