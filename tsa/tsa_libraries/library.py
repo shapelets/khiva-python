@@ -21,11 +21,11 @@ class TsaLibrary(object):
     class __TsaLibrary:
         def __init__(self):
             if platform.system() == 'Darwin':
-                self.c_tsa_library = ctypes.CDLL(os.path.join(tsa.tsa_libraries.__path__[0], 'libtsa_c.dylib'))
+                self.c_tsa_library = ctypes.CDLL('libtsa_c.dylib')
             if platform.system() == 'Windows':
-                self.c_tsa_library = ctypes.CDLL(os.path.join(tsa.tsa_libraries.__path__[0], 'libtsa_c.dll'))
+                self.c_tsa_library = ctypes.CDLL('libtsa_c.dll')
             if platform.system() == 'Linux':
-                self.c_tsa_library = ctypes.CDLL(os.path.join(tsa.tsa_libraries.__path__[0], 'libtsa_c.so'))
+                self.c_tsa_library = ctypes.CDLL('libtsa_c.so')
 
     instance = None
 
