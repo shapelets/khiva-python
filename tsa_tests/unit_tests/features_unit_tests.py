@@ -406,6 +406,39 @@ class FeatureTest(unittest.TestCase):
         self.assertAlmostEqual(result[0], 0.7142857142857143, delta=1e-4)
         self.assertAlmostEqual(result[1], 0.7142857142857143, delta=1e-4)
 
+    def test_sample_entropy(self):
+        result = sample_entropy([[3, 0, 0, 4, 0, 0, 13], [3, 0, 0, 4, 0, 0, 13]])
+        self.assertAlmostEqual(result[0], 1.252762968495368, delta=1e-4)
+        self.assertAlmostEqual(result[1], 1.252762968495368, delta=1e-4)
+
+    def test_skewness(self):
+        result = skewness([[3, 0, 0, 4, 0, 0, 13], [3, 0, 0, 4, 0, 0, 13]])
+        self.assertAlmostEqual(result[0], 2.038404735373753, delta=1e-4)
+        self.assertAlmostEqual(result[1], 2.038404735373753, delta=1e-4)
+
+    def test_standard_deviation(self):
+        result = standard_deviation([[20, 20, 20, 18, 25, 19, 20, 20, 20, 20, 40, 30, 1, 50, 1, 1, 5, 1, 20, 20],
+                                     [20, 20, 20, 2, 19, 1, 20, 20, 20, 1, 15, 1, 30, 1, 1, 18, 4, 1, 20, 20]])
+        self.assertAlmostEqual(result[0], 12.363150892875165, delta=1e-4)
+        self.assertAlmostEqual(result[1], 9.51367436903324, delta=1e-4)
+
+    def test_sum_of_reoccurring_datapoints(self):
+        result = sum_of_reoccurring_datapoints([[3, 3, 0, 4, 0, 13, 13], [3, 3, 0, 4, 0, 13, 13]])
+        self.assertAlmostEqual(result[0], 32, delta=1e-4)
+        self.assertAlmostEqual(result[1], 32, delta=1e-4)
+
+    def test_symmetry_looking(self):
+        result = symmetry_looking([[20, 20, 20, 18, 25, 19, 20, 20, 20, 20, 40, 30, 1, 50, 1, 1, 5, 1, 20, 20],
+                                   [20, 20, 20, 2, 19, 1, 20, 20, 20, 1, 15, 1, 30, 1, 1, 18, 4, 1, 20, 20]], 0.1)
+        self.assertEqual(result[0], bool(1))
+        self.assertEqual(result[1], bool(0))
+
+    def test_value_count(self):
+        result = value_count([[20, 20, 20, 18, 25, 19, 20, 20, 20, 20, 40, 30, 1, 50, 1, 1, 5, 1, 20, 20],
+                              [20, 20, 20, 2, 19, 1, 20, 20, 20, 1, 15, 1, 30, 1, 1, 18, 4, 1, 20, 20]], 20)
+        self.assertAlmostEqual(result[0], 9, delta=1e-4)
+        self.assertAlmostEqual(result[1], 8, delta=1e-4)
+
 
 if __name__ == '__main__':
     unittest.main()

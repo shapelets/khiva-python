@@ -1325,3 +1325,161 @@ def ratio_beyond_r_sigma(tss, r):
                                                     ctypes.pointer(result_c_initialized))
 
     return np.array(result_c_initialized)
+
+
+def sample_entropy(tss):
+    """ Calculates a vectorized sample entropy algorithm.
+    https://en.wikipedia.org/wiki/Sample_entropy
+    https://www.ncbi.nlm.nih.gov/pubmed/10843903?dopt=Abstract
+    For short time-series this method is highly dependent on the parameters, but should be stable for N > 2000,
+    see: Yentes et al. (2012) - The Appropriate Use of Approximate Entropy and Sample Entropy with Short Data Sets
+    Other shortcomings and alternatives discussed in:
+    Richman & Moorman (2000) - Physiological time-series analysis using approximate entropy and sample entropy.
+
+    :param tss: Time series. It accepts a list of lists or a numpy array with one or several time series.
+    :return: An array with the same dimensions as tss, whose values (time series in dimension 0)
+    contains the vectorized sample entropy for all the input time series in tss.
+    """
+    if isinstance(tss, list):
+        tss = np.array(tss)
+    tss_n = len(tss)
+    tss_l = len(tss[0])
+    tss_c_number_of_ts = ctypes.c_long(tss_n)
+    tss_c_length = ctypes.c_long(tss_l)
+    tss_joint = np.concatenate(tss, axis=0)
+    tss_c_joint = (ctypes.c_double * len(tss_joint))(*tss_joint)
+
+    result_initialized = np.zeros((tss_n)).astype(np.double)
+    result_c_initialized = (ctypes.c_double * tss_n)(*result_initialized)
+    TsaLibrary().c_tsa_library.sample_entropy(ctypes.pointer(tss_c_joint), ctypes.pointer(tss_c_length),
+                                              ctypes.pointer(tss_c_number_of_ts), ctypes.pointer(result_c_initialized))
+
+    return np.array(result_c_initialized)
+
+
+def skewness(tss):
+    """ Calculates the sample skewness of tss (calculated with the adjusted Fisher-Pearson standardized
+    moment coefficient G1).
+
+    :param tss: Time series. It accepts a list of lists or a numpy array with one or several time series.
+    :return: Array containing the skewness of each time series in tss.
+    """
+    if isinstance(tss, list):
+        tss = np.array(tss)
+    tss_n = len(tss)
+    tss_l = len(tss[0])
+    tss_c_number_of_ts = ctypes.c_long(tss_n)
+    tss_c_length = ctypes.c_long(tss_l)
+    tss_joint = np.concatenate(tss, axis=0)
+    tss_c_joint = (ctypes.c_double * len(tss_joint))(*tss_joint)
+
+    result_initialized = np.zeros((tss_n)).astype(np.double)
+    result_c_initialized = (ctypes.c_double * tss_n)(*result_initialized)
+    TsaLibrary().c_tsa_library.skewness(ctypes.pointer(tss_c_joint), ctypes.pointer(tss_c_length),
+                                        ctypes.pointer(tss_c_number_of_ts), ctypes.pointer(result_c_initialized))
+
+    return np.array(result_c_initialized)
+
+
+def standard_deviation(tss):
+    """ Calculates the standard deviation of each time series within tss.
+
+    :param tss: Time series. It accepts a list of lists or a numpy array with one or several time series.
+    :return: The standard deviation of each time series within tss.
+    """
+    if isinstance(tss, list):
+        tss = np.array(tss)
+    tss_n = len(tss)
+    tss_l = len(tss[0])
+    tss_c_number_of_ts = ctypes.c_long(tss_n)
+    tss_c_length = ctypes.c_long(tss_l)
+    tss_joint = np.concatenate(tss, axis=0)
+    tss_c_joint = (ctypes.c_double * len(tss_joint))(*tss_joint)
+
+    result_initialized = np.zeros((tss_n)).astype(np.double)
+    result_c_initialized = (ctypes.c_double * tss_n)(*result_initialized)
+    TsaLibrary().c_tsa_library.standard_deviation(ctypes.pointer(tss_c_joint), ctypes.pointer(tss_c_length),
+                                                  ctypes.pointer(tss_c_number_of_ts),
+                                                  ctypes.pointer(result_c_initialized))
+
+    return np.array(result_c_initialized)
+
+
+def sum_of_reoccurring_datapoints(tss, is_sorted=False):
+    """Calculates the sum of all data points, that are present in the time series more than once.
+
+    :param tss: Time series. It accepts a list of lists or a numpy array with one or several time series.
+    :param is_sorted: Indicates if the input time series is sorted or not. Defaults to false.
+    :return: Returns the sum of all data points, that are present in the time series more than once.
+    """
+    if isinstance(tss, list):
+        tss = np.array(tss)
+    tss_n = len(tss)
+    tss_l = len(tss[0])
+    tss_c_number_of_ts = ctypes.c_long(tss_n)
+    tss_c_length = ctypes.c_long(tss_l)
+    tss_joint = np.concatenate(tss, axis=0)
+    tss_c_joint = (ctypes.c_double * len(tss_joint))(*tss_joint)
+
+    result_initialized = np.zeros((tss_n)).astype(np.double)
+    result_c_initialized = (ctypes.c_double * tss_n)(*result_initialized)
+    TsaLibrary().c_tsa_library.sum_of_reoccurring_datapoints(ctypes.pointer(tss_c_joint), ctypes.pointer(tss_c_length),
+                                                             ctypes.pointer(tss_c_number_of_ts),
+                                                             ctypes.pointer(ctypes.c_bool(is_sorted)),
+                                                             ctypes.pointer(result_c_initialized))
+
+    return np.array(result_c_initialized)
+
+
+def symmetry_looking(tss, r):
+    """ Calculates if the distribution of tss *looks symmetric*. This is the case if
+    .. math::
+
+         | mean(tss)-median(tss)| < r * (max(tss)-min(tss))
+
+
+    :param tss: Time series. It accepts a list of lists or a numpy array with one or several time series.
+    :param r: The percentage of the range to compare with.
+    :return: An array denoting if the input time series look symmetric.
+    """
+    if isinstance(tss, list):
+        tss = np.array(tss)
+    tss_n = len(tss)
+    tss_l = len(tss[0])
+    tss_c_number_of_ts = ctypes.c_long(tss_n)
+    tss_c_length = ctypes.c_long(tss_l)
+    tss_joint = np.concatenate(tss, axis=0)
+    tss_c_joint = (ctypes.c_double * len(tss_joint))(*tss_joint)
+
+    result_initialized = np.zeros((tss_n)).astype(np.bool)
+    result_c_initialized = (ctypes.c_bool * tss_n)(*result_initialized)
+    TsaLibrary().c_tsa_library.symmetry_looking(ctypes.pointer(tss_c_joint), ctypes.pointer(tss_c_length),
+                                                ctypes.pointer(tss_c_number_of_ts), ctypes.pointer(ctypes.c_double(r)),
+                                                ctypes.pointer(result_c_initialized))
+
+    return np.array(result_c_initialized)
+
+
+def value_count(tss, v):
+    """Counts occurrences of value in the time series tss.
+
+    :param tss: Time series. It accepts a list of lists or a numpy array with one or several time series.
+    :param v: The value to be counted.
+    :return: An array containing the count of the given value in each time series.
+    """
+    if isinstance(tss, list):
+        tss = np.array(tss)
+    tss_n = len(tss)
+    tss_l = len(tss[0])
+    tss_c_number_of_ts = ctypes.c_long(tss_n)
+    tss_c_length = ctypes.c_long(tss_l)
+    tss_joint = np.concatenate(tss, axis=0)
+    tss_c_joint = (ctypes.c_int * len(tss_joint))(*tss_joint)
+
+    result_initialized = np.zeros((tss_n)).astype(np.uint32)
+    result_c_initialized = (ctypes.c_uint32 * tss_n)(*result_initialized)
+    TsaLibrary().c_tsa_library.value_count(ctypes.pointer(tss_c_joint), ctypes.pointer(tss_c_length),
+                                           ctypes.pointer(tss_c_number_of_ts), ctypes.pointer(ctypes.c_double(v)),
+                                           ctypes.pointer(result_c_initialized))
+
+    return np.array(result_c_initialized)
