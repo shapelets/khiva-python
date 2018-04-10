@@ -13,7 +13,7 @@ setup(
     author="Grumpy Cat Software S.L.",
     author_email="info@gcatsoft.com",
     name="tsa",
-    version=subprocess.check_output(["git", "describe"]).strip().decode("utf-8")[-1:],
+    version=subprocess.check_output(["git", "describe"]).strip().decode("utf-8")[1:].split('-')[0],
     description="Python bindings for tsa",
     license="MPL 2.0",
     url="http://gcatsoft.com",

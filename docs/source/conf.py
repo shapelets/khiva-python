@@ -29,7 +29,7 @@ author = 'Grumpy Cat'
 # The short X.Y version
 version = ''
 # The full version, including alpha/beta/rc tags
-release = subprocess.check_output(["git", "describe"]).strip().decode("utf-8")
+release = subprocess.check_output(["git", "describe"]).strip().decode("utf-8").split('-')[0]
 
 
 # -- General configuration ---------------------------------------------------
