@@ -12,7 +12,7 @@ time series in a super-efficient fashion, giving a solution for time series anal
 
 ### How do I get set up? ###
 
-* For installing this package, please, first it is necessary to satisfy the reuqirements indicated in the requirements.txt file.
+* For installing this package, please, first it is necessary to satisfy the requirements indicated in the requirements.txt file.
 
 * Configuration
 * Dependencies
