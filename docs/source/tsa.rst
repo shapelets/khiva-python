@@ -1,19 +1,55 @@
-tsa package
+tsa
 ===========
 
-Module contents
----------------
+Submodules
+++++++++++
 
-.. automodule:: tsa
+tsa.array
+---------------------------------
+
+.. automodule:: tsa.array
     :members:
     :undoc-members:
     :show-inheritance:
 
-Subpackages
------------
+tsa.features
+------------------------------
 
-.. toctree::
+.. automodule:: tsa.features
+    :members:
+    :undoc-members:
+    :show-inheritance:
 
-    tsa.algorithms
-    tsa.tsa_libraries
+tsa.linalg
+----------------------------
+
+.. automodule:: tsa.linalg
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+tsa..matrix
+----------------------------
+
+.. automodule:: tsa.matrix
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+tsa.normalization
+-----------------------------------
+
+.. automodule:: tsa.normalization
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+tsa.library
+---------------------------------
+
+.. automodule:: tsa.library
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 

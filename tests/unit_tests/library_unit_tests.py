@@ -9,7 +9,7 @@
 # IMPORT
 ########################################################################################################################
 import unittest
-from tsa.tsa_libraries.library import *
+from tsa.library import *
 
 
 ########################################################################################################################
@@ -24,7 +24,6 @@ class LibraryTest(unittest.TestCase):
         cuda = backends & TSABackend.TSA_BACKEND_CUDA.value
         opencl = backends & TSABackend.TSA_BACKEND_OPENCL.value
         cpu = backends & TSABackend.TSA_BACKEND_CPU.value
-
         if cuda:
             set_backend(TSABackend.TSA_BACKEND_CUDA)
             self.assertEqual(get_backend(), TSABackend.TSA_BACKEND_CUDA)

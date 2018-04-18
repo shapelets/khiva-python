@@ -10,8 +10,6 @@
 ########################################################################################################################
 from enum import Enum
 import ctypes
-import os
-import tsa.tsa_libraries
 import platform
 
 
@@ -59,7 +57,7 @@ def set_backend(backend):
 
     :param backend: The desired backend. TSABackend type.
     """
-    TsaLibrary().c_tsa_library.set_backend(ctypes.pointer(ctypes.c_int(backend.value)))
+    TsaLibrary().c_tsa_library.set_backend(ctypes.c_int(backend.value))
 
 
 def get_backend():
@@ -69,7 +67,6 @@ def get_backend():
 
     """
     backend = (ctypes.c_int * 1)(*[0])
-
     TsaLibrary().c_tsa_library.get_backend(ctypes.pointer(backend))
 
     return TSABackend(backend[0])
@@ -90,7 +87,7 @@ def set_device(device):
 
     :param device: The desired device.
     """
-    TsaLibrary().c_tsa_library.set_device(ctypes.pointer(ctypes.c_int(device)))
+    TsaLibrary().c_tsa_library.set_device(ctypes.c_int(device))
 
 
 def get_device_id():

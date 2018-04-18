@@ -9,21 +9,23 @@
 # IMPORT
 ########################################################################################################################
 import unittest
-from tsa.algorithms.linalg import *
+from tsa.linalg import *
+import numpy as np
 
 
 ########################################################################################################################
 
-class LinealgTest(unittest.TestCase):
+class LinalgTest(unittest.TestCase):
     DELTA = 1e-6
 
     def setUp(self):
         pass
 
     def test_lls(self):
-        lls_result = lls(np.array([[4, 3], [-1, -2]]), [3, 1])
-        self.assertAlmostEqual(lls_result[0], 1, delta=self.DELTA)
-        self.assertAlmostEqual(lls_result[1], 1, delta=self.DELTA)
+        lls_result = lls(array(np.array([[4, 3], [-1, -2]])), array([3, 1], dtype.f32))
+        a = lls_result.to_numpy()[0]
+        self.assertAlmostEqual(a[0], 1, delta=self.DELTA)
+        self.assertAlmostEqual(a[1], 1, delta=self.DELTA)
 
 
 if __name__ == '__main__':

@@ -9,7 +9,8 @@
 # IMPORT
 ########################################################################################################################
 import unittest
-from tsa.algorithms.normalization import *
+from tsa.normalization import *
+from tsa.array import array, dtype
 
 
 ########################################################################################################################
@@ -21,15 +22,16 @@ class NormalizationTest(unittest.TestCase):
         pass
 
     def test_normz(self):
-        znorm_result = znorm([[0, 1, 2, 3], [4, 5, 6, 7]], 0.00000001)
+        znorm_result = znorm(array([[0, 1, 2, 3], [4, 5, 6, 7]]), 0.00000001).to_numpy().flatten()
         expected = [-1.341640786499870, -0.447213595499958, 0.447213595499958, 1.341640786499870]
         for i in range(len(expected)):
-            self.assertAlmostEqual(znorm_result[i], expected[i])
-            self.assertAlmostEqual(znorm_result[i + 4], expected[i])
+            self.assertAlmostEqual(znorm_result[i], expected[i], delta=self.DELTA)
+            self.assertAlmostEqual(znorm_result[i + 4], expected[i], delta=self.DELTA)
 
     def test_znorm_in_place(self):
-        tss = [[0, 1, 2, 3], [4, 5, 6, 7]]
-        tss = znorm_in_place(tss)
+        tss = array(data=[[0, 1, 2, 3], [4, 5, 6, 7]])
+        znorm_in_place(tss)
+        tss = tss.to_numpy()
         self.assertAlmostEqual(tss[0][0], -1.341640786499870, delta=self.DELTA)
         self.assertAlmostEqual(tss[0][1], -0.447213595499958, delta=self.DELTA)
         self.assertAlmostEqual(tss[0][2], 0.447213595499958, delta=self.DELTA)
