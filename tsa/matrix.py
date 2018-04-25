@@ -30,7 +30,7 @@ def find_best_n_discords(profile, index, n):
 
     TsaLibrary().c_tsa_library.find_best_n_discords(ctypes.pointer(profile.arr_reference),
                                                     ctypes.pointer(index.arr_reference),
-                                                    ctypes.c_long(n),
+                                                    ctypes.pointer(ctypes.c_long(n)),
                                                     ctypes.pointer(b),
                                                     ctypes.pointer(c),
                                                     ctypes.pointer(d))
@@ -53,7 +53,7 @@ def find_best_n_motifs(profile, index, n):
 
     TsaLibrary().c_tsa_library.find_best_n_motifs(ctypes.pointer(profile.arr_reference),
                                                   ctypes.pointer(index.arr_reference),
-                                                  ctypes.c_long(n),
+                                                  ctypes.pointer(ctypes.c_long(n)),
                                                   ctypes.pointer(b),
                                                   ctypes.pointer(c),
                                                   ctypes.pointer(d))
@@ -77,7 +77,7 @@ def stomp(first_time_series, second_time_series, subsequence_length):
 
     TsaLibrary().c_tsa_library.stomp(ctypes.pointer(first_time_series.arr_reference),
                                      ctypes.pointer(second_time_series.arr_reference),
-                                     ctypes.c_long(subsequence_length),
+                                     ctypes.pointer(ctypes.c_long(subsequence_length)),
                                      ctypes.pointer(b),
                                      ctypes.pointer(c))
 
@@ -97,7 +97,7 @@ def stomp_self_join(time_series, subsequence_length):
     c = ctypes.c_void_p(0)
 
     TsaLibrary().c_tsa_library.stomp_self_join(ctypes.pointer(time_series.arr_reference),
-                                               ctypes.c_long(subsequence_length),
+                                               ctypes.pointer(ctypes.c_long(subsequence_length)),
                                                ctypes.pointer(b),
                                                ctypes.pointer(c))
 

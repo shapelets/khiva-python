@@ -63,7 +63,7 @@ def aggregated_autocorrelation(arr, aggregation_function):
     """
     b = ctypes.c_void_p(0)
     TsaLibrary().c_tsa_library.aggregated_autocorrelation(ctypes.pointer(arr.arr_reference),
-                                                          ctypes.c_int(aggregation_function),
+                                                          ctypes.pointer(ctypes.c_int(aggregation_function)),
                                                           ctypes.pointer(b))
 
     return array(array_reference=b, tsa_type=arr.tsa_type)
@@ -96,8 +96,8 @@ def aggregated_linear_trend(arr, chunk_size, aggregation_function):
     f = ctypes.c_void_p(0)
 
     TsaLibrary().c_tsa_library.aggregated_linear_trend(ctypes.pointer(arr.arr_reference),
-                                                       ctypes.c_long(chunk_size),
-                                                       ctypes.c_int(aggregation_function),
+                                                       ctypes.pointer(ctypes.c_long(chunk_size)),
+                                                       ctypes.pointer(ctypes.c_int(aggregation_function)),
                                                        ctypes.pointer(b),
                                                        ctypes.pointer(c),
                                                        ctypes.pointer(d),
@@ -125,8 +125,9 @@ def approximate_entropy(arr, m, r):
     :return: TSA array with the vectorized approximate entropy for all the input time series in tss.
     """
     b = ctypes.c_void_p(0)
-    TsaLibrary().c_tsa_library.approximate_entropy(ctypes.pointer(arr.arr_reference), ctypes.c_int(m),
-                                                   ctypes.c_float(r),
+    TsaLibrary().c_tsa_library.approximate_entropy(ctypes.pointer(arr.arr_reference),
+                                                   ctypes.pointer(ctypes.c_int(m)),
+                                                   ctypes.pointer(ctypes.c_float(r)),
                                                    ctypes.pointer(b))
 
     return array(array_reference=b, tsa_type=arr.tsa_type)
@@ -144,7 +145,7 @@ def cross_covariance(xss, yss, unbiased):
     b = ctypes.c_void_p(0)
 
     TsaLibrary().c_tsa_library.cross_covariance(ctypes.pointer(xss.arr_reference), ctypes.pointer(yss.arr_reference),
-                                                ctypes.c_bool(unbiased), ctypes.pointer(b))
+                                                ctypes.pointer(ctypes.c_bool(unbiased)), ctypes.pointer(b))
 
     return array(array_reference=b, tsa_type=xss.tsa_type)
 
@@ -158,7 +159,8 @@ def auto_covariance(arr, unbiased=False):
     """
     b = ctypes.c_void_p(0)
 
-    TsaLibrary().c_tsa_library.auto_covariance(ctypes.pointer(arr.arr_reference), ctypes.c_bool(unbiased),
+    TsaLibrary().c_tsa_library.auto_covariance(ctypes.pointer(arr.arr_reference),
+                                               ctypes.pointer(ctypes.c_bool(unbiased)),
                                                ctypes.pointer(b))
 
     return array(array_reference=b, tsa_type=arr.tsa_type)
@@ -176,7 +178,7 @@ def cross_correlation(xss, yss, unbiased):
     b = ctypes.c_void_p(0)
 
     TsaLibrary().c_tsa_library.cross_correlation(ctypes.pointer(xss.arr_reference), ctypes.pointer(yss.arr_reference),
-                                                 ctypes.c_bool(unbiased), ctypes.pointer(b))
+                                                 ctypes.pointer(ctypes.c_bool(unbiased)), ctypes.pointer(b))
 
     return array(array_reference=b, tsa_type=xss.tsa_type)
 
@@ -192,8 +194,8 @@ def auto_correlation(arr, max_lag, unbiased):
     b = ctypes.c_void_p(0)
 
     TsaLibrary().c_tsa_library.auto_correlation(ctypes.pointer(arr.arr_reference),
-                                                ctypes.c_long(max_lag),
-                                                ctypes.c_bool(unbiased),
+                                                ctypes.pointer(ctypes.c_long(max_lag)),
+                                                ctypes.pointer(ctypes.c_bool(unbiased)),
                                                 ctypes.pointer(b))
 
     return array(array_reference=b, tsa_type=arr.tsa_type)
@@ -208,7 +210,7 @@ def binned_entropy(arr, max_bins):
     """
     b = ctypes.c_void_p(0)
 
-    TsaLibrary().c_tsa_library.binned_entropy(ctypes.pointer(arr.arr_reference), ctypes.c_int(max_bins),
+    TsaLibrary().c_tsa_library.binned_entropy(ctypes.pointer(arr.arr_reference), ctypes.pointer(ctypes.c_int(max_bins)),
                                               ctypes.pointer(b))
 
     return array(array_reference=b, tsa_type=arr.tsa_type)
@@ -226,7 +228,7 @@ def c3(arr, lag):
     b = ctypes.c_void_p(0)
 
     TsaLibrary().c_tsa_library.c3(ctypes.pointer(arr.arr_reference),
-                                  ctypes.c_long(lag), ctypes.pointer(b))
+                                  ctypes.pointer(ctypes.c_long(lag)), ctypes.pointer(b))
 
     return array(array_reference=b, tsa_type=arr.tsa_type)
 
@@ -243,7 +245,7 @@ def cid_ce(arr, z_normalize):
     b = ctypes.c_void_p(0)
 
     TsaLibrary().c_tsa_library.cid_ce(ctypes.pointer(arr.arr_reference),
-                                      ctypes.c_bool(z_normalize), ctypes.pointer(b))
+                                      ctypes.pointer(ctypes.c_bool(z_normalize)), ctypes.pointer(b))
 
     return array(array_reference=b, tsa_type=arr.tsa_type)
 
@@ -291,8 +293,8 @@ def cwt_coefficients(tss, widths, coeff, w):
 
     TsaLibrary().c_tsa_library.cwt_coefficients(ctypes.pointer(tss.arr_reference),
                                                 ctypes.pointer(widths.arr_reference),
-                                                ctypes.c_int(coeff),
-                                                ctypes.c_int(w),
+                                                ctypes.pointer(ctypes.c_int(coeff)),
+                                                ctypes.pointer(ctypes.c_int(w)),
                                                 ctypes.pointer(b))
 
     return array(array_reference=b, tsa_type=tss.tsa_type)
@@ -310,8 +312,8 @@ def energy_ratio_by_chunks(arr, num_segments, segment_focus):
     """
     b = ctypes.c_void_p(0)
     TsaLibrary().c_tsa_library.energy_ratio_by_chunks(ctypes.pointer(arr.arr_reference),
-                                                      ctypes.c_long(num_segments),
-                                                      ctypes.c_long(segment_focus),
+                                                      ctypes.pointer(ctypes.c_long(num_segments)),
+                                                      ctypes.pointer(ctypes.c_long(segment_focus)),
                                                       ctypes.pointer(b))
 
     return array(array_reference=b, tsa_type=arr.tsa_type)
@@ -350,12 +352,12 @@ def fft_coefficient(arr, coefficient):
     e = ctypes.c_void_p(0)
 
     TsaLibrary().c_tsa_library.fft_coefficient(ctypes.pointer(arr.arr_reference),
-                                              ctypes.c_long(coefficient),
-                                              ctypes.pointer(b),
-                                              ctypes.pointer(c),
-                                              ctypes.pointer(d),
-                                              ctypes.pointer(e)
-                                              )
+                                               ctypes.pointer(ctypes.c_long(coefficient)),
+                                               ctypes.pointer(b),
+                                               ctypes.pointer(c),
+                                               ctypes.pointer(d),
+                                               ctypes.pointer(e)
+                                               )
 
     return array(array_reference=b, tsa_type=arr.tsa_type), array(array_reference=c,
                                                                   tsa_type=arr.tsa_type), array(
@@ -443,7 +445,7 @@ def index_max_quantile(arr, q):
 
     b = ctypes.c_void_p(0)
 
-    TsaLibrary().c_tsa_library.index_max_quantile(ctypes.pointer(arr.arr_reference), ctypes.c_float(q),
+    TsaLibrary().c_tsa_library.index_max_quantile(ctypes.pointer(arr.arr_reference), ctypes.pointer(ctypes.c_float(q)),
                                                   ctypes.pointer(b))
 
     return array(array_reference=b, tsa_type=arr.tsa_type)
@@ -473,7 +475,8 @@ def large_standard_deviation(arr, r):
     """
 
     b = ctypes.c_void_p(0)
-    TsaLibrary().c_tsa_library.large_standard_deviation(ctypes.pointer(arr.arr_reference), ctypes.c_float(r),
+    TsaLibrary().c_tsa_library.large_standard_deviation(ctypes.pointer(arr.arr_reference),
+                                                        ctypes.pointer(ctypes.c_float(r)),
                                                         ctypes.pointer(b))
 
     return array(array_reference=b, tsa_type=dtype.b8)
@@ -604,8 +607,8 @@ def max_langevin_fixed_point(arr, m, r):
     b = ctypes.c_void_p(0)
 
     TsaLibrary().c_tsa_library.max_langevin_fixed_point(ctypes.pointer(arr.arr_reference),
-                                                        ctypes.c_int(m),
-                                                        ctypes.c_float(r),
+                                                        ctypes.pointer(ctypes.c_int(m)),
+                                                        ctypes.pointer(ctypes.c_float(r)),
                                                         ctypes.pointer(b))
 
     return array(array_reference=b, tsa_type=arr.tsa_type)
@@ -718,7 +721,7 @@ def number_crossing_m(arr, m):
     b = ctypes.c_void_p(0)
 
     TsaLibrary().c_tsa_library.number_crossing_m(ctypes.pointer(arr.arr_reference),
-                                                 ctypes.c_int(m),
+                                                 ctypes.pointer(ctypes.c_int(m)),
                                                  ctypes.pointer(b))
 
     return array(array_reference=b, tsa_type=arr.tsa_type)
@@ -735,7 +738,7 @@ def number_peaks(arr, n):
     """
     b = ctypes.c_void_p(0)
 
-    TsaLibrary().c_tsa_library.number_peaks(ctypes.pointer(arr.arr_reference), ctypes.c_int(n),
+    TsaLibrary().c_tsa_library.number_peaks(ctypes.pointer(arr.arr_reference), ctypes.pointer(ctypes.c_int(n)),
                                             ctypes.pointer(b))
 
     return array(array_reference=b, tsa_type=arr.tsa_type)
@@ -758,7 +761,8 @@ def percentage_of_reoccurring_datapoints_to_all_datapoints(arr, is_sorted):
     b = ctypes.c_void_p(0)
 
     TsaLibrary().c_tsa_library.percentage_of_reoccurring_datapoints_to_all_datapoints(ctypes.pointer(arr.arr_reference),
-                                                                                      ctypes.c_bool(is_sorted),
+                                                                                      ctypes.pointer(
+                                                                                          ctypes.c_bool(is_sorted)),
                                                                                       ctypes.pointer(
                                                                                           b))
 
@@ -776,7 +780,7 @@ def quantile(arr, q, precision=1e8):
     b = ctypes.c_void_p(0)
 
     TsaLibrary().c_tsa_library.quantile(ctypes.pointer(arr.arr_reference), ctypes.pointer(q.arr_reference),
-                                        ctypes.c_float(precision),
+                                        ctypes.pointer(ctypes.c_float(precision)),
                                         ctypes.pointer(b))
 
     return array(array_reference=b, tsa_type=arr.tsa_type)
@@ -793,7 +797,8 @@ def ratio_beyond_r_sigma(arr, r):
     """
     b = ctypes.c_void_p(0)
 
-    TsaLibrary().c_tsa_library.ratio_beyond_r_sigma(ctypes.pointer(arr.arr_reference), ctypes.c_float(r),
+    TsaLibrary().c_tsa_library.ratio_beyond_r_sigma(ctypes.pointer(arr.arr_reference),
+                                                    ctypes.pointer(ctypes.c_float(r)),
                                                     ctypes.pointer(b))
 
     return array(array_reference=b, tsa_type=arr.tsa_type)
@@ -857,7 +862,7 @@ def sum_of_reoccurring_datapoints(arr, is_sorted=False):
     b = ctypes.c_void_p(0)
 
     TsaLibrary().c_tsa_library.sum_of_reoccurring_datapoints(ctypes.pointer(arr.arr_reference),
-                                                             ctypes.c_bool(is_sorted),
+                                                             ctypes.pointer(ctypes.c_bool(is_sorted)),
                                                              ctypes.pointer(b))
 
     return array(array_reference=b, tsa_type=arr.tsa_type)
@@ -876,7 +881,7 @@ def symmetry_looking(arr, r):
     """
     b = ctypes.c_void_p(0)
 
-    TsaLibrary().c_tsa_library.symmetry_looking(ctypes.pointer(arr.arr_reference), ctypes.c_float(r),
+    TsaLibrary().c_tsa_library.symmetry_looking(ctypes.pointer(arr.arr_reference), ctypes.pointer(ctypes.c_float(r)),
                                                 ctypes.pointer(b))
 
     return array(array_reference=b, tsa_type=dtype.b8)
@@ -891,7 +896,7 @@ def value_count(arr, v):
     """
     b = ctypes.c_void_p(0)
 
-    TsaLibrary().c_tsa_library.value_count(ctypes.pointer(arr.arr_reference), ctypes.c_float(v),
+    TsaLibrary().c_tsa_library.value_count(ctypes.pointer(arr.arr_reference), ctypes.pointer(ctypes.c_float(v)),
                                            ctypes.pointer(b))
 
     return array(array_reference=b, tsa_type=dtype.u32)

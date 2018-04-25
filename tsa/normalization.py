@@ -27,7 +27,7 @@ def znorm(tss, epsilon=0.00000001):
             one as standard deviation.
     """
     b = ctypes.c_void_p(0)
-    TsaLibrary().c_tsa_library.znorm(ctypes.pointer(tss.arr_reference), ctypes.c_double(epsilon),
+    TsaLibrary().c_tsa_library.znorm(ctypes.pointer(tss.arr_reference), ctypes.pointer(ctypes.c_double(epsilon)),
                                      ctypes.pointer(b))
 
     return array(array_reference=b, tsa_type=tss.tsa_type)
@@ -41,4 +41,5 @@ def znorm_in_place(tss, epsilon=0.00000001):
     :param epsilon: epsilon Minimum standard deviation to consider.  It acts as a gatekeeper for
                     those time series that may be constant or near constant.
     """
-    TsaLibrary().c_tsa_library.znorm_in_place(ctypes.pointer(tss.arr_reference), ctypes.c_double(epsilon))
+    TsaLibrary().c_tsa_library.znorm_in_place(ctypes.pointer(tss.arr_reference),
+                                              ctypes.pointer(ctypes.c_double(epsilon)))

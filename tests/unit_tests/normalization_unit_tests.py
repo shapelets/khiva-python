@@ -21,7 +21,7 @@ class NormalizationTest(unittest.TestCase):
     def setUp(self):
         pass
 
-    def test_normz(self):
+    def test_znorm(self):
         znorm_result = znorm(array([[0, 1, 2, 3], [4, 5, 6, 7]]), 0.00000001).to_numpy().flatten()
         expected = [-1.341640786499870, -0.447213595499958, 0.447213595499958, 1.341640786499870]
         for i in range(len(expected)):

@@ -146,7 +146,7 @@ class array:
         self.arrayfire_reference = False
 
     def get_dims(self):
-        """ Get the dimensions of the TSA array.
+        """ Gets the dimensions of the TSA array.
 
         :return: The dimensions of the TSA array.
         """
@@ -155,7 +155,7 @@ class array:
         return np.array(c_array_n)
 
     def _get_result_length(self):
-        """ Get the length of the result.
+        """ Gets the length of the result.
 
         :return: The length of the result, used in order to get the data to the host.
         """
@@ -166,7 +166,7 @@ class array:
         return result
 
     def _create_array(self, data):
-        """ Create the TSA array in the device.
+        """ Creates the TSA array in the device.
 
         :param data: The data used for creating the tsa array.
         :return An opaque pointer to the Array.
@@ -185,10 +185,10 @@ class array:
             c_array_joint = (_get_array_type(self.tsa_type.value) * len(data))(*data)
         opaque_pointer = ctypes.c_void_p(0)
         TsaLibrary().c_tsa_library.create_array(ctypes.pointer(c_array_joint),
-                                                c_ndims,
+                                                ctypes.pointer(c_ndims),
                                                 ctypes.pointer(c_array_n),
                                                 ctypes.pointer(opaque_pointer),
-                                                ctypes.c_int(self.tsa_type.value))
+                                                ctypes.pointer(ctypes.c_int(self.tsa_type.value)))
         return opaque_pointer
 
     def _get_data(self):
@@ -202,29 +202,28 @@ class array:
         return np.array(c_result_array)
 
     def to_numpy(self):
-        """
-        Convert the TSA array to a numpy array.
+        """ Converts the TSA array to a numpy array.
 
         :return: TSA array converted to numpy.array.
         """
         return np.array(np.split(self._get_data(), self.dims[1]))
 
     def to_list(self):
-        """ Convert the TSA array to a list.
+        """ Converts the TSA array to a list.
 
         :return: TSA array converted to list.
         """
         return np.split(self._get_data(), self.dims[1])
 
     def to_pandas(self):
-        """ Convert the TSA array to a pandas dataframe.
+        """ Converts the TSA array to a pandas dataframe.
 
         :return: TSA array converted to a pandas dataframe.
         """
         return pd.DataFrame(data=np.split(self._get_data(), self.dims[1]))
 
     def to_arrayfire(self):
-        """ Create an Arrayfire array from this TSA array. This need to be used carefully as the same array
+        """ Creates an Arrayfire array from this TSA array. This need to be used carefully as the same array
         reference is oging to be used by both of them. Once the Arrayfire array is created, the destructor of
         the TSA array is not going to free the allocated array.
 
@@ -240,11 +239,11 @@ class array:
         self.arrayfire_reference = True
         return result
 
-    def display(self):
+    def print(self):
         """
-        Display the data stored in the TSA array.
+        Prints the data stored in the TSA array.
         """
-        TsaLibrary().c_tsa_library.display_array(ctypes.pointer(self.arr_reference))
+        TsaLibrary().c_tsa_library.print(ctypes.pointer(self.arr_reference))
 
     def __len__(self):
         return self.result_l
