@@ -62,14 +62,14 @@ class FeatureTest(unittest.TestCase):
     def test_auto_covariance(self):
         auto_covariance_result = auto_covariance(
             array(data=[[0, 1, 2, 3], [10, 11, 12, 13]])).to_numpy()
-        self.assertAlmostEquals(auto_covariance_result[0][0], 1.25, delta=self.DELTA)
-        self.assertAlmostEquals(auto_covariance_result[0][1], 0.3125, delta=self.DELTA)
-        self.assertAlmostEquals(auto_covariance_result[0][2], -0.375, delta=self.DELTA)
-        self.assertAlmostEquals(auto_covariance_result[0][3], -0.5625, delta=self.DELTA)
-        self.assertAlmostEquals(auto_covariance_result[1][0], 1.25, delta=self.DELTA)
-        self.assertAlmostEquals(auto_covariance_result[1][1], 0.3125, delta=self.DELTA)
-        self.assertAlmostEquals(auto_covariance_result[1][2], -0.375, delta=self.DELTA)
-        self.assertAlmostEquals(auto_covariance_result[1][3], -0.5625, delta=self.DELTA)
+        self.assertAlmostEqual(auto_covariance_result[0][0], 1.25, delta=self.DELTA)
+        self.assertAlmostEqual(auto_covariance_result[0][1], 0.3125, delta=self.DELTA)
+        self.assertAlmostEqual(auto_covariance_result[0][2], -0.375, delta=self.DELTA)
+        self.assertAlmostEqual(auto_covariance_result[0][3], -0.5625, delta=self.DELTA)
+        self.assertAlmostEqual(auto_covariance_result[1][0], 1.25, delta=self.DELTA)
+        self.assertAlmostEqual(auto_covariance_result[1][1], 0.3125, delta=self.DELTA)
+        self.assertAlmostEqual(auto_covariance_result[1][2], -0.375, delta=self.DELTA)
+        self.assertAlmostEqual(auto_covariance_result[1][3], -0.5625, delta=self.DELTA)
 
     def test_cross_covariance(self):
         cross_covariance_result = cross_covariance(
@@ -255,7 +255,7 @@ class FeatureTest(unittest.TestCase):
         self.assertAlmostEqual(mean_absolute_change_result[1], r * 2, delta=self.DELTA)
 
     def test_fft_coefficient(self):
-        fftCoefficient_result = fftCoefficient(
+        fftCoefficient_result = fft_coefficient(
             array([[0, 1, 2, 3, 4, 5], [6, 7, 8, 9, 10, 11]]), 0)
         a = fftCoefficient_result[0].to_numpy()
         self.assertAlmostEqual(a[0], 15, delta=self.DELTA)

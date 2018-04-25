@@ -332,7 +332,7 @@ def fft_aggregated(arr):
     return array(array_reference=b, tsa_type=arr.tsa_type)
 
 
-def fftCoefficient(arr, coefficient):
+def fft_coefficient(arr, coefficient):
     """ Calculates the fourier coefficients of the one-dimensional discrete
     Fourier Transform for real input by fast fourier transformation algorithm.
 
@@ -349,7 +349,7 @@ def fftCoefficient(arr, coefficient):
     d = ctypes.c_void_p(0)
     e = ctypes.c_void_p(0)
 
-    TsaLibrary().c_tsa_library.fftCoefficient(ctypes.pointer(arr.arr_reference),
+    TsaLibrary().c_tsa_library.fft_coefficient(ctypes.pointer(arr.arr_reference),
                                               ctypes.c_long(coefficient),
                                               ctypes.pointer(b),
                                               ctypes.pointer(c),
