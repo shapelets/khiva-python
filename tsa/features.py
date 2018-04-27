@@ -75,7 +75,8 @@ def aggregated_linear_trend(arr, chunk_size, aggregation_function):
 
     :param arr: A TSA array with the time series.
     :param chunk_size: The chunk size used to aggregate the data.
-    :param aggregation_function: Function to be used in the aggregation. It receives an integer which indicates the function to be applied:
+    :param aggregation_function: Function to be used in the aggregation. It receives an integer which indicates the
+    function to be applied:
                                   0 : mean,
                                   1 : median
                                   2 : min,
@@ -368,7 +369,8 @@ def first_location_of_maximum(arr):
     """ Calculates the first relative location of the maximal value for each time series.
 
     :param arr: TSA array with the time series.
-    :return: TSA array with the first relative location of the maximum value to the length of the time series, for each time series.
+    :return: TSA array with the first relative location of the maximum value to the length of the time series, for each
+    time series.
     """
     b = ctypes.c_void_p(0)
 
@@ -389,6 +391,35 @@ def first_location_of_minimum(arr):
 
     TsaLibrary().c_tsa_library.first_location_of_minimum(ctypes.pointer(arr.arr_reference),
                                                          ctypes.pointer(b))
+
+    return array(array_reference=b, tsa_type=arr.tsa_type)
+
+
+def friedrich_coefficients(arr, m, r):
+    """ Coefficients of polynomial :math:`h(x)`, which has been fitted to the deterministic dynamics of Langevin model:
+    Largest fixed point of dynamics  :math:`argmax_x {h(x)=0}` estimated from polynomial :math:`h(x)`,
+    which has been fitted to the deterministic dynamics of Langevin model:
+
+    .. math::
+        \dot(x)(t) = h(x(t)) + R \mathcal(N)(0,1)
+
+    as described by [1]. For short time series this method is highly dependent on the parameters.
+
+    [1] Friedrich et al. (2000): Physics Letters A 271, p. 217-222
+    Extracting model equations from experimental data.
+
+
+    :param arr: TSA array with the time series.
+    :param m: Order of polynom to fit for estimating fixed points of dynamics.
+    :param r: Number of quantiles to use for averaging.
+    :return: TSA array with the coefficients for each time seriess.
+    """
+    b = ctypes.c_void_p(0)
+
+    TsaLibrary().c_tsa_library.friedrich_coefficients(ctypes.pointer(arr.arr_reference),
+                                                      ctypes.pointer(ctypes.c_int(m)),
+                                                      ctypes.pointer(ctypes.c_float(r)),
+                                                      ctypes.pointer(b))
 
     return array(array_reference=b, tsa_type=arr.tsa_type)
 
@@ -559,11 +590,26 @@ def linear_trend(arr):
            array(array_reference=f, tsa_type=arr.tsa_type)
 
 
+def local_maximals(arr):
+    """ Calculates all Local Maximals fot the time series in array.
+
+    :param arr: TSA array with the time series.
+    :return: TSA array with the calculated local maximals for each time series in arr.
+    """
+    b = ctypes.c_void_p(0)
+
+    TsaLibrary().c_tsa_library.local_maximals(ctypes.pointer(arr.arr_reference),
+                                              ctypes.pointer(b))
+
+    return array(array_reference=b, tsa_type=arr.tsa_type)
+
+
 def longest_strike_above_mean(arr):
     """ Calculates the length of the longest consecutive subsequence in tss that is bigger than the mean of tss.
 
     :param arr: TSA array with the time series.
-    :return: TSA array with the length of the longest consecutive subsequence in the input time series that is bigger than the mean.
+    :return: TSA array with the length of the longest consecutive subsequence in the input time series that is bigger
+    than the mean.
     """
     b = ctypes.c_void_p(0)
 
@@ -577,7 +623,8 @@ def longest_strike_below_mean(arr):
     """ Calculates the length of the longest consecutive subsequence in tss that is below the mean of tss.
 
     :param arr: TSA array with the time series.
-    :return: TSA array with the length of the longest consecutive subsequence in the input time series that is below the mean.
+    :return: TSA array with the length of the longest consecutive subsequence in the input time series that is below
+    the mean.
     """
     b = ctypes.c_void_p(0)
 
@@ -727,8 +774,25 @@ def number_crossing_m(arr, m):
     return array(array_reference=b, tsa_type=arr.tsa_type)
 
 
+def number_cwt_peaks(arr, max_w):
+    """ This feature calculator searches for different peaks. To do so, the time series is smoothed by a ricker
+    wavelet and for widths ranging from 1 to :math:'max_w`. This feature calculator returns the number of peaks that
+    occur at enough width scales and with sufficiently high Signal-to-Noise-Ratio (SNR).
+
+    :param arr: TSA array with the time series.
+    :param max_w: The maximum width to consider.
+    :return: TSA array with the number of peaks for each time series.
+    """
+    b = ctypes.c_void_p(0)
+
+    TsaLibrary().c_tsa_library.number_cwt_peaks(ctypes.pointer(arr.arr_reference), ctypes.pointer(ctypes.c_int(max_w)),
+                                                ctypes.pointer(b))
+
+    return array(array_reference=b, tsa_type=arr.tsa_type)
+
+
 def number_peaks(arr, n):
-    """Calculates the number of peaks of at least support :math: `n` in the time series :math: `tss`. A peak of support
+    """ Calculates the number of peaks of at least support :math: `n` in the time series :math: `tss`. A peak of support
     :math: `n` is defined as a subsequence of :math: `tss where a value occurs, which is bigger than
     its :math: `n` neighbours to the left and to the right.
 
@@ -744,15 +808,49 @@ def number_peaks(arr, n):
     return array(array_reference=b, tsa_type=arr.tsa_type)
 
 
+def partial_autocorrelation(arr, lags):
+    """ Calculates the value of the partial autocorrelation function at the given lag. The lag :math:`k'  partial
+    autocorrelation of a time series :math:`\lbrace x_t, t = 1 \ldots T \rbrace` equals the partial correlation of
+    :math:`x_t` and :math:`x_{t-k}`, adjusted for the intermediate variables :math:`\lbrace x_{t-1}, \ldots, x_{t-k+1}
+    \rbrace` ([1]). Following [2], it can be defined as:
+
+    .. math::
+          \alpha_k = \frac{ Cov(x_t, x_{t-k} | x_{t-1}, \ldots, x_{t-k+1})}
+          {\sqrt{ Var(x_t | x_{t-1}, \ldots, x_{t-k+1}) Var(x_{t-k} | x_{t-1}, \ldots, x_{t-k+1} )}}
+
+    with (a) :math:`x_t = f(x_{t-1}, \ldots, x_{t-k+1})` and (b) :math:`x_{t-k} = f(x_{t-1}, \ldots, x_{t-k+1})`
+    being AR(k-1) models that can be fitted by OLS. Be aware that in (a), the regression is done on past values to
+    predict :math:`x_t` whereas in (b), future values are used to calculate the past value :math:`x_{t-k}`.
+    It is said in [1] that "for an AR(p), the partial autocorrelations :math:`\alpha_k` will be nonzero for :math:`k<=p`
+    and zero for :math:`k>p`."
+    With this property, it is used to determine the lag of an AR-Process.
+
+    [1] Box, G. E., Jenkins, G. M., Reinsel, G. C., & Ljung, G. M. (2015).
+    Time series analysis: forecasting and control. John Wiley & Sons.
+    [2] https://onlinecourses.science.psu.edu/stat510/node/62
+
+    :param arr: TSA array with the time series.
+    :param lags: TSA array with the lags to be calculated.
+    :return: TSA array with the partial autocorrelation for each time series for the given lag.
+    """
+    b = ctypes.c_void_p(0)
+
+    TsaLibrary().c_tsa_library.partial_autocorrelation(ctypes.pointer(arr.arr_reference),
+                                                       ctypes.pointer(lags.arr_reference),
+                                                       ctypes.pointer(b))
+
+    return array(array_reference=b, tsa_type=arr.tsa_type)
+
+
 def percentage_of_reoccurring_datapoints_to_all_datapoints(arr, is_sorted):
-    """Calculates the percentage of unique values, that are present in the time series more than once.
+    """ Calculates the percentage of unique values, that are present in the time series more than once.
 
     .. math::
 
         len(different values occurring more than once) / len(different values)
 
     This means the percentage is normalized to the number of unique values, in contrast to the
-    percentageOfReoccurringValuesToAllValues.
+    percentage_of_reoccurring_values_to_all_values.
 
     :param arr: TSA array with the time series.
     :param is_sorted: Indicates if the input time series is sorted or not. Defaults to false.
@@ -769,8 +867,31 @@ def percentage_of_reoccurring_datapoints_to_all_datapoints(arr, is_sorted):
     return array(array_reference=b, tsa_type=arr.tsa_type)
 
 
+def percentage_of_reoccurring_values_to_all_values(arr, is_sorted):
+    """ Calculates the percentage of unique values, that are present in the time series more than once.
+
+    .. math::
+
+        \frac{\textit{number of data points occurring more than once}}{\textit{number of all data points})}
+
+    This means the percentage is normalized to the number of unique values, in contrast to the
+    percentage_of_reoccurring_datapoints_to_all_datapoints.
+
+    :param arr: TSA array with the time series.
+    :param is_sorted: Indicates if the input time series is sorted or not. Defaults to false.
+    :return: TSA array with the percentage of unique values, that are present in the time series more than once.
+    """
+    b = ctypes.c_void_p(0)
+
+    TsaLibrary().c_tsa_library.percentage_of_reoccurring_values_to_all_values(ctypes.pointer(arr.arr_reference),
+                                                                              ctypes.pointer(ctypes.c_bool(is_sorted)),
+                                                                              ctypes.pointer(b))
+
+    return array(array_reference=b, tsa_type=arr.tsa_type)
+
+
 def quantile(arr, q, precision=1e8):
-    """Returns values at the given quantile.
+    """ Returns values at the given quantile.
 
     :param arr: TSA array with the time series.
     :param q: Tsa array with the percentile(s) at which to extract score(s). One or many.
@@ -786,20 +907,57 @@ def quantile(arr, q, precision=1e8):
     return array(array_reference=b, tsa_type=arr.tsa_type)
 
 
+def range_count(arr, min, max):
+    """ Counts observed values within the interval [min, max).
+
+    :param arr: TSA array with the time series.
+    :param min: Value that sets the lower limit.
+    :param max: Value that sets the upper limit.
+    :return: TSA array with the values at the given range.
+    """
+    b = ctypes.c_void_p(0)
+
+    TsaLibrary().c_tsa_library.range_count(ctypes.pointer(arr.arr_reference),
+                                           ctypes.pointer(ctypes.c_int(min)),
+                                           ctypes.pointer(ctypes.c_float(max)),
+                                           ctypes.pointer(b))
+
+    return array(array_reference=b, tsa_type=arr.tsa_type)
+
+
 def ratio_beyond_r_sigma(arr, r):
     """ Calculates the ratio of values that are more than :math: `r*std(x)` (so :math: `r` sigma) away from the mean of
     :math: `x`.
 
     :param arr: TSA array with the time series.
     :param r: Number of times that the values should be away from.
-    :return: TSA array with the ratio of values that are more than :math: `r*std(x)` (so :math: `r` sigma) away from the mean of
-    :math: `x`.
+    :return: TSA array with the ratio of values that are more than :math: `r*std(x)` (so :math: `r` sigma) away from
+    the mean of :math: `x`.
     """
     b = ctypes.c_void_p(0)
 
     TsaLibrary().c_tsa_library.ratio_beyond_r_sigma(ctypes.pointer(arr.arr_reference),
                                                     ctypes.pointer(ctypes.c_float(r)),
                                                     ctypes.pointer(b))
+
+    return array(array_reference=b, tsa_type=arr.tsa_type)
+
+
+def ratio_value_number_to_time_series_length(arr):
+    """ Calculates a factor which is 1 if all values in the time series occur only once, and below one if this is
+    not the case. In principle, it just returns:
+
+    .. math::
+
+        \frac{\textit{number_unique_values}}{\textit{number_values}}
+
+    :param arr: TSA array with the time series.
+    :return: TSA array with the ratio of unique values with respect to the total number of values.
+    """
+    b = ctypes.c_void_p(0)
+
+    TsaLibrary().c_tsa_library.ratio_value_number_to_time_series_length(ctypes.pointer(arr.arr_reference),
+                                                                        ctypes.pointer(b))
 
     return array(array_reference=b, tsa_type=arr.tsa_type)
 
@@ -838,6 +996,30 @@ def skewness(arr):
     return array(array_reference=b, tsa_type=arr.tsa_type)
 
 
+def spkt_welch_density(arr, coeff):
+    """ Estimates the cross power spectral density of the time series array at different frequencies. To do so, the
+    time series is first shifted from the time domain to the frequency domain.
+
+    Welch's method computes an estimate of the power spectral density by dividing the data into overlapping
+    segments, computing a modified periodogram for each segment and averaging the periodograms.
+    [1] P. Welch, "The use of the fast Fourier transform for the estimation of power spectra: A method based on time
+    averaging over short, modified periodograms", IEEE Trans. Audio Electroacoust. vol. 15, pp. 70-73, 1967.
+    [2] M.S. Bartlett, "Periodogram Analysis and Continuous Spectra", Biometrika, vol. 37, pp. 1-16, 1950.
+    [3] Rabiner, Lawrence R., and B. Gold. "Theory and Application of Digital Signal Processing" Prentice-Hall, pp.
+    414-419, 1975.
+
+    :param arr: TSA array with the time series.
+    :param coeff: The coefficient to be returned.
+    :return: TSA array containing the power spectrum of the different frequencies for each time series in arr.
+    """
+    b = ctypes.c_void_p(0)
+
+    TsaLibrary().c_tsa_library.spkt_welch_density(ctypes.pointer(arr.arr_reference),
+                                                  ctypes.pointer(ctypes.c_int(coeff)), ctypes.pointer(b))
+
+    return array(array_reference=b, tsa_type=arr.tsa_type)
+
+
 def standard_deviation(arr):
     """ Calculates the standard deviation of each time series within tss.
 
@@ -853,7 +1035,7 @@ def standard_deviation(arr):
 
 
 def sum_of_reoccurring_datapoints(arr, is_sorted=False):
-    """Calculates the sum of all data points, that are present in the time series more than once.
+    """ Calculates the sum of all data points, that are present in the time series more than once.
 
     :param arr: TSA array with the time series.
     :param is_sorted: Indicates if the input time series is sorted or not. Defaults to false.
@@ -864,6 +1046,37 @@ def sum_of_reoccurring_datapoints(arr, is_sorted=False):
     TsaLibrary().c_tsa_library.sum_of_reoccurring_datapoints(ctypes.pointer(arr.arr_reference),
                                                              ctypes.pointer(ctypes.c_bool(is_sorted)),
                                                              ctypes.pointer(b))
+
+    return array(array_reference=b, tsa_type=arr.tsa_type)
+
+
+def sum_of_reoccurring_values(arr, is_sorted=False):
+    """ Calculates the sum of all values, that are present in the time series more than once.
+
+    :param arr: TSA array with the time series.
+    :param is_sorted: Indicates if the input time series is sorted or not. Defaults to false.
+    :return: TSA array with the sum of all values, that are present in the time series more than once.
+    """
+    b = ctypes.c_void_p(0)
+
+    TsaLibrary().c_tsa_library.sum_of_reoccurring_values(ctypes.pointer(arr.arr_reference),
+                                                         ctypes.pointer(ctypes.c_bool(is_sorted)),
+                                                         ctypes.pointer(b))
+
+    return array(array_reference=b, tsa_type=arr.tsa_type)
+
+
+def sum_values(arr):
+    """ Calculates the sum over the time series arr.
+
+    :param arr: TSA array with the time series.
+    :param is_sorted: Indicates if the input time series is sorted or not. Defaults to false.
+    :return: TSA array with the sum of values in each time series.
+    """
+    b = ctypes.c_void_p(0)
+
+    TsaLibrary().c_tsa_library.sum_values(ctypes.pointer(arr.arr_reference),
+                                          ctypes.pointer(b))
 
     return array(array_reference=b, tsa_type=arr.tsa_type)
 
@@ -887,8 +1100,37 @@ def symmetry_looking(arr, r):
     return array(array_reference=b, tsa_type=dtype.b8)
 
 
+def time_reversal_asymmetry_statistic(arr, lag):
+    """ This function calculates the value of:
+
+    .. math::
+
+        \frac{1}{n-2lag} \sum_{i=0}^{n-2lag} x_{i + 2 \cdot lag}^2 \cdot x_{i + lag} - x_{i + lag} \cdot  x_{i}^2
+
+    which is
+
+    .. math::
+
+        \mathbb{E}[L^2(X)^2 \cdot L(X) - L(X) \cdot X^2]
+
+    where :math:`\mathbb{E}` is the mean and :math:`L` is the lag operator. It was proposed in [1] as a promising
+    feature to extract from time series.
+
+    :param arr: TSA array with the time series.
+    :param lag: The lag to be computed.
+    :return: TSA array containing the count of the given value in each time series.
+    """
+    b = ctypes.c_void_p(0)
+
+    TsaLibrary().c_tsa_library.time_reversal_asymmetry_statistic(ctypes.pointer(arr.arr_reference),
+                                                                 ctypes.pointer(ctypes.c_int(lag)),
+                                                                 ctypes.pointer(b))
+
+    return array(array_reference=b, tsa_type=arr.tsa_type)
+
+
 def value_count(arr, v):
-    """Counts occurrences of value in the time series tss.
+    """ Counts occurrences of value in the time series tss.
 
     :param arr: TSA array with the time series.
     :param v: The value to be counted.
@@ -900,3 +1142,30 @@ def value_count(arr, v):
                                            ctypes.pointer(b))
 
     return array(array_reference=b, tsa_type=dtype.u32)
+
+
+def variance(arr):
+    """ Computes the variance for the time series array.
+
+    :param arr: TSA array with the time series.
+    :return: TSA array containing the variance in each time series.
+    """
+    b = ctypes.c_void_p(0)
+
+    TsaLibrary().c_tsa_library.variance(ctypes.pointer(arr.arr_reference), ctypes.pointer(b))
+
+    return array(array_reference=b, tsa_type=arr.tsa_type)
+
+
+def variance_larger_than_standard_deviation(arr):
+    """ Calculates if the variance of array is greater than the standard deviation. In other words, if the variance of
+    array is larger than 1.
+
+    :param arr: TSA array with the time series.
+    :return: TSA array denoting if the variance of array is greater than the standard deviation.
+    """
+    b = ctypes.c_void_p(0)
+
+    TsaLibrary().c_tsa_library.variance_larger_than_standard_deviation(ctypes.pointer(arr.arr_reference), ctypes.pointer(b))
+
+    return array(array_reference=b, tsa_type=dtype.b8)
