@@ -466,18 +466,18 @@ def has_duplicate_min(arr):
     return array(array_reference=b, tsa_type=dtype.b8)
 
 
-def index_max_quantile(arr, q):
-    """ Calculates the index of the max quantile.
+def index_mass_quantile(arr, q):
+    """ Calculates the index of the mass quantile.
 
     :param arr: TSA array with the time series.
     :param q: The quantile.
-    :return: TSA array with the index of the max quantile q.
+    :return: TSA array with the index of the mass quantile q.
     """
 
     b = ctypes.c_void_p(0)
 
-    TsaLibrary().c_tsa_library.index_max_quantile(ctypes.pointer(arr.arr_reference), ctypes.pointer(ctypes.c_float(q)),
-                                                  ctypes.pointer(b))
+    TsaLibrary().c_tsa_library.index_mass_quantile(ctypes.pointer(arr.arr_reference), ctypes.pointer(ctypes.c_float(q)),
+                                                   ctypes.pointer(b))
 
     return array(array_reference=b, tsa_type=arr.tsa_type)
 
@@ -1166,6 +1166,7 @@ def variance_larger_than_standard_deviation(arr):
     """
     b = ctypes.c_void_p(0)
 
-    TsaLibrary().c_tsa_library.variance_larger_than_standard_deviation(ctypes.pointer(arr.arr_reference), ctypes.pointer(b))
+    TsaLibrary().c_tsa_library.variance_larger_than_standard_deviation(ctypes.pointer(arr.arr_reference),
+                                                                       ctypes.pointer(b))
 
     return array(array_reference=b, tsa_type=dtype.b8)

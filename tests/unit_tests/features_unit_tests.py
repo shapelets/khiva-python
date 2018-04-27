@@ -170,12 +170,12 @@ class FeatureTest(unittest.TestCase):
         self.assertEqual(has_duplicate_max_result[0], True)
         self.assertEqual(has_duplicate_max_result[1], False)
 
-    def test_index_max_quantile(self):
-        index_max_quantile_result = index_max_quantile(array([[5, 4, 3, 0, 0, 1], [5, 4, 0, 0, 2, 1]]),
-                                                       0.5).to_numpy()
+    def test_index_mass_quantile(self):
+        index_mass_quantile_result = index_mass_quantile(array([[5, 4, 3, 0, 0, 1], [5, 4, 0, 0, 2, 1]]),
+                                                         0.5).to_numpy()
 
-        self.assertAlmostEqual(index_max_quantile_result[0], 0.333333333, delta=self.DELTA)
-        self.assertAlmostEqual(index_max_quantile_result[1], 0.333333333, delta=self.DELTA)
+        self.assertAlmostEqual(index_mass_quantile_result[0], 0.333333333, delta=self.DELTA)
+        self.assertAlmostEqual(index_mass_quantile_result[1], 0.333333333, delta=self.DELTA)
 
     def test_kurtosis(self):
         kurtosis_result = kurtosis(array([[0, 1, 2, 3, 4, 5], [2, 2, 2, 20, 30, 25]])).to_numpy()
