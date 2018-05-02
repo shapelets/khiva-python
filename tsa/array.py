@@ -9,6 +9,7 @@
 ########################################################################################################################
 import numpy as np
 import ctypes
+from collections import deque
 from tsa.library import TsaLibrary
 from enum import Enum
 import pandas as pd
@@ -82,7 +83,9 @@ def _get_array_type(tsa_type):
     """
     return {
         dtype.f32.value: ctypes.c_float,
+        dtype.c32.value: ctypes.c_float,
         dtype.f64.value: ctypes.c_double,
+        dtype.c64.value: ctypes.c_double,
         dtype.b8.value: ctypes.c_bool,
         dtype.u8.value: ctypes.c_uint8,
         dtype.s16.value: ctypes.c_int16,
@@ -90,10 +93,7 @@ def _get_array_type(tsa_type):
         dtype.s32.value: ctypes.c_int32,
         dtype.u32.value: ctypes.c_uint32,
         dtype.s64.value: ctypes.c_int64,
-        dtype.u64.value: ctypes.c_uint64,
-        dtype.c32.value: (2 * ctypes.c_float),
-        dtype.c64.value: (2 * ctypes.c_double)
-
+        dtype.u64.value: ctypes.c_uint64
     }[tsa_type]
 
 
@@ -107,7 +107,9 @@ def _get_numpy_type(tsa_type):
     """
     return {
         dtype.f32.value: np.float,
+        dtype.c32.value: np.complex64,
         dtype.f64.value: np.double,
+        dtype.c64.value: np.complex128,
         dtype.b8.value: np.bool,
         dtype.u8.value: np.uint8,
         dtype.s16.value: np.int8,
@@ -136,7 +138,6 @@ class array:
             self.arr_reference = self._create_array(data)
             self.dims = self.get_dims()
             self.result_l = self._get_result_length()
-
         else:
             self.tsa_type = tsa_type
             self.arr_reference = array_reference
@@ -145,44 +146,36 @@ class array:
 
         self.arrayfire_reference = False
 
-    def get_dims(self):
-        """ Gets the dimensions of the TSA array.
-
-        :return: The dimensions of the TSA array.
-        """
-        c_array_n = (ctypes.c_long * 4)(*(np.zeros(4)).astype(np.long))
-        TsaLibrary().c_tsa_library.get_dims(ctypes.pointer(self.arr_reference), ctypes.pointer(c_array_n))
-        return np.array(c_array_n)
-
-    def _get_result_length(self):
-        """ Gets the length of the result.
-
-        :return: The length of the result, used in order to get the data to the host.
-        """
-        result = 1
-        for value in self.dims:
-            result *= value
-
-        return result
-
     def _create_array(self, data):
         """ Creates the TSA array in the device.
 
         :param data: The data used for creating the tsa array.
+
         :return An opaque pointer to the Array.
         """
         if isinstance(data, list):
             data = np.array(data)
         if isinstance(data, pd.DataFrame):
             data = data.as_matrix(data)
-        shape = np.shape(data)[::-1]
+        shape = np.array(data.shape)
+        shape = shape[shape > 1]
+        shape = deque(shape)
+        shape.rotate(1)
         c_array_n = (ctypes.c_long * len(shape))(*(np.array(shape)).astype(np.long))
         c_ndims = ctypes.c_uint(len(shape))
-        try:
-            array_joint = np.concatenate(data, axis=0)
-            c_array_joint = (_get_array_type(self.tsa_type.value) * len(array_joint))(*array_joint)
-        except:
-            c_array_joint = (_get_array_type(self.tsa_type.value) * len(data))(*data)
+        c_complex = np.iscomplexobj(data)
+
+        if c_complex:
+            data = np.array([data.real, data.imag])
+            c = deque(range(1, len(data.shape)))
+            c.rotate(1)
+            c.append(0)
+            array_joint = np.transpose(data, c).flatten()
+        else:
+            array_joint = data.flatten()
+
+        c_array_joint = (_get_array_type(self.tsa_type.value) * len(array_joint))(
+            *array_joint)
         opaque_pointer = ctypes.c_void_p(0)
         TsaLibrary().c_tsa_library.create_array(ctypes.pointer(c_array_joint),
                                                 ctypes.pointer(c_ndims),
@@ -199,28 +192,64 @@ class array:
         initialized_result_array = np.zeros(self.result_l).astype(_get_array_type(self.tsa_type.value))
         c_result_array = (_get_array_type(self.tsa_type.value) * self.result_l)(*initialized_result_array)
         TsaLibrary().c_tsa_library.get_data(ctypes.pointer(self.arr_reference), ctypes.pointer(c_result_array))
-        return np.array(c_result_array)
 
-    def to_numpy(self):
-        """ Converts the TSA array to a numpy array.
+        dims = self.get_dims()
+        dims = dims[dims > 1]
+        a = np.array(c_result_array)
 
-        :return: TSA array converted to numpy.array.
+        if self.is_complex():
+            a = np.array(np.split(a, self.result_l / 2))
+            a = np.apply_along_axis(lambda args: [complex(*args)], 1, a)
+            a = a.reshape(dims)
+            c = deque(range(len(a.shape)))
+            c.rotate(-1)
+            a = np.transpose(a, c)
+        else:
+            dims = deque(dims)
+            dims.rotate(1)
+            a = a.reshape(dims)
+
+        a = a.astype(_get_numpy_type(self.tsa_type.value))
+        return a
+
+    def _get_result_length(self):
+        """ Gets the length of the result.
+
+        :return: The length of the result, used in order to get the data to the host.
         """
-        return np.array(np.split(self._get_data(), self.dims[1]))
+        result = 1
+        for value in self.dims:
+            result *= value
 
-    def to_list(self):
-        """ Converts the TSA array to a list.
+        if self.is_complex():
+            result *= 2
 
-        :return: TSA array converted to list.
+        return result
+
+    def get_dims(self):
+        """ Gets the dimensions of the TSA array.
+
+        :return: The dimensions of the TSA array.
         """
-        return np.split(self._get_data(), self.dims[1])
+        c_array_n = (ctypes.c_long * 4)(*(np.zeros(4)).astype(np.long))
+        TsaLibrary().c_tsa_library.get_dims(ctypes.pointer(self.arr_reference), ctypes.pointer(c_array_n))
+        return np.array(c_array_n)
 
-    def to_pandas(self):
-        """ Converts the TSA array to a pandas dataframe.
+    def get_type(self):
+        """ Gets the type of the TSA array.
 
-        :return: TSA array converted to a pandas dataframe.
+        :return: The type of the TSA array.
         """
-        return pd.DataFrame(data=np.split(self._get_data(), self.dims[1]))
+        c_type = ctypes.c_int()
+        TsaLibrary().c_tsa_library.get_type(ctypes.pointer(self.arr_reference), ctypes.pointer(c_type))
+        return dtype(c_type.value)
+
+    def is_complex(self):
+        """ Returns True if the array contains complex numbers and False otherwise.
+
+        :return: True if the array contains complex numbers and False otherwise.
+        """
+        return self.tsa_type.value == dtype.c32.value or self.tsa_type.value == dtype.c64.value
 
     def to_arrayfire(self):
         """ Creates an Arrayfire array from this TSA array. This need to be used carefully as the same array
@@ -239,6 +268,27 @@ class array:
         self.arrayfire_reference = True
         return result
 
+    def to_list(self):
+        """ Converts the TSA array to a list.
+
+        :return: TSA array converted to list.
+        """
+        return self._get_data().tolist()
+
+    def to_numpy(self):
+        """ Converts the TSA array to a numpy array.
+
+        :return: TSA array converted to numpy.array.
+        """
+        return self._get_data()
+
+    def to_pandas(self):
+        """ Converts the TSA array to a pandas data frame.
+
+        :return: TSA array converted to a pandas data frame.
+        """
+        return pd.DataFrame(data=self._get_data())
+
     def print(self):
         """
         Prints the data stored in the TSA array.
@@ -246,7 +296,10 @@ class array:
         TsaLibrary().c_tsa_library.print(ctypes.pointer(self.arr_reference))
 
     def __len__(self):
-        return self.result_l
+        if self.is_complex():
+            return self.result_l / 2
+        else:
+            return self.result_l
 
     def __del__(self):
         if not self.arrayfire_reference:

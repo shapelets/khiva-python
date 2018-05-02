@@ -17,7 +17,7 @@ import logging
 
 ########################################################################################################################
 
-class FeatureTest(unittest.TestCase):
+class FeaturesTest(unittest.TestCase):
     DELTA = 1e-6
 
     def setUp(self):
@@ -48,17 +48,17 @@ class FeatureTest(unittest.TestCase):
 
     def test_abs_energy(self):
         abs_energy_result = abs_energy(array(data=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10])).to_numpy()
-        self.assertAlmostEqual(abs_energy_result[0], 385, delta=self.DELTA)
+        self.assertAlmostEqual(abs_energy_result, 385, delta=self.DELTA)
 
     def test_cross_correlation(self):
         cross_correlation_result = cross_correlation(xss=array(data=[1, 2, 3, 4]),
                                                      yss=array(data=[4, 6, 8, 10, 12]),
                                                      unbiased=False).to_numpy()
-        self.assertAlmostEqual(cross_correlation_result[0][0], 0.790569415, delta=self.DELTA)
-        self.assertAlmostEqual(cross_correlation_result[0][1], 0.790569415, delta=self.DELTA)
-        self.assertAlmostEqual(cross_correlation_result[0][2], 0.079056941, delta=self.DELTA)
-        self.assertAlmostEqual(cross_correlation_result[0][3], -0.395284707, delta=self.DELTA)
-        self.assertAlmostEqual(cross_correlation_result[0][4], -0.474341649, delta=self.DELTA)
+        self.assertAlmostEqual(cross_correlation_result[0], 0.790569415, delta=self.DELTA)
+        self.assertAlmostEqual(cross_correlation_result[1], 0.790569415, delta=self.DELTA)
+        self.assertAlmostEqual(cross_correlation_result[2], 0.079056941, delta=self.DELTA)
+        self.assertAlmostEqual(cross_correlation_result[3], -0.395284707, delta=self.DELTA)
+        self.assertAlmostEqual(cross_correlation_result[4], -0.474341649, delta=self.DELTA)
 
     def test_auto_covariance(self):
         auto_covariance_result = auto_covariance(
@@ -89,8 +89,8 @@ class FeatureTest(unittest.TestCase):
             array(data=[[1, 2, 3, 4, 5, 6, 7, 8, 9, 10], [11, 12, 13, 14, 15, 16, 17, 18, 19, 20]],
                   tsa_type=dtype.f32), 4, 0.5).to_numpy()
 
-        self.assertAlmostEqual(approximate_entropy_result[0][0], 0.13484281753639338, delta=self.DELTA)
-        self.assertAlmostEqual(approximate_entropy_result[0][1], 0.13484281753639338, delta=self.DELTA)
+        self.assertAlmostEqual(approximate_entropy_result[0], 0.13484281753639338, delta=self.DELTA)
+        self.assertAlmostEqual(approximate_entropy_result[1], 0.13484281753639338, delta=self.DELTA)
 
     def test_auto_correlation(self):
         auto_correlation_result = auto_correlation(
@@ -140,8 +140,8 @@ class FeatureTest(unittest.TestCase):
     def test_first_location_of_maximum(self):
         first_location_of_maximum_result = first_location_of_maximum(
             array([[5, 4, 3, 5, 0, 1, 5, 3, 2, 1], [2, 4, 3, 5, 2, 5, 4, 3, 5, 2]])).to_numpy()
-        self.assertEqual(first_location_of_maximum_result[0], 0.0)
-        self.assertEqual(first_location_of_maximum_result[1], 0.3)
+        self.assertAlmostEqual(first_location_of_maximum_result[0], 0.0, delta=self.DELTA)
+        self.assertAlmostEqual(first_location_of_maximum_result[1], 0.3, delta=self.DELTA)
 
     def test_first_location_of_minimum(self):
         first_location_of_minimum_result = first_location_of_minimum(
@@ -156,7 +156,7 @@ class FeatureTest(unittest.TestCase):
                               0.10512571036815643, 0.89872437715530396],
                              [-0.0009912563255056738, -0.0027067768387496471, -0.00015192681166809052,
                               0.10512571036815643, 0.89872437715530396]])
-        self.assertAlmostEqual(friedrich_coefficients_result.all(), expected.all(), self.DELTA)
+        np.testing.assert_array_almost_equal(friedrich_coefficients_result, expected, decimal=6)
 
     def test_has_duplicates(self):
         has_duplicates_result = has_duplicates(
@@ -322,20 +322,20 @@ class FeatureTest(unittest.TestCase):
     def test_aggregated_linear_trend_mean(self):
         aggregated_linear_trend_result = aggregated_linear_trend(
             array([[2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5]]), 3, 0)
-        self.assertAlmostEqual(aggregated_linear_trend_result[0].to_numpy()[0], 1, delta=self.DELTA)
-        self.assertAlmostEqual(aggregated_linear_trend_result[1].to_numpy()[0], 2, delta=self.DELTA)
-        self.assertAlmostEqual(aggregated_linear_trend_result[2].to_numpy()[0], 1, delta=self.DELTA)
-        self.assertAlmostEqual(aggregated_linear_trend_result[3].to_numpy()[0], 0, delta=self.DELTA)
-        self.assertAlmostEqual(aggregated_linear_trend_result[4].to_numpy()[0], 0, delta=self.DELTA)
+        self.assertAlmostEqual(aggregated_linear_trend_result[0].to_numpy(), 1, delta=self.DELTA)
+        self.assertAlmostEqual(aggregated_linear_trend_result[1].to_numpy(), 2, delta=self.DELTA)
+        self.assertAlmostEqual(aggregated_linear_trend_result[2].to_numpy(), 1, delta=self.DELTA)
+        self.assertAlmostEqual(aggregated_linear_trend_result[3].to_numpy(), 0, delta=self.DELTA)
+        self.assertAlmostEqual(aggregated_linear_trend_result[4].to_numpy(), 0, delta=self.DELTA)
 
     def test_aggregated_linear_trend_min(self):
         aggregated_linear_trend_result = aggregated_linear_trend(
             array([2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5]), 3, 2)
-        self.assertAlmostEqual(aggregated_linear_trend_result[0].to_numpy()[0], 1, delta=1e-3)
-        self.assertAlmostEqual(aggregated_linear_trend_result[1].to_numpy()[0], 2, delta=1e-3)
-        self.assertAlmostEqual(aggregated_linear_trend_result[2].to_numpy()[0], 1, delta=1e-3)
-        self.assertAlmostEqual(aggregated_linear_trend_result[3].to_numpy()[0], 0, delta=1e-3)
-        self.assertAlmostEqual(aggregated_linear_trend_result[4].to_numpy()[0], 0, delta=1e-3)
+        self.assertAlmostEqual(aggregated_linear_trend_result[0].to_numpy(), 1, delta=1e-3)
+        self.assertAlmostEqual(aggregated_linear_trend_result[1].to_numpy(), 2, delta=1e-3)
+        self.assertAlmostEqual(aggregated_linear_trend_result[2].to_numpy(), 1, delta=1e-3)
+        self.assertAlmostEqual(aggregated_linear_trend_result[3].to_numpy(), 0, delta=1e-3)
+        self.assertAlmostEqual(aggregated_linear_trend_result[4].to_numpy(), 0, delta=1e-3)
 
     def test_cwt_coefficients(self):
         cwt_coefficients_result = cwt_coefficients(array([[0.1, 0.2, 0.3], [0.1, 0.2, 0.3]]),
@@ -428,7 +428,7 @@ class FeatureTest(unittest.TestCase):
                              [1.0, 0.9993331432342529, -0.0006701064994559, -0.0006701068487018, -0.0008041285327636,
                               -0.0005360860959627, -0.0007371186511591, -0.0004690756904893, -0.0008041299879551,
                               -0.0007371196406893]])
-        self.assertAlmostEqual(result.all(), expected.all(), delta=1e-3)
+        np.testing.assert_array_almost_equal(result, expected, decimal=3)
 
     def test_percentage_of_reocurring_datapoints_to_all_datapoints(self):
         result = percentage_of_reoccurring_datapoints_to_all_datapoints(
@@ -467,8 +467,8 @@ class FeatureTest(unittest.TestCase):
 
     def test_sample_entropy(self):
         result = sample_entropy(array([[3, 0, 0, 4, 0, 0, 13], [3, 0, 0, 4, 0, 0, 13]])).to_numpy()
-        self.assertAlmostEqual(result[0][0], 1.2527629, delta=1e-4)
-        self.assertAlmostEqual(result[0][1], 1.2527629, delta=1e-4)
+        self.assertAlmostEqual(result[0], 1.2527629, delta=1e-4)
+        self.assertAlmostEqual(result[1], 1.2527629, delta=1e-4)
 
     def test_skewness(self):
         result = skewness(array([[3, 0, 0, 4, 0, 0, 13], [3, 0, 0, 4, 0, 0, 13]])).to_numpy()
@@ -500,8 +500,8 @@ class FeatureTest(unittest.TestCase):
 
     def test_sum_values(self):
         result = sum_values(array([[1, 2, 3, 4.1], [-1.2, -2, -3, -4]])).to_numpy()
-        self.assertEqual(result[0], 10.1)
-        self.assertEqual(result[1], -10.2)
+        self.assertAlmostEqual(result[0], 10.1, delta=self.DELTA)
+        self.assertAlmostEqual(result[1], -10.2, delta=self.DELTA)
 
     def test_symmetry_looking(self):
         result = symmetry_looking(array([[20, 20, 20, 18, 25, 19, 20, 20, 20, 20, 40, 30, 1, 50, 1, 1, 5, 1, 20, 20],
@@ -544,7 +544,7 @@ class FeatureTest(unittest.TestCase):
             c = af.transpose(b)
             d = array(array_reference=c.arr)
             e = abs_energy(d).to_numpy()
-            self.assertAlmostEqual(e[0], 385, delta=self.DELTA)
+            self.assertAlmostEqual(e, 385, delta=self.DELTA)
         except ModuleNotFoundError:
             logging.error("This test needs the Arrayfire package in order to be executed.")
 

@@ -22,8 +22,8 @@ class MatrixTest(unittest.TestCase):
 
     def test_stomp_self_join(self):
         stomp_self_join_result = stomp_self_join(
-            array(data=[[10, 10, 11, 11, 10, 11, 10, 10, 11, 11, 10, 11, 10, 10],[
-                    11, 10, 10, 11, 10, 11, 11, 10, 11, 11, 10, 10, 11, 10]]), 3)
+            array(data=[[10, 10, 11, 11, 10, 11, 10, 10, 11, 11, 10, 11, 10, 10], [
+                11, 10, 10, 11, 10, 11, 11, 10, 11, 11, 10, 10, 11, 10]]), 3)
         expected_index = [6, 7, 8, 9, 10, 11, 0, 1, 2, 3, 4, 5, 9, 10, 11, 6, 7, 8, 3, 4, 5, 0, 1, 2]
 
         for i in range(6):
@@ -32,13 +32,13 @@ class MatrixTest(unittest.TestCase):
 
     def test_stomp(self):
         stomp_result = stomp(array([[10, 11, 10, 11], [10, 11, 10, 11]]),
-                             array([[10, 11, 10, 11, 10, 11, 10, 11],[10, 11, 10, 11, 10, 11, 10, 11]]), 3)
+                             array([[10, 11, 10, 11, 10, 11, 10, 11], [10, 11, 10, 11, 10, 11, 10, 11]]), 3)
         expected_index = [0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1]
         a = stomp_result[0].to_numpy().flatten()
         b = stomp_result[1].to_numpy().flatten()
 
         for i in range(24):
-            self.assertAlmostEqual(a[i], 0, delta = 1e-2)
+            self.assertAlmostEqual(a[i], 0, delta=1e-2)
             self.assertAlmostEqual(b[i], expected_index[i])
 
     def test_find_best_n_motifs(self):
@@ -48,8 +48,8 @@ class MatrixTest(unittest.TestCase):
                              3)
 
         find_best_n_motifs_result = find_best_n_motifs(stomp_result[0], stomp_result[1], 2)
-        a = find_best_n_motifs_result[1].to_numpy()[0]
-        b = find_best_n_motifs_result[2].to_numpy()[0]
+        a = find_best_n_motifs_result[1].to_numpy()
+        b = find_best_n_motifs_result[2].to_numpy()
         self.assertAlmostEqual(a[0], 12, delta=self.DELTA)
         self.assertAlmostEqual(a[1], 11, delta=self.DELTA)
         self.assertAlmostEqual(b[0], 1, delta=self.DELTA)
@@ -62,7 +62,7 @@ class MatrixTest(unittest.TestCase):
 
         find_best_n_discords_result = find_best_n_discords(stomp_result[0],
                                                            stomp_result[1], 2)
-        a = find_best_n_discords_result[2].to_numpy()[0]
+        a = find_best_n_discords_result[2].to_numpy()
         self.assertEqual(a[0], 0)
         self.assertEqual(a[1], 9)
 
