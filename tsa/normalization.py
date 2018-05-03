@@ -9,9 +9,8 @@
 # IMPORT
 ########################################################################################################################
 import ctypes
-import numpy as np
 from tsa.library import TsaLibrary
-from tsa.array import array, dtype
+from tsa.array import array
 
 
 ########################################################################################################################
@@ -30,7 +29,7 @@ def znorm(tss, epsilon=0.00000001):
     TsaLibrary().c_tsa_library.znorm(ctypes.pointer(tss.arr_reference), ctypes.pointer(ctypes.c_double(epsilon)),
                                      ctypes.pointer(b))
 
-    return array(array_reference=b, tsa_type=tss.tsa_type)
+    return array(array_reference=b)
 
 
 def znorm_in_place(tss, epsilon=0.00000001):
@@ -64,7 +63,7 @@ def max_min_norm(tss, high=1.0, low=0.0, epsilon=0.00000001):
                                             ctypes.pointer(ctypes.c_double(epsilon)),
                                             ctypes.pointer(b))
 
-    return array(array_reference=b, tsa_type=tss.tsa_type)
+    return array(array_reference=b)
 
 
 def max_min_norm_in_place(tss, high=1.0, low=0.0, epsilon=0.00000001):
@@ -94,7 +93,7 @@ def decimal_scaling_norm(tss):
     b = ctypes.c_void_p(0)
     TsaLibrary().c_tsa_library.decimal_scaling_norm(ctypes.pointer(tss.arr_reference), ctypes.pointer(b))
 
-    return array(array_reference=b, tsa_type=tss.tsa_type)
+    return array(array_reference=b)
 
 
 def decimal_scaling_norm_in_place(tss):

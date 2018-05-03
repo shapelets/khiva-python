@@ -139,8 +139,8 @@ class array:
             self.dims = self.get_dims()
             self.result_l = self._get_result_length()
         else:
-            self.tsa_type = tsa_type
             self.arr_reference = array_reference
+            self.tsa_type = self.get_type()
             self.dims = self.get_dims()
             self.result_l = self._get_result_length()
 

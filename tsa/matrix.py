@@ -9,9 +9,8 @@
 # IMPORT
 ########################################################################################################################
 import ctypes
-import numpy as np
 from tsa.library import TsaLibrary
-from tsa.array import array, dtype
+from tsa.array import array
 
 
 ########################################################################################################################
@@ -35,8 +34,8 @@ def find_best_n_discords(profile, index, n):
                                                     ctypes.pointer(c),
                                                     ctypes.pointer(d))
 
-    return array(array_reference=b, tsa_type=profile.tsa_type), array(array_reference=c, tsa_type=dtype.u32), array(
-        array_reference=d, tsa_type=dtype.u32)
+    return array(array_reference=b), array(array_reference=c), array(
+        array_reference=d)
 
 
 def find_best_n_motifs(profile, index, n):
@@ -58,9 +57,8 @@ def find_best_n_motifs(profile, index, n):
                                                   ctypes.pointer(c),
                                                   ctypes.pointer(d))
 
-    return array(array_reference=b, tsa_type=profile.tsa_type), array(array_reference=c,
-                                                                      tsa_type=dtype.u32), array(
-        array_reference=d, tsa_type=dtype.u32)
+    return array(array_reference=b), array(array_reference=c), array(
+        array_reference=d)
 
 
 def stomp(first_time_series, second_time_series, subsequence_length):
@@ -81,8 +79,7 @@ def stomp(first_time_series, second_time_series, subsequence_length):
                                      ctypes.pointer(b),
                                      ctypes.pointer(c))
 
-    return array(array_reference=b, tsa_type=first_time_series.tsa_type), array(array_reference=c,
-                                                                                tsa_type=dtype.u32)
+    return array(array_reference=b), array(array_reference=c)
 
 
 def stomp_self_join(time_series, subsequence_length):
@@ -101,5 +98,4 @@ def stomp_self_join(time_series, subsequence_length):
                                                ctypes.pointer(b),
                                                ctypes.pointer(c))
 
-    return array(array_reference=b, tsa_type=time_series.tsa_type), array(array_reference=c,
-                                                                          tsa_type=dtype.u32)
+    return array(array_reference=b), array(array_reference=c)

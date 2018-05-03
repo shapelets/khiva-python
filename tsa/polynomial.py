@@ -10,7 +10,7 @@
 ########################################################################################################################
 import ctypes
 from tsa.library import TsaLibrary
-from tsa.array import array, dtype
+from tsa.array import array
 
 
 ########################################################################################################################
@@ -30,7 +30,7 @@ def polyfit(x, y, deg):
                                        ctypes.pointer(ctypes.c_int(deg)),
                                        ctypes.pointer(b))
 
-    return array(array_reference=b, tsa_type=x.tsa_type)
+    return array(array_reference=b)
 
 
 def roots(p):
@@ -48,4 +48,4 @@ def roots(p):
     b = ctypes.c_void_p(0)
     TsaLibrary().c_tsa_library.roots(ctypes.pointer(p.arr_reference), ctypes.pointer(b))
 
-    return array(array_reference=b, tsa_type=dtype.c32)
+    return array(array_reference=b)

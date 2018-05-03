@@ -478,8 +478,8 @@ class FeaturesTest(unittest.TestCase):
     def test_spkt_welch_density(self):
         result = spkt_welch_density(array([[0, 1, 1, 3, 4, 5, 6, 7, 8, 9], [0, 1, 1, 3, 4, 5, 6, 7, 8, 9]]),
                                     0).to_numpy()
-        self.assertAlmostEqual(result[0], 3.3333334922790527, delta=1e-5)
-        self.assertAlmostEqual(result[1], 3.3333334922790527, delta=1e-5)
+        self.assertAlmostEqual(result[0], 1.6666667, delta=1e-5)
+        self.assertAlmostEqual(result[1], 1.6666667, delta=1e-5)
 
     def test_standard_deviation(self):
         result = standard_deviation(
