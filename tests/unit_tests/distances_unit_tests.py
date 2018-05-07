@@ -33,12 +33,21 @@ class DistancesTest(unittest.TestCase):
         expected = np.array([0, 0, 0, 64, 0, 0, 256, 64, 0])
         np.testing.assert_array_almost_equal(squared_euclidean_result, expected, decimal=1)
 
-    def test_dwt(self):
-        euclidean_result = dwt(array(
+    def test_dtw(self):
+        euclidean_result = dtw(array(
             data=[[1, 1, 1, 1, 1], [2, 2, 2, 2, 2], [3, 3, 3, 3, 3], [4, 4, 4, 4, 4], [5, 5, 5, 5, 5]])).to_numpy()
         expected = np.array([[0, 0, 0, 0, 0], [5, 0, 0, 0, 0], [10, 5, 0, 0, 0], [15, 10, 5, 0, 0], [20, 15, 10, 5, 0]])
         np.testing.assert_array_almost_equal(euclidean_result, expected, decimal=1)
 
+    def test_hamming(self):
+        result = hamming(array(data = [[1, 1, 1, 1, 1],[2, 2, 2, 2, 2],[3, 3, 3, 3, 3],[4, 4, 4, 4, 4],[5, 5, 5, 5, 5]])).to_numpy()
+        expected = np.array([[0, 0, 0, 0, 0], [5, 0, 0, 0, 0], [5, 5, 0, 0, 0], [5, 5, 5, 0, 0], [5, 5, 5, 5, 0]])
+        np.testing.assert_array_almost_equal(result, expected, decimal=1)
+
+    def test_manhattan(self):
+        result = manhattan(array(data = [[1, 1, 1, 1, 1],[2, 2, 2, 2, 2],[3, 3, 3, 3, 3],[4, 4, 4, 4, 4],[5, 5, 5, 5, 5]])).to_numpy()
+        expected = np.array([[0, 0, 0, 0, 0], [5, 0, 0, 0, 0], [10, 5, 0, 0, 0], [15, 10, 5, 0, 0], [20, 15, 10, 5, 0]])
+        np.testing.assert_array_almost_equal(result, expected, decimal=2)
 
 if __name__ == '__main__':
     unittest.main()
