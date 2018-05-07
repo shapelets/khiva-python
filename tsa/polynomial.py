@@ -34,7 +34,7 @@ def polyfit(x, y, deg):
 
 
 def roots(p):
-    """ Calculates the roots of a polynomial with coefficients given in \f$p\f$. The values in the rank-1 array
+    """ Calculates the roots of a polynomial with coefficients given in :math:`p`. The values in the rank-1 array
     :math:`p` are coefficients of a polynomial. If the length of :math:`p` is :math:`n+1` then the polynomial is
     described by:
 
