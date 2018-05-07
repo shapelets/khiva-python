@@ -43,3 +43,18 @@ def squared_euclidean(tss):
     TsaLibrary().c_tsa_library.squared_euclidean(ctypes.pointer(tss.arr_reference),
                                                  ctypes.pointer(b))
     return array(array_reference=b)
+
+
+def dwt(tss):
+    """ Calculates the Dynamic Warping Distance.
+
+    :param tss: Expects an input array whose dimension zero is the length of the time series (all the same) and
+                dimension one indicates the number of time series.
+    :return: Array with  An upper triangular matrix where each position corresponds to the distance between
+            two time series. Diagonal elements will be zero. For example: Position row 0 column 1 recordd the
+            distance between time series 0 and time series 1.
+    """
+    b = ctypes.c_void_p(0)
+    TsaLibrary().c_tsa_library.dwt(ctypes.pointer(tss.arr_reference),
+                                   ctypes.pointer(b))
+    return array(array_reference=b)
