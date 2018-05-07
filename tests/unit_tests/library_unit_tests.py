@@ -57,6 +57,10 @@ class LibraryTest(unittest.TestCase):
                 set_device(i)
                 self.assertEqual(get_device_id(), i)
 
+    def test_version(self):
+        v = version()
+        self.assertEqual(v, '0.0.1')
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -108,3 +108,13 @@ def get_device_count():
     device_count = (ctypes.c_int * 1)(*[0])
     TsaLibrary().c_tsa_library.get_device_count(ctypes.pointer(device_count))
     return device_count[0]
+
+
+def version():
+    """ Returns a string with the current version of the library.
+
+    :return: A string with the current version of the library.
+    """
+    v = ctypes.c_char_p((" " * 40).encode('utf8'))
+    TsaLibrary().c_tsa_library.version(ctypes.pointer(v))
+    return v.value.decode('utf8')
