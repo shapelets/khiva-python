@@ -88,3 +88,4 @@ def squared_euclidean(tss):
     TsaLibrary().c_tsa_library.squared_euclidean(ctypes.pointer(tss.arr_reference),
                                                  ctypes.pointer(b))
     return array(array_reference=b)
+

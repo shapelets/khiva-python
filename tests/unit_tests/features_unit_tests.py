@@ -11,7 +11,7 @@
 import unittest
 import numpy as np
 from tsa.features import *
-from tsa.array import array
+from tsa.array import array, dtype
 import logging
 
 

@@ -49,5 +49,6 @@ class DistancesTest(unittest.TestCase):
         expected = np.array([[0, 0, 0, 0, 0], [5, 0, 0, 0, 0], [10, 5, 0, 0, 0], [15, 10, 5, 0, 0], [20, 15, 10, 5, 0]])
         np.testing.assert_array_almost_equal(result, expected, decimal=2)
 
+
 if __name__ == '__main__':
     unittest.main()
