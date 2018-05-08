@@ -46,7 +46,7 @@ def dtw(tss):
 
 
 def hamming(tss):
-    """ Calculates hamming distances between time series.
+    """ Calculates Hamming distances between time series.
 
     :param tss: Expects an input array whose dimension zero is the length of the time series (all the same) and
                 dimension one indicates the number of time series.
@@ -61,7 +61,7 @@ def hamming(tss):
 
 
 def manhattan(tss):
-    """ Calculates manhattan distances between time series.
+    """ Calculates Manhattan distances between time series.
 
     :param tss: Expects an input array whose dimension zero is the length of the time series (all the same) and
                 dimension one indicates the number of time series.
@@ -76,7 +76,7 @@ def manhattan(tss):
 
 
 def squared_euclidean(tss):
-    """ Calculates non squared version of the euclidean distance.
+    """ Calculates the non squared version of the euclidean distance.
 
     :param tss: Expects an input array whose dimension zero is the length of the time series (all the same) and
                 dimension one indicates the number of time series.
