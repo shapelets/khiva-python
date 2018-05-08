@@ -21,8 +21,8 @@ def decimal_scaling_norm(tss):
     :param tss: TSA array with the time series.
 
     :return: TSA array with the same dimensions as tss, whose values (time series in dimension 0) have been
-             normalized by dividing each number by 10^j, where j is the number of integer digits of the max number in
-             the time series.
+             normalized by dividing each number by :math::`10^j` , where j is the number of integer digits of the max number in
+             the time series.`
     """
     b = ctypes.c_void_p(0)
     TsaLibrary().c_tsa_library.decimal_scaling_norm(ctypes.pointer(tss.arr_reference), ctypes.pointer(b))
@@ -81,7 +81,7 @@ def mean_norm(tss):
 
     .. math::
 
-    \acute{x} = \frac{x - mean(x)}{max(x) - min(x)}.
+        \acute{x} = \frac{x - mean(x)}{max(x) - min(x)}.
 
     :param tss: TSA array with the time series.
 
@@ -101,7 +101,7 @@ def mean_norm_in_place(tss):
 
     .. math::
 
-    \acute{x} = \frac{x - mean(x)}{max(x) - min(x)}.
+        \acute{x} = \frac{x - mean(x)}{max(x) - min(x)}.
 
     :param tss: TSA array with the time series.
     """
@@ -109,10 +109,10 @@ def mean_norm_in_place(tss):
 
 
 def znorm(tss, epsilon=0.00000001):
-    """ Calculates a new set of timeseries with zero mean and standard deviation one.
+    """ Calculates a new set of time series with zero mean and standard deviation one.
 
     :param tss: TSA array with the time series.
-    :param epsilon: Minimum standard deviation to consider.  It acts as a gatekeeper for those time series that
+    :param epsilon: Minimum standard deviation to consider. It acts as a gatekeeper for those time series that
            may be constant or near constant.
 
     :return: TSA array with the same dimensions as tss where the time series have been adjusted for zero mean and
@@ -127,10 +127,10 @@ def znorm(tss, epsilon=0.00000001):
 
 def znorm_in_place(tss, epsilon=0.00000001):
     """ Adjusts the time series in the given input and performs z-norm
-    inplace (without allocating further memory).
+    in place (without allocating further memory).
 
     :param tss: TSA array with the time series.
-    :param epsilon: epsilon Minimum standard deviation to consider.  It acts as a gatekeeper for
+    :param epsilon: epsilon Minimum standard deviation to consider. It acts as a gatekeeper for
                     those time series that may be constant or near constant.
     """
     TsaLibrary().c_tsa_library.znorm_in_place(ctypes.pointer(tss.arr_reference),

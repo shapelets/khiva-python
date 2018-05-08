@@ -69,15 +69,15 @@ class NormalizationTest(unittest.TestCase):
         np.testing.assert_array_almost_equal(tss, expected, decimal=self.DECIMAL)
 
     def test_mean_norm(self):
-        result = mean_norm(array([[0, 1, 2, 3],[4, 5, 6, 7]])).to_numpy().flatten()
-        expected = np.array([-0.5, -0.166666667, 0.166666667, 0.5, -0.5, -0.166666667, 0.166666667, 0.5])
+        result = mean_norm(array([[0, 1, 2, 3],[4, 5, 6, 7]])).to_numpy()
+        expected = np.array([[-0.5, -0.166666667, 0.166666667, 0.5], [-0.5, -0.166666667, 0.166666667, 0.5]])
         np.testing.assert_array_almost_equal(result, expected, decimal=self.DECIMAL)
 
     def test_mean_norm_in_place(self):
         a = array([[0, 1, 2, 3], [4, 5, 6, 7]])
         mean_norm_in_place(a)
-        expected = np.array([-0.5, -0.166666667, 0.166666667, 0.5, -0.5, -0.166666667, 0.166666667, 0.5])
-        np.testing.assert_array_almost_equal(a.to_numpy().flatten(), expected, decimal=self.DECIMAL)
+        expected = np.array([[-0.5, -0.166666667, 0.166666667, 0.5], [-0.5, -0.166666667, 0.166666667, 0.5]])
+        np.testing.assert_array_almost_equal(a.to_numpy(), expected, decimal=self.DECIMAL)
 
 
 if __name__ == '__main__':
