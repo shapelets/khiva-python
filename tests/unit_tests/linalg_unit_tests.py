@@ -11,6 +11,7 @@
 import unittest
 from tsa.linalg import *
 import numpy as np
+from tsa.array import *
 
 
 ########################################################################################################################
