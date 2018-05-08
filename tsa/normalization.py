@@ -86,7 +86,7 @@ def mean_norm(tss):
     :param tss: TSA array with the time series.
 
     :return: An array with the same dimensions as tss, whose values (time series in dimension 0) have been
-            normalized by substracting the mean from each number and dividing each number by \f$ max(x) - min(x)\f$, in the
+            normalized by substracting the mean from each number and dividing each number by :math:`max(x) - min(`x)`, in the
             time series.
     """
     b = ctypes.c_void_p(0)
