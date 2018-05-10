@@ -161,7 +161,7 @@ class array:
         shape = shape[shape > 1]
         shape = deque(shape)
         shape.rotate(1)
-        c_array_n = (ctypes.c_long * len(shape))(*(np.array(shape)).astype(np.long))
+        c_array_n = (ctypes.c_longlong * len(shape))(*(np.array(shape)).astype(np.longlong))
         c_ndims = ctypes.c_uint(len(shape))
         c_complex = np.iscomplexobj(data)
 
@@ -231,7 +231,7 @@ class array:
 
         :return: The dimensions of the TSA array.
         """
-        c_array_n = (ctypes.c_long * 4)(*(np.zeros(4)).astype(np.long))
+        c_array_n = (ctypes.c_longlong * 4)(*(np.zeros(4)).astype(np.longlong))
         TsaLibrary().c_tsa_library.get_dims(ctypes.pointer(self.arr_reference), ctypes.pointer(c_array_n))
         return np.array(c_array_n)
 

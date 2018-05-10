@@ -21,7 +21,7 @@ class TsaLibrary(object):
             if platform.system() == 'Darwin':
                 self.c_tsa_library = ctypes.CDLL('libtsa_c.dylib')
             elif platform.system() == 'Windows':
-                self.c_tsa_library = ctypes.CDLL('libtsa_c.dll')
+                self.c_tsa_library = ctypes.CDLL('C:/Program Files/TSA/lib/tsa_c.dll')
             elif platform.system() == 'Linux':
                 self.c_tsa_library = ctypes.CDLL('libtsa_c.so')
 
