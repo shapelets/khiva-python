@@ -21,7 +21,6 @@ def abs_energy(arr):
     :param arr: TSA array with the time series.
     :type arr: tsa.array
     :return: TSA array with the absEnergy.
-    :rtype: tsa.array
     """
     b = ctypes.c_void_p(0)
     TsaLibrary().c_tsa_library.abs_energy(ctypes.pointer(arr.arr_reference),
@@ -76,19 +75,18 @@ def aggregated_linear_trend(arr, chunk_size, aggregation_function):
     :param arr: A TSA array with the time series.
     :param chunk_size: The chunk size used to aggregate the data.
     :param aggregation_function: Function to be used in the aggregation. It receives an integer which indicates the
-    function to be applied:
-                                  0 : mean,
-                                  1 : median
-                                  2 : min,
-                                  3 : max,
-                                  4 : stdev,
-                                  default : mean
+                                function to be applied:
+                                0 : mean,
+                                1 : median
+                                2 : min,
+                                3 : max,
+                                4 : stdev,
+                                default : mean
     :return: ( pvalue: TSA array with the pvalues for all time series.
             rvalue: TSA array with the rvalues for all time series.
             intercept: TSA array with the intercept values for all time series.
             slope: TSA array with the slope for all time series.
             stdrr: TSA array with the stderr values for all time series. )
-    :rtype: (tsa.array, tsa.array, tsa.array, tsa.array, tsa.array)
     """
     b = ctypes.c_void_p(0)
     c = ctypes.c_void_p(0)
@@ -370,7 +368,7 @@ def first_location_of_maximum(arr):
 
     :param arr: TSA array with the time series.
     :return: TSA array with the first relative location of the maximum value to the length of the time series, for each
-    time series.
+            time series.
     """
     b = ctypes.c_void_p(0)
 
@@ -401,7 +399,7 @@ def friedrich_coefficients(arr, m, r):
     which has been fitted to the deterministic dynamics of Langevin model:
 
     .. math::
-        \dot(x)(t) = h(x(t)) + R \mathcal(N)(0,1)
+        \\dot(x)(t) = h(x(t)) + R \\mathcal(N)(0,1)
 
     as described by [1]. For short time series this method is highly dependent on the parameters.
 
@@ -609,7 +607,7 @@ def longest_strike_above_mean(arr):
 
     :param arr: TSA array with the time series.
     :return: TSA array with the length of the longest consecutive subsequence in the input time series that is bigger
-    than the mean.
+            than the mean.
     """
     b = ctypes.c_void_p(0)
 
@@ -624,7 +622,7 @@ def longest_strike_below_mean(arr):
 
     :param arr: TSA array with the time series.
     :return: TSA array with the length of the longest consecutive subsequence in the input time series that is below
-    the mean.
+            the mean.
     """
     b = ctypes.c_void_p(0)
 
@@ -639,7 +637,7 @@ def max_langevin_fixed_point(arr, m, r):
     which has been fitted to the deterministic dynamics of Langevin model
 
     .. math::
-        \dot(x)(t) = h(x(t)) + R \mathcal(N)(0,1)
+        \\dot(x)(t) = h(x(t)) + R \\mathcal(N)(0,1)
 
     as described by
 
@@ -792,13 +790,13 @@ def number_cwt_peaks(arr, max_w):
 
 
 def number_peaks(arr, n):
-    """ Calculates the number of peaks of at least support :math: `n` in the time series :math: `tss`. A peak of support
-    :math: `n` is defined as a subsequence of :math: `tss where a value occurs, which is bigger than
-    its :math: `n` neighbours to the left and to the right.
+    """ Calculates the number of peaks of at least support :math:`n` in the time series :math:`tss`. A peak of support
+    :math:`n` is defined as a subsequence of :math:`tss where a value occurs, which is bigger than
+    its :math:`n` neighbours to the left and to the right.
 
     :param arr: TSA array with the time series.
     :param n: The support of the peak.
-    :return: TSA array with the number of peaks of at least support :math: `n`.
+    :return: TSA array with the number of peaks of at least support :math:`n`.
     """
     b = ctypes.c_void_p(0)
 
@@ -809,19 +807,19 @@ def number_peaks(arr, n):
 
 
 def partial_autocorrelation(arr, lags):
-    """ Calculates the value of the partial autocorrelation function at the given lag. The lag :math:`k'  partial
-    autocorrelation of a time series :math:`\lbrace x_t, t = 1 \ldots T \rbrace` equals the partial correlation of
-    :math:`x_t` and :math:`x_{t-k}`, adjusted for the intermediate variables :math:`\lbrace x_{t-1}, \ldots, x_{t-k+1}
-    \rbrace` ([1]). Following [2], it can be defined as:
+    """ Calculates the value of the partial autocorrelation function at the given lag. The lag :math:`k'`  partial
+    autocorrelation of a time series :math:`\\lbrace x_t, t = 1 \\ldots T \\rbrace` equals the partial correlation of
+    :math:`x_t` and :math:`x_{t-k}`, adjusted for the intermediate variables :math:`\\lbrace x_{t-1}, \\ldots, x_{t-k+1}\\rbrace`
+    ([1]). Following [2], it can be defined as:
 
     .. math::
-          \alpha_k = \frac{ Cov(x_t, x_{t-k} | x_{t-1}, \ldots, x_{t-k+1})}
-          {\sqrt{ Var(x_t | x_{t-1}, \ldots, x_{t-k+1}) Var(x_{t-k} | x_{t-1}, \ldots, x_{t-k+1} )}}
+          \\alpha_k = \\frac{ Cov(x_t, x_{t-k} | x_{t-1}, \\ldots, x_{t-k+1})}
+          {\\sqrt{ Var(x_t | x_{t-1}, \\ldots, x_{t-k+1}) Var(x_{t-k} | x_{t-1}, \\ldots, x_{t-k+1} )}}
 
-    with (a) :math:`x_t = f(x_{t-1}, \ldots, x_{t-k+1})` and (b) :math:`x_{t-k} = f(x_{t-1}, \ldots, x_{t-k+1})`
+    with (a) :math:`x_t = f(x_{t-1}, \\ldots, x_{t-k+1})` and (b) :math:`x_{t-k} = f(x_{t-1}, \\ldots, x_{t-k+1})`
     being AR(k-1) models that can be fitted by OLS. Be aware that in (a), the regression is done on past values to
     predict :math:`x_t` whereas in (b), future values are used to calculate the past value :math:`x_{t-k}`.
-    It is said in [1] that "for an AR(p), the partial autocorrelations :math:`\alpha_k` will be nonzero for :math:`k<=p`
+    It is said in [1] that "for an AR(p), the partial autocorrelations :math:`\\alpha_k` will be nonzero for :math:`k<=p`
     and zero for :math:`k>p`."
     With this property, it is used to determine the lag of an AR-Process.
 
@@ -872,7 +870,7 @@ def percentage_of_reoccurring_values_to_all_values(arr, is_sorted):
 
     .. math::
 
-        \frac{\textit{number of data points occurring more than once}}{\textit{number of all data points})}
+        \\frac{\\textit{number of data points occurring more than once}}{\\\\textit{number of all data points})}
 
     This means the percentage is normalized to the number of unique values, in contrast to the
     percentage_of_reoccurring_datapoints_to_all_datapoints.
@@ -926,13 +924,13 @@ def range_count(arr, min, max):
 
 
 def ratio_beyond_r_sigma(arr, r):
-    """ Calculates the ratio of values that are more than :math: `r*std(x)` (so :math: `r` sigma) away from the mean of
-    :math: `x`.
+    """ Calculates the ratio of values that are more than :math:`r*std(x)` (so :math:`r` sigma) away from the mean of
+    :math:`x`.
 
     :param arr: TSA array with the time series.
     :param r: Number of times that the values should be away from.
-    :return: TSA array with the ratio of values that are more than :math: `r*std(x)` (so :math: `r` sigma) away from
-    the mean of :math: `x`.
+    :return: TSA array with the ratio of values that are more than :math:`r*std(x)` (so :math:`r` sigma) away from
+            the mean of :math:`x`.
     """
     b = ctypes.c_void_p(0)
 
@@ -948,8 +946,7 @@ def ratio_value_number_to_time_series_length(arr):
     not the case. In principle, it just returns:
 
     .. math::
-
-        \frac{\textit{number_unique_values}}{\textit{number_values}}
+        \\frac{\\textit{number_unique_values}}{\\textit{number_values}}
 
     :param arr: TSA array with the time series.
     :return: TSA array with the ratio of unique values with respect to the total number of values.
@@ -1083,6 +1080,7 @@ def sum_values(arr):
 
 def symmetry_looking(arr, r):
     """ Calculates if the distribution of tss *looks symmetric*. This is the case if
+
     .. math::
 
          | mean(tss)-median(tss)| < r * (max(tss)-min(tss))
@@ -1105,15 +1103,15 @@ def time_reversal_asymmetry_statistic(arr, lag):
 
     .. math::
 
-        \frac{1}{n-2lag} \sum_{i=0}^{n-2lag} x_{i + 2 \cdot lag}^2 \cdot x_{i + lag} - x_{i + lag} \cdot  x_{i}^2
+        \\frac{1}{n-2lag} \\sum_{i=0}^{n-2lag} x_{i + 2 \\cdot lag}^2 \\cdot x_{i + lag} - x_{i + lag} \\cdot  x_{i}^2
 
     which is
 
     .. math::
 
-        \mathbb{E}[L^2(X)^2 \cdot L(X) - L(X) \cdot X^2]
+        \\mathbb{E}[L^2(X)^2 \\cdot L(X) - L(X) \\cdot X^2]
 
-    where :math:`\mathbb{E}` is the mean and :math:`L` is the lag operator. It was proposed in [1] as a promising
+    where :math:`\\mathbb{E}` is the mean and :math:`L` is the lag operator. It was proposed in [1] as a promising
     feature to extract from time series.
 
     :param arr: TSA array with the time series.

@@ -80,14 +80,13 @@ def mean_norm(tss):
     formulae:
 
     .. math::
-
-        \acute{x} = \frac{x - mean(x)}{max(x) - min(x)}.
+        \\acute{x} = frac{x - mean(x)}{max(x) - min(x)}.
 
     :param tss: TSA array with the time series.
 
     :return: An array with the same dimensions as tss, whose values (time series in dimension 0) have been
-            normalized by substracting the mean from each number and dividing each number by :math:`max(x) - min(`x)`, in the
-            time series.
+            normalized by substracting the mean from each number and dividing each number by :math:`max(x) - min(`x)`,
+            in the time series.
     """
     b = ctypes.c_void_p(0)
     TsaLibrary().c_tsa_library.mean_norm(ctypes.pointer(tss.arr_reference), ctypes.pointer(b))
@@ -99,9 +98,8 @@ def mean_norm_in_place(tss):
     """ Normalizes the given time series according to its maximum-minimum value and its mean. It follows the following
     formulae:
 
-    .. math::
-
-        \acute{x} = \frac{x - mean(x)}{max(x) - min(x)}.
+    .. math:
+        \\acute{x} = frac{x - mean(x)}{max(x) - min(x)}.
 
     :param tss: TSA array with the time series.
     """

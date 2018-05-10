@@ -45,19 +45,6 @@ def moment(tss, k):
     return array(array_reference=b)
 
 
-def sample_stdev(tss):
-    """ Estimates standard deviation based on a sample. The standard deviation is calculated using the "n-1" method.
-
-    :param tss: Expects an input array whose dimension zero is the length of the time series (all the same) and dimension
-                one indicates the number of time series.
-    :return: The sample standard deviation.
-    """
-    b = ctypes.c_void_p(0)
-    TsaLibrary().c_tsa_library.sample_stdev_statistics(ctypes.pointer(tss.arr_reference),
-                                                       ctypes.pointer(b))
-    return array(array_reference=b)
-
-
 def kurtosis(tss):
     """ Returns the kurtosis of tss (calculated with the adjusted Fisher-Pearson standardized moment coefficient G2).
 
@@ -67,20 +54,6 @@ def kurtosis(tss):
     """
     b = ctypes.c_void_p(0)
     TsaLibrary().c_tsa_library.kurtosis_statistics(ctypes.pointer(tss.arr_reference),
-                                                   ctypes.pointer(b))
-    return array(array_reference=b)
-
-
-def skewness(tss):
-    """ Calculates the sample skewness of tss (calculated with the adjusted Fisher-Pearson standardized moment
-        coefficient G1).
-
-    :param tss: Expects an input array whose dimension zero is the length of the time series (all the same) and dimension
-                one indicates the number of time series. NOTE: the time series should be sorted.
-    :return: Array containing the skewness of each time series in tss.
-    """
-    b = ctypes.c_void_p(0)
-    TsaLibrary().c_tsa_library.skewness_statistics(ctypes.pointer(tss.arr_reference),
                                                    ctypes.pointer(b))
     return array(array_reference=b)
 
@@ -117,4 +90,31 @@ def quantiles_cut(tss, quantiles, precision=1e-8):
                                                         ctypes.pointer(ctypes.c_float(quantiles)),
                                                         ctypes.pointer(ctypes.c_float(precision)),
                                                         ctypes.pointer(b))
+    return array(array_reference=b)
+
+
+def sample_stdev(tss):
+    """ Estimates standard deviation based on a sample. The standard deviation is calculated using the "n-1" method.
+
+    :param tss: Expects an input array whose dimension zero is the length of the time series (all the same) and dimension
+                one indicates the number of time series.
+    :return: The sample standard deviation.
+    """
+    b = ctypes.c_void_p(0)
+    TsaLibrary().c_tsa_library.sample_stdev_statistics(ctypes.pointer(tss.arr_reference),
+                                                       ctypes.pointer(b))
+    return array(array_reference=b)
+
+
+def skewness(tss):
+    """ Calculates the sample skewness of tss (calculated with the adjusted Fisher-Pearson standardized moment
+    coefficient G1).
+
+    :param tss: Expects an input array whose dimension zero is the length of the time series (all the same) and dimension
+                one indicates the number of time series. NOTE: the time series should be sorted.
+    :return: Array containing the skewness of each time series in tss.
+    """
+    b = ctypes.c_void_p(0)
+    TsaLibrary().c_tsa_library.skewness_statistics(ctypes.pointer(tss.arr_reference),
+                                                   ctypes.pointer(b))
     return array(array_reference=b)

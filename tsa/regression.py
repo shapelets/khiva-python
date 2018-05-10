@@ -23,14 +23,13 @@ def linear(xss, yss):
                 one indicates the number of time series.
     :param yss: Expects an input array whose dimension zero is the length of the time series (all the same) and dimension
                 one indicates the number of time series.
-    :return: (
-                slope Slope of the regression line.
-                intercept Intercept of the regression line.
-                rvalue Correlation coefficient.
-                pvalue Two-sided p-value for a hypothesis test whose null hypothesis is that the slope is zero, using Wald
-                        Test with t-distribution of the test statistic.
-                stderrest Standard error of the estimated gradient.
-            )
+
+    :return: slope Slope of the regression line.
+            intercept Intercept of the regression line.
+            rvalue Correlation coefficient.
+            pvalue Two-sided p-value for a hypothesis test whose null hypothesis is that the slope is zero, using Wald
+            Test with t-distribution of the test statistic.
+            stderrest Standard error of the estimated gradient.
     """
     b = ctypes.c_void_p(0)
     c = ctypes.c_void_p(0)

@@ -30,7 +30,7 @@ def ramer_douglas_peucker(a, epsilon):
     :param epsilon: It acts as the threshold value to decide which points should be considered meaningful or not.
 
     :return: TSA array with the x-coordinates and y-coordinates of the selected points (x in column 0 and y in
-    column 1).
+            column 1).
     """
     b = ctypes.c_void_p(0)
     TsaLibrary().c_tsa_library.ramer_douglas_peucker(ctypes.pointer(a.arr_reference),
@@ -51,7 +51,7 @@ def visvalingam(a, num_points):
     :param num_points: Sets the number of points returned after the execution of the method.
 
     :return: TSA array with the x-coordinates and y-coordinates of the selected points (x in column 0 and y in
-    column 1).
+            column 1).
     """
     b = ctypes.c_void_p(0)
     TsaLibrary().c_tsa_library.visvalingam(ctypes.pointer(a.arr_reference),
@@ -63,11 +63,11 @@ def visvalingam(a, num_points):
 
 def paa(a, bins):
     """ Piecewise Aggregate Approximation (PAA) approximates a time series :math:`X` of length :math:`n` into vector
-    :math:`\bar{X}=(\bar{x}_{1},…,\bar{x}_{M})` of any arbitrary length :math:`M \leq n` where each of
-    :math:`\bar{x_{i}}` is calculated as follows:
+    :math:`\\bar{X}=(\\bar{x}_{1},…,\\bar{x}_{M})` of any arbitrary length :math:`M \\leq n` where each of
+    :math:`\\bar{x_{i}}` is calculated as follows:
 
     .. math::
-        \bar{x}_{i} = \frac{M}{n} \sum_{j=n/M(i-1)+1}^{(n/M)i} x_{j}.
+        \\bar{x}_{i} = \\frac{M}{n} \\sum_{j=n/M(i-1)+1}^{(n/M)i} x_{j}.
 
     Which simply means that in order to reduce the dimensionality from :math:`n` to :math:`M`, we first divide the original
     time series into :math:`M` equally sized frames and secondly compute the mean values for each frame. The sequence

@@ -30,9 +30,9 @@ def group_by(tss, aggregation_function, n_columns_key=1, n_columns_value=1):
                                 4 : stdev,
                                 5 : var,
                                 default : mean
-    :param n_columns_key Number of columns conforming the key.
-    :param n_columns_value Number of columns conforming the value (they are expected to be consecutive to the column
-    keys).
+    :param n_columns_key: Number of columns conforming the key.
+    :param n_columns_value: Number of columns conforming the value (they are expected to be consecutive to the column
+                            keys).
 
     :return: TSA array with the values of the group keys aggregated using the aggregation_function.
     """

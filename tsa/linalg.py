@@ -17,7 +17,7 @@ from tsa.array import array
 def lls(a, b):
     """ Calculates the minimum norm least squares solution :math:`x` :math:`(||A·x − b||^2)` to :math:`A·x = b`. This
     function uses the singular value decomposition function of Arrayfire. The actual formula that this function computes
-    is :math:`x = V·D\dagger·U^T·b`. Where :math:`U` and :math:`V` are orthogonal matrices and :math:`D\dagger` contains
+    is :math:`x = V·D\\dagger·U^T·b`. Where :math:`U` and :math:`V` are orthogonal matrices and :math:`D\\dagger` contains
     the inverse values of the singular values contained in :math:`D` if they are not zero, and zero otherwise.
 
     :param a: TSA array with the coefficients of the linear equation problem to solve. It accepts a list of lists or a numpy array

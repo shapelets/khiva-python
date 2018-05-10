@@ -20,9 +20,9 @@ class TsaLibrary(object):
         def __init__(self):
             if platform.system() == 'Darwin':
                 self.c_tsa_library = ctypes.CDLL('libtsa_c.dylib')
-            if platform.system() == 'Windows':
+            elif platform.system() == 'Windows':
                 self.c_tsa_library = ctypes.CDLL('libtsa_c.dll')
-            if platform.system() == 'Linux':
+            elif platform.system() == 'Linux':
                 self.c_tsa_library = ctypes.CDLL('libtsa_c.so')
 
     instance = None
@@ -63,8 +63,7 @@ def set_backend(backend):
 def get_backend():
     """ Get the active backend.
 
-    :return The active backend. TSABackend type.
-
+    :return: The active backend. TSABackend type.
     """
     backend = (ctypes.c_int * 1)(*[0])
     TsaLibrary().c_tsa_library.get_backend(ctypes.pointer(backend))
@@ -75,7 +74,7 @@ def get_backend():
 def get_backends():
     """ Get the available backends.
 
-    :return The available backends.
+    :return: The available backends.
     """
     backends = (ctypes.c_int * 1)(*[0])
     TsaLibrary().c_tsa_library.get_backends(ctypes.pointer(backends))
@@ -93,7 +92,7 @@ def set_device(device):
 def get_device_id():
     """ Get the active device.
 
-    :return The active device.
+    :return: The active device.
     """
     device = (ctypes.c_int * 1)(*[0])
     TsaLibrary().c_tsa_library.get_device_id(ctypes.pointer(device))
@@ -103,7 +102,7 @@ def get_device_id():
 def get_device_count():
     """ Get the devices count.
 
-    :return The devices count.
+    :return: The devices count.
     """
     device_count = (ctypes.c_int * 1)(*[0])
     TsaLibrary().c_tsa_library.get_device_count(ctypes.pointer(device_count))
