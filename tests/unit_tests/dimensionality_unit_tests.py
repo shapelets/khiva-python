@@ -58,5 +58,19 @@ class DimensionalityTest(unittest.TestCase):
         expected = np.array([[0.0, 2.0, 3.0, 6.0, 7.0, 9.0], [0.0, -0.1, 5.0, 8.1, 9.0, 9.0]])
         np.testing.assert_array_almost_equal(pip_result, expected, decimal=self.DECIMAL)
 
+    def test_pla_bottom_up(self):
+        tss = array([[0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0],
+                     [0.0, 0.1, -0.1, 5.0, 6.0, 7.0, 8.1, 9.0, 9.0, 9.0]])
+        expected = [[0, 1, 2, 3, 4, 7, 8, 9], [0, 0.1, -0.1, 5, 6, 9, 9, 9]]
+        result = pla_bottom_up(tss, 1).to_numpy()
+        np.testing.assert_array_almost_equal(result, expected, decimal=self.DECIMAL)
+
+    def test_pla_sliding_window(self):
+        tss = array([[0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0],
+                     [0.0, 0.1, -0.1, 5.0, 6.0, 7.0, 8.1, 9.0, 9.0, 9.0]])
+        expected = [[0, 2, 3, 7, 8, 9], [0, -0.1, 5, 9, 9, 9]]
+        result = pla_sliding_window(tss, 1).to_numpy()
+        np.testing.assert_array_almost_equal(result, expected, decimal=self.DECIMAL)
+
     if __name__ == '__main__':
         unittest.main()
