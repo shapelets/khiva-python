@@ -55,7 +55,7 @@ class DimensionalityTest(unittest.TestCase):
             [[0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0], [0.0, 0.1, -0.1, 5.0, 6.0, 7.0, 8.1, 9.0, 9.0, 9.0]])
         pip_result = pip(a, 6).to_numpy()
 
-        expected = np.array([[0.0, 2.0, 4.0, 5.0, 6.0, 9.0], [0.0, -0.1, 6.0, 7.0, 8.1, 9.0]])
+        expected = np.array([[0.0, 2.0, 3.0, 6.0, 7.0, 9.0], [0.0, -0.1, 5.0, 8.1, 9.0, 9.0]])
         np.testing.assert_array_almost_equal(pip_result, expected, decimal=self.DECIMAL)
 
     if __name__ == '__main__':
