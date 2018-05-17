@@ -40,10 +40,25 @@ class TsaLibrary(object):
 
 
 class TSABackend(Enum):
+    """
+    TSA Backend.
+    """
     TSA_BACKEND_DEFAULT = 0
+    """
+    Default Backend.
+    """
     TSA_BACKEND_CPU = 1
+    """
+    CPU Backend.
+    """
     TSA_BACKEND_CUDA = 2
+    """
+    CUDA Backend.
+    """
     TSA_BACKEND_OPENCL = 4
+    """
+    OPENCL Backend.
+    """
 
 
 def info():

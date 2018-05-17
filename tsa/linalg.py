@@ -22,7 +22,7 @@ def lls(a, b):
 
     :param a: TSA array with the coefficients of the linear equation problem to solve. It accepts a list of lists or a numpy array
               with one or several time series.
-    :param b: TSA array with the measured values.`
+    :param b: TSA array with the measured values.
     :return: TSA array with the solution to the linear equation problem minimizing the norm 2.
     """
     c = ctypes.c_void_p(0)
