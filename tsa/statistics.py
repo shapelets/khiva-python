@@ -47,21 +47,19 @@ def ljung_box(tss, lags):
     """ The Ljung–Box test checks that data whithin the time series are independently distributed (i.e. the correlations in
     the population from which the sample is taken are 0, so that any observed correlations in the data result from
     randomness of the sampling process). Data are no independently distributed, if they exhibit serial correlation.
-
     The test statistic is:
 
     .. math::
-        \\Q = n\left(n+2\right)\sum_{k=1}^h\frac{\hat{\rho}^2_k}{n-k} </math>
+        Q = n\left(n+2\\right)\sum_{k=1}^h\\frac{\hat{\\rho}^2_k}{n-k}
 
-    where ''n'' is the sample size, :math:`\hat{\rho}k ` is the sample autocorrelation at lag ''k'', and ''h'' is the
+    where ''n'' is the sample size, :math:`\hat{\\rho}k` is the sample autocorrelation at lag ''k'', and ''h'' is the
     number of lags being tested. Under :math:`H_0` the statistic Q follows a :math:`\chi^2{(h)}`. For significance level
-    :math:`\alpha\`, the :math:`critical region` for rejection of the hypothesis of randomness is:
+    :math:`\alpha`, the :math:`critical region` for rejection of the hypothesis of randomness is:
 
     .. math::
-        \\Q > \chi_{1-\alpha,h}^2
+        Q > \chi_{1-\alpha,h}^2
 
-
-    where :math:`\chi_{1-\alpha,h}^2` is the :math:`\alpha\` -quantile of the chi-squared distribution with ''h'' degrees of
+    where :math:`\chi_{1-alpha,h}^2` is the :math:`\alpha` -quantile of the chi-squared distribution with ''h'' degrees of
     freedom.
 
     [1] G. M. Ljung  G. E. P. Box (1978). On a measure of lack of fit in time series models.
@@ -73,8 +71,9 @@ def ljung_box(tss, lags):
     :return: Array containing the Ljung-Box statistic test.
     """
     ljung_box_out = ctypes.c_void_p(0)
-    TsaLibrary().c_tsa_library.ljung_box(ctypes.pointer(tss.arr_reference), ctypes.pointer(ctypes.c_long(lags)), ctypes.pointer(ljung_box_out))
-    return array(array_reference = ljung_box_out)
+    TsaLibrary().c_tsa_library.ljung_box(ctypes.pointer(tss.arr_reference), ctypes.pointer(ctypes.c_long(lags)),
+                                         ctypes.pointer(ljung_box_out))
+    return array(array_reference=ljung_box_out)
 
 
 def moment(tss, k):
