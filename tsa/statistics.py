@@ -30,6 +30,53 @@ def covariance(tss, unbiased=False):
     return array(array_reference=b)
 
 
+def kurtosis(tss):
+    """ Returns the kurtosis of tss (calculated with the adjusted Fisher-Pearson standardized moment coefficient G2).
+
+    :param tss: Expects an input array whose dimension zero is the length of the time series (all the same) and dimension
+                one indicates the number of time series.
+    :return: The kurtosis of tss.
+    """
+    b = ctypes.c_void_p(0)
+    TsaLibrary().c_tsa_library.kurtosis_statistics(ctypes.pointer(tss.arr_reference),
+                                                   ctypes.pointer(b))
+    return array(array_reference=b)
+
+
+def ljung_box(tss, lags):
+    """ The Ljung–Box test checks that data whithin the time series are independently distributed (i.e. the correlations in
+    the population from which the sample is taken are 0, so that any observed correlations in the data result from
+    randomness of the sampling process). Data are no independently distributed, if they exhibit serial correlation.
+
+    The test statistic is:
+
+    .. math::
+        \\Q = n\left(n+2\right)\sum_{k=1}^h\frac{\hat{\rho}^2_k}{n-k} </math>
+
+    where ''n'' is the sample size, :math:`\hat{\rho}k ` is the sample autocorrelation at lag ''k'', and ''h'' is the
+    number of lags being tested. Under :math:`H_0` the statistic Q follows a :math:`\chi^2{(h)}`. For significance level
+    :math:`\alpha\`, the :math:`critical region` for rejection of the hypothesis of randomness is:
+
+    .. math::
+        \\Q > \chi_{1-\alpha,h}^2
+
+
+    where :math:`\chi_{1-\alpha,h}^2` is the :math:`\alpha\` -quantile of the chi-squared distribution with ''h'' degrees of
+    freedom.
+
+    [1] G. M. Ljung  G. E. P. Box (1978). On a measure of lack of fit in time series models.
+    Biometrika, Volume 65, Issue 2, 1 August 1978, Pages 297–303.
+
+    :param tss: Expects an input array whose dimension zero is the length of the time series (all the same) and dimension
+                one indicates the number of time series.
+    :param lags: Number of lags being tested.
+    :return: Array containing the Ljung-Box statistic test.
+    """
+    ljung_box_out = ctypes.c_void_p(0)
+    TsaLibrary().c_tsa_library.ljung_box(ctypes.pointer(tss.arr_reference), ctypes.pointer(ctypes.c_long(lags)), ctypes.pointer(ljung_box_out))
+    return array(array_reference = ljung_box_out)
+
+
 def moment(tss, k):
     """ Returns the kth moment of the given time series.
 
@@ -42,19 +89,6 @@ def moment(tss, k):
     TsaLibrary().c_tsa_library.moment_statistics(ctypes.pointer(tss.arr_reference),
                                                  ctypes.pointer(ctypes.c_int(k)),
                                                  ctypes.pointer(b))
-    return array(array_reference=b)
-
-
-def kurtosis(tss):
-    """ Returns the kurtosis of tss (calculated with the adjusted Fisher-Pearson standardized moment coefficient G2).
-
-    :param tss: Expects an input array whose dimension zero is the length of the time series (all the same) and dimension
-                one indicates the number of time series.
-    :return: The kurtosis of tss.
-    """
-    b = ctypes.c_void_p(0)
-    TsaLibrary().c_tsa_library.kurtosis_statistics(ctypes.pointer(tss.arr_reference),
-                                                   ctypes.pointer(b))
     return array(array_reference=b)
 
 
@@ -118,3 +152,4 @@ def skewness(tss):
     TsaLibrary().c_tsa_library.skewness_statistics(ctypes.pointer(tss.arr_reference),
                                                    ctypes.pointer(b))
     return array(array_reference=b)
+

@@ -154,7 +154,7 @@ class array:
         :return An opaque pointer to the Array.
         """
         if isinstance(data, list):
-            data = np.array(data)
+            data = np.asarray(data)
         if isinstance(data, pd.DataFrame):
             data = data.as_matrix()
         shape = np.array(data.shape)

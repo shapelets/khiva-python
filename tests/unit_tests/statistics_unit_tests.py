@@ -36,27 +36,23 @@ class StatisticsTest(unittest.TestCase):
                              1.42942222, -2.85733333, 1.42942222, 1.42942222])
         np.testing.assert_array_almost_equal(result, expected, decimal=6)
 
+    def test_kurtosis(self):
+        result = kurtosis(array(data=[[0, 1, 2, 3, 4, 5], [2, 2, 2, 20, 30, 25]])).to_numpy().flatten()
+        expected = np.array([-1.2, -2.66226722])
+        np.testing.assert_array_almost_equal(result, expected, decimal=2)
+
+    def test_ljung_box(self):
+        result = ljung_box(array(data =[[0, 1, 2, 3],[4, 5, 6, 7]]), 3).to_numpy().flatten()
+        expected = np.array([6.4400, 6.4400])
+        np.testing.assert_array_almost_equal(result, expected, decimal=6)
+
+
     def test_moment(self):
         result = moment(array(data=[[0, 1, 2, 3, 4, 5], [0, 1, 2, 3, 4, 5]]), 2).to_numpy().flatten()
         expected = np.array([9.166666666, 9.166666666])
         np.testing.assert_array_almost_equal(result, expected, decimal=6)
         result = moment(array(data=[[0, 1, 2, 3, 4, 5], [0, 1, 2, 3, 4, 5]]), 4).to_numpy().flatten()
         expected = np.array([163.1666666666, 163.1666666666])
-        np.testing.assert_array_almost_equal(result, expected, decimal=2)
-
-    def test_sample_stdev(self):
-        result = sample_stdev(array(data=[[0, 1, 2, 3, 4, 5], [2, 2, 2, 20, 30, 25]])).to_numpy().flatten()
-        expected = np.array([1.870828693, 12.988456413])
-        np.testing.assert_array_almost_equal(result, expected, decimal=2)
-
-    def test_kurtosis(self):
-        result = kurtosis(array(data=[[0, 1, 2, 3, 4, 5], [2, 2, 2, 20, 30, 25]])).to_numpy().flatten()
-        expected = np.array([-1.2, -2.66226722])
-        np.testing.assert_array_almost_equal(result, expected, decimal=2)
-
-    def test_skewness(self):
-        result = skewness(array(data=[[0, 1, 2, 3, 4, 5], [2, 2, 2, 20, 30, 25]])).to_numpy().flatten()
-        expected = np.array([0.0, 0.236177069879499])
         np.testing.assert_array_almost_equal(result, expected, decimal=2)
 
     def test_quantile(self):
@@ -90,6 +86,16 @@ class StatisticsTest(unittest.TestCase):
                              3.5714288, 4.2857146, 4.2857146, 5, 5.9999999, 6.7142857, 6.7142857, 7.4285715,
                              7.4285715, 8.1428573, 8.8571429, 9.5714288, 9.5714288, 10.2857146, 10.2857146, 11])
         np.testing.assert_array_almost_equal(b.to_numpy().flatten(), expected, decimal=6)
+
+    def test_sample_stdev(self):
+        result = sample_stdev(array(data=[[0, 1, 2, 3, 4, 5], [2, 2, 2, 20, 30, 25]])).to_numpy().flatten()
+        expected = np.array([1.870828693, 12.988456413])
+        np.testing.assert_array_almost_equal(result, expected, decimal=2)
+
+    def test_skewness(self):
+        result = skewness(array(data=[[0, 1, 2, 3, 4, 5], [2, 2, 2, 20, 30, 25]])).to_numpy().flatten()
+        expected = np.array([0.0, 0.236177069879499])
+        np.testing.assert_array_almost_equal(result, expected, decimal=2)
 
 
 if __name__ == '__main__':
