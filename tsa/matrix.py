@@ -10,7 +10,7 @@
 ########################################################################################################################
 import ctypes
 from tsa.library import TsaLibrary
-from tsa.array import array
+from tsa.array import Array
 
 
 ########################################################################################################################
@@ -34,7 +34,7 @@ def find_best_n_discords(profile, index, n):
                                                     ctypes.pointer(c),
                                                     ctypes.pointer(d))
 
-    return array(array_reference=b), array(array_reference=c), array(
+    return Array(array_reference=b), Array(array_reference=c), Array(
         array_reference=d)
 
 
@@ -57,7 +57,7 @@ def find_best_n_motifs(profile, index, n):
                                                   ctypes.pointer(c),
                                                   ctypes.pointer(d))
 
-    return array(array_reference=b), array(array_reference=c), array(
+    return Array(array_reference=b), Array(array_reference=c), Array(
         array_reference=d)
 
 
@@ -79,7 +79,7 @@ def stomp(first_time_series, second_time_series, subsequence_length):
                                      ctypes.pointer(b),
                                      ctypes.pointer(c))
 
-    return array(array_reference=b), array(array_reference=c)
+    return Array(array_reference=b), Array(array_reference=c)
 
 
 def stomp_self_join(time_series, subsequence_length):
@@ -98,4 +98,4 @@ def stomp_self_join(time_series, subsequence_length):
                                                ctypes.pointer(b),
                                                ctypes.pointer(c))
 
-    return array(array_reference=b), array(array_reference=c)
+    return Array(array_reference=b), Array(array_reference=c)

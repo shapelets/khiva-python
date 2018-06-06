@@ -9,7 +9,7 @@
 ########################################################################################################################
 import ctypes
 from tsa.library import TsaLibrary
-from tsa.array import array
+from tsa.array import Array
 
 
 ########################################################################################################################
@@ -28,4 +28,4 @@ def lls(a, b):
     c = ctypes.c_void_p(0)
     TsaLibrary().c_tsa_library.lls(ctypes.pointer(a.arr_reference), ctypes.pointer(b.arr_reference), ctypes.pointer(c))
 
-    return array(array_reference=c)
+    return Array(array_reference=c)

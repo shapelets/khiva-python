@@ -11,7 +11,13 @@ Welcome to TSA's documentation!
    :caption: Contents:
    :numbered:
 
-    Modules <modules>
+   Quick Start <text/quick_start>
+   Modules <modules>
+   FAQ <text/faq>
+   Authors <authors>
+   License <license>
+   Changelog <changes>
+   How to contribute <text/how_to_contribute>
 
 Indices and tables
 ==================

@@ -10,7 +10,7 @@
 ########################################################################################################################
 import ctypes
 from tsa.library import TsaLibrary
-from tsa.array import array
+from tsa.array import Array
 
 
 ########################################################################################################################
@@ -43,4 +43,4 @@ def group_by(tss, aggregation_function, n_columns_key=1, n_columns_value=1):
                                         ctypes.pointer(ctypes.c_int(n_columns_value)),
                                         ctypes.pointer(b))
 
-    return array(array_reference=b)
+    return Array(array_reference=b)

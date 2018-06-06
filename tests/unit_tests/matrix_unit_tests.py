@@ -23,7 +23,7 @@ class MatrixTest(unittest.TestCase):
 
     def test_stomp_self_join(self):
         stomp_self_join_result = stomp_self_join(
-            array(data=[[10, 10, 11, 11, 10, 11, 10, 10, 11, 11, 10, 11, 10, 10], [
+            Array(data=[[10, 10, 11, 11, 10, 11, 10, 10, 11, 11, 10, 11, 10, 10], [
                 11, 10, 10, 11, 10, 11, 11, 10, 11, 11, 10, 10, 11, 10]]), 3)
         expected_index = [6, 7, 8, 9, 10, 11, 0, 1, 2, 3, 4, 5, 9, 10, 11, 6, 7, 8, 3, 4, 5, 0, 1, 2]
 
@@ -32,8 +32,8 @@ class MatrixTest(unittest.TestCase):
             self.assertEqual(stomp_self_join_result[1].to_numpy()[0][i], expected_index[i])
 
     def test_stomp(self):
-        stomp_result = stomp(array([[10, 11, 10, 11], [10, 11, 10, 11]]),
-                             array([[10, 11, 10, 11, 10, 11, 10, 11], [10, 11, 10, 11, 10, 11, 10, 11]]), 3)
+        stomp_result = stomp(Array([[10, 11, 10, 11], [10, 11, 10, 11]]),
+                             Array([[10, 11, 10, 11, 10, 11, 10, 11], [10, 11, 10, 11, 10, 11, 10, 11]]), 3)
         expected_index = [0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1]
         a = stomp_result[0].to_numpy().flatten()
         b = stomp_result[1].to_numpy().flatten()
@@ -44,8 +44,8 @@ class MatrixTest(unittest.TestCase):
 
     def test_find_best_n_motifs(self):
 
-        stomp_result = stomp(array([10, 10, 10, 10, 10, 10, 9, 10, 10, 10, 10, 10, 11, 10, 9], dtype.f32),
-                             array([10, 11, 10, 9], dtype.f32),
+        stomp_result = stomp(Array([10, 10, 10, 10, 10, 10, 9, 10, 10, 10, 10, 10, 11, 10, 9], dtype.f32),
+                             Array([10, 11, 10, 9], dtype.f32),
                              3)
 
         find_best_n_motifs_result = find_best_n_motifs(stomp_result[0], stomp_result[1], 2)
@@ -57,8 +57,8 @@ class MatrixTest(unittest.TestCase):
         self.assertAlmostEqual(b[1], 0, delta=self.DELTA)
 
     def test_find_best_n_discords(self):
-        stomp_result = stomp(array(np.array([11, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 11])),
-                             array(np.array([9, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 9])),
+        stomp_result = stomp(Array(np.array([11, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 11])),
+                             Array(np.array([9, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 9])),
                              3)
 
         find_best_n_discords_result = find_best_n_discords(stomp_result[0],

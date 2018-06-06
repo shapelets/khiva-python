@@ -9,7 +9,7 @@
 ########################################################################################################################
 import ctypes
 from tsa.library import TsaLibrary
-from tsa.array import array
+from tsa.array import Array
 
 
 ########################################################################################################################
@@ -27,7 +27,7 @@ def covariance(tss, unbiased=False):
     TsaLibrary().c_tsa_library.covariance_statistics(ctypes.pointer(tss.arr_reference),
                                                      ctypes.pointer(ctypes.c_bool(unbiased)),
                                                      ctypes.pointer(b))
-    return array(array_reference=b)
+    return Array(array_reference=b)
 
 
 def kurtosis(tss):
@@ -40,7 +40,7 @@ def kurtosis(tss):
     b = ctypes.c_void_p(0)
     TsaLibrary().c_tsa_library.kurtosis_statistics(ctypes.pointer(tss.arr_reference),
                                                    ctypes.pointer(b))
-    return array(array_reference=b)
+    return Array(array_reference=b)
 
 
 def ljung_box(tss, lags):
@@ -73,7 +73,7 @@ def ljung_box(tss, lags):
     ljung_box_out = ctypes.c_void_p(0)
     TsaLibrary().c_tsa_library.ljung_box(ctypes.pointer(tss.arr_reference), ctypes.pointer(ctypes.c_long(lags)),
                                          ctypes.pointer(ljung_box_out))
-    return array(array_reference=ljung_box_out)
+    return Array(array_reference=ljung_box_out)
 
 
 def moment(tss, k):
@@ -88,7 +88,7 @@ def moment(tss, k):
     TsaLibrary().c_tsa_library.moment_statistics(ctypes.pointer(tss.arr_reference),
                                                  ctypes.pointer(ctypes.c_int(k)),
                                                  ctypes.pointer(b))
-    return array(array_reference=b)
+    return Array(array_reference=b)
 
 
 def quantile(tss, q, precision=1e8):
@@ -105,7 +105,7 @@ def quantile(tss, q, precision=1e8):
                                                    ctypes.pointer(q.arr_reference),
                                                    ctypes.pointer(ctypes.c_float(precision)),
                                                    ctypes.pointer(b))
-    return array(array_reference=b)
+    return Array(array_reference=b)
 
 
 def quantiles_cut(tss, quantiles, precision=1e-8):
@@ -123,7 +123,7 @@ def quantiles_cut(tss, quantiles, precision=1e-8):
                                                         ctypes.pointer(ctypes.c_float(quantiles)),
                                                         ctypes.pointer(ctypes.c_float(precision)),
                                                         ctypes.pointer(b))
-    return array(array_reference=b)
+    return Array(array_reference=b)
 
 
 def sample_stdev(tss):
@@ -136,7 +136,7 @@ def sample_stdev(tss):
     b = ctypes.c_void_p(0)
     TsaLibrary().c_tsa_library.sample_stdev_statistics(ctypes.pointer(tss.arr_reference),
                                                        ctypes.pointer(b))
-    return array(array_reference=b)
+    return Array(array_reference=b)
 
 
 def skewness(tss):
@@ -150,5 +150,5 @@ def skewness(tss):
     b = ctypes.c_void_p(0)
     TsaLibrary().c_tsa_library.skewness_statistics(ctypes.pointer(tss.arr_reference),
                                                    ctypes.pointer(b))
-    return array(array_reference=b)
+    return Array(array_reference=b)
 

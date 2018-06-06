@@ -11,7 +11,7 @@
 import unittest
 import numpy as np
 from tsa.features import *
-from tsa.array import array, dtype
+from tsa.array import Array, dtype
 import logging
 
 
@@ -24,35 +24,35 @@ class FeaturesTest(unittest.TestCase):
         pass
 
     def test_cid_ce(self):
-        cid_ce_result = cid_ce(array(data=[[0, 1, 2, 3, 4, 5], [6, 7, 8, 9, 10, 11]]),
+        cid_ce_result = cid_ce(Array(data=[[0, 1, 2, 3, 4, 5], [6, 7, 8, 9, 10, 11]]),
                                False).to_numpy()
         self.assertAlmostEqual(cid_ce_result[0], 2.23606797749979, delta=self.DELTA)
         self.assertAlmostEqual(cid_ce_result[1], 2.23606797749979, delta=self.DELTA)
 
-        cid_ce_result = cid_ce(array(data=[[0, 1, 2, 3, 4, 5], [6, 7, 8, 9, 10, 11]]),
+        cid_ce_result = cid_ce(Array(data=[[0, 1, 2, 3, 4, 5], [6, 7, 8, 9, 10, 11]]),
                                True).to_numpy()
         self.assertAlmostEqual(cid_ce_result[0], 1.30930734141595, delta=self.DELTA)
         self.assertAlmostEqual(cid_ce_result[1], 1.30930734141595, delta=self.DELTA)
 
     def test_c3(self):
-        c3_result = c3(array(data=[[0, 1, 2, 3, 4, 5], [6, 7, 8, 9, 10, 11]]), 2).to_numpy()
+        c3_result = c3(Array(data=[[0, 1, 2, 3, 4, 5], [6, 7, 8, 9, 10, 11]]), 2).to_numpy()
         self.assertEqual(c3_result[0], 7.5)
         self.assertEqual(c3_result[1], 586.5)
 
     def test_abs_sum_of_changes(self):
         abs_sum_of_changes_result = absolute_sum_of_changes(
-            array(data=[[0, 1, 2, 3], [4, 6, 8, 10], [11, 14, 17, 20]])).to_numpy()
+            Array(data=[[0, 1, 2, 3], [4, 6, 8, 10], [11, 14, 17, 20]])).to_numpy()
         self.assertEqual(abs_sum_of_changes_result[0], 3)
         self.assertEqual(abs_sum_of_changes_result[1], 6)
         self.assertEqual(abs_sum_of_changes_result[2], 9)
 
     def test_abs_energy(self):
-        abs_energy_result = abs_energy(array(data=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10])).to_numpy()
+        abs_energy_result = abs_energy(Array(data=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10])).to_numpy()
         self.assertAlmostEqual(abs_energy_result, 385, delta=self.DELTA)
 
     def test_cross_correlation(self):
-        cross_correlation_result = cross_correlation(xss=array(data=[1, 2, 3, 4]),
-                                                     yss=array(data=[4, 6, 8, 10, 12]),
+        cross_correlation_result = cross_correlation(xss=Array(data=[1, 2, 3, 4]),
+                                                     yss=Array(data=[4, 6, 8, 10, 12]),
                                                      unbiased=False).to_numpy()
         self.assertAlmostEqual(cross_correlation_result[0], 0.790569415, delta=self.DELTA)
         self.assertAlmostEqual(cross_correlation_result[1], 0.790569415, delta=self.DELTA)
@@ -62,7 +62,7 @@ class FeaturesTest(unittest.TestCase):
 
     def test_auto_covariance(self):
         auto_covariance_result = auto_covariance(
-            array(data=[[0, 1, 2, 3], [10, 11, 12, 13]])).to_numpy()
+            Array(data=[[0, 1, 2, 3], [10, 11, 12, 13]])).to_numpy()
         self.assertAlmostEqual(auto_covariance_result[0][0], 1.25, delta=self.DELTA)
         self.assertAlmostEqual(auto_covariance_result[0][1], 0.3125, delta=self.DELTA)
         self.assertAlmostEqual(auto_covariance_result[0][2], -0.375, delta=self.DELTA)
@@ -74,8 +74,8 @@ class FeaturesTest(unittest.TestCase):
 
     def test_cross_covariance(self):
         cross_covariance_result = cross_covariance(
-            xss=array(data=[[0, 1, 2, 3], [10, 11, 12, 13]]),
-            yss=array(data=[[4, 6, 8, 10, 12], [14, 16, 18, 20, 22]]),
+            xss=Array(data=[[0, 1, 2, 3], [10, 11, 12, 13]]),
+            yss=Array(data=[[4, 6, 8, 10, 12], [14, 16, 18, 20, 22]]),
             unbiased=False).to_numpy().flatten()
         for i in range(4):
             self.assertAlmostEqual(cross_covariance_result[(i * 5)], 2.5, delta=self.DELTA)
@@ -86,7 +86,7 @@ class FeaturesTest(unittest.TestCase):
 
     def test_approximate_entropy(self):
         approximate_entropy_result = approximate_entropy(
-            array(data=[[1, 2, 3, 4, 5, 6, 7, 8, 9, 10], [11, 12, 13, 14, 15, 16, 17, 18, 19, 20]],
+            Array(data=[[1, 2, 3, 4, 5, 6, 7, 8, 9, 10], [11, 12, 13, 14, 15, 16, 17, 18, 19, 20]],
                   tsa_type=dtype.f32), 4, 0.5).to_numpy()
 
         self.assertAlmostEqual(approximate_entropy_result[0], 0.13484281753639338, delta=self.DELTA)
@@ -94,7 +94,7 @@ class FeaturesTest(unittest.TestCase):
 
     def test_auto_correlation(self):
         auto_correlation_result = auto_correlation(
-            array(data=[[0, 1, 2, 3], [10, 11, 12, 13]]), 4, False).to_numpy().flatten()
+            Array(data=[[0, 1, 2, 3], [10, 11, 12, 13]]), 4, False).to_numpy().flatten()
         self.assertAlmostEqual(auto_correlation_result[0], 1, delta=self.DELTA)
         self.assertAlmostEqual(auto_correlation_result[1], 0.25, delta=self.DELTA)
         self.assertAlmostEqual(auto_correlation_result[2], -0.3, delta=self.DELTA)
@@ -105,7 +105,7 @@ class FeaturesTest(unittest.TestCase):
         self.assertAlmostEqual(auto_correlation_result[7], -0.45, delta=self.DELTA)
 
     def test_binned_entropy(self):
-        binned_entropy_result = binned_entropy(array(data=[[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13,
+        binned_entropy_result = binned_entropy(Array(data=[[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13,
                                                             14, 15, 16, 17, 18, 19, 20],
                                                            [1, 1, 3, 10, 5, 6, 1, 8, 9, 10, 11, 1, 13, 14, 10, 16,
                                                             17, 10, 19,
@@ -114,24 +114,24 @@ class FeaturesTest(unittest.TestCase):
         self.assertAlmostEqual(binned_entropy_result[1], 1.5614694247763998, delta=self.DELTA)
 
     def test_count_above_mean(self):
-        count_above_mean_result = count_above_mean(array(data=[[0, 1, 2, 3, 4, 5],
+        count_above_mean_result = count_above_mean(Array(data=[[0, 1, 2, 3, 4, 5],
                                                                [6, 7, 8, 9, 10, 11]])).to_numpy()
         self.assertAlmostEqual(count_above_mean_result[0], 3, delta=self.DELTA)
         self.assertAlmostEqual(count_above_mean_result[1], 3, delta=self.DELTA)
 
     def test_count_below_mean(self):
-        count_below_mean_result = count_below_mean(array(data=[[0, 1, 2, 3, 4, 5],
+        count_below_mean_result = count_below_mean(Array(data=[[0, 1, 2, 3, 4, 5],
                                                                [6, 7, 8, 9, 10, 11]])).to_numpy()
         self.assertAlmostEqual(count_below_mean_result[0], 3, delta=self.DELTA)
         self.assertAlmostEqual(count_below_mean_result[1], 3, delta=self.DELTA)
 
     def test_energy_ratio_by_chunks(self):
-        energy_ratio_by_chunks_result = energy_ratio_by_chunks(array([[0, 1, 2, 3, 4, 5],
+        energy_ratio_by_chunks_result = energy_ratio_by_chunks(Array([[0, 1, 2, 3, 4, 5],
                                                                       [6, 7, 8, 9, 10, 11]]),
                                                                2, 0).to_numpy()
         self.assertAlmostEqual(energy_ratio_by_chunks_result[0], 0.090909091, delta=self.DELTA)
         self.assertAlmostEqual(energy_ratio_by_chunks_result[1], 0.330376940, delta=self.DELTA)
-        energy_ratio_by_chunks_result = energy_ratio_by_chunks(array([[0, 1, 2, 3, 4, 5],
+        energy_ratio_by_chunks_result = energy_ratio_by_chunks(Array([[0, 1, 2, 3, 4, 5],
                                                                       [6, 7, 8, 9, 10, 11]]), 2,
                                                                1).to_numpy()
         self.assertAlmostEqual(energy_ratio_by_chunks_result[0], 0.909090909, delta=self.DELTA)
@@ -139,19 +139,19 @@ class FeaturesTest(unittest.TestCase):
 
     def test_first_location_of_maximum(self):
         first_location_of_maximum_result = first_location_of_maximum(
-            array([[5, 4, 3, 5, 0, 1, 5, 3, 2, 1], [2, 4, 3, 5, 2, 5, 4, 3, 5, 2]])).to_numpy()
+            Array([[5, 4, 3, 5, 0, 1, 5, 3, 2, 1], [2, 4, 3, 5, 2, 5, 4, 3, 5, 2]])).to_numpy()
         self.assertAlmostEqual(first_location_of_maximum_result[0], 0.0, delta=self.DELTA)
         self.assertAlmostEqual(first_location_of_maximum_result[1], 0.3, delta=self.DELTA)
 
     def test_first_location_of_minimum(self):
         first_location_of_minimum_result = first_location_of_minimum(
-            array([[5, 4, 3, 0, 0, 1], [5, 4, 3, 0, 2, 1]])).to_numpy()
+            Array([[5, 4, 3, 0, 0, 1], [5, 4, 3, 0, 2, 1]])).to_numpy()
         self.assertAlmostEqual(first_location_of_minimum_result[0], 0.5, delta=self.DELTA)
         self.assertAlmostEqual(first_location_of_minimum_result[1], 0.5, delta=self.DELTA)
 
     def test_friedrich_coefficients(self):
         friedrich_coefficients_result = friedrich_coefficients(
-            array([[0, 1, 2, 3, 4, 5], [0, 1, 2, 3, 4, 5]]), 4, 2).to_numpy()
+            Array([[0, 1, 2, 3, 4, 5], [0, 1, 2, 3, 4, 5]]), 4, 2).to_numpy()
         expected = np.array([[-0.0009912563255056738, -0.0027067768387496471, -0.00015192681166809052,
                               0.10512571036815643, 0.89872437715530396],
                              [-0.0009912563255056738, -0.0027067768387496471, -0.00015192681166809052,
@@ -160,53 +160,53 @@ class FeaturesTest(unittest.TestCase):
 
     def test_has_duplicates(self):
         has_duplicates_result = has_duplicates(
-            array([[5, 4, 3, 0, 0, 1], [5, 4, 3, 0, 2, 1]])).to_numpy()
+            Array([[5, 4, 3, 0, 0, 1], [5, 4, 3, 0, 2, 1]])).to_numpy()
         self.assertEqual(has_duplicates_result[0], True)
         self.assertEqual(has_duplicates_result[1], False)
 
     def test_has_duplicate_max(self):
         has_duplicate_max_result = has_duplicate_max(
-            array([[5, 4, 3, 0, 5, 1], [5, 4, 3, 0, 2, 1]])).to_numpy()
+            Array([[5, 4, 3, 0, 5, 1], [5, 4, 3, 0, 2, 1]])).to_numpy()
         self.assertEqual(has_duplicate_max_result[0], True)
         self.assertEqual(has_duplicate_max_result[1], False)
 
     def test_index_mass_quantile(self):
-        index_mass_quantile_result = index_mass_quantile(array([[5, 4, 3, 0, 0, 1], [5, 4, 0, 0, 2, 1]]),
+        index_mass_quantile_result = index_mass_quantile(Array([[5, 4, 3, 0, 0, 1], [5, 4, 0, 0, 2, 1]]),
                                                          0.5).to_numpy()
 
         self.assertAlmostEqual(index_mass_quantile_result[0], 0.333333333, delta=self.DELTA)
         self.assertAlmostEqual(index_mass_quantile_result[1], 0.333333333, delta=self.DELTA)
 
     def test_kurtosis(self):
-        kurtosis_result = kurtosis(array([[0, 1, 2, 3, 4, 5], [2, 2, 2, 20, 30, 25]])).to_numpy()
+        kurtosis_result = kurtosis(Array([[0, 1, 2, 3, 4, 5], [2, 2, 2, 20, 30, 25]])).to_numpy()
         self.assertAlmostEqual(kurtosis_result[0], -1.2, delta=1e-4)
         self.assertAlmostEqual(kurtosis_result[1], -2.66226722, delta=1e-4)
 
     def test_large_standard_deviation(self):
         large_standard_deviation_result = large_standard_deviation(
-            array([[-1, -1, -1, 1, 1, 1], [4, 6, 8, 4, 5, 4]]), 0.4).to_numpy()
+            Array([[-1, -1, -1, 1, 1, 1], [4, 6, 8, 4, 5, 4]]), 0.4).to_numpy()
         self.assertEqual(large_standard_deviation_result[0], True)
         self.assertEqual(large_standard_deviation_result[1], False)
 
     def test_last_location_of_maximum(self):
         last_location_of_maximum_result = last_location_of_maximum(
-            array([[0, 4, 3, 5, 5, 1], [0, 4, 3, 2, 5, 1]])).to_numpy()
+            Array([[0, 4, 3, 5, 5, 1], [0, 4, 3, 2, 5, 1]])).to_numpy()
         self.assertAlmostEqual(last_location_of_maximum_result[0], 0.8333333333333334, delta=self.DELTA)
         self.assertAlmostEqual(last_location_of_maximum_result[1], 0.8333333333333334, delta=self.DELTA)
 
     def test_last_location_of_minimum(self):
         last_location_of_minimum_result = last_location_of_minimum(
-            array([[0, 4, 3, 5, 5, 1, 0, 4], [3, 2, 5, 1, 4, 5, 1, 2]])).to_numpy()
+            Array([[0, 4, 3, 5, 5, 1, 0, 4], [3, 2, 5, 1, 4, 5, 1, 2]])).to_numpy()
         self.assertAlmostEqual(last_location_of_minimum_result[0], 0.875, delta=self.DELTA)
         self.assertAlmostEqual(last_location_of_minimum_result[1], 0.875, delta=self.DELTA)
 
     def test_length(self):
-        length_result = length(array([[0, 4, 3, 5, 5, 1], [0, 4, 3, 2, 5, 1]])).to_numpy().flatten()
+        length_result = length(Array([[0, 4, 3, 5, 5, 1], [0, 4, 3, 2, 5, 1]])).to_numpy().flatten()
         self.assertEqual(length_result[0], 6)
         self.assertEqual(length_result[1], 6)
 
     def test_linear_trend(self):
-        pvalue, rvalue, intercept, slope, stderr = linear_trend(array([[0, 4, 3, 5, 5, 1], [2, 4, 1, 2, 5, 3]]))
+        pvalue, rvalue, intercept, slope, stderr = linear_trend(Array([[0, 4, 3, 5, 5, 1], [2, 4, 1, 2, 5, 3]]))
 
         pvalue = pvalue.to_numpy()
         self.assertAlmostEqual(pvalue[0], 0.6260380997892747, delta=self.DELTA)
@@ -226,13 +226,13 @@ class FeaturesTest(unittest.TestCase):
 
     def test_has_duplicate_min(self):
         has_duplicate_min_result = has_duplicate_min(
-            array(data=[[5, 4, 3, 0, 0, 1], [5, 4, 3, 0, 2, 1]])).to_numpy()
+            Array(data=[[5, 4, 3, 0, 0, 1], [5, 4, 3, 0, 2, 1]])).to_numpy()
         self.assertEqual(has_duplicate_min_result[0], True)
         self.assertEqual(has_duplicate_min_result[1], False)
 
     def test_longest_strike_above_mean(self):
         longest_strike_above_mean_result = longest_strike_above_mean(
-            array(data=[[20, 20, 20, 1, 1, 1, 20, 20, 20, 20, 1, 1, 1, 1,
+            Array(data=[[20, 20, 20, 1, 1, 1, 20, 20, 20, 20, 1, 1, 1, 1,
                          1, 1, 1, 1, 20, 20],
                         [20, 20, 20, 1, 1, 1, 20, 20,
                          20, 1, 1, 1, 1, 1, 1, 1, 1,
@@ -242,7 +242,7 @@ class FeaturesTest(unittest.TestCase):
 
     def test_longest_strike_below_mean(self):
         longest_strike_below_mean_result = longest_strike_below_mean(
-            array([[20, 20, 20, 1, 1, 1, 20, 20, 20, 20, 1, 1, 1, 1,
+            Array([[20, 20, 20, 1, 1, 1, 20, 20, 20, 20, 1, 1, 1, 1,
                     1, 1, 1, 1, 20, 20],
                    [20, 20, 20, 1, 1, 1, 20, 20,
                     20, 1, 1, 1, 1, 1, 1, 1, 1,
@@ -251,7 +251,7 @@ class FeaturesTest(unittest.TestCase):
         self.assertEqual(longest_strike_below_mean_result[1], 9)
 
     def test_maximum(self):
-        maximum_result = maximum(array([[20, 20, 20, 18, 25, 19, 20, 20, 20, 20, 40, 30, 1, 50, 1, 1, 5, 1, 20, 20],
+        maximum_result = maximum(Array([[20, 20, 20, 18, 25, 19, 20, 20, 20, 20, 40, 30, 1, 50, 1, 1, 5, 1, 20, 20],
                                         [20, 20, 20, 2, 19, 1, 20, 20, 20, 1, 15, 1, 30, 1, 1, 18, 4, 1, 20,
                                          20]])).to_numpy()
         self.assertEqual(maximum_result[0], 50)
@@ -259,14 +259,14 @@ class FeaturesTest(unittest.TestCase):
 
     def test_mean_absolute_change(self):
         mean_absolute_change_result = mean_absolute_change(
-            array([[0, 1, 2, 3, 4, 5], [8, 10, 12, 14, 16, 18]])).to_numpy()
+            Array([[0, 1, 2, 3, 4, 5], [8, 10, 12, 14, 16, 18]])).to_numpy()
         r = 5 / 6
         self.assertAlmostEqual(mean_absolute_change_result[0], r, delta=self.DELTA)
         self.assertAlmostEqual(mean_absolute_change_result[1], r * 2, delta=self.DELTA)
 
     def test_fft_coefficient(self):
         fftCoefficient_result = fft_coefficient(
-            array([[0, 1, 2, 3, 4, 5], [6, 7, 8, 9, 10, 11]]), 0)
+            Array([[0, 1, 2, 3, 4, 5], [6, 7, 8, 9, 10, 11]]), 0)
         a = fftCoefficient_result[0].to_numpy()
         self.assertAlmostEqual(a[0], 15, delta=self.DELTA)
         self.assertAlmostEqual(a[1], 51, delta=self.DELTA)
@@ -285,43 +285,43 @@ class FeaturesTest(unittest.TestCase):
 
     def test_aggregated_autocorrelation_mean(self):
         aggregated_autocorrelation_result = aggregated_autocorrelation(
-            array([[1, 2, 3, 4, 5, 6], [7, 8, 9, 10, 11, 12]]), 0).to_numpy()
+            Array([[1, 2, 3, 4, 5, 6], [7, 8, 9, 10, 11, 12]]), 0).to_numpy()
         self.assertAlmostEqual(aggregated_autocorrelation_result[0], -0.6571428571428571, delta=self.DELTA)
         self.assertAlmostEqual(aggregated_autocorrelation_result[1], -0.6571428571428571, delta=self.DELTA)
 
     def test_aggregated_autocorrelation_median(self):
         aggregated_autocorrelation_result = aggregated_autocorrelation(
-            array([[1, 2, 3, 4, 5, 6], [7, 8, 9, 10, 11, 12]]), 1).to_numpy()
+            Array([[1, 2, 3, 4, 5, 6], [7, 8, 9, 10, 11, 12]]), 1).to_numpy()
         self.assertAlmostEqual(aggregated_autocorrelation_result[0], -0.54285717010498047, delta=self.DELTA)
         self.assertAlmostEqual(aggregated_autocorrelation_result[1], -0.54285717010498047, delta=self.DELTA)
 
     def test_aggregated_autocorrelation_min(self):
         aggregated_autocorrelation_result = aggregated_autocorrelation(
-            array([[1, 2, 3, 4, 5, 6], [7, 8, 9, 10, 11, 12]]), 2).to_numpy()
+            Array([[1, 2, 3, 4, 5, 6], [7, 8, 9, 10, 11, 12]]), 2).to_numpy()
         self.assertAlmostEqual(aggregated_autocorrelation_result[0], -2.142857142857143, delta=1e-4)
         self.assertAlmostEqual(aggregated_autocorrelation_result[1], -2.142857142857143, delta=1e-4)
 
     def test_aggregated_autocorrelation_max(self):
         aggregated_autocorrelation_result = aggregated_autocorrelation(
-            array([[1, 2, 3, 4, 5, 6], [7, 8, 9, 10, 11, 12]]), 3).to_numpy()
+            Array([[1, 2, 3, 4, 5, 6], [7, 8, 9, 10, 11, 12]]), 3).to_numpy()
         self.assertAlmostEqual(aggregated_autocorrelation_result[0], 0.6, delta=self.DELTA)
         self.assertAlmostEqual(aggregated_autocorrelation_result[1], 0.6, delta=self.DELTA)
 
     def test_aggregated_autocorrelation_stdev(self):
         aggregated_autocorrelation_result = aggregated_autocorrelation(
-            array([[1, 2, 3, 4, 5, 6], [7, 8, 9, 10, 11, 12]]), 4).to_numpy()
+            Array([[1, 2, 3, 4, 5, 6], [7, 8, 9, 10, 11, 12]]), 4).to_numpy()
         self.assertAlmostEqual(aggregated_autocorrelation_result[0], 0.9744490855905009, delta=self.DELTA)
         self.assertAlmostEqual(aggregated_autocorrelation_result[1], 0.9744490855905009, delta=self.DELTA)
 
     def test_aggregated_autocorrelation_var(self):
         aggregated_autocorrelation_result = aggregated_autocorrelation(
-            array([[1, 2, 3, 4, 5, 6], [7, 8, 9, 10, 11, 12]]), 5).to_numpy()
+            Array([[1, 2, 3, 4, 5, 6], [7, 8, 9, 10, 11, 12]]), 5).to_numpy()
         self.assertAlmostEqual(aggregated_autocorrelation_result[0], 0.9495510204081633, delta=self.DELTA)
         self.assertAlmostEqual(aggregated_autocorrelation_result[1], 0.9495510204081633, delta=self.DELTA)
 
     def test_aggregated_linear_trend_mean(self):
         aggregated_linear_trend_result = aggregated_linear_trend(
-            array([[2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5]]), 3, 0)
+            Array([[2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5]]), 3, 0)
         self.assertAlmostEqual(aggregated_linear_trend_result[0].to_numpy(), 1, delta=self.DELTA)
         self.assertAlmostEqual(aggregated_linear_trend_result[1].to_numpy(), 2, delta=self.DELTA)
         self.assertAlmostEqual(aggregated_linear_trend_result[2].to_numpy(), 1, delta=self.DELTA)
@@ -330,7 +330,7 @@ class FeaturesTest(unittest.TestCase):
 
     def test_aggregated_linear_trend_min(self):
         aggregated_linear_trend_result = aggregated_linear_trend(
-            array([2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5]), 3, 2)
+            Array([2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5]), 3, 2)
         self.assertAlmostEqual(aggregated_linear_trend_result[0].to_numpy(), 1, delta=1e-3)
         self.assertAlmostEqual(aggregated_linear_trend_result[1].to_numpy(), 2, delta=1e-3)
         self.assertAlmostEqual(aggregated_linear_trend_result[2].to_numpy(), 1, delta=1e-3)
@@ -338,60 +338,60 @@ class FeaturesTest(unittest.TestCase):
         self.assertAlmostEqual(aggregated_linear_trend_result[4].to_numpy(), 0, delta=1e-3)
 
     def test_cwt_coefficients(self):
-        cwt_coefficients_result = cwt_coefficients(array([[0.1, 0.2, 0.3], [0.1, 0.2, 0.3]]),
-                                                   array(data=[1, 2, 3], tsa_type=dtype.s32), 2, 2).to_numpy()
+        cwt_coefficients_result = cwt_coefficients(Array([[0.1, 0.2, 0.3], [0.1, 0.2, 0.3]]),
+                                                   Array(data=[1, 2, 3], tsa_type=dtype.s32), 2, 2).to_numpy()
         self.assertAlmostEqual(cwt_coefficients_result[0], 0.26517161726951599, delta=self.DELTA)
         self.assertAlmostEqual(cwt_coefficients_result[1], 0.26517161726951599, delta=self.DELTA)
 
     def test_mean_second_derivative_central(self):
         mean_second_derivative_central_result = mean_second_derivative_central(
-            array([[1, 3, 7, 4, 8], [2, 5, 1, 7, 4]])).to_numpy()
+            Array([[1, 3, 7, 4, 8], [2, 5, 1, 7, 4]])).to_numpy()
         self.assertAlmostEqual(mean_second_derivative_central_result[0], 1.0 / 5.0, delta=self.DELTA)
         self.assertAlmostEqual(mean_second_derivative_central_result[1], -3.0 / 5.0, delta=self.DELTA)
 
     def test_minimum(self):
         minimum_result = minimum(
-            array([[20, 20, 20, 18, 25, 19, 20, 20, 20, 20, 40, 30, 1, 50, 13, 15, 5, 16, 20, 20],
+            Array([[20, 20, 20, 18, 25, 19, 20, 20, 20, 20, 40, 30, 1, 50, 13, 15, 5, 16, 20, 20],
                    [20, 20, 20, 2, 19, 4, 20, 20, 20, 4, 15, 6, 30, 7, 9, 18, 4, 10, 20, 20]])).to_numpy()
         self.assertAlmostEqual(minimum_result[0], 1, delta=self.DELTA)
         self.assertAlmostEqual(minimum_result[1], 2, delta=self.DELTA)
 
     def test_number_crossing_m(self):
         number_crossing_m_result = number_crossing_m(
-            array([[1, 2, 1, 1, -3, -4, 7, 8, 9, 10, -2, 1, -3, 5, 6, 7, -10],
+            Array([[1, 2, 1, 1, -3, -4, 7, 8, 9, 10, -2, 1, -3, 5, 6, 7, -10],
                    [1, 2, 1, 1, -3, -4, 7, 8, 9, 10, -2, 1, -3, 5, 6, 7, -10]]), 0).to_numpy()
 
         self.assertAlmostEqual(number_crossing_m_result[0], 7, delta=self.DELTA)
         self.assertAlmostEqual(number_crossing_m_result[1], 7, delta=self.DELTA)
 
     def test_mean(self):
-        mean_result = mean(array([[20, 20, 20, 18, 25, 19, 20, 20, 20, 20, 40, 30, 1, 50, 1, 1, 5, 1, 20, 20],
+        mean_result = mean(Array([[20, 20, 20, 18, 25, 19, 20, 20, 20, 20, 40, 30, 1, 50, 1, 1, 5, 1, 20, 20],
                                   [20, 20, 20, 2, 19, 1, 20, 20, 20, 1, 15, 1, 30, 1, 1, 18, 4, 1, 20, 20]])).to_numpy()
         self.assertAlmostEqual(mean_result[0], 18.55, delta=self.DELTA)
         self.assertAlmostEqual(mean_result[1], 12.7, delta=self.DELTA)
 
     def test_median(self):
-        median_result = median(array([[20, 20, 20, 18, 25, 19, 20, 20, 20, 20, 40, 30, 1, 50, 1, 1, 5, 1, 20, 20],
+        median_result = median(Array([[20, 20, 20, 18, 25, 19, 20, 20, 20, 20, 40, 30, 1, 50, 1, 1, 5, 1, 20, 20],
                                       [20, 20, 20, 2, 19, 1, 20, 20, 20, 1, 15, 1, 30, 1, 1, 18, 4, 1, 20,
                                        20]])).to_numpy()
         self.assertAlmostEqual(median_result[0], 20, delta=self.DELTA)
         self.assertAlmostEqual(median_result[1], 18.5, delta=self.DELTA)
 
     def test_mean_change(self):
-        mean_change_result = mean_change(array([[0, 1, 2, 3, 4, 5],
+        mean_change_result = mean_change(Array([[0, 1, 2, 3, 4, 5],
                                                 [8, 10, 12, 14, 16, 18]])).to_numpy()
         self.assertAlmostEqual(mean_change_result[0], 5 / 6, delta=self.DELTA)
         self.assertAlmostEqual(mean_change_result[1], 10 / 6, delta=self.DELTA)
 
     def test_max_langevin_fixed_point(self):
         max_langevin_fixed_point_result = max_langevin_fixed_point(
-            array([[0, 1, 2, 3, 4, 5], [0, 1, 2, 3, 4, 5]]), 7, 2).to_numpy()
+            Array([[0, 1, 2, 3, 4, 5], [0, 1, 2, 3, 4, 5]]), 7, 2).to_numpy()
         self.assertAlmostEqual(max_langevin_fixed_point_result[0], 4.562970585, delta=1e-4)
         self.assertAlmostEqual(max_langevin_fixed_point_result[1], 4.562970585, delta=1e-4)
 
     def test_fft_aggregated(self):
         fft_aggregated_result = fft_aggregated(
-            array([[0, 1, 2, 3, 4, 5, 6, 7, 8, 9], [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]],
+            Array([[0, 1, 2, 3, 4, 5, 6, 7, 8, 9], [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]],
                   dtype.f32)).to_numpy().flatten()
         self.assertAlmostEqual(fft_aggregated_result[0], 1.135143, delta=1e-4)
         self.assertAlmostEqual(fft_aggregated_result[1], 2.368324, delta=1e-4)
@@ -404,14 +404,14 @@ class FeaturesTest(unittest.TestCase):
         self.assertAlmostEqual(fft_aggregated_result[7], 3.642666, delta=1e-4)
 
     def test_number_cwt_peaks(self):
-        result = number_cwt_peaks(array([[1, 1, 1, 1, 1, 1, 1, 5, 1, 1, 1, 1, 1, 1, 5, 1, 1, 1, 1, 1, 1],
+        result = number_cwt_peaks(Array([[1, 1, 1, 1, 1, 1, 1, 5, 1, 1, 1, 1, 1, 1, 5, 1, 1, 1, 1, 1, 1],
                                          [1, 1, 1, 1, 1, 1, 1, 5, 1, 1, 1, 1, 1, 1, 5, 1, 1, 1, 1, 1, 1]]),
                                   2).to_numpy()
         self.assertEqual(result[0], 2)
         self.assertEqual(result[1], 2)
 
     def test_number_peaks(self):
-        result = number_peaks(array([[3, 0, 0, 4, 0, 0, 13], [3, 0, 0, 4, 0, 0, 13]]), 2).to_numpy()
+        result = number_peaks(Array([[3, 0, 0, 4, 0, 0, 13], [3, 0, 0, 4, 0, 0, 13]]), 2).to_numpy()
         self.assertAlmostEqual(result[0], 1, delta=1e-4)
         self.assertAlmostEqual(result[1], 1, delta=1e-4)
 
@@ -419,8 +419,8 @@ class FeaturesTest(unittest.TestCase):
         numel = 3000.0
         step = 1 / (numel - 1)
         a = [step * i for i in range(int(numel))]
-        a = array([a, a])
-        lags = array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9], tsa_type=dtype.s32)
+        a = Array([a, a])
+        lags = Array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9], tsa_type=dtype.s32)
         result = partial_autocorrelation(a, lags).to_numpy()
         expected = np.array([[1.0, 0.9993331432342529, -0.0006701064994559, -0.0006701068487018, -0.0008041285327636,
                               -0.0005360860959627, -0.0007371186511591, -0.0004690756904893, -0.0008041299879551,
@@ -432,106 +432,106 @@ class FeaturesTest(unittest.TestCase):
 
     def test_percentage_of_reocurring_datapoints_to_all_datapoints(self):
         result = percentage_of_reoccurring_datapoints_to_all_datapoints(
-            array([[3, 0, 0, 4, 0, 0, 13], [3, 0, 0, 4, 0, 0, 13]]), False).to_numpy()
+            Array([[3, 0, 0, 4, 0, 0, 13], [3, 0, 0, 4, 0, 0, 13]]), False).to_numpy()
         self.assertAlmostEqual(result[0], 0.25, delta=1e-4)
         self.assertAlmostEqual(result[1], 0.25, delta=1e-4)
 
     def test_percentage_of_reocurring_values_to_all_values(self):
         result = percentage_of_reoccurring_values_to_all_values(
-            array([[1, 1, 2, 3, 4, 4, 5, 6], [1, 2, 2, 3, 4, 5, 6, 7]]), False).to_numpy()
+            Array([[1, 1, 2, 3, 4, 4, 5, 6], [1, 2, 2, 3, 4, 5, 6, 7]]), False).to_numpy()
         self.assertEqual(result[0], 4 / 8)
         self.assertEqual(result[1], 2 / 8)
 
     def test_quantile(self):
-        result = quantile(array([[0, 0, 0, 0, 3, 4, 13], [0, 0, 0, 0, 3, 4, 13]]),
-                          array([0.6], dtype.f32)).to_numpy()
+        result = quantile(Array([[0, 0, 0, 0, 3, 4, 13], [0, 0, 0, 0, 3, 4, 13]]),
+                          Array([0.6], dtype.f32)).to_numpy()
         self.assertAlmostEqual(result[0], 1.79999999, delta=1e-4)
         self.assertAlmostEqual(result[1], 1.79999999, delta=1e-4)
 
     def test_range_count(self):
-        result = range_count(array([[3, 0, 0, 4, 0, 0, 13], [3, 0, 5, 4, 0, 0, 13]]), 2, 12).to_numpy()
+        result = range_count(Array([[3, 0, 0, 4, 0, 0, 13], [3, 0, 5, 4, 0, 0, 13]]), 2, 12).to_numpy()
         self.assertEqual(result[0], 2)
         self.assertEqual(result[1], 3)
 
     def test_ratio_beyond_r_sigma(self):
-        result = ratio_beyond_r_sigma(array([[3, 0, 0, 4, 0, 0, 13], [3, 0, 0, 4, 0, 0, 13]]),
+        result = ratio_beyond_r_sigma(Array([[3, 0, 0, 4, 0, 0, 13], [3, 0, 0, 4, 0, 0, 13]]),
                                       0.5).to_numpy()
         self.assertAlmostEqual(result[0], 0.7142857142857143, delta=1e-4)
         self.assertAlmostEqual(result[1], 0.7142857142857143, delta=1e-4)
 
     def test_ratio_value_number_to_time_series_length(self):
         result = ratio_value_number_to_time_series_length(
-            array([[3, 0, 0, 4, 0, 0, 13], [3, 5, 0, 4, 6, 0, 13]])).to_numpy()
+            Array([[3, 0, 0, 4, 0, 0, 13], [3, 5, 0, 4, 6, 0, 13]])).to_numpy()
         self.assertAlmostEqual(result[0], 4 / 7, delta=1e-4)
         self.assertAlmostEqual(result[1], 6 / 7, delta=1e-4)
 
     def test_sample_entropy(self):
-        result = sample_entropy(array([[3, 0, 0, 4, 0, 0, 13], [3, 0, 0, 4, 0, 0, 13]])).to_numpy()
+        result = sample_entropy(Array([[3, 0, 0, 4, 0, 0, 13], [3, 0, 0, 4, 0, 0, 13]])).to_numpy()
         self.assertAlmostEqual(result[0], 1.2527629, delta=1e-4)
         self.assertAlmostEqual(result[1], 1.2527629, delta=1e-4)
 
     def test_skewness(self):
-        result = skewness(array([[3, 0, 0, 4, 0, 0, 13], [3, 0, 0, 4, 0, 0, 13]])).to_numpy()
+        result = skewness(Array([[3, 0, 0, 4, 0, 0, 13], [3, 0, 0, 4, 0, 0, 13]])).to_numpy()
         self.assertAlmostEqual(result[0], 2.038404735373753, delta=1e-4)
         self.assertAlmostEqual(result[1], 2.038404735373753, delta=1e-4)
 
     def test_spkt_welch_density(self):
-        result = spkt_welch_density(array([[0, 1, 1, 3, 4, 5, 6, 7, 8, 9], [0, 1, 1, 3, 4, 5, 6, 7, 8, 9]]),
+        result = spkt_welch_density(Array([[0, 1, 1, 3, 4, 5, 6, 7, 8, 9], [0, 1, 1, 3, 4, 5, 6, 7, 8, 9]]),
                                     0).to_numpy()
         self.assertAlmostEqual(result[0], 1.6666667, delta=1e-5)
         self.assertAlmostEqual(result[1], 1.6666667, delta=1e-5)
 
     def test_standard_deviation(self):
         result = standard_deviation(
-            array([[20, 20, 20, 18, 25, 19, 20, 20, 20, 20, 40, 30, 1, 50, 1, 1, 5, 1, 20, 20],
+            Array([[20, 20, 20, 18, 25, 19, 20, 20, 20, 20, 40, 30, 1, 50, 1, 1, 5, 1, 20, 20],
                    [20, 20, 20, 2, 19, 1, 20, 20, 20, 1, 15, 1, 30, 1, 1, 18, 4, 1, 20, 20]])).to_numpy()
         self.assertAlmostEqual(result[0], 12.363150892875165, delta=1e-4)
         self.assertAlmostEqual(result[1], 9.51367436903324, delta=1e-4)
 
     def test_sum_of_reoccurring_datapoints(self):
-        result = sum_of_reoccurring_datapoints(array([[3, 3, 0, 4, 0, 13, 13], [3, 3, 0, 4, 0, 13, 13]])).to_numpy()
+        result = sum_of_reoccurring_datapoints(Array([[3, 3, 0, 4, 0, 13, 13], [3, 3, 0, 4, 0, 13, 13]])).to_numpy()
         self.assertEqual(result[0], 32)
         self.assertEqual(result[1], 32)
 
     def test_sum_of_reoccurring_values(self):
-        result = sum_of_reoccurring_values(array([[4, 4, 6, 6, 7], [4, 7, 7, 8, 8]])).to_numpy()
+        result = sum_of_reoccurring_values(Array([[4, 4, 6, 6, 7], [4, 7, 7, 8, 8]])).to_numpy()
         self.assertEqual(result[0], 10)
         self.assertEqual(result[1], 15)
 
     def test_sum_values(self):
-        result = sum_values(array([[1, 2, 3, 4.1], [-1.2, -2, -3, -4]])).to_numpy()
+        result = sum_values(Array([[1, 2, 3, 4.1], [-1.2, -2, -3, -4]])).to_numpy()
         self.assertAlmostEqual(result[0], 10.1, delta=self.DELTA)
         self.assertAlmostEqual(result[1], -10.2, delta=self.DELTA)
 
     def test_symmetry_looking(self):
-        result = symmetry_looking(array([[20, 20, 20, 18, 25, 19, 20, 20, 20, 20, 40, 30, 1, 50, 1, 1, 5, 1, 20, 20],
+        result = symmetry_looking(Array([[20, 20, 20, 18, 25, 19, 20, 20, 20, 20, 40, 30, 1, 50, 1, 1, 5, 1, 20, 20],
                                          [20, 20, 20, 2, 19, 1, 20, 20, 20, 1, 15, 1, 30, 1, 1, 18, 4, 1, 20, 20]]),
                                   0.1).to_numpy()
         self.assertEqual(result[0], bool(1))
         self.assertEqual(result[1], bool(0))
 
     def test_time_reversal_asymmetry_statistic(self):
-        result = time_reversal_asymmetry_statistic(array(
+        result = time_reversal_asymmetry_statistic(Array(
             [[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
              [20, 20, 20, 2, 19, 1, 20, 20, 20, 1, 15, 1, 30, 1, 1, 18, 4, 1, 20, 20]]), 2).to_numpy()
         self.assertEqual(result[0], 1052)
         self.assertEqual(result[1], -150.625)
 
     def test_value_count(self):
-        result = value_count(array(data=[[20, 20, 20, 18, 25, 19, 20, 20, 20, 20, 40, 30, 1, 50, 1, 1, 5, 1, 20, 20],
+        result = value_count(Array(data=[[20, 20, 20, 18, 25, 19, 20, 20, 20, 20, 40, 30, 1, 50, 1, 1, 5, 1, 20, 20],
                                          [20, 20, 20, 2, 19, 1, 20, 20, 20, 1, 15, 1, 30, 1, 1, 18, 4, 1, 20, 20]]),
                              20).to_numpy()
         self.assertAlmostEqual(result[0], 9, delta=1e-4)
         self.assertAlmostEqual(result[1], 8, delta=1e-4)
 
     def test_variance(self):
-        result = variance(array(data=[[1, 1, -1, -1], [1, 2, -2, -1]])).to_numpy()
+        result = variance(Array(data=[[1, 1, -1, -1], [1, 2, -2, -1]])).to_numpy()
         self.assertEqual(result[0], 1)
         self.assertEqual(result[1], 2.5)
 
     def test_variance_larger_than_standard_deviation(self):
         result = variance_larger_than_standard_deviation(
-            array(data=[[20, 20, 20, 18, 25, 19, 20, 20, 20, 20, 40, 30, 1, 50, 1, 1, 5, 1, 20, 20],
+            Array(data=[[20, 20, 20, 18, 25, 19, 20, 20, 20, 20, 40, 30, 1, 50, 1, 1, 5, 1, 20, 20],
                         [20, 20, 20, 2, 19, 1, 20, 20, 20, 1, 15, 1, 30, 1, 1, 18, 4, 1, 20, 20]])).to_numpy()
         self.assertEqual(result[0], True)
         self.assertEqual(result[1], True)
@@ -539,10 +539,10 @@ class FeaturesTest(unittest.TestCase):
     def test_concatenated(self):
         try:
             import arrayfire as af
-            a = array([[1, 2], [1, 3], [1, 4], [1, 5], [1, 6], [1, 7], [1, 8], [1, 9], [1, 10], [1, 11]])
+            a = Array([[1, 2], [1, 3], [1, 4], [1, 5], [1, 6], [1, 7], [1, 8], [1, 9], [1, 10], [1, 11]])
             b = absolute_sum_of_changes(a).to_arrayfire()
             c = af.transpose(b)
-            d = array(array_reference=c.arr)
+            d = Array(array_reference=c.arr)
             e = abs_energy(d).to_numpy()
             self.assertAlmostEqual(e, 385, delta=self.DELTA)
         except ModuleNotFoundError:

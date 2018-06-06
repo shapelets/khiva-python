@@ -10,7 +10,7 @@
 ########################################################################################################################
 import unittest
 from tsa.regression import *
-from tsa.array import array
+from tsa.array import Array
 import numpy as np
 
 
@@ -24,9 +24,9 @@ class RegressionTest(unittest.TestCase):
         pass
 
     def test_linear(self):
-        euclidean_result = linear(array([0.24580423, 0.59642861, 0.35879163, 0.37891011, 0.02445137,
+        euclidean_result = linear(Array([0.24580423, 0.59642861, 0.35879163, 0.37891011, 0.02445137,
                                          0.23830957, 0.38793433, 0.68054104, 0.83934083, 0.76073689]),
-                                  array([0.2217416, 0.06344161, 0.77944375, 0.72174137, 0.19413884,
+                                  Array([0.2217416, 0.06344161, 0.77944375, 0.72174137, 0.19413884,
                                          0.51146167, 0.06880307, 0.39414268, 0.98172767, 0.30490851]))
         self.assertAlmostEqual(euclidean_result[0].to_numpy(), 0.344864266, delta=self.DELTA)
         self.assertAlmostEqual(euclidean_result[1].to_numpy(), 0.268578232, delta=self.DELTA)
@@ -35,11 +35,11 @@ class RegressionTest(unittest.TestCase):
         self.assertAlmostEqual(euclidean_result[4].to_numpy(), 0.412351891, delta=self.DELTA)
 
     def test_linear_multiple_time_series(self):
-        euclidean_result = linear(array([[0.24580423, 0.59642861, 0.35879163, 0.37891011, 0.02445137,
+        euclidean_result = linear(Array([[0.24580423, 0.59642861, 0.35879163, 0.37891011, 0.02445137,
                                           0.23830957, 0.38793433, 0.68054104, 0.83934083, 0.76073689],
                                          [0.24580423, 0.59642861, 0.35879163, 0.37891011, 0.02445137,
                                           0.23830957, 0.38793433, 0.68054104, 0.83934083, 0.76073689]]),
-                                  array([[0.2217416, 0.06344161, 0.77944375, 0.72174137, 0.19413884,
+                                  Array([[0.2217416, 0.06344161, 0.77944375, 0.72174137, 0.19413884,
                                           0.51146167, 0.06880307, 0.39414268, 0.98172767, 0.30490851],
                                          [0.2217416, 0.06344161, 0.77944375, 0.72174137, 0.19413884,
                                           0.51146167, 0.06880307, 0.39414268, 0.98172767, 0.30490851]]))

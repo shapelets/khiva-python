@@ -9,7 +9,7 @@
 ########################################################################################################################
 import ctypes
 from tsa.library import TsaLibrary
-from tsa.array import array
+from tsa.array import Array
 
 
 ########################################################################################################################
@@ -45,5 +45,5 @@ def linear(xss, yss):
                                       ctypes.pointer(e),
                                       ctypes.pointer(f)
                                       )
-    return array(array_reference=b), array(array_reference=c), array(array_reference=d), array(
-        array_reference=e), array(array_reference=f)
+    return Array(array_reference=b), Array(array_reference=c), Array(array_reference=d), Array(
+        array_reference=e), Array(array_reference=f)

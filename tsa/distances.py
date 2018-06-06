@@ -9,7 +9,7 @@
 ########################################################################################################################
 import ctypes
 from tsa.library import TsaLibrary
-from tsa.array import array
+from tsa.array import Array
 
 
 ########################################################################################################################
@@ -27,7 +27,7 @@ def euclidean(tss):
     b = ctypes.c_void_p(0)
     TsaLibrary().c_tsa_library.euclidean(ctypes.pointer(tss.arr_reference),
                                          ctypes.pointer(b))
-    return array(array_reference=b)
+    return Array(array_reference=b)
 
 
 def dtw(tss):
@@ -42,7 +42,7 @@ def dtw(tss):
     b = ctypes.c_void_p(0)
     TsaLibrary().c_tsa_library.dtw(ctypes.pointer(tss.arr_reference),
                                    ctypes.pointer(b))
-    return array(array_reference=b)
+    return Array(array_reference=b)
 
 
 def hamming(tss):
@@ -57,7 +57,7 @@ def hamming(tss):
     b = ctypes.c_void_p(0)
     TsaLibrary().c_tsa_library.hamming(ctypes.pointer(tss.arr_reference),
                                        ctypes.pointer(b))
-    return array(array_reference=b)
+    return Array(array_reference=b)
 
 
 def manhattan(tss):
@@ -72,7 +72,7 @@ def manhattan(tss):
     b = ctypes.c_void_p(0)
     TsaLibrary().c_tsa_library.manhattan(ctypes.pointer(tss.arr_reference),
                                          ctypes.pointer(b))
-    return array(array_reference=b)
+    return Array(array_reference=b)
 
 
 def squared_euclidean(tss):
@@ -87,5 +87,5 @@ def squared_euclidean(tss):
     b = ctypes.c_void_p(0)
     TsaLibrary().c_tsa_library.squared_euclidean(ctypes.pointer(tss.arr_reference),
                                                  ctypes.pointer(b))
-    return array(array_reference=b)
+    return Array(array_reference=b)
 

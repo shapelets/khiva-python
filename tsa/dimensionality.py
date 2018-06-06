@@ -9,7 +9,7 @@
 ########################################################################################################################
 import ctypes
 from tsa.library import TsaLibrary
-from tsa.array import array
+from tsa.array import Array
 
 
 ########################################################################################################################
@@ -36,7 +36,7 @@ def paa(a, bins):
     TsaLibrary().c_tsa_library.paa(ctypes.pointer(a.arr_reference), ctypes.pointer(ctypes.c_int(bins)),
                                    ctypes.pointer(b))
 
-    return array(array_reference=b)
+    return Array(array_reference=b)
 
 
 def pip(a, number_ips):
@@ -54,7 +54,7 @@ def pip(a, number_ips):
     TsaLibrary().c_tsa_library.pip(ctypes.pointer(a.arr_reference), ctypes.pointer(ctypes.c_int(number_ips)),
                                    ctypes.pointer(b))
 
-    return array(array_reference=b)
+    return Array(array_reference=b)
 
 
 def pla_bottom_up(ts, max_error):
@@ -74,7 +74,7 @@ def pla_bottom_up(ts, max_error):
                                              ctypes.pointer(ctypes.c_float(max_error)),
                                              ctypes.pointer(b))
 
-    return array(array_reference=b)
+    return Array(array_reference=b)
 
 
 def pla_sliding_window(ts, max_error):
@@ -94,7 +94,7 @@ def pla_sliding_window(ts, max_error):
                                                   ctypes.pointer(ctypes.c_float(max_error)),
                                                   ctypes.pointer(b))
 
-    return array(array_reference=b)
+    return Array(array_reference=b)
 
 
 def ramer_douglas_peucker(a, epsilon):
@@ -119,7 +119,7 @@ def ramer_douglas_peucker(a, epsilon):
                                                      ctypes.pointer(ctypes.c_double(epsilon)),
                                                      ctypes.pointer(b))
 
-    return array(array_reference=b)
+    return Array(array_reference=b)
 
 
 def sax(a, alphabet_size):
@@ -143,7 +143,7 @@ def sax(a, alphabet_size):
     TsaLibrary().c_tsa_library.sax(ctypes.pointer(a.arr_reference), ctypes.pointer(ctypes.c_int(alphabet_size)),
                                    ctypes.pointer(b))
 
-    return array(array_reference=b)
+    return Array(array_reference=b)
 
 
 def visvalingam(a, num_points):
@@ -164,4 +164,4 @@ def visvalingam(a, num_points):
                                            ctypes.pointer(ctypes.c_int(num_points)),
                                            ctypes.pointer(b))
 
-    return array(array_reference=b)
+    return Array(array_reference=b)
