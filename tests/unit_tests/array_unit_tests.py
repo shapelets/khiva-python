@@ -1,4 +1,4 @@
-# Copyright (c) 2018 Grumpy Cat Software S.L.
+# Copyright (c) 2018 Shapelets.io
 #
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -10,7 +10,7 @@
 ########################################################################################################################
 import unittest
 import numpy as np
-from tsa.array import Array, dtype
+from khiva.array import Array, dtype
 import logging
 import sys
 
@@ -45,14 +45,14 @@ class ArrayTest(unittest.TestCase):
         np.testing.assert_array_equal(a.to_numpy(), expected)
 
     def test_complex64_1d(self):
-        a = Array(np.array([1 + 5j, 2 + 6j, 3 + 7j, 4 + 8j]).astype(np.complex64), tsa_type=dtype.c32)
+        a = Array(np.array([1 + 5j, 2 + 6j, 3 + 7j, 4 + 8j]).astype(np.complex64), khiva_type=dtype.c32)
         expected = np.array([1 + 5j, 2 + 6j, 3 + 7j, 4 + 8j]).astype(np.complex64)
         np.testing.assert_array_equal(a.to_numpy(), expected)
 
     def test_complex64_2d(self):
         a = Array(
             np.array([[1 + 5j, 2 + 6j, 3 + 7j, 4 + 8j], [9 + 13j, 10 + 14j, 11 + 15j, 12 + 16j]]).astype(np.complex64),
-            tsa_type=dtype.c32)
+            khiva_type=dtype.c32)
         expected = np.array([[1 + 5j, 2 + 6j, 3 + 7j, 4 + 8j], [9 + 13j, 10 + 14j, 11 + 15j, 12 + 16j]]).astype(
             np.complex64)
         np.testing.assert_array_equal(a.to_numpy(), expected)
@@ -60,7 +60,7 @@ class ArrayTest(unittest.TestCase):
     def test_complex64_3d(self):
         a = Array(
             np.array([[[1 + 1j, 5 + 5j], [2 + 2j, 6 + 6j]], [[3 + 3j, 7 + 7j], [4 + 4j, 8 + 8j]]]).astype(np.complex64),
-            tsa_type=dtype.c32)
+            khiva_type=dtype.c32)
         expected = np.array([[[1 + 1j, 5 + 5j], [2 + 2j, 6 + 6j]], [[3 + 3j, 7 + 7j], [4 + 4j, 8 + 8j]]]).astype(
             np.complex64)
         np.testing.assert_array_equal(a.to_numpy(), expected)
@@ -70,7 +70,7 @@ class ArrayTest(unittest.TestCase):
             np.array([[[[1 + 1j, 9 + 9j], [2 + 2j, 10 + 10j]], [[3 + 3j, 11 + 11j], [4 + 4j, 12 + 12j]]],
                       [[[5 + 5j, 13 + 13j], [6 + 6j, 14 + 14j]], [[7 + 7j, 15 + 15j], [8 + 8j, 16 + 16j]]]])
                 .astype(np.complex64),
-            tsa_type=dtype.c32)
+            khiva_type=dtype.c32)
         expected = np.array([[[[1 + 1j, 9 + 9j], [2 + 2j, 10 + 10j]], [[3 + 3j, 11 + 11j], [4 + 4j, 12 + 12j]]],
                              [[[5 + 5j, 13 + 13j], [6 + 6j, 14 + 14j]],
                               [[7 + 7j, 15 + 15j], [8 + 8j, 16 + 16j]]]]).astype(
@@ -78,14 +78,14 @@ class ArrayTest(unittest.TestCase):
         np.testing.assert_array_equal(a.to_numpy(), expected)
 
     def test_complex128_1d(self):
-        a = Array(np.array([1 + 5j, 2 + 6j, 3 + 7j, 4 + 8j]).astype(np.complex128), tsa_type=dtype.c64)
+        a = Array(np.array([1 + 5j, 2 + 6j, 3 + 7j, 4 + 8j]).astype(np.complex128), khiva_type=dtype.c64)
         expected = np.array([1 + 5j, 2 + 6j, 3 + 7j, 4 + 8j]).astype(np.complex128)
         np.testing.assert_array_equal(a.to_numpy(), expected)
 
     def test_complex128_2d(self):
         a = Array(
             np.array([[1 + 5j, 2 + 6j, 3 + 7j, 4 + 8j], [9 + 13j, 10 + 14j, 11 + 15j, 12 + 16j]]).astype(np.complex128),
-            tsa_type=dtype.c32)
+            khiva_type=dtype.c32)
         expected = np.array([[1 + 5j, 2 + 6j, 3 + 7j, 4 + 8j], [9 + 13j, 10 + 14j, 11 + 15j, 12 + 16j]]).astype(
             np.complex128)
         np.testing.assert_array_equal(a.to_numpy(), expected)
@@ -94,7 +94,7 @@ class ArrayTest(unittest.TestCase):
         a = Array(
             np.array([[[1 + 1j, 5 + 5j], [2 + 2j, 6 + 6j]], [[3 + 3j, 7 + 7j], [4 + 4j, 8 + 8j]]]).astype(
                 np.complex128),
-            tsa_type=dtype.c32)
+            khiva_type=dtype.c32)
         expected = np.array([[[1 + 1j, 5 + 5j], [2 + 2j, 6 + 6j]], [[3 + 3j, 7 + 7j], [4 + 4j, 8 + 8j]]]).astype(
             np.complex128)
         np.testing.assert_array_equal(a.to_numpy(), expected)
@@ -104,7 +104,7 @@ class ArrayTest(unittest.TestCase):
             np.array([[[[1 + 1j, 9 + 9j], [2 + 2j, 10 + 10j]], [[3 + 3j, 11 + 11j], [4 + 4j, 12 + 12j]]],
                       [[[5 + 5j, 13 + 13j], [6 + 6j, 14 + 14j]], [[7 + 7j, 15 + 15j], [8 + 8j, 16 + 16j]]]])
                 .astype(np.complex128),
-            tsa_type=dtype.c32)
+            khiva_type=dtype.c32)
         expected = np.array([[[[1 + 1j, 9 + 9j], [2 + 2j, 10 + 10j]], [[3 + 3j, 11 + 11j], [4 + 4j, 12 + 12j]]],
                              [[[5 + 5j, 13 + 13j], [6 + 6j, 14 + 14j]],
                               [[7 + 7j, 15 + 15j], [8 + 8j, 16 + 16j]]]]).astype(
@@ -112,7 +112,7 @@ class ArrayTest(unittest.TestCase):
         np.testing.assert_array_equal(a.to_numpy(), expected)
 
     def test_get_type(self):
-        a = Array([[1, 2, 3, 4], [5, 6, 7, 8]], tsa_type=dtype.s64)
+        a = Array([[1, 2, 3, 4], [5, 6, 7, 8]], khiva_type=dtype.s64)
         expected = dtype.s64
         self.assertEqual(a.get_type(), expected)
 
@@ -219,14 +219,9 @@ class ArrayTest(unittest.TestCase):
         np.testing.assert_array_equal(c.to_numpy(), np.array([4, 8, 12, 16]))
 
     def testCtranspose(self):
-        a = Array([[0 - 1j, 4 + 2j], [2 + 1j, 0 - 2j]], tsa_type=dtype.c32)
-        print(a.to_numpy())
-        a.print()
+        a = Array([[0 - 1j, 4 + 2j], [2 + 1j, 0 - 2j]], khiva_type=dtype.c32)
         b = a.transpose(True)
-        b.print()
-        print(b.to_numpy())
         expected = [[0 + 1j, 2 - 1j], [4 - 2j, 0 + 2j]]
-        print(expected)
         np.testing.assert_array_equal(b.to_numpy(), expected)
 
     def testTranspose(self):
@@ -263,17 +258,17 @@ class ArrayTest(unittest.TestCase):
         np.testing.assert_array_equal(c.to_numpy(), expected)
 
     def testAs(self):
-        a = Array([1, 2, 3, 4], tsa_type=dtype.s32)
+        a = Array([1, 2, 3, 4], khiva_type=dtype.s32)
         b = a.as_type(dtype.u32)
         expected_data = [1, 2, 3, 4]
         np.testing.assert_array_equal(b.to_numpy(), expected_data)
-        self.assertEqual(b.tsa_type, dtype.u32)
+        self.assertEqual(b.khiva_type, dtype.u32)
 
     def testCopy(self):
-        a = Array([1, 2, 3, 4], tsa_type=dtype.s32)
+        a = Array([1, 2, 3, 4], khiva_type=dtype.s32)
         b = a.copy()
         np.testing.assert_array_equal(a.to_numpy(), b.to_numpy())
-        self.assertEqual(b.tsa_type, b.tsa_type)
+        self.assertEqual(b.khiva_type, b.khiva_type)
 
     def testArrayfire(self):
         try:

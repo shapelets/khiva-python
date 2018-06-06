@@ -1,4 +1,4 @@
-# Copyright (c) 2018 Grumpy Cat Software S.L.
+# Copyright (c) 2018 Shapelets.io
 #
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -15,22 +15,22 @@ import platform
 
 ########################################################################################################################
 
-class TsaLibrary(object):
-    class __TsaLibrary:
+class KhivaLibrary(object):
+    class __KhivaLibrary:
         def __init__(self):
             if platform.system() == 'Darwin':
-                self.c_tsa_library = ctypes.CDLL('libtsa_c.dylib')
+                self.c_khiva_library = ctypes.CDLL('libkhiva_c.dylib')
             elif platform.system() == 'Windows':
-                self.c_tsa_library = ctypes.CDLL('C:/Program Files/TSA/lib/tsa_c.dll')
+                self.c_khiva_library = ctypes.CDLL('C:/Program Files/Khiva/v0/lib/khiva_c.dll')
             elif platform.system() == 'Linux':
-                self.c_tsa_library = ctypes.CDLL('libtsa_c.so')
+                self.c_khiva_library = ctypes.CDLL('libkhiva_c.so')
 
     instance = None
 
     def __new__(cls):
-        if not TsaLibrary.instance:
-            TsaLibrary.instance = TsaLibrary.__TsaLibrary()
-        return TsaLibrary.instance
+        if not KhivaLibrary.instance:
+            KhivaLibrary.instance = KhivaLibrary.__KhivaLibrary()
+        return KhivaLibrary.instance
 
     def __getattr__(self, name):
         return getattr(self.instance, name)
@@ -39,23 +39,23 @@ class TsaLibrary(object):
         return setattr(self.instance, name)
 
 
-class TSABackend(Enum):
+class KHIVABackend(Enum):
     """
-    TSA Backend.
+    KHIVA Backend.
     """
-    TSA_BACKEND_DEFAULT = 0
+    KHIVA_BACKEND_DEFAULT = 0
     """
     Default Backend.
     """
-    TSA_BACKEND_CPU = 1
+    KHIVA_BACKEND_CPU = 1
     """
     CPU Backend.
     """
-    TSA_BACKEND_CUDA = 2
+    KHIVA_BACKEND_CUDA = 2
     """
     CUDA Backend.
     """
-    TSA_BACKEND_OPENCL = 4
+    KHIVA_BACKEND_OPENCL = 4
     """
     OPENCL Backend.
     """
@@ -64,26 +64,26 @@ class TSABackend(Enum):
 def info():
     """ Get the devices info.
     """
-    TsaLibrary().c_tsa_library.info()
+    KhivaLibrary().c_khiva_library.info()
 
 
 def set_backend(backend):
-    """ Set the TSABackend.
+    """ Set the KHIVABackend.
 
-    :param backend: The desired backend. TSABackend type.
+    :param backend: The desired backend. KHIVABackend type.
     """
-    TsaLibrary().c_tsa_library.set_backend(ctypes.pointer(ctypes.c_int(backend.value)))
+    KhivaLibrary().c_khiva_library.set_backend(ctypes.pointer(ctypes.c_int(backend.value)))
 
 
 def get_backend():
     """ Get the active backend.
 
-    :return: The active backend. TSABackend type.
+    :return: The active backend. KHIVABackend type.
     """
     backend = (ctypes.c_int * 1)(*[0])
-    TsaLibrary().c_tsa_library.get_backend(ctypes.pointer(backend))
+    KhivaLibrary().c_khiva_library.get_backend(ctypes.pointer(backend))
 
-    return TSABackend(backend[0])
+    return KHIVABackend(backend[0])
 
 
 def get_backends():
@@ -92,7 +92,7 @@ def get_backends():
     :return: The available backends.
     """
     backends = (ctypes.c_int * 1)(*[0])
-    TsaLibrary().c_tsa_library.get_backends(ctypes.pointer(backends))
+    KhivaLibrary().c_khiva_library.get_backends(ctypes.pointer(backends))
     return backends[0]
 
 
@@ -101,7 +101,7 @@ def set_device(device):
 
     :param device: The desired device.
     """
-    TsaLibrary().c_tsa_library.set_device(ctypes.pointer(ctypes.c_int(device)))
+    KhivaLibrary().c_khiva_library.set_device(ctypes.pointer(ctypes.c_int(device)))
 
 
 def get_device_id():
@@ -110,7 +110,7 @@ def get_device_id():
     :return: The active device.
     """
     device = (ctypes.c_int * 1)(*[0])
-    TsaLibrary().c_tsa_library.get_device_id(ctypes.pointer(device))
+    KhivaLibrary().c_khiva_library.get_device_id(ctypes.pointer(device))
     return device[0]
 
 
@@ -120,7 +120,7 @@ def get_device_count():
     :return: The devices count.
     """
     device_count = (ctypes.c_int * 1)(*[0])
-    TsaLibrary().c_tsa_library.get_device_count(ctypes.pointer(device_count))
+    KhivaLibrary().c_khiva_library.get_device_count(ctypes.pointer(device_count))
     return device_count[0]
 
 
@@ -130,5 +130,5 @@ def version():
     :return: A string with the current version of the library.
     """
     v = ctypes.c_char_p((" " * 40).encode('utf8'))
-    TsaLibrary().c_tsa_library.version(ctypes.pointer(v))
+    KhivaLibrary().c_khiva_library.version(ctypes.pointer(v))
     return v.value.decode('utf8')

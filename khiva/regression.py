@@ -1,4 +1,4 @@
-# Copyright (c) 2018 Grumpy Cat Software S.L.
+# Copyright (c) 2018 Shapelets.io
 #
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -8,8 +8,8 @@
 # IMPORT
 ########################################################################################################################
 import ctypes
-from tsa.library import TsaLibrary
-from tsa.array import Array
+from khiva.library import KhivaLibrary
+from khiva.array import Array
 
 
 ########################################################################################################################
@@ -37,7 +37,7 @@ def linear(xss, yss):
     e = ctypes.c_void_p(0)
     f = ctypes.c_void_p(0)
 
-    TsaLibrary().c_tsa_library.linear(ctypes.pointer(xss.arr_reference),
+    KhivaLibrary().c_khiva_library.linear(ctypes.pointer(xss.arr_reference),
                                       ctypes.pointer(yss.arr_reference),
                                       ctypes.pointer(b),
                                       ctypes.pointer(c),

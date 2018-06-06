@@ -1,4 +1,4 @@
-# Copyright (c) 2018 Grumpy Cat Software S.L.
+# Copyright (c) 2018 Shapelets.io
 #
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -9,8 +9,8 @@
 # IMPORT
 ########################################################################################################################
 import ctypes
-from tsa.library import TsaLibrary
-from tsa.array import Array
+from khiva.library import KhivaLibrary
+from khiva.array import Array
 
 
 ########################################################################################################################
@@ -20,7 +20,7 @@ def group_by(tss, aggregation_function, n_columns_key=1, n_columns_value=1):
     values. The data is expected to be sorted. The aggregation function determines the operation to aggregate the
     values.
 
-    :param tss: TSA array with the time series.
+    :param tss: KHIVA array with the time series.
     :param aggregation_function: Function to be used in the aggregation. It receives an integer which indicates
                                 the function to be applied.
                                 0 : mean,
@@ -34,10 +34,10 @@ def group_by(tss, aggregation_function, n_columns_key=1, n_columns_value=1):
     :param n_columns_value: Number of columns conforming the value (they are expected to be consecutive to the column
                             keys).
 
-    :return: TSA array with the values of the group keys aggregated using the aggregation_function.
+    :return: KHIVA array with the values of the group keys aggregated using the aggregation_function.
     """
     b = ctypes.c_void_p(0)
-    TsaLibrary().c_tsa_library.group_by(ctypes.pointer(tss.arr_reference),
+    KhivaLibrary().c_khiva_library.group_by(ctypes.pointer(tss.arr_reference),
                                         ctypes.pointer(ctypes.c_int(aggregation_function)),
                                         ctypes.pointer(ctypes.c_int(n_columns_key)),
                                         ctypes.pointer(ctypes.c_int(n_columns_value)),

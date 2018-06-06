@@ -4,37 +4,37 @@ Quick Start
 ===========
 
 
-Install tsa
+Install khiva
 ---------------
 
-First of all, the TSA C++ library should be installed by using the installer that we offer in wwww.shapelets.io
+First of all, the KHIVA C++ library should be installed by using the installer that we offer in wwww.shapelets.io
 
-Then, the compiled TSA package is hosted on the Python Package Index (PyPI) so it can be installed with pip:
+Then, the compiled KHIVA package is hosted on the Python Package Index (PyPI) so it can be installed with pip:
 
 .. code:: shell
 
-   pip3 install tsa
+   pip3 install khiva
 
 
 Dive in
 -------
 
-In order to quickly dive into tsa, you can follow the following example:
+In order to quickly dive into khiva, you can follow the following example:
 
 First step, consists in setting what backend and device you want to use (there is a backend and a device set by default):
 
 .. code-block:: python
 
-    from tsa.library import *
-    set_backend(TSABackend.TSA_BACKEND_OPENCL)
+    from khiva.library import *
+    set_backend(KHIVABackend.KHIVA_BACKEND_OPENCL)
     set_device(0)
 
 After that, we can create an array in the device:
 
 .. code-block:: python
 
-    from tsa.array import *
-    a = array([1, 2, 3, 4, 5, 6, 7, 8])
+    from khiva.array import *
+    a = Array([1, 2, 3, 4, 5, 6, 7, 8])
     a.print()
 
 The lines contained above print the dimensions and the content of the created array:
@@ -92,7 +92,7 @@ The result is the next one:
 
 Now let's dive into the asynchronous usage of the library.
 
-TSA's library provide us several time series analysis functionalities which include features extaction, time-series
+KHIVA's library provide us several time series analysis functionalities which include features extaction, time-series
 re-dimension, distance calculations, motifs and discords detection, tools for similarity study, statistical parameters
 extraction or time series normalization.
 
@@ -101,9 +101,9 @@ moment that you will not use functions of this library:
 
 .. code-block:: python
 
-    from tsa.matrix import *
-    stomp_result = stomp(array(np.array([11, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 11])),
-                             array(np.array([9, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 9])),
+    from khiva.matrix import *
+    stomp_result = stomp(Array(np.array([11, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 11])),
+                             Array(np.array([9, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 9])),
                              3)
     find_best_n_discords_result = find_best_n_discords(stomp_result[0],
                                                            stomp_result[1], 2)
@@ -127,30 +127,30 @@ in the same device where the array was created.
 .. code-block:: python
 
     #Adding operations in the different backends and devices.
-    from tsa.features import *
-    set_backend(TSABackend.TSA_BACKEND_OPENCL)
+    from khiva.features import *
+    set_backend(KHIVABackend.KHIVA_BACKEND_OPENCL)
     set_device(0)
-    a = array([1, 2, 3, 4, 5, 6, 7, 8])
+    a = Array([1, 2, 3, 4, 5, 6, 7, 8])
     b = mean(a)
 
     set_device(1)
-    c = array([1, 2, 3, 4, 5, 6, 7, 8])
+    c = Array([1, 2, 3, 4, 5, 6, 7, 8])
     d = mean(c)
 
-    set_backend(TSABackend.TSA_BACKEND_CPU)
+    set_backend(KHIVABackend.KHIVA_BACKEND_CPU)
     set_device(0)
-    e = array([1, 2, 3, 4, 5, 6, 7, 8])
+    e = Array([1, 2, 3, 4, 5, 6, 7, 8])
     f = mean(e)
 
     #Retrieving the results of the previous operations
-    set_backend(TSABackend.TSA_BACKEND_OPENCL)
+    set_backend(KHIVABackend.KHIVA_BACKEND_OPENCL)
     set_device(0)
     print(b.to_numpy())
 
     set_device(1)
     print(d.to_numpy())
 
-    set_backend(TSABackend.TSA_BACKEND_CPU)
+    set_backend(KHIVABackend.KHIVA_BACKEND_CPU)
     set_device(0)
     print(f.to_numpy())
 
@@ -204,8 +204,8 @@ The following is an example function requiring a 32bit signed integer array:
 
 .. code:: python
 
-    cwt_coefficients_result = cwt_coefficients(array([[0.1, 0.2, 0.3], [0.1, 0.2, 0.3]]),
-                                                array(data=[1, 2, 3], tsa_type=dtype.s32), 2, 2).to_numpy()
+    cwt_coefficients_result = cwt_coefficients(Array([[0.1, 0.2, 0.3], [0.1, 0.2, 0.3]]),
+                                                Array(data=[1, 2, 3], khiva_type=dtype.s32), 2, 2).to_numpy()
     print(cwt_coefficients_result)
 
 The output is:

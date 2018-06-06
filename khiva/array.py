@@ -1,4 +1,4 @@
-# Copyright (c) 2018 Grumpy Cat Software S.L.
+# Copyright (c) 2018 Shapelets.io
 #
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -10,7 +10,7 @@
 import numpy as np
 import ctypes
 from collections import deque
-from tsa.library import TsaLibrary
+from khiva.library import KhivaLibrary
 from enum import Enum
 import pandas as pd
 import logging
@@ -21,63 +21,63 @@ import sys
 
 class dtype(Enum):
     """
-    TSA array available types.
+    KHIVA array available types.
     """
     f32 = 0
     """
-    Float. tsa.dtype
+    Float. khiva.dtype
     """
     c32 = 1
     """
-    32 bits Complex. tsa.dtype
+    32 bits Complex. khiva.dtype
     """
     f64 = 2
     """
-    64 bits Double. tsa.dtype
+    64 bits Double. khiva.dtype
     """
     c64 = 3
     """
-    64 bits Complex. tsa.dtype
+    64 bits Complex. khiva.dtype
     """
     b8 = 4
     """
-    Boolean. tsa.dtype
+    Boolean. khiva.dtype
     """
     s32 = 5
     """
-    32 bits Int. tsa.dtype
+    32 bits Int. khiva.dtype
     """
     u32 = 6
     """
-    32 bits Unsigned Int. tsa.dtype
+    32 bits Unsigned Int. khiva.dtype
     """
     u8 = 7
     """
-    8 bits Unsigned Int. tsa.dtype
+    8 bits Unsigned Int. khiva.dtype
     """
     s64 = 8
     """
-    64 bits Integer. tsa.dtype
+    64 bits Integer. khiva.dtype
     """
     u64 = 9
     """
-    64 bits Unsigned Int. tsa.dtype
+    64 bits Unsigned Int. khiva.dtype
     """
     s16 = 10
     """
-    16 bits Int. tsa.dtype
+    16 bits Int. khiva.dtype
     """
     u16 = 11
     """
-    16 bits Unsigned int. tsa.dtype
+    16 bits Unsigned int. khiva.dtype
     """
 
 
-def _get_array_type(tsa_type):
+def _get_array_type(khiva_type):
     """
-    Transform the TSA type to its equivalent in ctypes.
+    Transform the KHIVA type to its equivalent in ctypes.
 
-    :param tsa_type: TSA type.
+    :param khiva_type: KHIVA type.
 
     :return: The ctypes equivalent.
     """
@@ -94,14 +94,14 @@ def _get_array_type(tsa_type):
         dtype.u32.value: ctypes.c_uint32,
         dtype.s64.value: ctypes.c_int64,
         dtype.u64.value: ctypes.c_uint64
-    }[tsa_type]
+    }[khiva_type]
 
 
-def _get_numpy_type(tsa_type):
+def _get_numpy_type(khiva_type):
     """
-     Transform the TSA type to its equivalent in Numpy.
+     Transform the KHIVA type to its equivalent in Numpy.
 
-    :param tsa_type: TSA type.
+    :param khiva_type: KHIVA type.
 
     :return: The Numpy type equivalent.
     """
@@ -118,29 +118,29 @@ def _get_numpy_type(tsa_type):
         dtype.u32.value: np.uint32,
         dtype.s64.value: np.int64,
         dtype.u64.value: np.uint64,
-    }[tsa_type]
+    }[khiva_type]
 
 
 class Array:
     __array_priority__ = 50
 
-    def __init__(self, data=None, tsa_type=dtype.f32, array_reference=None, arrayfire_reference=False):
+    def __init__(self, data=None, khiva_type=dtype.f32, array_reference=None, arrayfire_reference=False):
         """
-        Creates a TSA array in one of the following ways: 1) using a previously created array; or 2) with data (in
+        Creates a KHIVA array in one of the following ways: 1) using a previously created array; or 2) with data (in
         numpy, list, or pandas dataframe format)
 
         :param data: Numpy array, List of elements or a Pandas dataframe.
-        :param tsa_type: TSA type.
+        :param khiva_type: KHIVA type.
         :param array_reference: Reference of the array.
         """
         if array_reference is None:
-            self.tsa_type = tsa_type
+            self.khiva_type = khiva_type
             self.arr_reference = self._create_array(data)
             self.dims = self.get_dims()
             self.result_l = self._get_result_length()
         else:
             self.arr_reference = array_reference
-            self.tsa_type = self.get_type()
+            self.khiva_type = self.get_type()
             self.dims = self.get_dims()
             self.result_l = self._get_result_length()
 
@@ -149,19 +149,19 @@ class Array:
     @classmethod
     def from_arrayfire(cls, arrayfire):
         """
-        Creates a TSA array from an array of ArrayFire.
+        Creates a KHIVA array from an array of ArrayFire.
 
         :param arrayfire: An ArrayFire array.
-        :return: a TSA array.
+        :return: a KHIVA array.
         """
         result = ctypes.c_void_p(0)
-        TsaLibrary().c_tsa_library.from_arrayfire(ctypes.pointer(arrayfire.arr), ctypes.pointer(result))
+        KhivaLibrary().c_khiva_library.from_arrayfire(ctypes.pointer(arrayfire.arr), ctypes.pointer(result))
         return cls(array_reference=result, arrayfire_reference=True)
 
     def _create_array(self, data):
-        """ Creates the TSA array in the device.
+        """ Creates the KHIVA array in the device.
 
-        :param data: The data used for creating the tsa array.
+        :param data: The data used for creating the khiva array.
 
         :return An opaque pointer to the Array.
         """
@@ -186,14 +186,14 @@ class Array:
         else:
             array_joint = data.flatten()
 
-        c_array_joint = (_get_array_type(self.tsa_type.value) * len(array_joint))(
+        c_array_joint = (_get_array_type(self.khiva_type.value) * len(array_joint))(
             *array_joint)
         opaque_pointer = ctypes.c_void_p(0)
-        TsaLibrary().c_tsa_library.create_array(ctypes.pointer(c_array_joint),
+        KhivaLibrary().c_khiva_library.create_array(ctypes.pointer(c_array_joint),
                                                 ctypes.pointer(c_ndims),
                                                 ctypes.pointer(c_array_n),
                                                 ctypes.pointer(opaque_pointer),
-                                                ctypes.pointer(ctypes.c_int(self.tsa_type.value)))
+                                                ctypes.pointer(ctypes.c_int(self.khiva_type.value)))
         return opaque_pointer
 
     def _get_data(self):
@@ -201,9 +201,9 @@ class Array:
 
         :return A numpy array with the data.
         """
-        initialized_result_array = np.zeros(self.result_l).astype(_get_array_type(self.tsa_type.value))
-        c_result_array = (_get_array_type(self.tsa_type.value) * self.result_l)(*initialized_result_array)
-        TsaLibrary().c_tsa_library.get_data(ctypes.pointer(self.arr_reference), ctypes.pointer(c_result_array))
+        initialized_result_array = np.zeros(self.result_l).astype(_get_array_type(self.khiva_type.value))
+        c_result_array = (_get_array_type(self.khiva_type.value) * self.result_l)(*initialized_result_array)
+        KhivaLibrary().c_khiva_library.get_data(ctypes.pointer(self.arr_reference), ctypes.pointer(c_result_array))
 
         dims = self.get_dims()
         dims = dims[dims > 1]
@@ -221,7 +221,7 @@ class Array:
             dims.rotate(1)
             a = a.reshape(dims)
 
-        a = a.astype(_get_numpy_type(self.tsa_type.value))
+        a = a.astype(_get_numpy_type(self.khiva_type.value))
         return a
 
     def _get_result_length(self):
@@ -239,21 +239,21 @@ class Array:
         return result
 
     def get_dims(self):
-        """ Gets the dimensions of the TSA array.
+        """ Gets the dimensions of the KHIVA array.
 
-        :return: The dimensions of the TSA array.
+        :return: The dimensions of the KHIVA array.
         """
         c_array_n = (ctypes.c_longlong * 4)(*(np.zeros(4)).astype(np.longlong))
-        TsaLibrary().c_tsa_library.get_dims(ctypes.pointer(self.arr_reference), ctypes.pointer(c_array_n))
+        KhivaLibrary().c_khiva_library.get_dims(ctypes.pointer(self.arr_reference), ctypes.pointer(c_array_n))
         return np.array(c_array_n)
 
     def get_type(self):
-        """ Gets the type of the TSA array.
+        """ Gets the type of the KHIVA array.
 
-        :return: The type of the TSA array.
+        :return: The type of the KHIVA array.
         """
         c_type = ctypes.c_int()
-        TsaLibrary().c_tsa_library.get_type(ctypes.pointer(self.arr_reference), ctypes.pointer(c_type))
+        KhivaLibrary().c_khiva_library.get_type(ctypes.pointer(self.arr_reference), ctypes.pointer(c_type))
         return dtype(c_type.value)
 
     def _is_complex(self):
@@ -261,12 +261,12 @@ class Array:
 
         :return: True if the array contains complex numbers and False otherwise.
         """
-        return self.tsa_type.value == dtype.c32.value or self.tsa_type.value == dtype.c64.value
+        return self.khiva_type.value == dtype.c32.value or self.khiva_type.value == dtype.c64.value
 
     def to_arrayfire(self):
-        """ Creates an Arrayfire array from this TSA array. This need to be used carefully as the same array
+        """ Creates an Arrayfire array from this KHIVA array. This need to be used carefully as the same array
         reference is oging to be used by both of them. Once the Arrayfire array is created, the destructor of
-        the TSA array is not going to free the allocated array.
+        the KHIVA array is not going to free the allocated array.
 
         :return: an Arrayfire Array
         """
@@ -281,31 +281,31 @@ class Array:
         return result
 
     def to_list(self):
-        """ Converts the TSA array to a list.
+        """ Converts the KHIVA array to a list.
 
-        :return: TSA array converted to list.
+        :return: KHIVA array converted to list.
         """
         return self._get_data().tolist()
 
     def to_numpy(self):
-        """ Converts the TSA array to a numpy array.
+        """ Converts the KHIVA array to a numpy array.
 
-        :return: TSA array converted to numpy.array.
+        :return: KHIVA array converted to numpy.array.
         """
         return self._get_data()
 
     def to_pandas(self):
-        """ Converts the TSA array to a pandas data frame.
+        """ Converts the KHIVA array to a pandas data frame.
 
-        :return: TSA array converted to a pandas data frame.
+        :return: KHIVA array converted to a pandas data frame.
         """
         return pd.DataFrame(data=self._get_data())
 
     def print(self):
         """
-        Prints the data stored in the TSA array.
+        Prints the data stored in the KHIVA array.
         """
-        TsaLibrary().c_tsa_library.print(ctypes.pointer(self.arr_reference))
+        KhivaLibrary().c_khiva_library.print(ctypes.pointer(self.arr_reference))
 
     def __len__(self):
         """
@@ -321,14 +321,14 @@ class Array:
         Class destructor.
         """
         if not self.arrayfire_reference:
-            TsaLibrary().c_tsa_library.delete_array(ctypes.pointer(self.arr_reference))
+            KhivaLibrary().c_khiva_library.delete_array(ctypes.pointer(self.arr_reference))
 
     def __add__(self, other):
         """
         Return self + other.
         """
         result = ctypes.c_void_p(0)
-        TsaLibrary().c_tsa_library.tsa_add(ctypes.pointer(self.arr_reference), ctypes.pointer(other.arr_reference),
+        KhivaLibrary().c_khiva_library.khiva_add(ctypes.pointer(self.arr_reference), ctypes.pointer(other.arr_reference),
                                            ctypes.pointer(result))
         return Array(array_reference=result)
 
@@ -337,7 +337,7 @@ class Array:
         Perform self += other.
         """
         result = ctypes.c_void_p(0)
-        TsaLibrary().c_tsa_library.tsa_add(ctypes.pointer(self.arr_reference), ctypes.pointer(other.arr_reference),
+        KhivaLibrary().c_khiva_library.khiva_add(ctypes.pointer(self.arr_reference), ctypes.pointer(other.arr_reference),
                                            ctypes.pointer(result))
         return Array(array_reference=result)
 
@@ -346,7 +346,7 @@ class Array:
         Return other + self.
         """
         result = ctypes.c_void_p(0)
-        TsaLibrary().c_tsa_library.tsa_add(ctypes.pointer(self.arr_reference), ctypes.pointer(other.arr_reference),
+        KhivaLibrary().c_khiva_library.khiva_add(ctypes.pointer(self.arr_reference), ctypes.pointer(other.arr_reference),
                                            ctypes.pointer(result))
         return Array(array_reference=result)
 
@@ -355,7 +355,7 @@ class Array:
         Return self - other.
         """
         result = ctypes.c_void_p(0)
-        TsaLibrary().c_tsa_library.tsa_sub(ctypes.pointer(self.arr_reference), ctypes.pointer(other.arr_reference),
+        KhivaLibrary().c_khiva_library.khiva_sub(ctypes.pointer(self.arr_reference), ctypes.pointer(other.arr_reference),
                                            ctypes.pointer(result))
         return Array(array_reference=result)
 
@@ -364,7 +364,7 @@ class Array:
         Perform self -= other.
         """
         result = ctypes.c_void_p(0)
-        TsaLibrary().c_tsa_library.tsa_sub(ctypes.pointer(self.arr_reference), ctypes.pointer(other.arr_reference),
+        KhivaLibrary().c_khiva_library.khiva_sub(ctypes.pointer(self.arr_reference), ctypes.pointer(other.arr_reference),
                                            ctypes.pointer(result))
         return Array(array_reference=result)
 
@@ -373,7 +373,7 @@ class Array:
         Return other - self.
         """
         result = ctypes.c_void_p(0)
-        TsaLibrary().c_tsa_library.tsa_sub(ctypes.pointer(self.arr_reference), ctypes.pointer(other.arr_reference),
+        KhivaLibrary().c_khiva_library.khiva_sub(ctypes.pointer(self.arr_reference), ctypes.pointer(other.arr_reference),
                                            ctypes.pointer(result))
         return Array(array_reference=result)
 
@@ -382,7 +382,7 @@ class Array:
         Return self * other.
         """
         result = ctypes.c_void_p(0)
-        TsaLibrary().c_tsa_library.tsa_mul(ctypes.pointer(self.arr_reference), ctypes.pointer(other.arr_reference),
+        KhivaLibrary().c_khiva_library.khiva_mul(ctypes.pointer(self.arr_reference), ctypes.pointer(other.arr_reference),
                                            ctypes.pointer(result))
         return Array(array_reference=result)
 
@@ -391,7 +391,7 @@ class Array:
         Perform self *= other.
         """
         result = ctypes.c_void_p(0)
-        TsaLibrary().c_tsa_library.tsa_mul(ctypes.pointer(self.arr_reference), ctypes.pointer(other.arr_reference),
+        KhivaLibrary().c_khiva_library.khiva_mul(ctypes.pointer(self.arr_reference), ctypes.pointer(other.arr_reference),
                                            ctypes.pointer(result))
         return Array(array_reference=result)
 
@@ -400,7 +400,7 @@ class Array:
         Return other * self.
         """
         result = ctypes.c_void_p(0)
-        TsaLibrary().c_tsa_library.tsa_mul(ctypes.pointer(self.arr_reference), ctypes.pointer(other.arr_reference),
+        KhivaLibrary().c_khiva_library.khiva_mul(ctypes.pointer(self.arr_reference), ctypes.pointer(other.arr_reference),
                                            ctypes.pointer(result))
         return Array(array_reference=result)
 
@@ -409,7 +409,7 @@ class Array:
         Return self / other.
         """
         result = ctypes.c_void_p(0)
-        TsaLibrary().c_tsa_library.tsa_div(ctypes.pointer(self.arr_reference), ctypes.pointer(other.arr_reference),
+        KhivaLibrary().c_khiva_library.khiva_div(ctypes.pointer(self.arr_reference), ctypes.pointer(other.arr_reference),
                                            ctypes.pointer(result))
         return Array(array_reference=result)
 
@@ -418,7 +418,7 @@ class Array:
         Perform self /= other.
         """
         result = ctypes.c_void_p(0)
-        TsaLibrary().c_tsa_library.tsa_div(ctypes.pointer(self.arr_reference), ctypes.pointer(other.arr_reference),
+        KhivaLibrary().c_khiva_library.khiva_div(ctypes.pointer(self.arr_reference), ctypes.pointer(other.arr_reference),
                                            ctypes.pointer(result))
         return Array(array_reference=result)
 
@@ -427,7 +427,7 @@ class Array:
         Return other / self.
         """
         result = ctypes.c_void_p(0)
-        TsaLibrary().c_tsa_library.tsa_div(ctypes.pointer(self.arr_reference), ctypes.pointer(other.arr_reference),
+        KhivaLibrary().c_khiva_library.khiva_div(ctypes.pointer(self.arr_reference), ctypes.pointer(other.arr_reference),
                                            ctypes.pointer(result))
         return Array(array_reference=result)
 
@@ -436,7 +436,7 @@ class Array:
         Return self / other.
         """
         result = ctypes.c_void_p(0)
-        TsaLibrary().c_tsa_library.tsa_div(ctypes.pointer(self.arr_reference), ctypes.pointer(other.arr_reference),
+        KhivaLibrary().c_khiva_library.khiva_div(ctypes.pointer(self.arr_reference), ctypes.pointer(other.arr_reference),
                                            ctypes.pointer(result))
         return Array(array_reference=result)
 
@@ -445,7 +445,7 @@ class Array:
         Perform other / self.
         """
         result = ctypes.c_void_p(0)
-        TsaLibrary().c_tsa_library.tsa_div(ctypes.pointer(self.arr_reference), ctypes.pointer(other.arr_reference),
+        KhivaLibrary().c_khiva_library.khiva_div(ctypes.pointer(self.arr_reference), ctypes.pointer(other.arr_reference),
                                            ctypes.pointer(result))
         return Array(array_reference=result)
 
@@ -454,7 +454,7 @@ class Array:
         Return other / self.
         """
         result = ctypes.c_void_p(0)
-        TsaLibrary().c_tsa_library.tsa_div(ctypes.pointer(self.arr_reference), ctypes.pointer(other.arr_reference),
+        KhivaLibrary().c_khiva_library.khiva_div(ctypes.pointer(self.arr_reference), ctypes.pointer(other.arr_reference),
                                            ctypes.pointer(result))
         return Array(array_reference=result)
 
@@ -463,7 +463,7 @@ class Array:
         Return self % other.
         """
         result = ctypes.c_void_p(0)
-        TsaLibrary().c_tsa_library.tsa_mod(ctypes.pointer(self.arr_reference), ctypes.pointer(other.arr_reference),
+        KhivaLibrary().c_khiva_library.khiva_mod(ctypes.pointer(self.arr_reference), ctypes.pointer(other.arr_reference),
                                            ctypes.pointer(result))
         return Array(array_reference=result)
 
@@ -472,7 +472,7 @@ class Array:
         Perform self %= other.
         """
         result = ctypes.c_void_p(0)
-        TsaLibrary().c_tsa_library.tsa_mod(ctypes.pointer(self.arr_reference), ctypes.pointer(other.arr_reference),
+        KhivaLibrary().c_khiva_library.khiva_mod(ctypes.pointer(self.arr_reference), ctypes.pointer(other.arr_reference),
                                            ctypes.pointer(result))
         return Array(array_reference=result)
 
@@ -481,7 +481,7 @@ class Array:
         Return other % self.
         """
         result = ctypes.c_void_p(0)
-        TsaLibrary().c_tsa_library.tsa_mod(ctypes.pointer(self.arr_reference), ctypes.pointer(other.arr_reference),
+        KhivaLibrary().c_khiva_library.khiva_mod(ctypes.pointer(self.arr_reference), ctypes.pointer(other.arr_reference),
                                            ctypes.pointer(result))
         return Array(array_reference=result)
 
@@ -490,7 +490,7 @@ class Array:
         Return self ** other.
         """
         result = ctypes.c_void_p(0)
-        TsaLibrary().c_tsa_library.tsa_pow(ctypes.pointer(self.arr_reference), ctypes.pointer(other.arr_reference),
+        KhivaLibrary().c_khiva_library.khiva_pow(ctypes.pointer(self.arr_reference), ctypes.pointer(other.arr_reference),
                                            ctypes.pointer(result))
         return Array(array_reference=result)
 
@@ -499,7 +499,7 @@ class Array:
         Perform self **= other.
         """
         result = ctypes.c_void_p(0)
-        TsaLibrary().c_tsa_library.tsa_pow(ctypes.pointer(self.arr_reference), ctypes.pointer(other.arr_reference),
+        KhivaLibrary().c_khiva_library.khiva_pow(ctypes.pointer(self.arr_reference), ctypes.pointer(other.arr_reference),
                                            ctypes.pointer(result))
         return Array(array_reference=result)
 
@@ -508,7 +508,7 @@ class Array:
         Return other ** self.
         """
         result = ctypes.c_void_p(0)
-        TsaLibrary().c_tsa_library.tsa_pow(ctypes.pointer(self.arr_reference), ctypes.pointer(other.arr_reference),
+        KhivaLibrary().c_khiva_library.khiva_pow(ctypes.pointer(self.arr_reference), ctypes.pointer(other.arr_reference),
                                            ctypes.pointer(result))
         return Array(array_reference=result)
 
@@ -517,7 +517,7 @@ class Array:
         Return self < other.
         """
         result = ctypes.c_void_p(0)
-        TsaLibrary().c_tsa_library.tsa_lt(ctypes.pointer(self.arr_reference), ctypes.pointer(other.arr_reference),
+        KhivaLibrary().c_khiva_library.khiva_lt(ctypes.pointer(self.arr_reference), ctypes.pointer(other.arr_reference),
                                           ctypes.pointer(result))
         return Array(array_reference=result)
 
@@ -526,7 +526,7 @@ class Array:
         Return self > other.
         """
         result = ctypes.c_void_p(0)
-        TsaLibrary().c_tsa_library.tsa_gt(ctypes.pointer(self.arr_reference), ctypes.pointer(other.arr_reference),
+        KhivaLibrary().c_khiva_library.khiva_gt(ctypes.pointer(self.arr_reference), ctypes.pointer(other.arr_reference),
                                           ctypes.pointer(result))
         return Array(array_reference=result)
 
@@ -535,7 +535,7 @@ class Array:
         Return self <= other.
         """
         result = ctypes.c_void_p(0)
-        TsaLibrary().c_tsa_library.tsa_le(ctypes.pointer(self.arr_reference), ctypes.pointer(other.arr_reference),
+        KhivaLibrary().c_khiva_library.khiva_le(ctypes.pointer(self.arr_reference), ctypes.pointer(other.arr_reference),
                                           ctypes.pointer(result))
         return Array(array_reference=result)
 
@@ -544,7 +544,7 @@ class Array:
         Return self >= other.
         """
         result = ctypes.c_void_p(0)
-        TsaLibrary().c_tsa_library.tsa_ge(ctypes.pointer(self.arr_reference), ctypes.pointer(other.arr_reference),
+        KhivaLibrary().c_khiva_library.khiva_ge(ctypes.pointer(self.arr_reference), ctypes.pointer(other.arr_reference),
                                           ctypes.pointer(result))
         return Array(array_reference=result)
 
@@ -553,7 +553,7 @@ class Array:
         Return self == other.
         """
         result = ctypes.c_void_p(0)
-        TsaLibrary().c_tsa_library.tsa_eq(ctypes.pointer(self.arr_reference), ctypes.pointer(other.arr_reference),
+        KhivaLibrary().c_khiva_library.khiva_eq(ctypes.pointer(self.arr_reference), ctypes.pointer(other.arr_reference),
                                           ctypes.pointer(result))
         return Array(array_reference=result)
 
@@ -562,7 +562,7 @@ class Array:
         Return self != other.
         """
         result = ctypes.c_void_p(0)
-        TsaLibrary().c_tsa_library.tsa_ne(ctypes.pointer(self.arr_reference), ctypes.pointer(other.arr_reference),
+        KhivaLibrary().c_khiva_library.khiva_ne(ctypes.pointer(self.arr_reference), ctypes.pointer(other.arr_reference),
                                           ctypes.pointer(result))
         return Array(array_reference=result)
 
@@ -571,7 +571,7 @@ class Array:
         Return self & other.
         """
         result = ctypes.c_void_p(0)
-        TsaLibrary().c_tsa_library.tsa_bitand(ctypes.pointer(self.arr_reference), ctypes.pointer(other.arr_reference),
+        KhivaLibrary().c_khiva_library.khiva_bitand(ctypes.pointer(self.arr_reference), ctypes.pointer(other.arr_reference),
                                               ctypes.pointer(result))
         return Array(array_reference=result)
 
@@ -580,7 +580,7 @@ class Array:
         Perform self &= other.
         """
         result = ctypes.c_void_p(0)
-        TsaLibrary().c_tsa_library.tsa_bitand(ctypes.pointer(self.arr_reference), ctypes.pointer(other.arr_reference),
+        KhivaLibrary().c_khiva_library.khiva_bitand(ctypes.pointer(self.arr_reference), ctypes.pointer(other.arr_reference),
                                               ctypes.pointer(result))
         return Array(array_reference=result)
 
@@ -589,7 +589,7 @@ class Array:
         Return self | other.
         """
         result = ctypes.c_void_p(0)
-        TsaLibrary().c_tsa_library.tsa_bitor(ctypes.pointer(self.arr_reference), ctypes.pointer(other.arr_reference),
+        KhivaLibrary().c_khiva_library.khiva_bitor(ctypes.pointer(self.arr_reference), ctypes.pointer(other.arr_reference),
                                              ctypes.pointer(result))
         return Array(array_reference=result)
 
@@ -598,7 +598,7 @@ class Array:
         Perform self |= other.
         """
         result = ctypes.c_void_p(0)
-        TsaLibrary().c_tsa_library.tsa_bitor(ctypes.pointer(self.arr_reference), ctypes.pointer(other.arr_reference),
+        KhivaLibrary().c_khiva_library.khiva_bitor(ctypes.pointer(self.arr_reference), ctypes.pointer(other.arr_reference),
                                              ctypes.pointer(result))
         return Array(array_reference=result)
 
@@ -607,7 +607,7 @@ class Array:
         Return self ^ other.
         """
         result = ctypes.c_void_p(0)
-        TsaLibrary().c_tsa_library.tsa_bitxor(ctypes.pointer(self.arr_reference), ctypes.pointer(other.arr_reference),
+        KhivaLibrary().c_khiva_library.khiva_bitxor(ctypes.pointer(self.arr_reference), ctypes.pointer(other.arr_reference),
                                               ctypes.pointer(result))
         return Array(array_reference=result)
 
@@ -616,7 +616,7 @@ class Array:
         Perform self ^= other.
         """
         result = ctypes.c_void_p(0)
-        TsaLibrary().c_tsa_library.tsa_bitxor(ctypes.pointer(self.arr_reference), ctypes.pointer(other.arr_reference),
+        KhivaLibrary().c_khiva_library.khiva_bitxor(ctypes.pointer(self.arr_reference), ctypes.pointer(other.arr_reference),
                                               ctypes.pointer(result))
         return Array(array_reference=result)
 
@@ -625,7 +625,7 @@ class Array:
         Return self << other.
         """
         result = ctypes.c_void_p(0)
-        TsaLibrary().c_tsa_library.tsa_bitshiftl(ctypes.pointer(self.arr_reference),
+        KhivaLibrary().c_khiva_library.khiva_bitshiftl(ctypes.pointer(self.arr_reference),
                                                  ctypes.pointer(ctypes.c_int32(other)), ctypes.pointer(result))
         return Array(array_reference=result)
 
@@ -634,7 +634,7 @@ class Array:
         Perform self <<= other.
         """
         result = ctypes.c_void_p(0)
-        TsaLibrary().c_tsa_library.tsa_bitshiftl(ctypes.pointer(self.arr_reference),
+        KhivaLibrary().c_khiva_library.khiva_bitshiftl(ctypes.pointer(self.arr_reference),
                                                  ctypes.pointer(ctypes.c_int32(other)), ctypes.pointer(result))
         return Array(array_reference=result)
 
@@ -643,7 +643,7 @@ class Array:
         Return self >> other.
         """
         result = ctypes.c_void_p(0)
-        TsaLibrary().c_tsa_library.tsa_bitshiftr(ctypes.pointer(self.arr_reference),
+        KhivaLibrary().c_khiva_library.khiva_bitshiftr(ctypes.pointer(self.arr_reference),
                                                  ctypes.pointer(ctypes.c_int32(other)), ctypes.pointer(result))
         return Array(array_reference=result)
 
@@ -652,7 +652,7 @@ class Array:
         Perform self >>= other.
         """
         result = ctypes.c_void_p(0)
-        TsaLibrary().c_tsa_library.tsa_bitshiftl(ctypes.pointer(self.arr_reference),
+        KhivaLibrary().c_khiva_library.khiva_bitshiftl(ctypes.pointer(self.arr_reference),
                                                  ctypes.pointer(ctypes.c_int32(other)), ctypes.pointer(result))
         return Array(array_reference=result)
 
@@ -673,16 +673,16 @@ class Array:
         Return ~self
         """
         result = ctypes.c_void_p(0)
-        TsaLibrary().c_tsa_library.tsa_not(ctypes.pointer(self.arr_reference), ctypes.pointer(result))
+        KhivaLibrary().c_khiva_library.khiva_not(ctypes.pointer(self.arr_reference), ctypes.pointer(result))
         return Array(array_reference=result)
 
     def _get_metadata_str(self, dims=True):
-        return 'tsa.Array()\nType: {}\n{}' \
-            .format(self.tsa_type, 'Dims: {}'.format(str(self.dims)) if dims else '')
+        return 'khiva.Array()\nType: {}\n{}' \
+            .format(self.khiva_type, 'Dims: {}'.format(str(self.dims)) if dims else '')
 
     def __str__(self):
         """
-        Converts the tsa array to string showing its meta data and contents.
+        Converts the khiva array to string showing its meta data and contents.
         """
 
         return self._get_metadata_str()
@@ -702,13 +702,13 @@ class Array:
 
     def transpose(self, conjugate=False):
         """
-        Transpose the TSA Array.
+        Transpose the KHIVA Array.
 
         :param conjugate: Indicates if the transpose is conjugated or not.
-        :return: The transposed TSA Array.
+        :return: The transposed KHIVA Array.
         """
         result = ctypes.c_void_p(0)
-        TsaLibrary().c_tsa_library.tsa_transpose(ctypes.pointer(self.arr_reference),
+        KhivaLibrary().c_khiva_library.khiva_transpose(ctypes.pointer(self.arr_reference),
                                                  ctypes.pointer(ctypes.c_bool(conjugate)), ctypes.pointer(result))
 
         return Array(array_reference=result)
@@ -721,7 +721,7 @@ class Array:
         :return: The desired column.
         """
         result = ctypes.c_void_p(0)
-        TsaLibrary().c_tsa_library.tsa_col(ctypes.pointer(self.arr_reference), ctypes.pointer(ctypes.c_int32(index)),
+        KhivaLibrary().c_khiva_library.khiva_col(ctypes.pointer(self.arr_reference), ctypes.pointer(ctypes.c_int32(index)),
                                            ctypes.pointer(result))
         return Array(array_reference=result)
 
@@ -734,7 +734,7 @@ class Array:
         :return: A subsequence of columns between 'first' and 'last'.
         """
         result = ctypes.c_void_p(0)
-        TsaLibrary().c_tsa_library.tsa_cols(ctypes.pointer(self.arr_reference), ctypes.pointer(ctypes.c_int32(first)),
+        KhivaLibrary().c_khiva_library.khiva_cols(ctypes.pointer(self.arr_reference), ctypes.pointer(ctypes.c_int32(first)),
                                             ctypes.pointer(ctypes.c_int32(last)),
                                             ctypes.pointer(result))
         return Array(array_reference=result)
@@ -747,7 +747,7 @@ class Array:
         :return: The desired row.
         """
         result = ctypes.c_void_p(0)
-        TsaLibrary().c_tsa_library.tsa_row(ctypes.pointer(self.arr_reference), ctypes.pointer(ctypes.c_int32(index)),
+        KhivaLibrary().c_khiva_library.khiva_row(ctypes.pointer(self.arr_reference), ctypes.pointer(ctypes.c_int32(index)),
                                            ctypes.pointer(result))
         return Array(array_reference=result)
 
@@ -760,7 +760,7 @@ class Array:
         :return: A subsequence of rows between 'first' and 'last'.
         """
         result = ctypes.c_void_p(0)
-        TsaLibrary().c_tsa_library.tsa_rows(ctypes.pointer(self.arr_reference), ctypes.pointer(ctypes.c_int32(first)),
+        KhivaLibrary().c_khiva_library.khiva_rows(ctypes.pointer(self.arr_reference), ctypes.pointer(ctypes.c_int32(first)),
                                             ctypes.pointer(ctypes.c_int32(last)),
                                             ctypes.pointer(result))
         return Array(array_reference=result)
@@ -769,11 +769,11 @@ class Array:
         """
         Matrix multiplication.
 
-        :param other: TSA Array
-        :return: The matrix multiplication between these two TSA Arrays.
+        :param other: KHIVA Array
+        :return: The matrix multiplication between these two KHIVA Arrays.
         """
         result = ctypes.c_void_p(0)
-        TsaLibrary().c_tsa_library.tsa_matmul(ctypes.pointer(self.arr_reference), ctypes.pointer(other.arr_reference),
+        KhivaLibrary().c_khiva_library.khiva_matmul(ctypes.pointer(self.arr_reference), ctypes.pointer(other.arr_reference),
                                               ctypes.pointer(result))
         return Array(array_reference=result)
 
@@ -784,18 +784,18 @@ class Array:
         return: An identical copy of self.
         """
         result = ctypes.c_void_p(0)
-        TsaLibrary().c_tsa_library.copy(ctypes.pointer(self.arr_reference), ctypes.pointer(result))
+        KhivaLibrary().c_khiva_library.copy(ctypes.pointer(self.arr_reference), ctypes.pointer(result))
         return Array(array_reference=result)
 
     def as_type(self, dtype):
         """
         Converts the array to a desired array with a desired type.
 
-        :param dtype: The desired TSA data type.
+        :param dtype: The desired KHIVA data type.
         :return: An array with the desired data type.
         """
         result = ctypes.c_void_p(0)
-        TsaLibrary().c_tsa_library.tsa_as(ctypes.pointer(self.arr_reference),
+        KhivaLibrary().c_khiva_library.khiva_as(ctypes.pointer(self.arr_reference),
                                           ctypes.pointer(ctypes.c_int32(dtype.value)), ctypes.pointer(result))
-        self.tsa_type = self.get_type()
+        self.khiva_type = self.get_type()
         return Array(array_reference=result)

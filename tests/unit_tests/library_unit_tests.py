@@ -1,4 +1,4 @@
-# Copyright (c) 2018 Grumpy Cat Software S.L.
+# Copyright (c) 2018 Shapelets.io
 #
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -9,7 +9,7 @@
 # IMPORT
 ########################################################################################################################
 import unittest
-from tsa.library import *
+from khiva.library import *
 
 
 ########################################################################################################################
@@ -21,38 +21,38 @@ class LibraryTest(unittest.TestCase):
 
     def test_set_backend(self):
         backends = get_backends()
-        cuda = backends & TSABackend.TSA_BACKEND_CUDA.value
-        opencl = backends & TSABackend.TSA_BACKEND_OPENCL.value
-        cpu = backends & TSABackend.TSA_BACKEND_CPU.value
+        cuda = backends & KHIVABackend.KHIVA_BACKEND_CUDA.value
+        opencl = backends & KHIVABackend.KHIVA_BACKEND_OPENCL.value
+        cpu = backends & KHIVABackend.KHIVA_BACKEND_CPU.value
         if cuda:
-            set_backend(TSABackend.TSA_BACKEND_CUDA)
-            self.assertEqual(get_backend(), TSABackend.TSA_BACKEND_CUDA)
+            set_backend(KHIVABackend.KHIVA_BACKEND_CUDA)
+            self.assertEqual(get_backend(), KHIVABackend.KHIVA_BACKEND_CUDA)
         if opencl:
-            set_backend(TSABackend.TSA_BACKEND_OPENCL)
-            self.assertEqual(get_backend(), TSABackend.TSA_BACKEND_OPENCL)
+            set_backend(KHIVABackend.KHIVA_BACKEND_OPENCL)
+            self.assertEqual(get_backend(), KHIVABackend.KHIVA_BACKEND_OPENCL)
         if cpu:
-            set_backend(TSABackend.TSA_BACKEND_CPU)
-            self.assertEqual(get_backend(), TSABackend.TSA_BACKEND_CPU)
+            set_backend(KHIVABackend.KHIVA_BACKEND_CPU)
+            self.assertEqual(get_backend(), KHIVABackend.KHIVA_BACKEND_CPU)
 
     def test_get_device(self):
         backends = get_backends()
-        cuda = backends & TSABackend.TSA_BACKEND_CUDA.value
-        opencl = backends & TSABackend.TSA_BACKEND_OPENCL.value
-        cpu = backends & TSABackend.TSA_BACKEND_CPU.value
+        cuda = backends & KHIVABackend.KHIVA_BACKEND_CUDA.value
+        opencl = backends & KHIVABackend.KHIVA_BACKEND_OPENCL.value
+        cpu = backends & KHIVABackend.KHIVA_BACKEND_CPU.value
 
         if cuda:
-            set_backend(TSABackend.TSA_BACKEND_CUDA)
+            set_backend(KHIVABackend.KHIVA_BACKEND_CUDA)
             for i in range(get_device_count()):
                 set_device(i)
                 self.assertEqual(get_device_id(), i)
         if opencl:
-            set_backend(TSABackend.TSA_BACKEND_OPENCL)
+            set_backend(KHIVABackend.KHIVA_BACKEND_OPENCL)
             for i in range(get_device_count()):
                 set_device(i)
                 self.assertEqual(get_device_id(), i)
 
         if cpu:
-            set_backend(TSABackend.TSA_BACKEND_CPU)
+            set_backend(KHIVABackend.KHIVA_BACKEND_CPU)
             for i in range(get_device_count()):
                 set_device(i)
                 self.assertEqual(get_device_id(), i)

@@ -1,7 +1,7 @@
-TSA
-===
+KHIVA
+=====
 
 .. toctree::
    :maxdepth: 4
 
-   tsa
+   khiva

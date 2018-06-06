@@ -1,7 +1,7 @@
 How to contribute
 =================
 
-We have just started! Our aim is to make the TSA library the reference library for time series analysis in the fastest fashion.
+We have just started! Our aim is to make the KHIVA library the reference library for time series analysis in the fastest fashion.
 To achieve this target we need your help!
 
 All contributions, bug reports, bug fixes, documentation improvements, enhancements and ideas are welcome. If you
@@ -17,7 +17,7 @@ Branching model
 ++++++++++++++++
 Our branching model has two permanent branches, **develop** and **master**.
 We aim at using `develop` as the main branch, where all features are merged.
-In this sense, we use the master branch to push the release versions of the binding for the TSA library.
+In this sense, we use the master branch to push the release versions of the binding for the KHIVA library.
 
 Contribution process
 +++++++++++++++++++++

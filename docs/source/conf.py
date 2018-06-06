@@ -22,9 +22,9 @@ sys.path.insert(0, os.path.abspath('../..'))
 
 # -- Project information -----------------------------------------------------
 
-project = 'tsa'
-copyright = '2018, Grumpy Cat'
-author = 'Grumpy Cat'
+project = 'khiva'
+copyright = '2018, Shapelets'
+author = 'Shapelets.io'
 
 # The short X.Y version
 version = ''
@@ -106,7 +106,7 @@ html_static_path = ['_static']
 # -- Options for HTMLHelp output ---------------------------------------------
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'tsadoc'
+htmlhelp_basename = 'khivadoc'
 
 
 # -- Options for LaTeX output ------------------------------------------------
@@ -133,8 +133,7 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'tsa.tex', 'tsa Documentation',
-     'Grumpy Cat', 'manual'),
+    (master_doc, 'khiva.tex', 'khiva Documentation', 'manual'),
 ]
 
 
@@ -143,7 +142,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, 'tsa', 'tsa Documentation',
+    (master_doc, 'khiva', 'khiva Documentation',
      [author], 1)
 ]
 
@@ -154,10 +153,9 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, 'tsa', 'tsa Documentation',
-     author, 'tsa', 'One line description of project.',
+    (master_doc, 'khiva', 'khiva Documentation',
+     author, 'khiva', 'One line description of project.',
      'Miscellaneous'),
 ]
-
 
 # -- Extension configuration -------------------------------------------------

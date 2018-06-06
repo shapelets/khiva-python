@@ -1,4 +1,4 @@
-# Copyright (c) 2018 Grumpy Cat Software S.L.
+# Copyright (c) 2018 Shapelets.io
 #
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -9,8 +9,8 @@
 # IMPORT
 ########################################################################################################################
 import unittest
-from tsa.dimensionality import *
-from tsa.array import Array
+from khiva.dimensionality import *
+from khiva.array import Array
 import numpy as np
 
 

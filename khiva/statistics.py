@@ -1,4 +1,4 @@
-# Copyright (c) 2018 Grumpy Cat Software S.L.
+# Copyright (c) 2018 Shapelets.io
 #
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -8,8 +8,8 @@
 # IMPORT
 ########################################################################################################################
 import ctypes
-from tsa.library import TsaLibrary
-from tsa.array import Array
+from khiva.library import KhivaLibrary
+from khiva.array import Array
 
 
 ########################################################################################################################
@@ -24,7 +24,7 @@ def covariance(tss, unbiased=False):
     :return: The covariance matrix of the time series.
     """
     b = ctypes.c_void_p(0)
-    TsaLibrary().c_tsa_library.covariance_statistics(ctypes.pointer(tss.arr_reference),
+    KhivaLibrary().c_khiva_library.covariance_statistics(ctypes.pointer(tss.arr_reference),
                                                      ctypes.pointer(ctypes.c_bool(unbiased)),
                                                      ctypes.pointer(b))
     return Array(array_reference=b)
@@ -38,7 +38,7 @@ def kurtosis(tss):
     :return: The kurtosis of tss.
     """
     b = ctypes.c_void_p(0)
-    TsaLibrary().c_tsa_library.kurtosis_statistics(ctypes.pointer(tss.arr_reference),
+    KhivaLibrary().c_khiva_library.kurtosis_statistics(ctypes.pointer(tss.arr_reference),
                                                    ctypes.pointer(b))
     return Array(array_reference=b)
 
@@ -71,7 +71,7 @@ def ljung_box(tss, lags):
     :return: Array containing the Ljung-Box statistic test.
     """
     ljung_box_out = ctypes.c_void_p(0)
-    TsaLibrary().c_tsa_library.ljung_box(ctypes.pointer(tss.arr_reference), ctypes.pointer(ctypes.c_long(lags)),
+    KhivaLibrary().c_khiva_library.ljung_box(ctypes.pointer(tss.arr_reference), ctypes.pointer(ctypes.c_long(lags)),
                                          ctypes.pointer(ljung_box_out))
     return Array(array_reference=ljung_box_out)
 
@@ -85,7 +85,7 @@ def moment(tss, k):
     :return: The kth moment of the given time series.
     """
     b = ctypes.c_void_p(0)
-    TsaLibrary().c_tsa_library.moment_statistics(ctypes.pointer(tss.arr_reference),
+    KhivaLibrary().c_khiva_library.moment_statistics(ctypes.pointer(tss.arr_reference),
                                                  ctypes.pointer(ctypes.c_int(k)),
                                                  ctypes.pointer(b))
     return Array(array_reference=b)
@@ -101,7 +101,7 @@ def quantile(tss, q, precision=1e8):
     :return: Values at the given quantile.
     """
     b = ctypes.c_void_p(0)
-    TsaLibrary().c_tsa_library.quantile_statistics(ctypes.pointer(tss.arr_reference),
+    KhivaLibrary().c_khiva_library.quantile_statistics(ctypes.pointer(tss.arr_reference),
                                                    ctypes.pointer(q.arr_reference),
                                                    ctypes.pointer(ctypes.c_float(precision)),
                                                    ctypes.pointer(b))
@@ -119,7 +119,7 @@ def quantiles_cut(tss, quantiles, precision=1e-8):
             the end in the second category.
     """
     b = ctypes.c_void_p(0)
-    TsaLibrary().c_tsa_library.quantiles_cut_statistics(ctypes.pointer(tss.arr_reference),
+    KhivaLibrary().c_khiva_library.quantiles_cut_statistics(ctypes.pointer(tss.arr_reference),
                                                         ctypes.pointer(ctypes.c_float(quantiles)),
                                                         ctypes.pointer(ctypes.c_float(precision)),
                                                         ctypes.pointer(b))
@@ -134,7 +134,7 @@ def sample_stdev(tss):
     :return: The sample standard deviation.
     """
     b = ctypes.c_void_p(0)
-    TsaLibrary().c_tsa_library.sample_stdev_statistics(ctypes.pointer(tss.arr_reference),
+    KhivaLibrary().c_khiva_library.sample_stdev_statistics(ctypes.pointer(tss.arr_reference),
                                                        ctypes.pointer(b))
     return Array(array_reference=b)
 
@@ -148,7 +148,7 @@ def skewness(tss):
     :return: Array containing the skewness of each time series in tss.
     """
     b = ctypes.c_void_p(0)
-    TsaLibrary().c_tsa_library.skewness_statistics(ctypes.pointer(tss.arr_reference),
+    KhivaLibrary().c_khiva_library.skewness_statistics(ctypes.pointer(tss.arr_reference),
                                                    ctypes.pointer(b))
     return Array(array_reference=b)
 

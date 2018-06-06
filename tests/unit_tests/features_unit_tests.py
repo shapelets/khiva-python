@@ -1,4 +1,4 @@
-# Copyright (c) 2018 Grumpy Cat Software S.L.
+# Copyright (c) 2018 Shapelets.io
 #
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -10,8 +10,8 @@
 ########################################################################################################################
 import unittest
 import numpy as np
-from tsa.features import *
-from tsa.array import Array, dtype
+from khiva.features import *
+from khiva.array import Array, dtype
 import logging
 
 
@@ -87,7 +87,7 @@ class FeaturesTest(unittest.TestCase):
     def test_approximate_entropy(self):
         approximate_entropy_result = approximate_entropy(
             Array(data=[[1, 2, 3, 4, 5, 6, 7, 8, 9, 10], [11, 12, 13, 14, 15, 16, 17, 18, 19, 20]],
-                  tsa_type=dtype.f32), 4, 0.5).to_numpy()
+                  khiva_type=dtype.f32), 4, 0.5).to_numpy()
 
         self.assertAlmostEqual(approximate_entropy_result[0], 0.13484281753639338, delta=self.DELTA)
         self.assertAlmostEqual(approximate_entropy_result[1], 0.13484281753639338, delta=self.DELTA)
@@ -339,7 +339,7 @@ class FeaturesTest(unittest.TestCase):
 
     def test_cwt_coefficients(self):
         cwt_coefficients_result = cwt_coefficients(Array([[0.1, 0.2, 0.3], [0.1, 0.2, 0.3]]),
-                                                   Array(data=[1, 2, 3], tsa_type=dtype.s32), 2, 2).to_numpy()
+                                                   Array(data=[1, 2, 3], khiva_type=dtype.s32), 2, 2).to_numpy()
         self.assertAlmostEqual(cwt_coefficients_result[0], 0.26517161726951599, delta=self.DELTA)
         self.assertAlmostEqual(cwt_coefficients_result[1], 0.26517161726951599, delta=self.DELTA)
 
@@ -420,7 +420,7 @@ class FeaturesTest(unittest.TestCase):
         step = 1 / (numel - 1)
         a = [step * i for i in range(int(numel))]
         a = Array([a, a])
-        lags = Array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9], tsa_type=dtype.s32)
+        lags = Array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9], khiva_type=dtype.s32)
         result = partial_autocorrelation(a, lags).to_numpy()
         expected = np.array([[1.0, 0.9993331432342529, -0.0006701064994559, -0.0006701068487018, -0.0008041285327636,
                               -0.0005360860959627, -0.0007371186511591, -0.0004690756904893, -0.0008041299879551,

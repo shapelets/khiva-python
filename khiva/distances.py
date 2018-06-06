@@ -1,4 +1,4 @@
-# Copyright (c) 2018 Grumpy Cat Software S.L.
+# Copyright (c) 2018 Shapelets.io
 #
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -8,8 +8,8 @@
 # IMPORT
 ########################################################################################################################
 import ctypes
-from tsa.library import TsaLibrary
-from tsa.array import Array
+from khiva.library import KhivaLibrary
+from khiva.array import Array
 
 
 ########################################################################################################################
@@ -25,7 +25,7 @@ def euclidean(tss):
             between time series 0 and time series 1.
     """
     b = ctypes.c_void_p(0)
-    TsaLibrary().c_tsa_library.euclidean(ctypes.pointer(tss.arr_reference),
+    KhivaLibrary().c_khiva_library.euclidean(ctypes.pointer(tss.arr_reference),
                                          ctypes.pointer(b))
     return Array(array_reference=b)
 
@@ -40,7 +40,7 @@ def dtw(tss):
             distance between time series 0 and time series 1.
     """
     b = ctypes.c_void_p(0)
-    TsaLibrary().c_tsa_library.dtw(ctypes.pointer(tss.arr_reference),
+    KhivaLibrary().c_khiva_library.dtw(ctypes.pointer(tss.arr_reference),
                                    ctypes.pointer(b))
     return Array(array_reference=b)
 
@@ -55,7 +55,7 @@ def hamming(tss):
             between time series 0 and time series 1.
     """
     b = ctypes.c_void_p(0)
-    TsaLibrary().c_tsa_library.hamming(ctypes.pointer(tss.arr_reference),
+    KhivaLibrary().c_khiva_library.hamming(ctypes.pointer(tss.arr_reference),
                                        ctypes.pointer(b))
     return Array(array_reference=b)
 
@@ -70,7 +70,7 @@ def manhattan(tss):
             between time series 0 and time series 1.
     """
     b = ctypes.c_void_p(0)
-    TsaLibrary().c_tsa_library.manhattan(ctypes.pointer(tss.arr_reference),
+    KhivaLibrary().c_khiva_library.manhattan(ctypes.pointer(tss.arr_reference),
                                          ctypes.pointer(b))
     return Array(array_reference=b)
 
@@ -85,7 +85,7 @@ def squared_euclidean(tss):
             and time series 1.
     """
     b = ctypes.c_void_p(0)
-    TsaLibrary().c_tsa_library.squared_euclidean(ctypes.pointer(tss.arr_reference),
+    KhivaLibrary().c_khiva_library.squared_euclidean(ctypes.pointer(tss.arr_reference),
                                                  ctypes.pointer(b))
     return Array(array_reference=b)
 

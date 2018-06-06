@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-# Copyright (c) 2018 Grumpy Cat Software S.L.
+# Copyright (c) 2018 Shapelets.io
 #
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -20,26 +20,26 @@ from pathlib import Path
 library_installed = False
 
 if platform.system() == 'Darwin':
-    tsalibrary = Path("/usr/local/lib/libtsa_c.dylib")
-    library_installed = tsalibrary.is_file()
+    khivalibrary = Path("/usr/local/lib/libkhiva_c.dylib")
+    library_installed = khivalibrary.is_file()
 elif platform.system() == 'Windows':
-    tsalibrary = Path("C:\\Program Files\\TSA\\lib\\tsa_c.dll")
-    library_installed = tsalibrary.is_file()
+    khivalibrary = Path("C:\\Program Files\\KHIVA\\lib\\khiva_c.dll")
+    library_installed = khivalibrary.is_file()
 elif platform.system() == 'Linux':
-    tsalibrary = Path("/usr/local/lib/libtsa_c.so")
-    library_installed = tsalibrary.is_file()
+    khivalibrary = Path("/usr/local/lib/libkhiva_c.so")
+    library_installed = khivalibrary.is_file()
 
 if library_installed:
     setup(
-        author="Grumpy Cat Software S.L.",
+        author="Shapelets.io",
         author_email="info@gcatsoft.com",
-        name="tsa",
+        name="khiva",
         version=subprocess.check_output(["git", "describe"]).strip().decode("utf-8")[1:].split('-')[0],
-        description="Python bindings for tsa",
+        description="Python bindings for khiva",
         license="MPL 2.0",
-        url="http://gcatsoft.com",
+        url="https://shapelets.io",
         packages=find_packages()
     )
 else:
-    logging.error("C++ TSA library not installed. Please, follow the steps for installing the library in: <C++ TSA "
+    logging.error("C++ KHIVA library not installed. Please, follow the steps for installing the library in: <C++ KHIVA "
                   "Library>")

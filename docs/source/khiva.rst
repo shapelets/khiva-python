@@ -1,101 +1,101 @@
-tsa
+khiva
 ===========
 
 Submodules
 ++++++++++
 
-tsa.array
+khiva.array
 ---------------------------------
 
-.. automodule:: tsa.array
+.. automodule:: khiva.array
     :members:
     :undoc-members:
     :show-inheritance:
 
-tsa.dimensionality
+khiva.dimensionality
 ---------------------------------
 
-.. automodule:: tsa.dimensionality
+.. automodule:: khiva.dimensionality
     :members:
     :undoc-members:
     :show-inheritance:
 
-tsa.distances
+khiva.distances
 ---------------------------------
 
-.. automodule:: tsa.distances
+.. automodule:: khiva.distances
     :members:
     :undoc-members:
     :show-inheritance:
 
-tsa.features
+khiva.features
 ---------------------------------
 
-.. automodule:: tsa.features
+.. automodule:: khiva.features
     :members:
     :undoc-members:
     :show-inheritance:
 
-tsa.library
+khiva.library
 ---------------------------------
 
-.. automodule:: tsa.library
+.. automodule:: khiva.library
     :members:
     :undoc-members:
     :show-inheritance:
 
-tsa.linalg
+khiva.linalg
 ---------------------------------
 
-.. automodule:: tsa.linalg
+.. automodule:: khiva.linalg
     :members:
     :undoc-members:
     :show-inheritance:
 
-tsa.matrix
+khiva.matrix
 ---------------------------------
 
-.. automodule:: tsa.matrix
+.. automodule:: khiva.matrix
     :members:
     :undoc-members:
     :show-inheritance:
 
-tsa.normalization
+khiva.normalization
 ---------------------------------
 
-.. automodule:: tsa.normalization
+.. automodule:: khiva.normalization
     :members:
     :undoc-members:
     :show-inheritance:
 
-tsa.polynomial
+khiva.polynomial
 ---------------------------------
 
-.. automodule:: tsa.polynomial
+.. automodule:: khiva.polynomial
     :members:
     :undoc-members:
     :show-inheritance:
 
-tsa.regression
+khiva.regression
 ---------------------------------
 
-.. automodule:: tsa.regression
+.. automodule:: khiva.regression
     :members:
     :undoc-members:
     :show-inheritance:
 
-tsa.regularization
+khiva.regularization
 ---------------------------------
 
-.. automodule:: tsa.regularization
+.. automodule:: khiva.regularization
     :members:
     :undoc-members:
     :show-inheritance:
 
-tsa.statistics
+khiva.statistics
 ---------------------------------
 
-.. automodule:: tsa.statistics
+.. automodule:: khiva.statistics
     :members:
     :undoc-members:
     :show-inheritance:

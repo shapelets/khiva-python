@@ -1,11 +1,11 @@
 # README #
-This is the TSA binding for connecting the Python programming language and the TSA library.
+This is the KHIVA binding for connecting the Python programming language and the KHIVA library.
 
 ## License
 This project is licensed under [MPL-v2](https://www.mozilla.org/en-US/MPL/2.0/).
  
 ## Quick Summary
-This Python library called 'tsa' provides all the functionalities of the TSA library for time series analytics.
+This Python library called 'khiva' provides all the functionalities of the KHIVA library for time series analytics.
 
 ## Set up
 It is just needed to execute the next command in the root directory of the project:
@@ -29,7 +29,7 @@ make html
 ### Branching model
 Our branching model has two permanent branches, **develop** and **master**. 
 We aim at using `develop` as the main branch, where all features are merged. 
-In this sense, we use the master branch to push the release versions of the binding for the TSA library.
+In this sense, we use the master branch to push the release versions of the binding for the KHIVA library.
  
 ### Contribution process
 In order to contribute to the code base, we follow the next process:
