@@ -1,32 +1,47 @@
 # README #
+This is the KHIVA binding for connecting the Python programming language and the KHIVA library.
 
-This is the TSA library for Python. 
-This project provides the Python wrapper for the original TSA library written in C++ programming language. 
+## License
+This project is licensed under [MPL-v2](https://www.mozilla.org/en-US/MPL/2.0/).
+ 
+## Quick Summary
+This Python library called 'khiva' provides all the functionalities of the KHIVA library for time series analytics.
 
-### What is this repository for? ###
+## Set up
+It is just needed to execute the next command in the root directory of the project:
+```bash
+python3 setup.py install
+```
+  
+## Executing the tests:
+The tests can be executed and they are located in <project-root-dir>/tests/unit_tests.
+ 
+## Documentation
+This Python library follows the standard way of writing documentation of Python by using Sphinx.
 
-* This repository provides the full installable Python Package for using the TSA library with the target of analyse 
-time series in a super-efficient fashion, giving a solution for time series analysis in the Big Data Ecosystem. 
+In order to generate the documentation (in html format), run the following command under the <project-root-dir>/docs folder:
+```bash
+make html
+```
 
+## Contributing
 
-
-### How do I get set up? ###
-
-* For installing this package, please, first it is necessary to satisfy the reuqirements indicated in the requirements.txt file.
-
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
-
-### Contribution guidelines ###
-
-* Writing tests
-* Code review
-* Other guidelines
-
-### Who do I talk to? ###
-
-* Repo owner or admin
-* Other community or team contact
+### Branching model
+Our branching model has two permanent branches, **develop** and **master**. 
+We aim at using `develop` as the main branch, where all features are merged. 
+In this sense, we use the master branch to push the release versions of the binding for the KHIVA library.
+ 
+### Contribution process
+In order to contribute to the code base, we follow the next process:
+1. The main branch is develop, every developer should pull the current status of the branch before stating to develop any new feature.
+`git pull`
+2. Create a new branch with the following pattern "feature/[name_of_the_feature]"
+`git checkout -b feature/exampleFeature`
+3. Develop the new feature on the the new branch. It includes testing and documentation.
+`git commit -a -m "Bla, Bla, Bla";  git push`
+4. Open a Pull Request to merge the feature branch in to develop. Currently, a pull request has to be reviewed at least by one person.
+5. Finally, delete the feature branch.
+6. Move back to develop branch.
+`git checkout develop`
+7. Pull the latest changes.
+`git pull`

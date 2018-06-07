@@ -99,3 +99,9 @@ ENV/
 
 # mypy
 .mypy_cache/
+
+#documentation
+./docs/build/
+
+#IntelliJ files.
+.idea
