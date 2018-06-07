@@ -32,7 +32,7 @@ elif platform.system() == 'Linux':
 if library_installed:
     setup(
         author="Shapelets.io",
-        author_email="info@gcatsoft.com",
+        author_email="info@shapelets.io",
         name="khiva",
         version=subprocess.check_output(["git", "describe"]).strip().decode("utf-8")[1:].split('-')[0],
         description="Python bindings for khiva",
