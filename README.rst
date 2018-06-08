@@ -1,4 +1,4 @@
-khiva
+Khiva
 ======
 
 This is the Khiva binding for connecting the Python programming language
@@ -11,12 +11,12 @@ This project is licensed under
 `MPL-v2 <https://www.mozilla.org/en-US/MPL/2.0/>`__.
 
 
-Install khiva
+Install Khiva
 ---------------
 
 First of all, the Khiva C++ library should be installed:
 
-`Shapeletes <http://shapelets.io>`__.
+`Shapelets <http://shapelets.io>`__.
 
 
 Then, install the compiled Khiva package that is hosted on the Python Package Index (PyPI) with pip:
@@ -209,7 +209,7 @@ The available data types are the next ones:
 
 
 There are functions that do not support 32 bits floating point data type, so it is necessary to indicate the data type.
-The following is an example function requiring a 32bit signed integer array:
+The following is an example function requiring a 32-bit signed integer array:
 
 .. code-block:: python
 

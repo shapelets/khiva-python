@@ -4,12 +4,12 @@ Quick Start
 ===========
 
 
-Install khiva
+Install Khiva
 ---------------
 
 First of all, the Khiva C++ library should be installed:
 
-`Shapeletes <http://shapelets.io>`__.
+`Shapelets <http://shapelets.io>`__.
 
 
 Then, install the compiled Khiva package that is hosted on the Python Package Index (PyPI) with pip:
@@ -30,7 +30,6 @@ First, set the backend and device you want to use. There is a backend and a devi
     from khiva.library import *
     set_backend(KHIVABackend.KHIVA_BACKEND_OPENCL)
     set_device(0)
-
 
 Then, you can create an array in the device:
 
@@ -202,7 +201,7 @@ The available data types are the next ones:
 
 
 There are functions that do not support 32 bits floating point data type, so it is necessary to indicate the data type.
-The following is an example function requiring a 32bit signed integer array:
+The following is an example function requiring a 32-bit signed integer array:
 
 .. code:: python
 
