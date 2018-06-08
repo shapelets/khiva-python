@@ -52,10 +52,11 @@ def max_min_norm(tss, high=1.0, low=0.0, epsilon=0.00000001):
             one as standard deviation.
     """
     b = ctypes.c_void_p(0)
-    KhivaLibrary().c_khiva_library.max_min_norm(ctypes.pointer(tss.arr_reference), ctypes.pointer(ctypes.c_double(high)),
-                                            ctypes.pointer(ctypes.c_double(low)),
-                                            ctypes.pointer(ctypes.c_double(epsilon)),
-                                            ctypes.pointer(b))
+    KhivaLibrary().c_khiva_library.max_min_norm(ctypes.pointer(tss.arr_reference),
+                                                ctypes.pointer(ctypes.c_double(high)),
+                                                ctypes.pointer(ctypes.c_double(low)),
+                                                ctypes.pointer(ctypes.c_double(epsilon)),
+                                                ctypes.pointer(b))
 
     return Array(array_reference=b)
 
@@ -70,9 +71,9 @@ def max_min_norm_in_place(tss, high=1.0, low=0.0, epsilon=0.00000001):
                     operation between min and max values in the tss.
     """
     KhivaLibrary().c_khiva_library.max_min_norm_in_place(ctypes.pointer(tss.arr_reference),
-                                                     ctypes.pointer(ctypes.c_double(high)),
-                                                     ctypes.pointer(ctypes.c_double(low)),
-                                                     ctypes.pointer(ctypes.c_double(epsilon)))
+                                                         ctypes.pointer(ctypes.c_double(high)),
+                                                         ctypes.pointer(ctypes.c_double(low)),
+                                                         ctypes.pointer(ctypes.c_double(epsilon)))
 
 
 def mean_norm(tss):
@@ -118,7 +119,7 @@ def znorm(tss, epsilon=0.00000001):
     """
     b = ctypes.c_void_p(0)
     KhivaLibrary().c_khiva_library.znorm(ctypes.pointer(tss.arr_reference), ctypes.pointer(ctypes.c_double(epsilon)),
-                                     ctypes.pointer(b))
+                                         ctypes.pointer(b))
 
     return Array(array_reference=b)
 
@@ -132,4 +133,4 @@ def znorm_in_place(tss, epsilon=0.00000001):
                     those time series that may be constant or near constant.
     """
     KhivaLibrary().c_khiva_library.znorm_in_place(ctypes.pointer(tss.arr_reference),
-                                              ctypes.pointer(ctypes.c_double(epsilon)))
+                                                  ctypes.pointer(ctypes.c_double(epsilon)))

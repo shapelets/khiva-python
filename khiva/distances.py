@@ -26,7 +26,7 @@ def euclidean(tss):
     """
     b = ctypes.c_void_p(0)
     KhivaLibrary().c_khiva_library.euclidean(ctypes.pointer(tss.arr_reference),
-                                         ctypes.pointer(b))
+                                             ctypes.pointer(b))
     return Array(array_reference=b)
 
 
@@ -41,7 +41,7 @@ def dtw(tss):
     """
     b = ctypes.c_void_p(0)
     KhivaLibrary().c_khiva_library.dtw(ctypes.pointer(tss.arr_reference),
-                                   ctypes.pointer(b))
+                                       ctypes.pointer(b))
     return Array(array_reference=b)
 
 
@@ -56,7 +56,7 @@ def hamming(tss):
     """
     b = ctypes.c_void_p(0)
     KhivaLibrary().c_khiva_library.hamming(ctypes.pointer(tss.arr_reference),
-                                       ctypes.pointer(b))
+                                           ctypes.pointer(b))
     return Array(array_reference=b)
 
 
@@ -71,7 +71,7 @@ def manhattan(tss):
     """
     b = ctypes.c_void_p(0)
     KhivaLibrary().c_khiva_library.manhattan(ctypes.pointer(tss.arr_reference),
-                                         ctypes.pointer(b))
+                                             ctypes.pointer(b))
     return Array(array_reference=b)
 
 
@@ -86,6 +86,5 @@ def squared_euclidean(tss):
     """
     b = ctypes.c_void_p(0)
     KhivaLibrary().c_khiva_library.squared_euclidean(ctypes.pointer(tss.arr_reference),
-                                                 ctypes.pointer(b))
+                                                     ctypes.pointer(b))
     return Array(array_reference=b)
-
