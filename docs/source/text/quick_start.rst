@@ -7,7 +7,7 @@ Quick Start
 Install khiva
 ---------------
 
-First of all, the KHIVA C++ library should be installed by using the installer that we offer in wwww.shapelets.io
+First of all, the KHIVA C++ library should be installed by using the installer that we offer in http://www.shapelets.io
 
 Then, the compiled KHIVA package is hosted on the Python Package Index (PyPI) so it can be installed with pip:
 
