@@ -27,8 +27,8 @@ def polyfit(x, y, deg):
     """
     b = ctypes.c_void_p(0)
     KhivaLibrary().c_khiva_library.polyfit(ctypes.pointer(x.arr_reference), ctypes.pointer(y.arr_reference),
-                                       ctypes.pointer(ctypes.c_int(deg)),
-                                       ctypes.pointer(b))
+                                           ctypes.pointer(ctypes.c_int(deg)),
+                                           ctypes.pointer(b))
 
     return Array(array_reference=b)
 

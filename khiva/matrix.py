@@ -28,11 +28,11 @@ def find_best_n_discords(profile, index, n):
     d = ctypes.c_void_p(0)
 
     KhivaLibrary().c_khiva_library.find_best_n_discords(ctypes.pointer(profile.arr_reference),
-                                                    ctypes.pointer(index.arr_reference),
-                                                    ctypes.pointer(ctypes.c_long(n)),
-                                                    ctypes.pointer(b),
-                                                    ctypes.pointer(c),
-                                                    ctypes.pointer(d))
+                                                        ctypes.pointer(index.arr_reference),
+                                                        ctypes.pointer(ctypes.c_long(n)),
+                                                        ctypes.pointer(b),
+                                                        ctypes.pointer(c),
+                                                        ctypes.pointer(d))
 
     return Array(array_reference=b), Array(array_reference=c), Array(
         array_reference=d)
@@ -51,11 +51,11 @@ def find_best_n_motifs(profile, index, n):
     d = ctypes.c_void_p(0)
 
     KhivaLibrary().c_khiva_library.find_best_n_motifs(ctypes.pointer(profile.arr_reference),
-                                                  ctypes.pointer(index.arr_reference),
-                                                  ctypes.pointer(ctypes.c_long(n)),
-                                                  ctypes.pointer(b),
-                                                  ctypes.pointer(c),
-                                                  ctypes.pointer(d))
+                                                      ctypes.pointer(index.arr_reference),
+                                                      ctypes.pointer(ctypes.c_long(n)),
+                                                      ctypes.pointer(b),
+                                                      ctypes.pointer(c),
+                                                      ctypes.pointer(d))
 
     return Array(array_reference=b), Array(array_reference=c), Array(
         array_reference=d)
@@ -74,10 +74,10 @@ def stomp(first_time_series, second_time_series, subsequence_length):
     c = ctypes.c_void_p(0)
 
     KhivaLibrary().c_khiva_library.stomp(ctypes.pointer(first_time_series.arr_reference),
-                                     ctypes.pointer(second_time_series.arr_reference),
-                                     ctypes.pointer(ctypes.c_long(subsequence_length)),
-                                     ctypes.pointer(b),
-                                     ctypes.pointer(c))
+                                         ctypes.pointer(second_time_series.arr_reference),
+                                         ctypes.pointer(ctypes.c_long(subsequence_length)),
+                                         ctypes.pointer(b),
+                                         ctypes.pointer(c))
 
     return Array(array_reference=b), Array(array_reference=c)
 
@@ -94,8 +94,8 @@ def stomp_self_join(time_series, subsequence_length):
     c = ctypes.c_void_p(0)
 
     KhivaLibrary().c_khiva_library.stomp_self_join(ctypes.pointer(time_series.arr_reference),
-                                               ctypes.pointer(ctypes.c_long(subsequence_length)),
-                                               ctypes.pointer(b),
-                                               ctypes.pointer(c))
+                                                   ctypes.pointer(ctypes.c_long(subsequence_length)),
+                                                   ctypes.pointer(b),
+                                                   ctypes.pointer(c))
 
     return Array(array_reference=b), Array(array_reference=c)
