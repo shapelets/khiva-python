@@ -1,7 +1,14 @@
-.. _quick-start-label:
+Khiva
+======
 
-Quick Start
-===========
+This is the Khiva binding for connecting the Python programming language
+and the Khiva C++ library.
+
+License
+-------
+
+This project is licensed under
+`MPL-v2 <https://www.mozilla.org/en-US/MPL/2.0/>`__.
 
 
 Install Khiva
@@ -30,6 +37,7 @@ First, set the backend and device you want to use. There is a backend and a devi
     from khiva.library import *
     set_backend(KHIVABackend.KHIVA_BACKEND_OPENCL)
     set_device(0)
+
 
 Then, you can create an array in the device:
 
@@ -96,7 +104,7 @@ The result is the next one:
 Now let’s dive into the asynchronous usage of the library.
 Khiva library provides us several time series analysis functionalities which include features extraction,
 time-series re-dimension, distance calculations, motifs and discords detection, tools for similarity study,
- statistical parameters extraction or time series normalization.
+statistical parameters extraction or time series normalization.
 
 All these functionalities can be concatenated to improve the performance, so you can get the data just in
 the moment that you do not use the functions of this library:
@@ -203,11 +211,12 @@ The available data types are the next ones:
 There are functions that do not support 32 bits floating point data type, so it is necessary to indicate the data type.
 The following is an example function requiring a 32-bit signed integer array:
 
-.. code:: python
+.. code-block:: python
 
     cwt_coefficients_result = cwt_coefficients(Array([[0.1, 0.2, 0.3], [0.1, 0.2, 0.3]]),
                                                 Array(data=[1, 2, 3], khiva_type=dtype.s32), 2, 2).to_numpy()
     print(cwt_coefficients_result)
+
 
 The output is:
 
@@ -221,15 +230,24 @@ Limitations
 
 This open-source library provides a very good performance, but it has got memory limitations.
 For cases where you need to apply a time series analysis over a huge amount of data and in short-term fashion,
-please, `contact us <info@shapelets.io>`_).
+please, `contact us <info@shapelets.io>`__.
 
 
 Let's Rock!
 -----------
+
 Now, you have the basic concepts to start using the library. Please, follow the documentation of each function to know
 how to use them. Each function has its corresponding tests so you can check how to use each of them.
 
 Furthermore, we provide use cases and examples that you can use to learn where and how to apply the library.
 
 
+Documentation
+-------------
+
+This Python library follows the standard way of writing documentation of Python by using Sphinx.
+
+The documentation is located in:
+
+`Khiva-documentation <https://khiva-python.readthedocs.io/en/latest/>`__.
 
