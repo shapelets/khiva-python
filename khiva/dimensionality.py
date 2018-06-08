@@ -34,7 +34,7 @@ def paa(a, bins):
     """
     b = ctypes.c_void_p(0)
     KhivaLibrary().c_khiva_library.paa(ctypes.pointer(a.arr_reference), ctypes.pointer(ctypes.c_int(bins)),
-                                   ctypes.pointer(b))
+                                       ctypes.pointer(b))
 
     return Array(array_reference=b)
 
@@ -52,7 +52,7 @@ def pip(a, number_ips):
     """
     b = ctypes.c_void_p(0)
     KhivaLibrary().c_khiva_library.pip(ctypes.pointer(a.arr_reference), ctypes.pointer(ctypes.c_int(number_ips)),
-                                   ctypes.pointer(b))
+                                       ctypes.pointer(b))
 
     return Array(array_reference=b)
 
@@ -71,8 +71,8 @@ def pla_bottom_up(ts, max_error):
     """
     b = ctypes.c_void_p(0)
     KhivaLibrary().c_khiva_library.pla_bottom_up(ctypes.pointer(ts.arr_reference),
-                                             ctypes.pointer(ctypes.c_float(max_error)),
-                                             ctypes.pointer(b))
+                                                 ctypes.pointer(ctypes.c_float(max_error)),
+                                                 ctypes.pointer(b))
 
     return Array(array_reference=b)
 
@@ -91,8 +91,8 @@ def pla_sliding_window(ts, max_error):
     """
     b = ctypes.c_void_p(0)
     KhivaLibrary().c_khiva_library.pla_sliding_window(ctypes.pointer(ts.arr_reference),
-                                                  ctypes.pointer(ctypes.c_float(max_error)),
-                                                  ctypes.pointer(b))
+                                                      ctypes.pointer(ctypes.c_float(max_error)),
+                                                      ctypes.pointer(b))
 
     return Array(array_reference=b)
 
@@ -116,8 +116,8 @@ def ramer_douglas_peucker(a, epsilon):
     """
     b = ctypes.c_void_p(0)
     KhivaLibrary().c_khiva_library.ramer_douglas_peucker(ctypes.pointer(a.arr_reference),
-                                                     ctypes.pointer(ctypes.c_double(epsilon)),
-                                                     ctypes.pointer(b))
+                                                         ctypes.pointer(ctypes.c_double(epsilon)),
+                                                         ctypes.pointer(b))
 
     return Array(array_reference=b)
 
@@ -141,7 +141,7 @@ def sax(a, alphabet_size):
     """
     b = ctypes.c_void_p(0)
     KhivaLibrary().c_khiva_library.sax(ctypes.pointer(a.arr_reference), ctypes.pointer(ctypes.c_int(alphabet_size)),
-                                   ctypes.pointer(b))
+                                       ctypes.pointer(b))
 
     return Array(array_reference=b)
 
@@ -161,7 +161,7 @@ def visvalingam(a, num_points):
     """
     b = ctypes.c_void_p(0)
     KhivaLibrary().c_khiva_library.visvalingam(ctypes.pointer(a.arr_reference),
-                                           ctypes.pointer(ctypes.c_int(num_points)),
-                                           ctypes.pointer(b))
+                                               ctypes.pointer(ctypes.c_int(num_points)),
+                                               ctypes.pointer(b))
 
     return Array(array_reference=b)

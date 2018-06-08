@@ -38,12 +38,12 @@ def linear(xss, yss):
     f = ctypes.c_void_p(0)
 
     KhivaLibrary().c_khiva_library.linear(ctypes.pointer(xss.arr_reference),
-                                      ctypes.pointer(yss.arr_reference),
-                                      ctypes.pointer(b),
-                                      ctypes.pointer(c),
-                                      ctypes.pointer(d),
-                                      ctypes.pointer(e),
-                                      ctypes.pointer(f)
-                                      )
+                                          ctypes.pointer(yss.arr_reference),
+                                          ctypes.pointer(b),
+                                          ctypes.pointer(c),
+                                          ctypes.pointer(d),
+                                          ctypes.pointer(e),
+                                          ctypes.pointer(f)
+                                          )
     return Array(array_reference=b), Array(array_reference=c), Array(array_reference=d), Array(
         array_reference=e), Array(array_reference=f)
