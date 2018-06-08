@@ -42,10 +42,9 @@ class StatisticsTest(unittest.TestCase):
         np.testing.assert_array_almost_equal(result, expected, decimal=2)
 
     def test_ljung_box(self):
-        result = ljung_box(Array(data =[[0, 1, 2, 3], [4, 5, 6, 7]]), 3).to_numpy().flatten()
+        result = ljung_box(Array(data=[[0, 1, 2, 3], [4, 5, 6, 7]]), 3).to_numpy().flatten()
         expected = np.array([6.4400, 6.4400])
         np.testing.assert_array_almost_equal(result, expected, decimal=6)
-
 
     def test_moment(self):
         result = moment(Array(data=[[0, 1, 2, 3, 4, 5], [0, 1, 2, 3, 4, 5]]), 2).to_numpy().flatten()
