@@ -11,6 +11,8 @@
 from enum import Enum
 import ctypes
 import platform
+import logging
+import sys
 
 
 ########################################################################################################################
@@ -18,12 +20,17 @@ import platform
 class KhivaLibrary(object):
     class __KhivaLibrary:
         def __init__(self):
-            if platform.system() == 'Darwin':
-                self.c_khiva_library = ctypes.CDLL('libkhiva_c.dylib')
-            elif platform.system() == 'Windows':
-                self.c_khiva_library = ctypes.CDLL('C:/Program Files/Khiva/v0/lib/khiva_c.dll')
-            elif platform.system() == 'Linux':
-                self.c_khiva_library = ctypes.CDLL('libkhiva_c.so')
+            try:
+                if platform.system() == 'Darwin':
+                    self.c_khiva_library = ctypes.CDLL('libkhiva_c.dylib')
+                elif platform.system() == 'Windows':
+                    self.c_khiva_library = ctypes.CDLL('C:/Program Files/Khiva/v0/lib/khiva_c.dll')
+                elif platform.system() == 'Linux':
+                    self.c_khiva_library = ctypes.CDLL('libkhiva_c.so')
+            except:
+                logging.error(
+                    "Khiva C++ Library is needed to be installed in order to use the Python Khiva library")
+                sys.exit(1)
 
     instance = None
 

@@ -1,4 +1,4 @@
-KHIVA
+Khiva
 =====
 
 .. toctree::
