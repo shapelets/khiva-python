@@ -62,8 +62,8 @@ The previous lines print the dimensions and the content of the created array:
 +-----------+
 
 Once the array is created in device memory, we can concatenate operations with this
-array in an asynchronous way and receive the data only in the host when ‘to_list()’,
-‘to_numpy()’ or ‘to_pandas()’ (the latter only supports bi-dimensional time series)
+array in an asynchronous way and receive the data only in the host when `to_list()`,
+`to_numpy()` or `to_pandas()` (the latter only supports bi-dimensional time series)
 functions are called.
 
 .. code-block:: python
@@ -93,10 +93,10 @@ The result is the next one:
 |8|8.00   |
 +-+-------+
 
-Now let’s dive into the asynchronous usage of the library.
+Now, let's dive into the asynchronous usage of the library.
 Khiva library provides us several time series analysis functionalities which include features extraction,
 time-series re-dimension, distance calculations, motifs and discords detection, tools for similarity study,
- statistical parameters extraction or time series normalization.
+statistical parameters extraction or time series normalization.
 
 All these functionalities can be concatenated to improve the performance, so you can get the data just in
 the moment that you do not use the functions of this library:
