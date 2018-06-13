@@ -19,7 +19,7 @@ If applicable, add screenshots to help explain your problem.
 **Environment information:**
  - OS: [e.g. Mac OS]
  - Version [e.g. 10.13]
- - Khiva dependencies versions [numpy==0.22.0]
+ - Khiva dependencies versions [e.g. numpy==1.14.0 or pandas==0.22.0]
 
 **Additional context**
 Add any other context about the problem here.
