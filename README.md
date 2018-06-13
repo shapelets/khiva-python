@@ -26,7 +26,3 @@ make html
 
 ### Contributing
 The rules to contribute to this project are described [here](CONTRIBUTING.md)
- 
-### Builds
-We have a first approach to generate a build and execute the set of tests on every pull request to the **develop** 
-branch. This process uses **travis** and **appveyor** and is currently under setup.
