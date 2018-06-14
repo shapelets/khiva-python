@@ -5,13 +5,13 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 language: python
+sudo: required
 python:
   - "3.6"
 
 env:
   global:
     - ARRAYFIRE=/opt/arrayfire
-
 before_install:
   - source .CI/travis/install-intel.sh 2>&1 > /dev/null
   - source .CI/travis/install-arrayfire.sh 2>&1 > /dev/null
