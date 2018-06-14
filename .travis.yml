@@ -45,6 +45,9 @@ matrix:
             - libboost-all-dev
             - doxygen
             - graphviz
+      env:
+         - MATRIX_EVAL="CC=gcc-5 && CXX=g++-5"
+
 cache:
     directories:
       - ${HOME}/.conan
