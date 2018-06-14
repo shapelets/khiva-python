@@ -29,8 +29,6 @@ matrix:
             - libboost-all-dev
             - doxygen
             - graphviz
-      env:
-         - MATRIX_EVAL="CC=gcc-4.9 && CXX=g++-4.9"
 
     # works on Precise and Trusty
     - os: linux
@@ -47,9 +45,6 @@ matrix:
             - libboost-all-dev
             - doxygen
             - graphviz
-      env:
-         - MATRIX_EVAL="CC=gcc-5 && CXX=g++-5"
-
 cache:
     directories:
       - ${HOME}/.conan
@@ -58,10 +53,6 @@ before_install:
   - source .CI/travis/install-intel.sh 2>&1 > /dev/null
   - source .CI/travis/install-arrayfire.sh 2>&1 > /dev/null
   - source .CI/travis/install-cmake.sh 2>&1 > /dev/null
-  - source .CI/travis/install.sh 2>&1 > /dev/null
-
-
-install:
   - cd ..
   - git clone https://github.com/shapelets/khiva.git
   - cd khiva && git fetch --tags
@@ -72,6 +63,10 @@ install:
   - cmake .. -DCMAKE_BUILD_TYPE=Release
   - make -j8 && make install
   - ldconfig
+  - source .CI/travis/install.sh 2>&1 > /dev/null
+
+
+install:
   - cd ../../khiva-python
 
 
