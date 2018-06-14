@@ -20,7 +20,7 @@ install:
   - git checkout tags/v0.1.0
   - mkdir build
   - cd build
-  - conan remote add conan-mpusz https://api.bintray.com/conan/mpusz/conan-mpusz && \
+  - conan remote add conan-mpusz https://api.bintray.com/conan/mpusz/conan-mpusz
   - cmake ..  -DCMAKE_BUILD_TYPE=Release
   - make -j8
   - make install
