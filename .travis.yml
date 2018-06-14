@@ -3,12 +3,27 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
+sudo: required
+
 language: python
 python:
   - "3.6"
-
+before_install:
+- docker run --rm -ti shapelets/khiva
 install:
   - python3 setup.py install
   - pip3 install -r requirements.txt
   - pip3 install -r test-requirements.txt
+  - git clone https://github.com/shapelets/khiva.git
+  - cd khiva
+  - git fetch --tags
+  - git checkout tags/v0.1.0
+  - mkdir build
+  - cd build
+  - conan remote add conan-mpusz https://api.bintray.com/conan/mpusz/conan-mpusz && \
+  - cmake ..  -DCMAKE_BUILD_TYPE=Release
+  - make -j8
+  - make install
+  - ldconfig
+  - rm -rf /root/khiva
 script: python3 ./tests/unit_tests/main_test.py
