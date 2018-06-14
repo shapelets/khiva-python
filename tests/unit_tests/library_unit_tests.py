@@ -59,7 +59,7 @@ class LibraryTest(unittest.TestCase):
 
     def test_version(self):
         v = version()
-        self.assertEqual(v, '0.0.1')
+        self.assertEqual(v, '0.1.0')
 
 
 if __name__ == '__main__':
