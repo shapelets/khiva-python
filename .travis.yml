@@ -27,7 +27,7 @@ install:
   - pip3 install codecov
   - python3 setup.py install
   - pwd
-  - la -la
+  - ls -la
 
 
 script:
