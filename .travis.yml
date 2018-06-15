@@ -18,9 +18,9 @@ before_install:
   - docker exec -it CI /bin/bash
 
 install:
-  - pip3 install -r requirements.txt
-  - pip3 install -r test-requirements.txt
-  - python3 setup.py install
+  - docker exec -it CI /bin/bash -c "pip3 install -r requirements.txt"
+  - docker exec -it CI /bin/bash -c "pip3 install -r test-requirements.txt"
+  - docker exec -it CI /bin/bash -c "python3 setup.py install"
 
 script:
-  - python3 -m unittest discover tests/unit_tests *_tests.py -f
+  - docker exec -it CI /bin/bash -c "python3 -m unittest discover tests/unit_tests *_tests.py -f"

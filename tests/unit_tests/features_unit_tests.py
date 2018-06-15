@@ -367,8 +367,8 @@ class FeaturesTest(unittest.TestCase):
     def test_mean(self):
         mean_result = mean(Array([[20, 20, 20, 18, 25, 19, 20, 20, 20, 20, 40, 30, 1, 50, 1, 1, 5, 1, 20, 20],
                                   [20, 20, 20, 2, 19, 1, 20, 20, 20, 1, 15, 1, 30, 1, 1, 18, 4, 1, 20, 20]])).to_numpy()
-        self.assertAlmostEqual(mean_result[0], 18.55, delta=self.DELTA)
-        self.assertAlmostEqual(mean_result[1], 12.7, delta=self.DELTA)
+        self.assertAlmostEqual(mean_result[0], 18.55, delta=1e-4)
+        self.assertAlmostEqual(mean_result[1], 12.7, delta=1e-4)
 
     def test_median(self):
         median_result = median(Array([[20, 20, 20, 18, 25, 19, 20, 20, 20, 20, 40, 30, 1, 50, 1, 1, 5, 1, 20, 20],
