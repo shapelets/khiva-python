@@ -15,7 +15,6 @@ before_install:
   - docker pull shapelets/khiva
   - docker run -i -t -d --name CI shapelets/khiva
   - docker cp . CI:/root
-  - docker exec -it CI /bin/bash
 
 install:
   - docker exec -it CI /bin/bash -c "pip3 install -r requirements.txt"
