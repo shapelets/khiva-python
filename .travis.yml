@@ -30,5 +30,6 @@ script:
   - docker exec -it CI /bin/bash -c "cd ..; coverage run -m unittest discover tests/unit_tests *_tests.py -f"
 
 after_success:
-  - docker cp CI:/.coverage* .
+  - docker cp CI:/.coverage .
+  - ls
   - codecov
