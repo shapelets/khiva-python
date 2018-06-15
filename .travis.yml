@@ -14,7 +14,7 @@ services:
 before_install:
   - docker pull shapelets/khiva
   - docker run -i -t -d --name CI shapelets/khiva
-  - docker exec -it CI /bin/bash -c "mkdir /home/travis/build/shapelets/khiva-python"
+  - docker exec -it CI /bin/bash -c "mkdir -p /home/travis/build/shapelets/khiva-python"
   - docker cp . CI:/home/travis/build/shapelets/khiva-python
   - pwd
   - ls -la
