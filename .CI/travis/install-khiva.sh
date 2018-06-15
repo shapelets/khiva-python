@@ -2,5 +2,7 @@
 
 # Installing khiva
 
-wget https://github.com/shapelets/khiva/releases/download/v0.1.0/khiva-khiva_0.1.0_amd64.deb
-sudo dpkg -i khiva-khiva_0.1.0_amd64.deb
+wget https://github.com/shapelets/khiva/releases/download/v0.1.0/khiva-v0.1.0.sh
+chmod +x khiva-v0.1.0.sh
+sudo ./khiva-v0.1.0.sh --prefix=/usr/local --skip-license
+rm khiva-v0.1.0.sh
