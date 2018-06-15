@@ -26,4 +26,4 @@ script:
   - docker exec -it CI /bin/bash -c "coverage run -m unittest discover tests/unit_tests *_tests.py -f"
 
 after_sucess:
-  - docker exec -it CI /bin/bash -c "codecov"
+  - docker exec -it CI /bin/bash -c "codecov --token=2b55393b-5a8b-443d-bf55-fb06db6a7770"
