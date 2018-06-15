@@ -22,7 +22,7 @@ install:
   - docker exec -it CI /bin/bash -c "cd ..; python3 setup.py install"
   - docker exec -it CI /bin/bash -c "cd ..; pip3 install codecov"
   - pip3 install codecov
-  - python3 install setup.py
+  - python3 setup.py install
 
 script:
   - docker exec -it CI /bin/bash -c "cd ..; coverage run -m unittest discover tests/unit_tests *_tests.py -f"
