@@ -22,7 +22,7 @@ install:
   - pip3 install -r requirements.txt
   - pip3 install -r test-requirements.txt
   - python3 setup.py install
-  - ldconfig
+  - sudo ldconfig
 
 script:
-  -python -m unittest discover tests/unit_tests *_tests.py -f
+  - python3 -m unittest discover tests/unit_tests *_tests.py -f
