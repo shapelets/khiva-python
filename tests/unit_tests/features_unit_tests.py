@@ -13,6 +13,7 @@ import numpy as np
 from khiva.features import *
 from khiva.array import Array, dtype
 import logging
+from khiva.library import set_backend, KHIVABackend
 
 
 ########################################################################################################################
@@ -21,7 +22,8 @@ class FeaturesTest(unittest.TestCase):
     DELTA = 1e-6
 
     def setUp(self):
-        pass
+        import khiva
+        set_backend(KHIVABackend.KHIVA_BACKEND_CPU)
 
     def test_cid_ce(self):
         cid_ce_result = cid_ce(Array(data=[[0, 1, 2, 3, 4, 5], [6, 7, 8, 9, 10, 11]]),

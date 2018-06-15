@@ -9,10 +9,6 @@ Make sure you have checked _all_ steps below.
 - [ ] My PR adds the following unit tests __OR__ does not need testing for this extremely good reason:
 
 
-### Benchmarks
-- [ ] My PR adds the following micro benchmarks __OR__ does not need benchmarks for this extremely good reason:
-
-
 ### Commits
 - [ ] My commits have been squashed if they address the same issue. In addition, my commits follow the guidelines from "[How to write a good git commit message](http://chris.beams.io/posts/git-commit/)":
     1. Subject is separated from body by a blank line

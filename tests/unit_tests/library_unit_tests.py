@@ -45,27 +45,23 @@ class LibraryTest(unittest.TestCase):
         cuda = backends & KHIVABackend.KHIVA_BACKEND_CUDA.value
         opencl = backends & KHIVABackend.KHIVA_BACKEND_OPENCL.value
         cpu = backends & KHIVABackend.KHIVA_BACKEND_CPU.value
-        b = get_backend()
         if cuda:
             set_backend(KHIVABackend.KHIVA_BACKEND_CUDA)
             for i in range(get_device_count()):
                 set_device(i)
                 self.assertEqual(get_device_id(), i)
-                set_backend(b)
 
         if opencl:
             set_backend(KHIVABackend.KHIVA_BACKEND_OPENCL)
             for i in range(get_device_count()):
                 set_device(i)
                 self.assertEqual(get_device_id(), i)
-                set_backend(b)
 
         if cpu:
             set_backend(KHIVABackend.KHIVA_BACKEND_CPU)
             for i in range(get_device_count()):
                 set_device(i)
                 self.assertEqual(get_device_id(), i)
-                set_backend(b)
 
     def test_version(self):
         v = version()

@@ -12,6 +12,7 @@ import unittest
 from khiva.statistics import *
 from khiva.array import Array
 import numpy as np
+from khiva.library import set_backend, KHIVABackend
 
 
 ########################################################################################################################
@@ -20,7 +21,7 @@ import numpy as np
 class StatisticsTest(unittest.TestCase):
 
     def setUp(self):
-        pass
+        set_backend(KHIVABackend.KHIVA_BACKEND_CPU)
 
     def test_covariance_unbiased(self):
         result = covariance(Array(data=[[-2.1, -1, 4.3], [3, 1.1, 0.12], [3, 1.1, 0.12]]), True).to_numpy().flatten()

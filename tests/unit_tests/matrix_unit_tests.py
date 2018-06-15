@@ -11,6 +11,7 @@
 import unittest
 from khiva.matrix import *
 from khiva.array import *
+from khiva.library import set_backend, KHIVABackend
 
 
 ########################################################################################################################
@@ -19,7 +20,7 @@ class MatrixTest(unittest.TestCase):
     DELTA = 1e-6
 
     def setUp(self):
-        pass
+        set_backend(KHIVABackend.KHIVA_BACKEND_CPU)
 
     def test_stomp_self_join(self):
         stomp_self_join_result = stomp_self_join(

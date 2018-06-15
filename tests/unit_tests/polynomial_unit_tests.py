@@ -12,6 +12,7 @@ import unittest
 import numpy as np
 from khiva.polynomial import *
 from khiva.array import Array
+from khiva.library import set_backend, KHIVABackend
 
 
 ########################################################################################################################
@@ -21,7 +22,7 @@ class PolynomialTest(unittest.TestCase):
     DECIMAL = 6
 
     def setUp(self):
-        pass
+        set_backend(KHIVABackend.KHIVA_BACKEND_CPU)
 
     def test_polyfit1(self):
         polyfit_result = polyfit(Array([0, 1, 2, 3, 4, 5]), Array([0, 1, 2, 3, 4, 5]), 1).to_numpy()
