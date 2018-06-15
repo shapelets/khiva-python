@@ -8,22 +8,19 @@ language: python
 sudo: required
 python:
   - "3.6"
+services:
+  - docker
 
-env:
-  global:
-    - ARRAYFIRE=/usr/local
 before_install:
-  - source .CI/travis/install-intel.sh 2>&1 > /dev/null
-  - source .CI/travis/install-arrayfire.sh 2>&1 > /dev/null
-  - source .CI/travis/install-cmake.sh 2>&1 > /dev/null
-  - source .CI/travis/install-khiva.sh 2>&1 > /dev/null
+  - docker pull shapelets/khiva
+  - docker run -i -t -d --name CI shapelets/khiva
+  - docker cp . CI:/root
+  - docker exec -it CI /bin/bash
 
 install:
   - pip3 install -r requirements.txt
   - pip3 install -r test-requirements.txt
   - python3 setup.py install
-  - sudo ldconfig
-  - sudo ldconfig -N -v
 
 script:
   - python3 -m unittest discover tests/unit_tests *_tests.py -f
