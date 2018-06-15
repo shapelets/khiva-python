@@ -60,7 +60,6 @@ class MatrixTest(unittest.TestCase):
         stomp_result = stomp(Array(np.array([1, 1, 1])),
                              Array(np.array([1, 1, 1])),
                              1)
-        stomp_result[0].print()
         find_best_n_discords_result = find_best_n_discords(stomp_result[0],
                                                            stomp_result[1], 2)
         a = find_best_n_discords_result[2].to_numpy()

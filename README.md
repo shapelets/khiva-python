@@ -1,3 +1,7 @@
+[![Documentation Status](https://readthedocs.org/projects/khiva-python/badge/?version=latest)](https://khiva-python.readthedocs.io/en/latest/?badge=latest)
+[![Build Status](https://travis-ci.com/shapelets/khiva-python.svg?branch=feature/continuousIntegration)](https://travis-ci.com/shapelets/khiva-python)
+
+
 # README #
 This is the KHIVA binding for connecting the Python programming language and the KHIVA library.
 
