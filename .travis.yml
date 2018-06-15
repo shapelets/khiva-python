@@ -16,8 +16,6 @@ before_install:
   - docker run -i -t -d --name CI shapelets/khiva
   - docker exec -it CI /bin/bash -c "mkdir -p /home/travis/build/shapelets/khiva-python"
   - docker cp . CI:/home/travis/build/shapelets/khiva-python
-  - pwd
-  - ls -la
 
 install:
   - docker exec -it CI /bin/bash -c "cd /home/travis/build/shapelets/khiva-python; pip3 install -r requirements.txt"
@@ -26,8 +24,6 @@ install:
   - docker exec -it CI /bin/bash -c "cd /home/travis/build/shapelets/khiva-python; pip3 install codecov"
   - pip3 install codecov
   - python3 setup.py install
-  - pwd
-  - ls -la
 
 
 script:
@@ -35,5 +31,4 @@ script:
 
 after_success:
   - docker cp CI:/home/travis/build/shapelets/khiva-python/.coverage .
-  - ls -la
   - codecov
