@@ -11,7 +11,7 @@ python:
 
 env:
   global:
-    - ARRAYFIRE=/opt/arrayfire
+    - ARRAYFIRE=/usr/local
 before_install:
   - source .CI/travis/install-intel.sh 2>&1 > /dev/null
   - source .CI/travis/install-arrayfire.sh 2>&1 > /dev/null
@@ -23,6 +23,7 @@ install:
   - pip3 install -r test-requirements.txt
   - python3 setup.py install
   - sudo ldconfig
+  - sudo ldconfig -N -v
 
 script:
   - python3 -m unittest discover tests/unit_tests *_tests.py -f
