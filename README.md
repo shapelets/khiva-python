@@ -2,9 +2,6 @@
 [![Documentation Status](https://readthedocs.org/projects/khiva-python/badge/?version=latest)](https://khiva-python.readthedocs.io/en/latest/?badge=latest)
 [![License: MPL 2.0](https://img.shields.io/badge/License-MPL%202.0-brightgreen.svg)](https://github.com/shapelets/khiva-python/blob/master/LICENSE.txt)  
 [![py364 status](https://img.shields.io/badge/python3.6.4-supported-green.svg)](https://github.com/shapelets/khiva-python/issues)
-
-
-
 Build Master Branch [![Build Status](https://travis-ci.com/shapelets/khiva-python.svg?branch=master)](https://travis-ci.com/shapelets/khiva-python)
 Code Coverance Master Branch: [![codecov.io](https://codecov.io/github/shapelets/khiva-python/coverage.svg?branch=master)](https://codecov.io/github/shapelets/khiva-python)
 Build Develop Branch [![Build Status](https://travis-ci.com/shapelets/khiva-python.svg?branch=develop)](https://travis-ci.com/shapelets/khiva-python)
