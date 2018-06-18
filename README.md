@@ -1,18 +1,15 @@
 
-[![Documentation Status](https://readthedocs.org/projects/khiva-python/badge/?version=latest)](https://khiva-python.readthedocs.io/en/latest/?badge=latest)
 [![License: MPL 2.0](https://img.shields.io/badge/License-MPL%202.0-brightgreen.svg)](https://github.com/shapelets/khiva-python/blob/master/LICENSE.txt)  
 [![py364 status](https://img.shields.io/badge/python3.6.4-supported-green.svg)](https://github.com/shapelets/khiva-python/issues)
-Build Master Branch [![Build Status](https://travis-ci.com/shapelets/khiva-python.svg?branch=master)](https://travis-ci.com/shapelets/khiva-python)
-Code Coverage Master Branch: [![codecov.io](https://codecov.io/github/shapelets/khiva-python/coverage.svg?branch=master)](https://codecov.io/github/shapelets/khiva-python)
-Build Develop Branch [![Build Status](https://travis-ci.com/shapelets/khiva-python.svg?branch=develop)](https://travis-ci.com/shapelets/khiva-python)
-Code Coverage Develop Branch [![codecov.io](https://codecov.io/github/shapelets/khiva-python/coverage.svg?branch=develop)](https://codecov.io/github/shapelets/khiva-python)
 
+| Branch        | Build Documentation                                                                                                                           | Build                                                                                                             | Code Coverage                                                                                                                                                  |
+| ------------- |:---------------------------------------------------------------------------------------------------------------------------------------------:|:-----------------------------------------------------------------------------------------------------------------:|:--------------------------------------------------------------------------------------------------------------------------------------------------------------:|
+| master        | [![Documentation Status](https://readthedocs.org/projects/khiva-python/badge/?version=latest)](https://khiva-python.readthedocs.io/en/latest/?badge=latest) | [![Build Status](https://travis-ci.com/shapelets/khiva-python.svg?branch=master)](https://travis-ci.com/shapelets/khiva-python) | [![codecov.io](https://codecov.io/github/shapelets/khiva-python/coverage.svg?branch=master)](https://codecov.io/github/shapelets/khiva-python)|
+| develop       | [![Documentation Status](https://readthedocs.org/projects/khiva-python/badge/?version=latest)](https://khiva-python.readthedocs.io/en/latest/?badge=latest) | [![Build Status](https://travis-ci.com/shapelets/khiva-python.svg?branch=develop)](https://travis-ci.com/shapelets/khiva-python)|  [![codecov.io](https://codecov.io/github/shapelets/khiva-python/coverage.svg?branch=develop)](https://codecov.io/github/shapelets/khiva-python)|
 
 # README #
 This is the Khiva Python binding, it allows the usage of Khiva library from Python.
-
-## License
-This project is licensed under [MPL-v2](https://www.mozilla.org/en-US/MPL/2.0/).
+icensed under [MPL-v2](https://www.mozilla.org/en-US/MPL/2.0/).
  
 ## Quick Summary
 This Python library called 'khiva' provides all the functionalities of the KHIVA library for time series analytics.
