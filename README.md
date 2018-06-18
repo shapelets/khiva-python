@@ -9,8 +9,9 @@
 
 # README #
 This is the Khiva Python binding, it allows the usage of Khiva library from Python.
-icensed under [MPL-v2](https://www.mozilla.org/en-US/MPL/2.0/).
- 
+
+## License
+This project is licensed under [MPL-v2](https://www.mozilla.org/en-US/MPL/2.0/). 
 ## Quick Summary
 This Python library called 'khiva' provides all the functionalities of the KHIVA library for time series analytics.
 
