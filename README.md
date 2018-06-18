@@ -33,7 +33,7 @@ In order to generate the documentation (in html format), run the following comma
 make html
 ```
 
-### Contributing
+## Contributing
 The rules to contribute to this project are described [here](CONTRIBUTING.md)
 
 
