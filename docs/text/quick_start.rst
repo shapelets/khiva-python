@@ -37,7 +37,7 @@ Then, you can create an array in the device:
 
     from khiva.array import *
     a = Array([1, 2, 3, 4, 5, 6, 7, 8])
-    a.print()
+    a.display()
 
 The previous lines print the dimensions and the content of the created array:
 
