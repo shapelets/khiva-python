@@ -1,0 +1,31 @@
+image:
+    - Visual Studio 2017
+environment:
+    BOOST_ROOT: C:\Libraries\boost_1_67_0
+    AF_PATH: C:\Program Files\ArrayFire\v3
+    KHIVA_PATH: C:\Program Files\Khiva\v0
+    matrix:
+        - PATH: $(AF_PATH)\lib;$(KHIVA_PATH)\lib;C:\Python36-x64;C:\Python36-x64\Scripts;$(PATH)
+        - PATH: $(AF_PATH)\lib;$(KHIVA_PATH)\lib;C:\Python35-x64;C:\Python35-x64\Scripts;$(PATH)
+        - PATH: $(AF_PATH)\lib;$(KHIVA_PATH)\lib;C:\Python34-x64;C:\Python34-x64\Scripts;$(PATH)
+        - PATH: $(AF_PATH)\lib;$(KHIVA_PATH)\lib;C:\Python33-x64;C:\Python33-x64\Scripts;$(PATH)
+cache:
+    - C:\Program Files\ArrayFire
+    - C:\Program Files\Khiva
+clone_folder: C:\khiva-python
+platform:
+    - x64
+before_build:
+    - ps: if(!(Test-Path -Path "C:\Program Files\ArrayFire" )){ appveyor DownloadFile "https://www.dropbox.com/s/ndt1eaouriiu4qi/ArrayFire-v3.5.1.zip?dl=1" -FileName ArrayFire-v3.5.1.zip }
+    - ps: if(!(Test-Path -Path "C:\Program Files\ArrayFire" )){ 7z x ArrayFire-v3.5.1.zip -o"C:\Program Files" }
+    - reg add HKCU\Software\Kitware\CMake\Packages\ArrayFire /v ArrayFire_CMake_DIR /d "C:\Program Files\ArrayFire\v3\cmake" /f
+    - ps: if(!(Test-Path -Path "C:\Program Files\Khiva" )){ appveyor DownloadFile "https://github.com/shapelets/khiva/releases/download/v0.1.0/khiva-v0.1.0-unattended.exe" -FileName khiva-v0.1.0-unattended.exe }
+    - ps: if(!(Test-Path -Path "C:\Program Files\Khiva" )){ ﻿Start-Process .\khiva-v0.1.0-unattended.exe /S -NoNewWindow -Wait }
+    - start /wait pip3 install -r requirements.txt
+    - start /wait pip3 install -r test-requirements.txt
+build_script:
+    - python3 setup.py install
+test_script:
+    - python3 -m xmlrunner discover tests/unit_tests *_tests.py
+on_finish:
+    - ps: (New-Object System.Net.WebClient).UploadFile("https://ci.appveyor.com/api/testresults/junit/$($env:APPVEYOR_JOB_ID)", (Resolve-Path .\**.xml))
