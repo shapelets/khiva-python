@@ -25,7 +25,6 @@ install:
   - pip3 install codecov
   - python3 setup.py install
 
-
 script:
   - docker exec -it CI /bin/bash -c "cd /home/travis/build/shapelets/khiva-python; coverage run -m unittest discover tests/unit_tests *_tests.py -f"
 
