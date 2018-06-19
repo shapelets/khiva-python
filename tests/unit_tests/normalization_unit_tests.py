@@ -11,7 +11,8 @@
 import unittest
 import numpy as np
 from khiva.normalization import *
-from khiva.array import Array, dtype
+from khiva.array import Array
+from khiva.library import set_backend, KHIVABackend
 
 
 ########################################################################################################################
@@ -21,7 +22,7 @@ class NormalizationTest(unittest.TestCase):
     DECIMAL = 6
 
     def setUp(self):
-        pass
+        set_backend(KHIVABackend.KHIVA_BACKEND_CPU)
 
     def test_znorm(self):
         znorm_result = znorm(Array([[0, 1, 2, 3], [4, 5, 6, 7]]), 0.00000001).to_numpy().flatten()

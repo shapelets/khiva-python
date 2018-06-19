@@ -1,9 +1,18 @@
+
+[![License: MPL 2.0](https://img.shields.io/badge/License-MPL%202.0-brightgreen.svg)](https://github.com/shapelets/khiva-python/blob/master/LICENSE.txt)  
+[![py364 status](https://img.shields.io/badge/python3.6.4-supported-green.svg)](https://github.com/shapelets/khiva-python/issues)
+
+| Branch        | Build Documentation                                                                                                                           | Build                                                                                                             | Code Coverage                                                                                                                                                  |
+| ------------- |:---------------------------------------------------------------------------------------------------------------------------------------------:|:-----------------------------------------------------------------------------------------------------------------:|:--------------------------------------------------------------------------------------------------------------------------------------------------------------:|
+| master        | [![Documentation Status](https://readthedocs.org/projects/khiva-python/badge/?version=latest)](https://khiva-python.readthedocs.io/en/latest/?badge=latest) | [![Build Status](https://travis-ci.org/shapelets/khiva-python.svg?branch=master)](https://travis-ci.org/shapelets/khiva-python) | [![codecov.io](https://codecov.io/github/shapelets/khiva-python/coverage.svg?branch=master)](https://codecov.io/github/shapelets/khiva-python)|
+| develop       | [![Documentation Status](https://readthedocs.org/projects/khiva-python/badge/?version=latest)](https://khiva-python.readthedocs.io/en/latest/?badge=latest) | [![Build Status](https://travis-ci.org/shapelets/khiva-python.svg?branch=develop)](https://travis-ci.org/shapelets/khiva-python)|  [![codecov.io](https://codecov.io/github/shapelets/khiva-python/coverage.svg?branch=develop)](https://codecov.io/github/shapelets/khiva-python)|
+
 # README #
-This is the KHIVA binding for connecting the Python programming language and the KHIVA library.
+This is the Khiva Python binding, it allows the usage of Khiva library from Python.
 
 ## License
-This project is licensed under [MPL-v2](https://www.mozilla.org/en-US/MPL/2.0/).
- 
+This project is licensed under [MPL-v2](https://www.mozilla.org/en-US/MPL/2.0/). 
+
 ## Quick Summary
 This Python library called 'khiva' provides all the functionalities of the KHIVA library for time series analytics.
 
@@ -25,23 +34,7 @@ make html
 ```
 
 ## Contributing
+The rules to contribute to this project are described [here](CONTRIBUTING.md)
 
-### Branching model
-Our branching model has two permanent branches, **develop** and **master**. 
-We aim at using `develop` as the main branch, where all features are merged. 
-In this sense, we use the master branch to push the release versions of the binding for the KHIVA library.
- 
-### Contribution process
-In order to contribute to the code base, we follow the next process:
-1. The main branch is develop, every developer should pull the current status of the branch before stating to develop any new feature.
-`git pull`
-2. Create a new branch with the following pattern "feature/[name_of_the_feature]"
-`git checkout -b feature/exampleFeature`
-3. Develop the new feature on the the new branch. It includes testing and documentation.
-`git commit -a -m "Bla, Bla, Bla";  git push`
-4. Open a Pull Request to merge the feature branch in to develop. Currently, a pull request has to be reviewed at least by one person.
-5. Finally, delete the feature branch.
-6. Move back to develop branch.
-`git checkout develop`
-7. Pull the latest changes.
-`git pull`
+
+[![Powered by Shapelets](https://img.shields.io/badge/powered%20by-Shapelets-orange.svg?style=flat&colorA=E1523D&colorB=007D8A)](https://shapelets.io)
