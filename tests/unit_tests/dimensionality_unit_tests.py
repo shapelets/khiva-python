@@ -12,6 +12,7 @@ import unittest
 from khiva.dimensionality import *
 from khiva.array import Array
 import numpy as np
+from khiva.library import set_backend, KHIVABackend
 
 
 ########################################################################################################################
@@ -22,7 +23,7 @@ class DimensionalityTest(unittest.TestCase):
     DECIMAL = 6
 
     def setUp(self):
-        pass
+        set_backend(KHIVABackend.KHIVA_BACKEND_CPU)
 
     def test_ramer_douglas_peucker(self):
         a = Array([[0, 1, 2, 3, 4, 5, 6, 7, 8, 9], [0, 0.1, -0.1, 5.0, 6.0, 7.0, 8.1, 9.0, 9.0, 9.0]])

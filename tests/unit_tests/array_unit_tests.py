@@ -13,6 +13,7 @@ import numpy as np
 from khiva.array import Array, dtype
 import logging
 import sys
+from khiva.library import set_backend, KHIVABackend
 
 
 ########################################################################################################################
@@ -22,7 +23,8 @@ class ArrayTest(unittest.TestCase):
     DECIMAL = 6
 
     def setUp(self):
-        pass
+        import khiva
+        set_backend(KHIVABackend.KHIVA_BACKEND_CPU)
 
     def test_real_1d(self):
         a = Array([1, 2, 3, 4, 5, 6, 7, 8])

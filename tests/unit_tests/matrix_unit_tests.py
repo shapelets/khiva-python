@@ -11,6 +11,7 @@
 import unittest
 from khiva.matrix import *
 from khiva.array import *
+from khiva.library import set_backend, KHIVABackend
 
 
 ########################################################################################################################
@@ -19,7 +20,7 @@ class MatrixTest(unittest.TestCase):
     DELTA = 1e-6
 
     def setUp(self):
-        pass
+        set_backend(KHIVABackend.KHIVA_BACKEND_CPU)
 
     def test_stomp_self_join(self):
         stomp_self_join_result = stomp_self_join(
@@ -57,15 +58,14 @@ class MatrixTest(unittest.TestCase):
         self.assertAlmostEqual(b[1], 0, delta=self.DELTA)
 
     def test_find_best_n_discords(self):
-        stomp_result = stomp(Array(np.array([11, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 11])),
-                             Array(np.array([9, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 9])),
-                             3)
-
+        stomp_result = stomp(Array(np.array([1, 1, 1])),
+                             Array(np.array([1, 1, 1])),
+                             1)
         find_best_n_discords_result = find_best_n_discords(stomp_result[0],
                                                            stomp_result[1], 2)
         a = find_best_n_discords_result[2].to_numpy()
+
         self.assertEqual(a[0], 0)
-        self.assertEqual(a[1], 9)
 
 
 if __name__ == '__main__':
