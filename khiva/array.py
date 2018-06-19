@@ -301,7 +301,7 @@ class Array:
         """
         return pd.DataFrame(data=self._get_data())
 
-    def print(self):
+    def display(self):
         """
         Prints the data stored in the KHIVA array.
         """
