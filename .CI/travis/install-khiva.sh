@@ -6,6 +6,7 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
+    sudo pip3 install conan
     pushd ..
     git clone https://github.com/shapelets/khiva.git
     pushd khiva
