@@ -54,4 +54,5 @@ class DistancesTest(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    unittest.main()
+    suite = unittest.TestLoader().loadTestsFromTestCase(DistancesTest)
+    unittest.TextTestRunner(verbosity=2).run(suite)

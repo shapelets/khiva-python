@@ -49,4 +49,5 @@ class RegularizationTest(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    unittest.main()
+    suite = unittest.TestLoader().loadTestsFromTestCase(RegularizationTest)
+    unittest.TextTestRunner(verbosity=2).run(suite)

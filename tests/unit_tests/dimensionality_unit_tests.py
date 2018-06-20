@@ -73,5 +73,6 @@ class DimensionalityTest(unittest.TestCase):
         result = pla_sliding_window(tss, 1).to_numpy()
         np.testing.assert_array_almost_equal(result, expected, decimal=self.DECIMAL)
 
-    if __name__ == '__main__':
-        unittest.main()
+if __name__ == '__main__':
+    suite = unittest.TestLoader().loadTestsFromTestCase(DimensionalityTest)
+    unittest.TextTestRunner(verbosity=2).run(suite)
