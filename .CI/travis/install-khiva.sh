@@ -6,14 +6,8 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 if [ ! -e "installers/khiva-v0.1.0.sh" ]; then
-    wget https://github.com/shapelets/khiva/releases/download/v0.1.0/khiva-v0.1.0.sh -O installers/khiva-v0.1.0.sh
+    wget https://github.com/shapelets/khiva/releases/download/v0.1.0/khiva-v0.1.0-ci.sh -O installers/khiva-v0.1.0-ci.sh
     chmod +x installers/khiva-v0.1.0.sh
 fi
 
-sudo ./installers/khiva-v0.1.0.sh --prefix=/usr/local --skip-license
-
-ls -lah /usr/local/lib
-
-sudo ldconfig
-
-sudo ldconfig -p
+sudo ./installers/khiva-v0.1.0-ci.sh --prefix=/usr/local --skip-license

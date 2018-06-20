@@ -16,17 +16,6 @@ cache:
 matrix:
   include:
     - os: linux
-      dist: precise
-      sudo: required
-      before_install:
-        - source .CI/travis/install.sh
-        - source .CI/travis/install-arrayfire.sh
-        - source .CI/travis/install-khiva.sh
-      script:
-        - source .CI/travis/build.sh
-        - python -m unittest discover tests/unit_tests *_tests.py -f
-
-    - os: linux
       dist: trusty
       sudo: required
       before_install:
@@ -38,4 +27,3 @@ matrix:
       after_success:
         - coverage run -m unittest discover tests/unit_tests *_tests.py -f
         - codecov
-
