@@ -670,8 +670,10 @@ class Array:
         Return self >> other.
         """
         result = ctypes.c_void_p(0)
+        print(">>>>> 2.1")
         KhivaLibrary().c_khiva_library.khiva_bitshiftr(ctypes.pointer(self.arr_reference),
                                                        ctypes.pointer(ctypes.c_int32(other)), ctypes.pointer(result))
+        print(">>>>> 2.2")
         return Array(array_reference=result)
 
     def __irshift__(self, other):

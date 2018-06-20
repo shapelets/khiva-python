@@ -210,9 +210,13 @@ class ArrayTest(unittest.TestCase):
         np.testing.assert_array_equal(c.to_numpy(), np.array([False, True, False, True]))
 
     def testBitshift(self):
+        print(">>>>> 1")
         a = Array([2, 4, 6, 8], dtype.s32)
+        print(">>>>> 2")
         c = a >> 1
+        print(">>>>> 3")
         np.testing.assert_array_equal(c.to_numpy(), np.array([1, 2, 3, 4]))
+        print(">>>>> 4")
 
     def testBitsra(self):
         a = Array([2, 4, 6, 8], dtype.s32)
