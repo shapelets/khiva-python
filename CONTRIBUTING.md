@@ -3,7 +3,6 @@
 Contributions are welcome and are greatly appreciated! Every
 little bit helps, and credit will always be given.
 
-
 # Table of Contents
   * [Formatting Style](#formatting-style)
   * [Branching model](#branching-model)
