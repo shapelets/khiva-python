@@ -13,5 +13,3 @@ fi
 sudo ./installers/khiva-v0.1.0-ci.sh --prefix=/usr/local --skip-license
 
 sudo ldconfig
-
-sudo ldconfig -p

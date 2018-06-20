@@ -5,23 +5,38 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 language: python
-sudo: required
-dist: trusty
-python:
-  - "3.5"
-  - "3.6"
 
 cache:
     directories:
       - ${TRAVIS_BUILD_DIR}/installers
 
-before_install:
-  - source .CI/travis/install-arrayfire.sh
-  - source .CI/travis/install-khiva.sh
-install:
-  - source .CI/travis/install.sh
-script:
-  - source .CI/travis/build.sh
-  - coverage run -m unittest discover tests/unit_tests *_tests.py -f -v
-after_success:
-  - codecov
+matrix:
+  include:
+    - os: linux
+      dist: trusty
+      python:
+        - "3.5"
+        - "3.6"
+      before_install:
+        - source .CI/travis/install-arrayfire_linux.sh
+        - source .CI/travis/install-khiva_linux.sh
+      install:
+        - source .CI/travis/install_linux.sh
+      script:
+        - source .CI/travis/build.sh
+        - coverage run -m unittest discover tests/unit_tests *_tests.py -f -v
+      after_success:
+        - codecov
+    - os: osx
+      osx_image: xcode9.3
+      env:
+        - PYTHONVERSION=3.5.5
+        - PYTHONVERSION=3.6.5
+      before_install:
+        - source .CI/travis/install-arrayfire_osx.sh
+        - source .CI/travis/install-khiva_osx.sh
+      install:
+        - source .CI/travis/install_osx.sh
+      script:
+        - source .CI/travis/build.sh
+        - python -m unittest discover tests/unit_tests *_tests.py -f -v
