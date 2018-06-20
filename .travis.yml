@@ -5,6 +5,8 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 language: python
+sudo: required
+dist: trusty
 python:
   - "3.5"
   - "3.6"
@@ -13,17 +15,13 @@ cache:
     directories:
       - ${HOME}/installers
 
-matrix:
-  include:
-    - os: linux
-      dist: trusty
-      sudo: required
-      before_install:
-        - source .CI/travis/install.sh
-        - source .CI/travis/install-arrayfire.sh
-        - source .CI/travis/install-khiva.sh
-      script:
-        - source .CI/travis/build.sh
-      after_success:
-        - coverage run -m unittest discover tests/unit_tests *_tests.py -f
-        - codecov
+before_install:
+  - source .CI/travis/install-arrayfire.sh
+  - source .CI/travis/install-khiva.sh
+install:
+  - source .CI/travis/install.sh
+script:
+  - source .CI/travis/build.sh
+after_success:
+  - coverage run -m unittest discover tests/unit_tests *_tests.py -f
+  - codecov

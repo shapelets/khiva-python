@@ -5,9 +5,9 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-if [ ! -e "installers/khiva-v0.1.0.sh" ]; then
+if [ ! -e "installers/khiva-v0.1.0-ci.sh" ]; then
     wget https://github.com/shapelets/khiva/releases/download/v0.1.0/khiva-v0.1.0-ci.sh -O installers/khiva-v0.1.0-ci.sh
-    chmod +x installers/khiva-v0.1.0.sh
+    chmod +x installers/khiva-v0.1.0-ci.sh
 fi
 
 sudo ./installers/khiva-v0.1.0-ci.sh --prefix=/usr/local --skip-license
