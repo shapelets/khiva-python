@@ -8,7 +8,6 @@
 ########################################################################################################################
 # IMPORT
 ########################################################################################################################
-import os
 import unittest
 import numpy as np
 from khiva.array import Array, dtype
@@ -211,22 +210,14 @@ class ArrayTest(unittest.TestCase):
         np.testing.assert_array_equal(c.to_numpy(), np.array([False, True, False, True]))
 
     def testBitshift(self):
-        travis_os_name = os.getenv('TRAVIS_OS_NAME')
-        if travis_os_name is None or travis_os_name != "osx":
-            a = Array([2, 4, 6, 8], dtype.s32)
-            c = a >> 1
-            np.testing.assert_array_equal(c.to_numpy(), np.array([1, 2, 3, 4]))
-        else:
-            pass
+        a = Array([2, 4, 6, 8], dtype.s32)
+        c = a >> 1
+        np.testing.assert_array_equal(c.to_numpy(), np.array([1, 2, 3, 4]))
 
     def testBitsra(self):
-        travis_os_name = os.getenv('TRAVIS_OS_NAME')
-        if travis_os_name is None or travis_os_name != "osx":
-            a = Array([2, 4, 6, 8], dtype.s32)
-            c = a << 1
-            np.testing.assert_array_equal(c.to_numpy(), np.array([4, 8, 12, 16]))
-        else:
-            pass
+        a = Array([2, 4, 6, 8], dtype.s32)
+        c = a << 1
+        np.testing.assert_array_equal(c.to_numpy(), np.array([4, 8, 12, 16]))
 
     def testCtranspose(self):
         a = Array([[0 - 1j, 4 + 2j], [2 + 1j, 0 - 2j]], khiva_type=dtype.c32)
