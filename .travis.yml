@@ -24,6 +24,7 @@ matrix:
         - source .CI/travis/install-khiva.sh
       script:
         - source .CI/travis/build.sh
+        - python -m unittest discover tests/unit_tests *_tests.py -f
 
     - os: linux
       dist: trusty
