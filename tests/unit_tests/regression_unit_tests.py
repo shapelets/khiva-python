@@ -11,7 +11,7 @@
 import unittest
 from khiva.regression import *
 from khiva.array import Array
-import numpy as np
+from khiva.library import set_backend, KHIVABackend
 
 
 ########################################################################################################################
@@ -21,7 +21,7 @@ class RegressionTest(unittest.TestCase):
     DELTA = 1e-6
 
     def setUp(self):
-        pass
+        set_backend(KHIVABackend.KHIVA_BACKEND_CPU)
 
     def test_linear(self):
         euclidean_result = linear(Array([0.24580423, 0.59642861, 0.35879163, 0.37891011, 0.02445137,
@@ -63,4 +63,5 @@ class RegressionTest(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    unittest.main()
+    suite = unittest.TestLoader().loadTestsFromTestCase(RegressionTest)
+    unittest.TextTestRunner(verbosity=2).run(suite)

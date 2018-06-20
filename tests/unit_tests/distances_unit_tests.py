@@ -12,6 +12,7 @@ import unittest
 from khiva.distances import *
 from khiva.array import Array
 import numpy as np
+from khiva.library import set_backend, KHIVABackend
 
 
 ########################################################################################################################
@@ -20,7 +21,7 @@ import numpy as np
 class DistancesTest(unittest.TestCase):
 
     def setUp(self):
-        pass
+        set_backend(KHIVABackend.KHIVA_BACKEND_CPU)
 
     def test_euclidean(self):
         euclidean_result = euclidean(Array(data=[[0, 1, 2, 3], [4, 5, 6, 7], [8, 9, 10, 11]])).to_numpy().flatten()
@@ -53,4 +54,5 @@ class DistancesTest(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    unittest.main()
+    suite = unittest.TestLoader().loadTestsFromTestCase(DistancesTest)
+    unittest.TextTestRunner(verbosity=2).run(suite)

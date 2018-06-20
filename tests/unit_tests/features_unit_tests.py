@@ -12,7 +12,8 @@ import unittest
 import numpy as np
 from khiva.features import *
 from khiva.array import Array, dtype
-import logging
+from khiva.library import set_backend, KHIVABackend
+import arrayfire as af
 
 
 ########################################################################################################################
@@ -21,7 +22,7 @@ class FeaturesTest(unittest.TestCase):
     DELTA = 1e-6
 
     def setUp(self):
-        pass
+        set_backend(KHIVABackend.KHIVA_BACKEND_CPU)
 
     def test_cid_ce(self):
         cid_ce_result = cid_ce(Array(data=[[0, 1, 2, 3, 4, 5], [6, 7, 8, 9, 10, 11]]),
@@ -367,8 +368,8 @@ class FeaturesTest(unittest.TestCase):
     def test_mean(self):
         mean_result = mean(Array([[20, 20, 20, 18, 25, 19, 20, 20, 20, 20, 40, 30, 1, 50, 1, 1, 5, 1, 20, 20],
                                   [20, 20, 20, 2, 19, 1, 20, 20, 20, 1, 15, 1, 30, 1, 1, 18, 4, 1, 20, 20]])).to_numpy()
-        self.assertAlmostEqual(mean_result[0], 18.55, delta=self.DELTA)
-        self.assertAlmostEqual(mean_result[1], 12.7, delta=self.DELTA)
+        self.assertAlmostEqual(mean_result[0], 18.55, delta=1e-4)
+        self.assertAlmostEqual(mean_result[1], 12.7, delta=1e-4)
 
     def test_median(self):
         median_result = median(Array([[20, 20, 20, 18, 25, 19, 20, 20, 20, 20, 40, 30, 1, 50, 1, 1, 5, 1, 20, 20],
@@ -537,17 +538,14 @@ class FeaturesTest(unittest.TestCase):
         self.assertEqual(result[1], True)
 
     def test_concatenated(self):
-        try:
-            import arrayfire as af
-            a = Array([[1, 2], [1, 3], [1, 4], [1, 5], [1, 6], [1, 7], [1, 8], [1, 9], [1, 10], [1, 11]])
-            b = absolute_sum_of_changes(a).to_arrayfire()
-            c = af.transpose(b)
-            d = Array(array_reference=c.arr)
-            e = abs_energy(d).to_numpy()
-            self.assertAlmostEqual(e, 385, delta=self.DELTA)
-        except ModuleNotFoundError:
-            logging.error("This test needs the Arrayfire package in order to be executed.")
+        a = Array([[1, 2], [1, 3], [1, 4], [1, 5], [1, 6], [1, 7], [1, 8], [1, 9], [1, 10], [1, 11]])
+        b = absolute_sum_of_changes(a).to_arrayfire()
+        c = af.transpose(b)
+        d = Array.from_arrayfire(c)
+        e = abs_energy(d).to_numpy()
+        self.assertAlmostEqual(e, 385, delta=self.DELTA)
 
 
 if __name__ == '__main__':
-    unittest.main()
+    suite = unittest.TestLoader().loadTestsFromTestCase(FeaturesTest)
+    unittest.TextTestRunner(verbosity=2).run(suite)

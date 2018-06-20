@@ -11,8 +11,8 @@
 import unittest
 import numpy as np
 from khiva.array import Array, dtype
-import logging
-import sys
+import arrayfire as af
+from khiva.library import set_backend, KHIVABackend
 
 
 ########################################################################################################################
@@ -22,7 +22,8 @@ class ArrayTest(unittest.TestCase):
     DECIMAL = 6
 
     def setUp(self):
-        pass
+        import khiva
+        set_backend(KHIVABackend.KHIVA_BACKEND_CPU)
 
     def test_real_1d(self):
         a = Array([1, 2, 3, 4, 5, 6, 7, 8])
@@ -271,11 +272,6 @@ class ArrayTest(unittest.TestCase):
         self.assertEqual(b.khiva_type, b.khiva_type)
 
     def testArrayfire(self):
-        try:
-            import arrayfire as af
-        except ModuleNotFoundError:
-            logging.error("In order to use `to_arrayfire()` function, you need to install the Arrayfire Python library")
-            sys.exit(1)
         a = af.Array([1, 2, 3, 4])
         b = Array.from_arrayfire(a)
         np.testing.assert_array_equal(np.asarray(a.to_list()), np.asarray(b.to_list()))
@@ -283,4 +279,5 @@ class ArrayTest(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    unittest.main()
+    suite = unittest.TestLoader().loadTestsFromTestCase(ArrayTest)
+    unittest.TextTestRunner(verbosity=2).run(suite)

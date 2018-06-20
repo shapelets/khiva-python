@@ -12,6 +12,7 @@ import unittest
 import numpy as np
 from khiva.regularization import *
 from khiva.array import Array
+from khiva.library import set_backend, KHIVABackend
 
 
 ########################################################################################################################
@@ -21,7 +22,7 @@ class RegularizationTest(unittest.TestCase):
     DECIMAL = 6
 
     def setUp(self):
-        pass
+        set_backend(KHIVABackend.KHIVA_BACKEND_CPU)
 
     def test_group_by_single_column(self):
         group_by_result = group_by(Array([[0, 1, 1, 2, 2, 3], [0, 3, 3, 1, 1, 2]]), 0).to_numpy()
@@ -48,4 +49,5 @@ class RegularizationTest(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    unittest.main()
+    suite = unittest.TestLoader().loadTestsFromTestCase(RegularizationTest)
+    unittest.TextTestRunner(verbosity=2).run(suite)

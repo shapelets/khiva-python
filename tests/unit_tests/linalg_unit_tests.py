@@ -10,8 +10,8 @@
 ########################################################################################################################
 import unittest
 from khiva.linalg import *
-import numpy as np
 from khiva.array import *
+from khiva.library import set_backend, KHIVABackend
 
 
 ########################################################################################################################
@@ -20,7 +20,7 @@ class LinalgTest(unittest.TestCase):
     DELTA = 1e-6
 
     def setUp(self):
-        pass
+        set_backend(KHIVABackend.KHIVA_BACKEND_CPU)
 
     def test_lls(self):
         lls_result = lls(Array(np.array([[4, 3], [-1, -2]])), Array([3, 1], dtype.f32))
@@ -30,4 +30,5 @@ class LinalgTest(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    unittest.main()
+    suite = unittest.TestLoader().loadTestsFromTestCase(LinalgTest)
+    unittest.TextTestRunner(verbosity=2).run(suite)
