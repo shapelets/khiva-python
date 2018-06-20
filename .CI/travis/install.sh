@@ -8,7 +8,7 @@
 if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
     brew install pyenv
     export PATH=$HOME/.pyenv/shims:$PATH
-    pyenv install $PYTHONVERSION
+    pyenv install $TRAVIS_PYTHON_VERSION
     pyenv init -
 fi
 
