@@ -11,3 +11,9 @@ if [ ! -e "installers/khiva-v0.1.0.sh" ]; then
 fi
 
 sudo ./installers/khiva-v0.1.0.sh --prefix=/usr/local --skip-license
+
+ls -lah /usr/local/lib
+
+sudo ldconfig
+
+sudo ldconfig -p
