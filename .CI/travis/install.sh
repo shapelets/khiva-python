@@ -6,9 +6,9 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
-    sudo pip${PYTHON_VERSION} install -r requirements.txt
-    sudo pip${PYTHON_VERSION} install -r test-requirements.txt
-    sudo pip${PYTHON_VERSION} install codecov
+    sudo pip3 install -r requirements.txt
+    sudo pip3 install -r test-requirements.txt
+    sudo pip3 install codecov
 else
     pip install -r requirements.txt
     pip install -r test-requirements.txt
