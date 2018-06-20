@@ -6,6 +6,8 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
+    brew upgrade python
+
     sudo pip3 install -r requirements.txt
     sudo pip3 install -r test-requirements.txt
     sudo pip3 install codecov
