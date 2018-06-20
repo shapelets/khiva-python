@@ -13,7 +13,7 @@ python:
 
 cache:
     directories:
-      - ${HOME}/installers
+      - ${TRAVIS_BUILD_DIR}/installers
 
 before_install:
   - source .CI/travis/install-arrayfire.sh
