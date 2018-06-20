@@ -11,32 +11,33 @@ cache:
       - ${TRAVIS_BUILD_DIR}/installers
 
 matrix:
+  fast_finish: true
   include:
     - os: linux
       dist: trusty
-      python:
-        - "3.5"
-        - "3.6"
-      before_install:
-        - source .CI/travis/install-arrayfire_linux.sh
-        - source .CI/travis/install-khiva_linux.sh
-      install:
-        - source .CI/travis/install_linux.sh
-      script:
-        - source .CI/travis/build.sh
-        - coverage run -m unittest discover tests/unit_tests *_tests.py -f -v
-      after_success:
-        - codecov
+      sudo: required
+      python: "3.6"
+    - os: linux
+      dist: trusty
+      sudo: required
+      python: "3.5"
     - os: osx
       osx_image: xcode9.3
+      language: generic
       env:
-        - PYTHONVERSION=3.5.5
-        - PYTHONVERSION=3.6.5
-      before_install:
-        - source .CI/travis/install-arrayfire_osx.sh
-        - source .CI/travis/install-khiva_osx.sh
-      install:
-        - source .CI/travis/install_osx.sh
-      script:
-        - source .CI/travis/build.sh
-        - python -m unittest discover tests/unit_tests *_tests.py -f -v
+        - TRAVIS_PYTHON_VERSION=3.6.5
+    - os: osx
+      osx_image: xcode9.3
+      language: generic
+      env:
+        - TRAVIS_PYTHON_VERSION=3.5.5
+
+before_install:
+  - source .CI/travis/install-arrayfire.sh
+  - source .CI/travis/install-khiva.sh
+install:
+  - source .CI/travis/install.sh
+script:
+  - source .CI/travis/build_and_test.sh
+after_success:
+  - source .CI/travis/after_success.sh

@@ -5,6 +5,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-pip install -r requirements.txt
-pip install -r test-requirements.txt
-pip install codecov
+if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
+    # Do not upload the test results
+else
+    codecov
+fi
