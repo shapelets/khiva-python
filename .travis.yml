@@ -25,12 +25,14 @@ matrix:
       python: "3.5"
     - os: osx
       osx_image: xcode9.3
-      language: generic
+      language: cpp
+      compiler: apple-clang
       env:
         - TRAVIS_PYTHON_VERSION=3.6.5
     - os: osx
       osx_image: xcode9.3
-      language: generic
+      language: cpp
+      compiler: apple-clang
       env:
         - TRAVIS_PYTHON_VERSION=3.5.5
 
