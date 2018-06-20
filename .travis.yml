@@ -32,7 +32,7 @@ matrix:
     - os: osx
       osx_image: xcode9.3
       language: cpp
-      compiler: apple-clang
+      compiler: clang
       env:
         - TRAVIS_PYTHON_VERSION=3.5.5
 
