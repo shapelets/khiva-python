@@ -5,14 +5,12 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-set -e
-set -v
-
 # Build the project
-python setup.py install
 
 if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
-    python -m unittest discover tests/unit_tests *_tests.py -f -v
+    sudo python${TRAVIS_PYTHON_VERSION} setup.py install
+    python${TRAVIS_PYTHON_VERSION} -m unittest discover tests/unit_tests *_tests.py -f -v
 else
+    python setup.py install
     coverage run -m unittest discover tests/unit_tests *_tests.py -f -v
 fi

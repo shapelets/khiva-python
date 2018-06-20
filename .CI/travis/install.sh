@@ -8,15 +8,15 @@
 if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
     brew upgrade pyenv
     export PATH=$HOME/.pyenv/shims:$PATH
-    pyenv install $TRAVIS_PYTHON_VERSION
+    pyenv install ${TRAVIS_PYTHON_VERSION}.5
     pyenv init -
 
-    which python
-    python --version
+    which python${TRAVIS_PYTHON_VERSION}
+    python${TRAVIS_PYTHON_VERSION} --version
 
-    sudo pip install -r requirements.txt
-    sudo pip install -r test-requirements.txt
-    sudo pip install codecov
+    sudo pip${TRAVIS_PYTHON_VERSION} install -r requirements.txt
+    sudo pip${TRAVIS_PYTHON_VERSION} install -r test-requirements.txt
+    sudo pip${TRAVIS_PYTHON_VERSION} install codecov
 else
     pip install -r requirements.txt
     pip install -r test-requirements.txt

@@ -17,6 +17,8 @@ matrix:
       dist: trusty
       sudo: required
       python: "3.6"
+      after_success:
+        - codecov
     - os: linux
       dist: trusty
       sudo: required
@@ -25,12 +27,12 @@ matrix:
       osx_image: xcode9.3
       language: generic
       env:
-        - TRAVIS_PYTHON_VERSION=3.6.5
+        - TRAVIS_PYTHON_VERSION=3.6
     - os: osx
       osx_image: xcode9.3
       language: generic
       env:
-        - TRAVIS_PYTHON_VERSION=3.5.5
+        - TRAVIS_PYTHON_VERSION=3.5
 
 before_install:
   - source .CI/travis/install-arrayfire.sh
@@ -39,5 +41,3 @@ install:
   - source .CI/travis/install.sh
 script:
   - source .CI/travis/build_and_test.sh
-after_success:
-  - source .CI/travis/after_success.sh
