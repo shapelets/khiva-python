@@ -13,6 +13,7 @@ import numpy as np
 from khiva.features import *
 from khiva.array import Array, dtype
 from khiva.library import set_backend, KHIVABackend
+import arrayfire as af
 
 
 ########################################################################################################################
@@ -538,8 +539,9 @@ class FeaturesTest(unittest.TestCase):
 
     def test_concatenated(self):
         a = Array([[1, 2], [1, 3], [1, 4], [1, 5], [1, 6], [1, 7], [1, 8], [1, 9], [1, 10], [1, 11]])
-        b = absolute_sum_of_changes(a)
-        d = b.transpose()
+        b = absolute_sum_of_changes(a).to_arrayfire()
+        c = af.transpose(b)
+        d = Array.from_arrayfire(c)
         e = abs_energy(d).to_numpy()
         self.assertAlmostEqual(e, 385, delta=self.DELTA)
 
