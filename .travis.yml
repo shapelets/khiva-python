@@ -6,28 +6,22 @@
 
 language: python
 sudo: required
+dist: trusty
 python:
+  - "3.5"
   - "3.6"
-services:
-  - docker
+
+cache:
+    directories:
+      - ${TRAVIS_BUILD_DIR}/installers
 
 before_install:
-  - docker pull shapelets/khiva
-  - docker run -i -t -d --name CI shapelets/khiva
-  - docker exec -it CI /bin/bash -c "mkdir -p /home/travis/build/shapelets/khiva-python"
-  - docker cp . CI:/home/travis/build/shapelets/khiva-python
-
+  - source .CI/travis/install-arrayfire.sh
+  - source .CI/travis/install-khiva.sh
 install:
-  - docker exec -it CI /bin/bash -c "cd /home/travis/build/shapelets/khiva-python; pip3 install -r requirements.txt"
-  - docker exec -it CI /bin/bash -c "cd /home/travis/build/shapelets/khiva-python; pip3 install -r test-requirements.txt"
-  - docker exec -it CI /bin/bash -c "cd /home/travis/build/shapelets/khiva-python; python3 setup.py install"
-  - docker exec -it CI /bin/bash -c "cd /home/travis/build/shapelets/khiva-python; pip3 install codecov"
-  - pip3 install codecov
-  - python3 setup.py install
-
+  - source .CI/travis/install.sh
 script:
-  - docker exec -it CI /bin/bash -c "cd /home/travis/build/shapelets/khiva-python; coverage run -m unittest discover tests/unit_tests *_tests.py -f"
-
+  - source .CI/travis/build.sh
+  - coverage run -m unittest discover tests/unit_tests *_tests.py -f -v
 after_success:
-  - docker cp CI:/home/travis/build/shapelets/khiva-python/.coverage .
   - codecov
