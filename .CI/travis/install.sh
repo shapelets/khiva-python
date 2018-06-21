@@ -25,5 +25,3 @@ else
     pip install -r test-requirements.txt
     pip install codecov
 fi
-
-
