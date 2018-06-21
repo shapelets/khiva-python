@@ -22,7 +22,6 @@ class ArrayTest(unittest.TestCase):
     DECIMAL = 6
 
     def setUp(self):
-        import khiva
         set_backend(KHIVABackend.KHIVA_BACKEND_CPU)
 
     def test_real_1d(self):

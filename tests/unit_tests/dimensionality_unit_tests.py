@@ -39,7 +39,8 @@ class DimensionalityTest(unittest.TestCase):
 
     def test_paa(self):
         a = Array(
-            [[0.0, 0.1, -0.1, 5.0, 6.0, 7.0, 8.1, 9.0, 9.0, 9.0], [0.0, 0.1, -0.1, 5.0, 6.0, 7.0, 8.1, 9.0, 9.0, 9.0]])
+            [[0.0, 0.1, -0.1, 5.0, 6.0, 7.0, 8.1, 9.0, 9.0, 9.0],
+             [0.0, 0.1, -0.1, 5.0, 6.0, 7.0, 8.1, 9.0, 9.0, 9.0]])
         paa_result = paa(a, 5).to_numpy()
         expected = np.array([[0.05, 2.45, 6.5, 8.55, 9.0], [0.05, 2.45, 6.5, 8.55, 9.0]])
         np.testing.assert_array_almost_equal(paa_result, expected, decimal=self.DECIMAL)
@@ -72,6 +73,7 @@ class DimensionalityTest(unittest.TestCase):
         expected = [[0, 2, 3, 7, 8, 9], [0, -0.1, 5, 9, 9, 9]]
         result = pla_sliding_window(tss, 1).to_numpy()
         np.testing.assert_array_almost_equal(result, expected, decimal=self.DECIMAL)
+
 
 if __name__ == '__main__':
     suite = unittest.TestLoader().loadTestsFromTestCase(DimensionalityTest)
