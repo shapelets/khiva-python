@@ -32,7 +32,7 @@ matrix:
         directories:
           - ${TRAVIS_BUILD_DIR}/installers
           - $HOME/.pyenv
-          - /usr/local/Cellar
+          - $HOME/Library/Caches/Homebrew
     - os: osx
       osx_image: xcode9.3
       language: generic
@@ -42,7 +42,7 @@ matrix:
         directories:
           - ${TRAVIS_BUILD_DIR}/installers
           - $HOME/.pyenv
-          - /usr/local/Cellar
+          - $HOME/Library/Caches/Homebrew
 
 before_install:
   - source .CI/travis/install-arrayfire.sh
