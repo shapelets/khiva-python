@@ -30,6 +30,7 @@ matrix:
         - TRAVIS_PYTHON_VERSION=3.6.5
       cache:
         directories:
+          - ${TRAVIS_BUILD_DIR}/installers
           - $HOME/.pyenv
           - /usr/local/Cellar
     - os: osx
@@ -39,6 +40,7 @@ matrix:
         - TRAVIS_PYTHON_VERSION=3.5.5
       cache:
         directories:
+          - ${TRAVIS_BUILD_DIR}/installers
           - $HOME/.pyenv
           - /usr/local/Cellar
 
