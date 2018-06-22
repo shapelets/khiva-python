@@ -31,6 +31,7 @@ matrix:
       cache:
         directories:
           - $HOME/.pyenv
+          - /usr/local/Cellar
     - os: osx
       osx_image: xcode9.3
       language: generic
@@ -39,6 +40,7 @@ matrix:
       cache:
         directories:
           - $HOME/.pyenv
+          - /usr/local/Cellar
 
 before_install:
   - source .CI/travis/install-arrayfire.sh

@@ -14,12 +14,10 @@ if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
 
     pyenv local ${TRAVIS_PYTHON_VERSION}
 
-    which python${PYTHON_VERSION}
     python${PYTHON_VERSION} --version
 
     sudo pip${PYTHON_VERSION} install -r requirements.txt
     sudo pip${PYTHON_VERSION} install -r test-requirements.txt
-    sudo pip${PYTHON_VERSION} install codecov
 else
     pip install -r requirements.txt
     pip install -r test-requirements.txt
