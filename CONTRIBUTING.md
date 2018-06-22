@@ -19,7 +19,7 @@ little bit helps, and credit will always be given.
 
 ## Formatting Style
 
-In order to have a standarised code base, we only accept code that is formatted according to PEP 8.
+In order to have a standardised code base, we only accept code that is formatted according to PEP 8.
 
 ## Branching model
 
