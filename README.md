@@ -20,7 +20,8 @@ It is just needed to execute the next command in the root directory of the proje
 ```bash
 python3 setup.py install
 ```
-  
+> Note: By now, only 64-bit Python versions are supported. 
+
 ## Executing the tests:
 The tests can be executed and they are located in <project-root-dir>/tests/unit_tests.
  
@@ -34,6 +35,5 @@ make html
 
 ## Contributing
 The rules to contribute to this project are described [here](CONTRIBUTING.md)
-
 
 [![Powered by Shapelets](https://img.shields.io/badge/powered%20by-Shapelets-orange.svg?style=flat&colorA=E1523D&colorB=007D8A)](https://shapelets.io)
