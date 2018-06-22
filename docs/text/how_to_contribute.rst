@@ -15,15 +15,15 @@ Guidelines
 ''''''''''
 Branching model
 ++++++++++++++++
-Our branching model has two permanent branches, **develop** and **master**.
-We aim at using `develop` as the main branch, where all features are merged.
-In this sense, we use the master branch to push the release versions of the binding for the Khiva library.
+Our branching model has one permanent branch, **master**. We aim at using `master` as the main branch, where all
+features are merged. In this sense, we also use the master branch to contain the release versions of the Python Khiva library
+by means of git tags.
 
 Contribution process
 +++++++++++++++++++++
 In order to contribute to the code base, we follow the next process:
 
-1. The main branch is develop, every developer should pull the current status of the branch before stating to develop any new feature.
+1. The main branch is `master`, every developer should pull the current status of the branch before stating to develop any new feature.
 `git pull`
 
 2. Create a new branch with the following pattern "feature/[name_of_the_feature]"
@@ -34,13 +34,13 @@ In order to contribute to the code base, we follow the next process:
 
 `git push`
 
-4. Open a Pull Request to merge the feature branch in to develop. Currently, a pull request has to be reviewed at least by
+4. Open a Pull Request to merge the feature branch in to `master`. Currently, a pull request has to be reviewed at least by
 one person.
 
 5. Finally, delete the feature branch.
 
-6. Move back to develop branch.
-`git checkout develop`
+6. Move back to `master` branch.
+`git checkout master`
 
 7. Pull the latest changes.
 `git pull`
