@@ -9,8 +9,9 @@
 
 if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
     sudo python${PYTHON_VERSION} setup.py install
-    python${PYTHON_VERSION} -m unittest discover tests/unit_tests *_tests.py -f -v
 else
     python setup.py install
-    coverage run -m unittest discover tests/unit_tests *_tests.py -f -v
 fi
+
+coverage run -m unittest discover tests/unit_tests *_tests.py -f -v
+
