@@ -14,6 +14,8 @@ environment:
         - PATH: $(AF_PATH)\lib;$(KHIVA_PATH)\lib;C:\Python36-x64;C:\Python36-x64\Scripts;$(PATH)
         - PATH: $(AF_PATH)\lib;$(KHIVA_PATH)\lib;C:\Python35-x64;C:\Python35-x64\Scripts;$(PATH)
 cache:
+    - C:\ProgramData\chocolatey\bin
+    - C:\ProgramData\chocolatey\lib
     - C:\Program Files\ArrayFire
     - C:\Program Files\Khiva
 clone_folder: C:\khiva-python
@@ -25,11 +27,13 @@ before_build:
     - reg add HKCU\Software\Kitware\CMake\Packages\ArrayFire /v ArrayFire_CMake_DIR /d "C:\Program Files\ArrayFire\v3\cmake" /f
     - ps: if(!(Test-Path -Path "C:\Program Files\Khiva" )){ appveyor DownloadFile "https://github.com/shapelets/khiva/releases/download/v0.1.0/khiva-v0.1.0-unattended.exe" -FileName khiva-v0.1.0-unattended.exe }
     - ps: if(!(Test-Path -Path "C:\Program Files\Khiva" )){ .\khiva-v0.1.0-unattended.exe /S }
+    - start /wait choco install codecov
     - pip install -r requirements.txt
     - pip install -r test-requirements.txt
 build_script:
     - python setup.py install
 test_script:
+    - coverage run -m unittest discover tests/unit_tests *_tests.py -f -v
     - python -m xmlrunner discover tests/unit_tests *_tests.py
 on_finish:
     - ps: |
@@ -37,3 +41,4 @@ on_finish:
         foreach ($file in $files) {
             (New-Object System.Net.WebClient).UploadFile("https://ci.appveyor.com/api/testresults/junit/$($env:APPVEYOR_JOB_ID)", $file.FullName)
         }
+    - codecov -cF Windows
