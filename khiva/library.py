@@ -29,7 +29,7 @@ class KhivaLibrary(object):
                     self.c_khiva_library = ctypes.CDLL('libkhiva_c.so')
             except:
                 logging.error(
-                    "Khiva C++ library is needed to be installed in order to use the Python Khiva library")
+                    "Khiva C++ library is required in order to use the Python Khiva library")
                 sys.exit(1)
 
     instance = None
@@ -68,10 +68,21 @@ class KHIVABackend(Enum):
     """
 
 
-def info():
-    """ Get the devices info.
+def print_backend_info():
+    """ Print information from the active backend.
     """
-    KhivaLibrary().c_khiva_library.info()
+    info_pointer = ctypes.c_char_p((" " * 1000).encode('utf8'))
+    KhivaLibrary().c_khiva_library.backend_info(ctypes.pointer(info_pointer))
+    print(info_pointer.value.decode('utf8'))
+
+def get_backend_info():
+    """ Get information from the current backend.
+
+    :return: A string with information from the current backend.
+    """
+    info_pointer = ctypes.c_char_p((" " * 1000).encode('utf8'))
+    KhivaLibrary().c_khiva_library.backend_info(ctypes.pointer(info_pointer))
+    return info_pointer.value.decode('utf8')
 
 
 def set_backend(backend):
