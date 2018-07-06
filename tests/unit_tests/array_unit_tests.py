@@ -10,6 +10,7 @@
 ########################################################################################################################
 import unittest
 import numpy as np
+import pandas as pd
 from khiva.array import Array, dtype
 import arrayfire as af
 from khiva.library import set_backend, KHIVABackend
@@ -274,7 +275,107 @@ class ArrayTest(unittest.TestCase):
         a = af.Array([1, 2, 3, 4])
         b = Array.from_arrayfire(a)
         np.testing.assert_array_equal(np.asarray(a.to_list()), np.asarray(b.to_list()))
-        np.testing.assert_array_equal(np.asarray(a.to_list()), b.to_arrayfire())
+
+    def testFromPandas(self):
+        df = pd.DataFrame([[1, 2, 3, 4], [5, 6, 7, 8]])
+        df_array = Array(df, khiva_type=dtype.s32)
+        np.testing.assert_array_equal(df.as_matrix(), df_array.to_pandas().as_matrix())
+
+    def testLenght(self):
+        a = Array([1, 2, 3, 4])
+        self.assertEqual(len(a), 4)
+
+    def testIadd(self):
+        a = Array([1, 2, 3, 4])
+        b = Array([1, 2, 3, 4])
+        a += b
+        np.testing.assert_array_equal(a.to_numpy(), np.array([2, 4, 6, 8]))
+
+    def testISub(self):
+        a = Array([1, 2, 3, 4])
+        b = Array([1, 2, 3, 4])
+        a -= b
+        np.testing.assert_array_equal(a.to_numpy(), np.array([0, 0, 0, 0]))
+
+    def testIMul(self):
+        a = Array([1, 2, 3, 4])
+        b = Array([1, 2, 3, 4])
+        a *= b
+        np.testing.assert_array_equal(a.to_numpy(), np.array([1, 4, 9, 16]))
+
+    def testITrueDiv(self):
+        a = Array([1, 2, 3, 4])
+        b = Array([1, 2, 3, 4])
+        a /= b
+        np.testing.assert_array_equal(a.to_numpy(), np.array([1, 1, 1, 1]))
+
+    def testDiv(self):
+        a = Array([1, 2, 3, 4])
+        b = Array([1, 2, 3, 4])
+        c = a / b
+        np.testing.assert_array_equal(c.to_numpy(), np.array([1, 1, 1, 1]))
+
+    def testMod(self):
+        a = Array([1, 2, 3, 4])
+        b = Array([1, 2, 3, 4])
+        a %= b
+        np.testing.assert_array_equal(a.to_numpy(), np.array([0, 0, 0, 0]))
+
+    def testIPow(self):
+        a = Array([1, 2, 3, 4])
+        b = Array([2, 2, 2, 2])
+        a **= b
+        np.testing.assert_array_equal(a.to_numpy(), np.array([1, 4, 9, 16]))
+
+    def testIAnd(self):
+        a = Array([1, 1, 1, 1], khiva_type=dtype.b8)
+        b = Array([1, 0, 1, 0], khiva_type=dtype.b8)
+        a &= b
+        np.testing.assert_array_equal(a.to_numpy(), np.array([1, 0, 1, 0]))
+
+    def testIOr(self):
+        a = Array([1, 1, 1, 1], khiva_type=dtype.b8)
+        b = Array([1, 0, 1, 0], khiva_type=dtype.b8)
+        a |= b
+        np.testing.assert_array_equal(a.to_numpy(), np.array([1, 1, 1, 1]))
+
+    def testXor(self):
+        a = Array([True, True, True, True], dtype.b8)
+        b = Array([True, False, True, False], dtype.b8)
+        a ^= b
+        np.testing.assert_array_equal(a.to_numpy(), np.array([False, True, False, True]))
+
+    def testBitshift(self):
+        a = Array([2, 4, 6, 8], dtype.s32)
+        a >>= 1
+        np.testing.assert_array_equal(a.to_numpy(), np.array([1, 2, 3, 4]))
+
+    def testBitsra(self):
+        a = Array([2, 4, 6, 8], dtype.s32)
+        a <<= 1
+        np.testing.assert_array_equal(a.to_numpy(), np.array([4, 8, 12, 16]))
+
+    def testNeg(self):
+        a = Array([[1, 2], [3, 4]])
+        b = -a
+        np.testing.assert_array_equal(b.to_numpy(), np.array([[-1, -2], [-3, -4]]))
+
+    def testInvert(self):
+        a = Array([True, True, True, False], khiva_type=dtype.b8)
+        b = ~a
+        np.testing.assert_array_equal(b.to_numpy(), np.array([False, False, False, True]))
+
+    def testStr(self):
+        a = Array([2, 4, 6, 8], dtype.s32)
+        self.assertTrue("khiva.Array()\nType: dtype.s32\nDims: [4 1 1 1]" == str(a))
+
+    def testRepre(self):
+        a = Array([1, 2, 3, 4])
+        self.assertTrue("khiva.Array()\nType: dtype.s32\nDims: [4 1 1 1]" == repr(a))
+
+    def testNonZero(self):
+        a = Array([1, 2, 3, 4])
+        self.assertTrue(a.__nonzero__())
 
 
 if __name__ == '__main__':
