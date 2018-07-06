@@ -371,7 +371,7 @@ class ArrayTest(unittest.TestCase):
 
     def testRepre(self):
         a = Array([1, 2, 3, 4])
-        self.assertTrue("khiva.Array()\nType: dtype.s32\nDims: [4 1 1 1]" == repr(a))
+        self.assertTrue("khiva.Array()\nType: dtype.f32\nDims: [4 1 1 1]" == str(repr(a)))
 
     def testNonZero(self):
         a = Array([1, 2, 3, 4])
