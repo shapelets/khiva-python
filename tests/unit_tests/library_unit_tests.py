@@ -9,8 +9,8 @@
 # IMPORT
 ########################################################################################################################
 import unittest
+import requests
 from khiva.library import *
-
 
 ########################################################################################################################
 
@@ -64,7 +64,20 @@ class LibraryTest(unittest.TestCase):
                 self.assertEqual(get_device_id(), i)
 
     def test_version(self):
-        self.assertEqual(version(), '0.1.0')
+        self.assertEqual(version(), self.grab_khiva_version_from_github())
+
+    def grab_khiva_version_from_github(self):
+        # Hit Github API to get the list of tags.
+        r = requests.get('https://api.github.com/repos/shapelets/khiva/tags')
+        if r.ok:
+            response = r.json()
+            numberTags = len(response)
+            # Select the last tag
+            tagName = response[numberTags - 1]['name']
+            # Remove symbols from numbering
+            tagName = tagName.replace('v', '')
+            tagName = tagName.replace('-RC', '')
+        return tagName
 
 
 if __name__ == '__main__':
