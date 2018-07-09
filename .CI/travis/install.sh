@@ -22,5 +22,5 @@ if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
 else
     pip install -r requirements.txt
     pip install -r test-requirements.txt
-    pip install codecov requests
+    pip install codecov
 fi

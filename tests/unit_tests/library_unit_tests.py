@@ -9,7 +9,8 @@
 # IMPORT
 ########################################################################################################################
 import unittest
-import requests
+import os
+import re
 from khiva.library import *
 
 ########################################################################################################################
@@ -64,7 +65,7 @@ class LibraryTest(unittest.TestCase):
                 self.assertEqual(get_device_id(), i)
 
     def test_version(self):
-        self.assertEqual(version(), self.get_khiva_version_from_github())
+        self.assertEqual(version(), self.get_khiva_version_from_file())
 
     def get_khiva_version_from_github(self):
         # Hit Github API to get the list of tags.
@@ -82,6 +83,23 @@ class LibraryTest(unittest.TestCase):
 
         return tag_name
 
+    def get_khiva_version_from_file(self):
+
+        version = ""
+        if os.name == 'nt':
+            path_file = "C:/Program Files/Khiva/include/khiva/version.h"
+        else:
+            path_file = "/usr/local/include/khiva/version.h"
+
+        version_file = open(path_file, "rt")
+        contents = version_file.read()
+        version_file.close()
+
+        regex = r"([0-9]+.[0-9]+.[0-9]+)"
+        match = re.search(regex, contents)
+        if match:
+           version = match.group(0)
+        return version
 
 if __name__ == '__main__':
     suite = unittest.TestLoader().loadTestsFromTestCase(LibraryTest)
