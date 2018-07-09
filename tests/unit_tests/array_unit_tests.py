@@ -281,7 +281,7 @@ class ArrayTest(unittest.TestCase):
         df_array = Array(df, khiva_type=dtype.s32)
         np.testing.assert_array_equal(df.as_matrix(), df_array.to_pandas().as_matrix())
 
-    def testLenght(self):
+    def testLength(self):
         a = Array([1, 2, 3, 4])
         self.assertEqual(len(a), 4)
 
@@ -360,7 +360,7 @@ class ArrayTest(unittest.TestCase):
         b = -a
         np.testing.assert_array_equal(b.to_numpy(), np.array([[-1, -2], [-3, -4]]))
 
-    def testInvert(self):
+    def testNot(self):
         a = Array([True, True, True, False], khiva_type=dtype.b8)
         b = ~a
         np.testing.assert_array_equal(b.to_numpy(), np.array([False, False, False, True]))
@@ -375,7 +375,7 @@ class ArrayTest(unittest.TestCase):
 
     def testNonZero(self):
         a = Array([1, 2, 3, 4])
-        self.assertTrue(a.__nonzero__())
+        self.assertTrue(a)
 
 
 if __name__ == '__main__':
