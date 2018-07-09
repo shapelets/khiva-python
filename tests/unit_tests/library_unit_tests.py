@@ -87,7 +87,7 @@ class LibraryTest(unittest.TestCase):
 
         version = ""
         if os.name == 'nt':
-            path_file = "C:/Program Files/Khiva/include/khiva/version.h"
+            path_file = "C:/Program Files/Khiva/V0/include/khiva/version.h"
         else:
             path_file = "/usr/local/include/khiva/version.h"
 
@@ -95,10 +95,10 @@ class LibraryTest(unittest.TestCase):
         contents = version_file.read()
         version_file.close()
 
-        regex = r"([0-9]+.[0-9]+.[0-9]+)"
+        regex = r'([0-9]+.[0-9]+.[0-9]+)'
         match = re.search(regex, contents)
         if match:
-           version = match.group(0)
+           version = match.group(1)
         return version
 
 if __name__ == '__main__':
