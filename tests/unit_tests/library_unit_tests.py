@@ -69,16 +69,17 @@ class LibraryTest(unittest.TestCase):
     def get_khiva_version_from_github(self):
         # Hit Github API to get the list of tags.
         r = requests.get('https://api.github.com/repos/shapelets/khiva/tags')
+        tag_name = ''
         if r.ok:
             response = r.json()
-            numberTags = len(response)
-            tagName = response[numberTags - 1]['name']
+            number_tags = len(response)
+            tag_name = response[number_tags - 1]['name']
 
             # Remove symbols from numbering
-            tagName = tagName.replace('v', '')
-            tagName = tagName.replace('-RC', '')
+            tag_name = tag_name.replace('v', '')
+            tag_name = tag_name.replace('-RC', '')
 
-        return tagName
+        return tag_name
 
 
 if __name__ == '__main__':
