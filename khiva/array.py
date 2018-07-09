@@ -679,7 +679,7 @@ class Array:
         Perform self >>= other.
         """
         result = ctypes.c_void_p(0)
-        KhivaLibrary().c_khiva_library.khiva_bitshiftl(ctypes.pointer(self.arr_reference),
+        KhivaLibrary().c_khiva_library.khiva_bitshiftr(ctypes.pointer(self.arr_reference),
                                                        ctypes.pointer(ctypes.c_int32(other)), ctypes.pointer(result))
         return Array(array_reference=result)
 
@@ -687,7 +687,7 @@ class Array:
         """
         Return -self
         """
-        return 0 - self
+        return Array(np.zeros(self.get_dims())) - self
 
     def __pos__(self):
         """
@@ -718,7 +718,7 @@ class Array:
         """
         Returns if the Array is non-zero.
         """
-        return self != 0
+        return self != Array(np.zeros(self.get_dims()))
 
     def __repr__(self):
         """
