@@ -87,7 +87,7 @@ class LibraryTest(unittest.TestCase):
 
         version = ""
         if os.name == 'nt':
-            path_file = "C:/Program Files/Khiva/V0/include/khiva/version.h"
+            path_file = "C:/Program Files/Khiva/v0/include/khiva/version.h"
         else:
             path_file = "/usr/local/include/khiva/version.h"
 
