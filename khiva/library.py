@@ -68,13 +68,6 @@ class KHIVABackend(Enum):
     """
 
 
-def print_backend_info():
-    """ Prints information from the active backend.
-    """
-    info_pointer = ctypes.c_char_p((" " * 1000).encode('utf8'))
-    KhivaLibrary().c_khiva_library.backend_info(ctypes.pointer(info_pointer))
-    print(info_pointer.value.decode('utf8'))
-
 def get_backend_info():
     """ Gets information from the current backend.
 
@@ -83,6 +76,12 @@ def get_backend_info():
     info_pointer = ctypes.c_char_p((" " * 1000).encode('utf8'))
     KhivaLibrary().c_khiva_library.backend_info(ctypes.pointer(info_pointer))
     return info_pointer.value.decode('utf8')
+
+
+def print_backend_info():
+    """ Prints information from the active backend.
+    """
+    print(get_backend_info())
 
 
 def set_backend(backend):
