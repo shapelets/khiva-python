@@ -70,7 +70,7 @@ class LibraryTest(unittest.TestCase):
         # Hit Github API to get the list of tags.
         r = requests.get('https://api.github.com/repos/shapelets/khiva/tags')
         tag_name = ''
-        if r.ok:
+        if r.status_code == 200:
             response = r.json()
             number_tags = len(response)
             tag_name = response[number_tags - 1]['name']
