@@ -35,7 +35,7 @@ class LibraryTest(unittest.TestCase):
         # Reset redirect.
         sys.stdout = sys.__stdout__
         word = captured_output.getvalue().split()[0]
-        self.assertEquals(word, "ArrayFire")
+        self.assertEqual(word, "ArrayFire")
 
     def test_set_backend(self):
         backends = get_backends()
