@@ -51,21 +51,22 @@ else
     # Cloning Github repo into khiva-library folder
     git clone https://github.com/shapelets/khiva.git khiva-library
     cd khiva-library
-
+    mkdir -p build && cd build
     if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
         conan install .. -s compiler=apple-clang -s compiler.version=9.1 -s compiler.libcxx=libc++ --build missing
     else
         conan install .. --build missing
     fi
 
-    mkdir -p build && cd build
-    conan install .. -s compiler=apple-clang -s compiler.version=9.1 -s compiler.libcxx=libc++ --build missing
+
     if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
         ../../cmakebin/bin/cmake .. -DKHIVA_ENABLE_COVERAGE=ON -DKHIVA_BUILD_DOCUMENTATION=OFF -DKHIVA_BUILD_EXAMPLES=OFF -DKHIVA_BUILD_BENCHMARKS=OFF
     else
         cmake .. -DKHIVA_ENABLE_COVERAGE=ON -DKHIVA_ONLY_CPU_BACKEND=ON -DKHIVA_BUILD_DOCUMENTATION=OFF -DKHIVA_BUILD_EXAMPLES=OFF -DKHIVA_BUILD_BENCHMARKS=OFF
     fi
     make install -j8
+    cd ..
+    cd ..
 fi
 
 
