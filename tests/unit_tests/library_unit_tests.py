@@ -23,12 +23,12 @@ class LibraryTest(unittest.TestCase):
         pass
 
     @patch("khiva.library.get_backend_info", return_value="ArrayFire v3.5.1 (OpenCL, 64-bit Mac OSX, build 0a675e8)")
-    def test_get_backend_info(self, mocked_get_backend_info):
-        self.assertEqual(mocked_get_backend_info(), "ArrayFire v3.5.1 (OpenCL, 64-bit Mac OSX, build 0a675e8)")
+    def test_get_backend_info(self, get_backend_info):
+        self.assertEqual(get_backend_info(), "ArrayFire v3.5.1 (OpenCL, 64-bit Mac OSX, build 0a675e8)")
 
     @patch("khiva.library.print_backend_info")
-    def test_print_backend_info(self, mocked_print_backend_info):
-        self.assertIsNotNone(mocked_print_backend_info())
+    def test_print_backend_info(self, print_backend_info):
+        self.assertIsNotNone(print_backend_info())
 
     def test_set_backend(self):
         backends = get_backends()
