@@ -25,16 +25,16 @@ class LibraryTest(unittest.TestCase):
     def test_get_backend_info(self):
         info = get_backend_info()
         word = info.split()[0]
-        self.assertEquals(word, "ArrayFire")
+        self.assertEqual(word, "ArrayFire")
 
     def test_print_backend_info(self):
-        capturedOutput = io.StringIO()
+        captured_output = io.StringIO()
         # Redirect stdout.
-        sys.stdout = capturedOutput
+        sys.stdout = captured_output
         print_backend_info()
         # Reset redirect.
         sys.stdout = sys.__stdout__
-        word = capturedOutput.getvalue().split()[0]
+        word = captured_output.getvalue().split()[0]
         self.assertEquals(word, "ArrayFire")
 
     def test_set_backend(self):
@@ -82,6 +82,8 @@ class LibraryTest(unittest.TestCase):
                 self.assertEqual(get_device_id(), i)
 
     def test_version(self):
+        print(version())
+        print(self.get_khiva_version_from_file())
         self.assertEqual(version(), self.get_khiva_version_from_file())
 
     def get_khiva_version_from_github(self):

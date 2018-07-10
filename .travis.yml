@@ -59,7 +59,7 @@ matrix:
           - ${HOME}/.conan
           - ${TRAVIS_BUILD_DIR}/cmake
           - ${TRAVIS_BUILD_DIR}/arrayfire
-          
+
 install:
   - source .CI/travis/install.sh
   - source .CI/travis/install-arrayfire.sh
