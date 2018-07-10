@@ -28,12 +28,13 @@ class LibraryTest(unittest.TestCase):
         self.assertEquals(word, "ArrayFire")
 
     def test_print_backend_info(self):
-        capturedOutput = io.StringIO()  # Create StringIO object
-        sys.stdout = capturedOutput  # and redirect stdout.
+        capturedOutput = io.StringIO()
+        # Redirect stdout.
+        sys.stdout = capturedOutput
         print_backend_info()
-        sys.stdout = sys.__stdout__  # Reset redirect.
-        info = capturedOutput.getvalue()  # Now works as before.
-        word = info.split()[0]
+        # Reset redirect.
+        sys.stdout = sys.__stdout__
+        word = capturedOutput.getvalue().split()[0]
         self.assertEquals(word, "ArrayFire")
 
     def test_set_backend(self):
