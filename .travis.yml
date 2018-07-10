@@ -6,9 +6,7 @@
 
 language: python
 
-cache:
-    directories:
-      - ${TRAVIS_BUILD_DIR}/installers
+
 
 matrix:
   fast_finish: true
@@ -17,12 +15,18 @@ matrix:
       dist: trusty
       sudo: required
       python: "3.6"
+      cache:
+        directories:
+          - ${TRAVIS_BUILD_DIR}/installers
       after_success:
         - codecov -F Linux -X gcov
     - os: linux
       dist: trusty
       sudo: required
       python: "3.5"
+      cache:
+        directories:
+          - ${TRAVIS_BUILD_DIR}/installers
     - os: osx
       osx_image: xcode9.3
       language: generic
