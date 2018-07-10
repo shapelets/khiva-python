@@ -9,7 +9,7 @@
 # IMPORT
 ########################################################################################################################
 import unittest
-from unittest.mock import patch
+import io
 import re
 import os
 import requests
@@ -22,13 +22,19 @@ class LibraryTest(unittest.TestCase):
     def setUp(self):
         pass
 
-    @patch("khiva.library.get_backend_info", return_value="ArrayFire v3.5.1 (OpenCL, 64-bit Mac OSX, build 0a675e8)")
-    def test_get_backend_info(self, get_backend_info):
-        self.assertEqual(get_backend_info(), "ArrayFire v3.5.1 (OpenCL, 64-bit Mac OSX, build 0a675e8)")
+    def test_get_backend_info(self):
+        info = get_backend_info()
+        word = info.split()[0]
+        self.assertEquals(word, "ArrayFire")
 
-    @patch("khiva.library.print_backend_info")
-    def test_print_backend_info(self, print_backend_info):
-        self.assertIsNotNone(print_backend_info())
+    def test_print_backend_info(self):
+        capturedOutput = io.StringIO()  # Create StringIO object
+        sys.stdout = capturedOutput  # and redirect stdout.
+        print_backend_info()
+        sys.stdout = sys.__stdout__  # Reset redirect.
+        info = capturedOutput.getvalue()  # Now works as before.
+        word = info.split()[0]
+        self.assertEquals(word, "ArrayFire")
 
     def test_set_backend(self):
         backends = get_backends()
