@@ -114,7 +114,7 @@ class LibraryTest(unittest.TestCase):
         contents = version_file.read()
         version_file.close()
 
-        regex = r'([0-9]+.[0-9]+.[0-9]+)'
+        regex = r'([0-9]+\.[0-9]+\.[0-9]+)'
         match = re.search(regex, contents)
         if match:
            version = match.group(1)
