@@ -5,7 +5,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-if [["$INSTALL_KHIVA_METHOD" == "installers"]]; then
+if [["$INSTALL_KHIVA_METHOD" == "installer"]]; then
    if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
         if [ ! -e "./installers/khiva-v0.1.0.pkg" ]; then
             wget https://github.com/shapelets/khiva/releases/download/v0.1.0/khiva-v0.1.0-OnlyCPU.pkg -O ./installers/khiva-v0.1.0-OnlyCPU.pkg
@@ -20,8 +20,9 @@ if [["$INSTALL_KHIVA_METHOD" == "installers"]]; then
         sudo ./installers/khiva-v0.1.0-ci.sh --prefix=/usr/local --skip-license
         sudo ldconfig
     fi
-else
 
+else
+    # GitHub method
     # Install cmake in Linux, it is already installed in osx
     if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
         # Check if the file already exists
