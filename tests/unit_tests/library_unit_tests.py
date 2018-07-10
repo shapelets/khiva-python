@@ -82,8 +82,6 @@ class LibraryTest(unittest.TestCase):
                 self.assertEqual(get_device_id(), i)
 
     def test_version(self):
-        print(version())
-        print(self.get_khiva_version_from_file())
         self.assertEqual(version(), self.get_khiva_version_from_file())
 
     def get_khiva_version_from_github(self):

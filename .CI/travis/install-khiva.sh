@@ -49,7 +49,7 @@ else
 
 
     # Cloning Github repo into khiva-library folder
-    git clone https://github.com/shapelets/khiva.git -b fix/bindingHeader khiva-library
+    git clone https://github.com/shapelets/khiva.git khiva-library
     cd khiva-library
     mkdir -p build && cd build
     if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
