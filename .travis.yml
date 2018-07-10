@@ -5,8 +5,8 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 language: python
-
-
+env:
+  - INSTALL_KHIVA_METHOD="github"
 
 matrix:
   fast_finish: true
