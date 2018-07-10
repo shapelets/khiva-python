@@ -59,7 +59,7 @@ else
     else
         conan install .. --build missing
         ../../cmakebin/bin/cmake .. -DKHIVA_ENABLE_COVERAGE=ON -DKHIVA_BUILD_DOCUMENTATION=OFF -DKHIVA_BUILD_EXAMPLES=OFF -DKHIVA_BUILD_BENCHMARKS=OFF
-         make install -j8
+        make install -j8
         sudo ldconfig
     fi
     # Switching back to the khiva-python folder
