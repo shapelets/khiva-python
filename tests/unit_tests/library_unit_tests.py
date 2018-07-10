@@ -9,8 +9,10 @@
 # IMPORT
 ########################################################################################################################
 import unittest
-import os
+from unittest.mock import patch
 import re
+import os
+import requests
 from khiva.library import *
 
 ########################################################################################################################
@@ -19,6 +21,14 @@ class LibraryTest(unittest.TestCase):
 
     def setUp(self):
         pass
+
+    @patch("khiva.library.get_backend_info", return_value="ArrayFire v3.5.1 (OpenCL, 64-bit Mac OSX, build 0a675e8)")
+    def test_get_backend_info(self, mocked_get_backend_info):
+        self.assertEqual(mocked_get_backend_info(), "ArrayFire v3.5.1 (OpenCL, 64-bit Mac OSX, build 0a675e8)")
+
+    @patch("khiva.library.print_backend_info")
+    def test_print_backend_info(self, mocked_print_backend_info):
+        self.assertIsNotNone(mocked_print_backend_info())
 
     def test_set_backend(self):
         backends = get_backends()
@@ -83,7 +93,7 @@ class LibraryTest(unittest.TestCase):
 
         return tag_name
 
-    def get_khiva_version_from_file(self):
+    def  get_khiva_version_from_file(self):
 
         version = ""
         if os.name == 'nt':
@@ -100,6 +110,7 @@ class LibraryTest(unittest.TestCase):
         if match:
            version = match.group(1)
         return version
+
 
 if __name__ == '__main__':
     suite = unittest.TestLoader().loadTestsFromTestCase(LibraryTest)
