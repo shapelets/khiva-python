@@ -13,8 +13,6 @@ matrix:
       dist: trusty
       sudo: required
       python: "3.6"
-      env:
-        - INSTALL_KHIVA_METHOD=github
       cache:
         directories:
           - ${TRAVIS_BUILD_DIR}/installers

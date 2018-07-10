@@ -45,12 +45,12 @@ else
      else
         pip${PYTHON_VERSION} install conan
      fi
+     conan remote add conan-mpusz https://api.bintray.com/conan/mpusz/conan-mpusz
 
-    conan remote add conan-mpusz https://api.bintray.com/conan/mpusz/conan-mpusz
 
-    # Cloning Github repo
-    git clone https://github.com/shapelets/khiva.git
-    cd khiva
+    # Cloning Github repo into khiva-library folder
+    git clone https://github.com/shapelets/khiva.git khiva-library
+    cd khiva-library
 
     if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
         conan install .. -s compiler=apple-clang -s compiler.version=9.1 -s compiler.libcxx=libc++ --build missing
