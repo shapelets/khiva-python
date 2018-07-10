@@ -24,11 +24,6 @@ else
      #Installing conan and dependencies
     pip install conan
     conan remote add conan-mpusz https://api.bintray.com/conan/mpusz/conan-mpusz
-    if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
-        conan install .. -s compiler=apple-clang -s compiler.version=9.1 -s compiler.libcxx=libc++ --build missing
-    else
-        conan install .. --build missing
-    fi
 
     # Install cmake in Linux, it is already installed in osx
     if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
@@ -50,6 +45,13 @@ else
     # Cloning Github repo
     git clone https://github.com/shapelets/khiva.git
     cd khiva
+
+    if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
+        conan install .. -s compiler=apple-clang -s compiler.version=9.1 -s compiler.libcxx=libc++ --build missing
+    else
+        conan install .. --build missing
+    fi
+
     mkdir -p build && cd build
     conan install .. -s compiler=apple-clang -s compiler.version=9.1 -s compiler.libcxx=libc++ --build missing
     if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
