@@ -21,9 +21,6 @@ if [[$"INSTALL_KHIVA_METHOD" == "installers"]]; then
         sudo ldconfig
     fi
 else
-     #Installing conan and dependencies
-    pip install conan
-    conan remote add conan-mpusz https://api.bintray.com/conan/mpusz/conan-mpusz
 
     # Install cmake in Linux, it is already installed in osx
     if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
@@ -42,6 +39,15 @@ else
         cd ..
     fi
 
+     #Installing conan and dependencies
+     if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+        pip install conan
+     else
+        pip${PYTHON_VERSION} install conan
+     fi
+
+    conan remote add conan-mpusz https://api.bintray.com/conan/mpusz/conan-mpusz
+
     # Cloning Github repo
     git clone https://github.com/shapelets/khiva.git
     cd khiva
@@ -55,7 +61,7 @@ else
     mkdir -p build && cd build
     conan install .. -s compiler=apple-clang -s compiler.version=9.1 -s compiler.libcxx=libc++ --build missing
     if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
-        ../cmakebin/bin/cmake .. -DKHIVA_ENABLE_COVERAGE=ON -DKHIVA_BUILD_DOCUMENTATION=OFF -DKHIVA_BUILD_EXAMPLES=OFF -DKHIVA_BUILD_BENCHMARKS=OFF
+        ../../cmakebin/bin/cmake .. -DKHIVA_ENABLE_COVERAGE=ON -DKHIVA_BUILD_DOCUMENTATION=OFF -DKHIVA_BUILD_EXAMPLES=OFF -DKHIVA_BUILD_BENCHMARKS=OFF
     else
         cmake .. -DKHIVA_ENABLE_COVERAGE=ON -DKHIVA_ONLY_CPU_BACKEND=ON -DKHIVA_BUILD_DOCUMENTATION=OFF -DKHIVA_BUILD_EXAMPLES=OFF -DKHIVA_BUILD_BENCHMARKS=OFF
     fi

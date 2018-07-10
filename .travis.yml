@@ -50,10 +50,9 @@ matrix:
           - $HOME/.pyenv
           - $HOME/Library/Caches/Homebrew
 
-before_install:
+install:
   - source .CI/travis/install-arrayfire.sh
   - source .CI/travis/install-khiva.sh
-install:
   - source .CI/travis/install.sh
 script:
   - source .CI/travis/build_and_test.sh
