@@ -24,14 +24,16 @@ before_build:
     - ps: if(!(Test-Path -Path "C:\Program Files\ArrayFire" )){ appveyor DownloadFile "https://www.dropbox.com/s/ndt1eaouriiu4qi/ArrayFire-v3.5.1.zip?dl=1" -FileName ArrayFire-v3.5.1.zip }
     - ps: if(!(Test-Path -Path "C:\Program Files\ArrayFire" )){ 7z x ArrayFire-v3.5.1.zip -o"C:\Program Files" }
     - reg add HKCU\Software\Kitware\CMake\Packages\ArrayFire /v ArrayFire_CMake_DIR /d "C:\Program Files\ArrayFire\v3\cmake" /f
-    - ps: if(!(Test-Path -Path "C:\Program Files\Khiva" )){ appveyor DownloadFile "https://github.com/shapelets/khiva/releases/download/v0.1.0/khiva-v0.1.0-unattended.exe" -FileName khiva-v0.1.0-unattended.exe }
-#    - ps: if(!(Test-Path -Path "C:\Program Files\Khiva" )){ .\khiva-v0.1.0-unattended.exe /S }
-    - reg add HKCU\Software\Kitware\CMake\Packages\ArrayFire /v ArrayFire_CMake_DIR /d "C:\Program Files\ArrayFire\v3\cmake" /f
     - vcpkg install --triplet x64-windows gtest eigen3
+#   - ps: if(!(Test-Path -Path "C:\Program Files\Khiva" )){ appveyor DownloadFile "https://github.com/shapelets/khiva/releases/download/v0.1.0/khiva-v0.1.0-unattended.exe" -FileName khiva-v0.1.0-unattended.exe }
+#   - ps: if(!(Test-Path -Path "C:\Program Files\Khiva" )){ .\khiva-v0.1.0-unattended.exe /S }
+    - ps: git clone https://github.com/shapelets/khiva.git C:\projects\khiva-library 2> $null
+    - cd C:\projects\khiva-library
     - mkdir build && cd build
     - cmake .. -DCMAKE_TOOLCHAIN_FILE=c:/tools/vcpkg/scripts/buildsystems/vcpkg.cmake -DKHIVA_USE_CONAN=OFF -DKHIVA_BUILD_DOCUMENTATION=OFF -DKHIVA_BUILD_BENCHMARKS=OFF -DKHIVA_ONLY_CPU_BACKEND=ON -G"%GENERATOR%"
     - cmake --build . --config Release -- /m
     - cmake install
+    - cd C:\khiva-python
     - pip install -r requirements.txt
     - pip install -r test-requirements.txt
     - pip install codecov
