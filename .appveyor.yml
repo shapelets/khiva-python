@@ -11,10 +11,11 @@ environment:
     BOOST_ROOT: C:\Libraries\boost_1_67_0
     AF_PATH: C:\Program Files\ArrayFire\v3
     KHIVA_PATH: C:\Program Files\Khiva\v0
+    INSTALL_KHIVA_METHOD: github
     matrix:
         - PATH: $(AF_PATH)\lib;$(KHIVA_PATH)\lib;C:\Python36-x64;C:\Python36-x64\Scripts;$(PATH)
 cache:
-    - c:\tools\vcpkg\installed\
+    - c:\tools\vcpkg\installed
     - C:\Program Files\ArrayFire
     - C:\Program Files\Khiva
 clone_folder: C:\khiva-python
@@ -25,13 +26,16 @@ before_build:
     - ps: if(!(Test-Path -Path "C:\Program Files\ArrayFire" )){ 7z x ArrayFire-v3.5.1.zip -o"C:\Program Files" }
     - reg add HKCU\Software\Kitware\CMake\Packages\ArrayFire /v ArrayFire_CMake_DIR /d "C:\Program Files\ArrayFire\v3\cmake" /f
     - vcpkg install --triplet x64-windows gtest eigen3
-#   - ps: if(!(Test-Path -Path "C:\Program Files\Khiva" )){ appveyor DownloadFile "https://github.com/shapelets/khiva/releases/download/v0.1.0/khiva-v0.1.0-unattended.exe" -FileName khiva-v0.1.0-unattended.exe }
-#   - ps: if(!(Test-Path -Path "C:\Program Files\Khiva" )){ .\khiva-v0.1.0-unattended.exe /S }
-    - git clone https://github.com/shapelets/khiva.git C:\khiva-library
-    - cd C:\khiva-library
-    - mkdir build && cd build
-    - cmake .. -DCMAKE_TOOLCHAIN_FILE=c:/tools/vcpkg/scripts/buildsystems/vcpkg.cmake -DKHIVA_USE_CONAN=OFF -DKHIVA_BUILD_DOCUMENTATION=OFF -DKHIVA_BUILD_BENCHMARKS=OFF -DKHIVA_ONLY_CPU_BACKEND=ON -G"%GENERATOR%"
-    - cmake --build . --config Release --target INSTALL -- /m
+    - ps: if ("%INSTALL_KHIVA_METHOD% -eq "installer"){
+            if(!(Test-Path -Path "C:\Program Files\Khiva" )){ appveyor DownloadFile "https://github.com/shapelets/khiva/releases/download/v0.1.0/khiva-v0.1.0-unattended.exe" -FileName khiva-v0.1.0-unattended.exe }
+            if(!(Test-Path -Path "C:\Program Files\Khiva" )){ .\khiva-v0.1.0-unattended.exe /S }
+          }else{
+            git clone https://github.com/shapelets/khiva.git C:\khiva-library
+            cd C:\khiva-library
+            mkdir build && cd build
+            cmake .. -DCMAKE_TOOLCHAIN_FILE=c:/tools/vcpkg/scripts/buildsystems/vcpkg.cmake -DKHIVA_USE_CONAN=OFF -DKHIVA_BUILD_DOCUMENTATION=OFF -DKHIVA_BUILD_BENCHMARKS=OFF -DKHIVA_ONLY_CPU_BACKEND=ON -G"%GENERATOR%"
+            cmake --build . --config Release --target INSTALL -- /m
+          }
     - cd C:\khiva-python
     - pip install -r requirements.txt
     - pip install -r test-requirements.txt
