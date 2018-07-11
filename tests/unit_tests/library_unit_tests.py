@@ -9,8 +9,11 @@
 # IMPORT
 ########################################################################################################################
 import unittest
+import io
+import re
+import os
+import requests
 from khiva.library import *
-
 
 ########################################################################################################################
 
@@ -18,6 +21,21 @@ class LibraryTest(unittest.TestCase):
 
     def setUp(self):
         pass
+
+    def test_get_backend_info(self):
+        info = get_backend_info()
+        word = info.split()[0]
+        self.assertEqual(word, "ArrayFire")
+
+    def test_print_backend_info(self):
+        captured_output = io.StringIO()
+        # Redirect stdout.
+        sys.stdout = captured_output
+        print_backend_info()
+        # Reset redirect.
+        sys.stdout = sys.__stdout__
+        word = captured_output.getvalue().split()[0]
+        self.assertEqual(word, "ArrayFire")
 
     def test_set_backend(self):
         backends = get_backends()
@@ -64,8 +82,41 @@ class LibraryTest(unittest.TestCase):
                 self.assertEqual(get_device_id(), i)
 
     def test_version(self):
-        v = version()
-        self.assertEqual(v, '0.1.0')
+        self.assertEqual(version(), self.get_khiva_version_from_file())
+
+    def get_khiva_version_from_github(self):
+        # Hit Github API to get the list of tags.
+        r = requests.get('https://api.github.com/repos/shapelets/khiva/tags')
+        tag_name = '0.1.0'
+
+        if r.status_code == 200:
+            response = r.json()
+            number_tags = len(response)
+            tag_name = response[number_tags - 1]['name']
+
+            # Remove symbols from numbering
+            tag_name = tag_name.replace('v', '')
+            tag_name = tag_name.replace('-RC', '')
+
+        return tag_name
+
+    def  get_khiva_version_from_file(self):
+
+        version = ""
+        if os.name == 'nt':
+            path_file = "C:/Program Files/Khiva/v0/include/khiva/version.h"
+        else:
+            path_file = "/usr/local/include/khiva/version.h"
+
+        version_file = open(path_file, "rt")
+        contents = version_file.read()
+        version_file.close()
+
+        regex = r'([0-9]+\.[0-9]+\.[0-9]+)'
+        match = re.search(regex, contents)
+        if match:
+           version = match.group(1)
+        return version
 
 
 if __name__ == '__main__':

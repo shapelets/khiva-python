@@ -29,7 +29,7 @@ class KhivaLibrary(object):
                     self.c_khiva_library = ctypes.CDLL('libkhiva_c.so')
             except:
                 logging.error(
-                    "Khiva C++ library is needed to be installed in order to use the Python Khiva library")
+                    "Khiva C++ library is required in order to use the Python Khiva library")
                 sys.exit(1)
 
     instance = None
@@ -68,14 +68,24 @@ class KHIVABackend(Enum):
     """
 
 
-def info():
-    """ Get the devices info.
+def get_backend_info():
+    """ Gets information from the current backend.
+
+    :return: A string with information from the current backend.
     """
-    KhivaLibrary().c_khiva_library.info()
+    info_pointer = ctypes.c_char_p((" " * 1000).encode('utf8'))
+    KhivaLibrary().c_khiva_library.backend_info(ctypes.pointer(info_pointer))
+    return info_pointer.value.decode('utf8')
+
+
+def print_backend_info():
+    """ Prints information from the active backend.
+    """
+    print(get_backend_info())
 
 
 def set_backend(backend):
-    """ Set the KHIVABackend.
+    """ Sets the KHIVABackend.
 
     :param backend: The desired backend. KHIVABackend type.
     """
@@ -83,7 +93,7 @@ def set_backend(backend):
 
 
 def get_backend():
-    """ Get the active backend.
+    """ Gets the active backend.
 
     :return: The active backend. KHIVABackend type.
     """
@@ -94,7 +104,7 @@ def get_backend():
 
 
 def get_backends():
-    """ Get the available backends.
+    """ Gets the available backends.
 
     :return: The available backends.
     """
@@ -104,7 +114,7 @@ def get_backends():
 
 
 def set_device(device):
-    """ Set the device.
+    """ Sets the device.
 
     :param device: The desired device.
     """
@@ -112,7 +122,7 @@ def set_device(device):
 
 
 def get_device_id():
-    """ Get the active device.
+    """ Gets the active device.
 
     :return: The active device.
     """
@@ -122,7 +132,7 @@ def get_device_id():
 
 
 def get_device_count():
-    """ Get the devices count.
+    """ Gets the devices count.
 
     :return: The devices count.
     """
