@@ -32,7 +32,6 @@ before_build:
     - mkdir build && cd build
     - cmake .. -DCMAKE_TOOLCHAIN_FILE=c:/tools/vcpkg/scripts/buildsystems/vcpkg.cmake -DKHIVA_USE_CONAN=OFF -DKHIVA_BUILD_DOCUMENTATION=OFF -DKHIVA_BUILD_BENCHMARKS=OFF -DKHIVA_ONLY_CPU_BACKEND=ON -G"%GENERATOR%"
     - cmake --build . --config Release --target INSTALL -- /m
-    - cmake install
     - cd C:\khiva-python
     - pip install -r requirements.txt
     - pip install -r test-requirements.txt
