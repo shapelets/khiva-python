@@ -46,7 +46,7 @@ else
      else
         pip${PYTHON_VERSION} install conan
      fi
-     conan remote add conan-mpusz https://api.bintray.com/conan/mpusz/conan-mpusz
+     conan remote update conan-mpusz https://api.bintray.com/conan/mpusz/conan-mpusz
 
 
     # Cloning Github repo into khiva-library folder
