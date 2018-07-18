@@ -18,6 +18,7 @@ from khiva.library import set_backend, KHIVABackend
 
 class MatrixTest(unittest.TestCase):
     DELTA = 1e-6
+    DECIMAL = 6
 
     def setUp(self):
         set_backend(KHIVABackend.KHIVA_BACKEND_CPU)
@@ -44,28 +45,92 @@ class MatrixTest(unittest.TestCase):
             self.assertAlmostEqual(b[i], expected_index[i])
 
     def test_find_best_n_motifs(self):
-
         stomp_result = stomp(Array([10, 10, 10, 10, 10, 10, 9, 10, 10, 10, 10, 10, 11, 10, 9], dtype.f32),
                              Array([10, 11, 10, 9], dtype.f32),
                              3)
 
-        find_best_n_motifs_result = find_best_n_motifs(stomp_result[0], stomp_result[1], 2)
+        find_best_n_motifs_result = find_best_n_motifs(stomp_result[0], stomp_result[1], 3, 1)
         a = find_best_n_motifs_result[1].to_numpy()
         b = find_best_n_motifs_result[2].to_numpy()
-        self.assertAlmostEqual(a[0], 12, delta=self.DELTA)
-        self.assertAlmostEqual(a[1], 11, delta=self.DELTA)
-        self.assertAlmostEqual(b[0], 1, delta=self.DELTA)
-        self.assertAlmostEqual(b[1], 0, delta=self.DELTA)
+        self.assertAlmostEqual(a, 12, delta=self.DELTA)
+        self.assertAlmostEqual(b, 1, delta=self.DELTA)
+
+    def test_find_best_n_motifs_multiple_motifs(self):
+        stomp_result = stomp(Array([[10, 10, 10, 10, 10, 10, 9, 10, 10, 10, 10, 10, 11, 10, 9],
+                                    [10, 10, 10, 10, 10, 10, 9, 10, 10, 10, 10, 10, 11, 10, 9]], dtype.f32),
+                             Array([[10, 11, 10, 9], [10, 11, 10, 9]], dtype.f32),
+                             3)
+
+        find_best_n_motifs_result = find_best_n_motifs(stomp_result[0], stomp_result[1], 3, 1)
+        a = find_best_n_motifs_result[1].to_numpy()
+        b = find_best_n_motifs_result[2].to_numpy()
+        np.testing.assert_array_almost_equal(a, np.array([[12, 12], [12, 12]]), decimal=self.DECIMAL)
+        np.testing.assert_array_almost_equal(b, np.array([[1, 1], [1, 1]]), decimal=self.DECIMAL)
+
+    def test_find_best_n_motifs_mirror(self):
+        stomp_result = stomp_self_join(Array([10.1, 11, 10.2, 10.15, 10.775, 10.1, 11, 10.2], dtype.f32), 3)
+
+        find_best_n_motifs_result = find_best_n_motifs(stomp_result[0], stomp_result[1], 3, 2, True)
+        a = find_best_n_motifs_result[1].to_numpy()
+        b = find_best_n_motifs_result[2].to_numpy()
+        self.assertAlmostEqual(a[0], 0, delta=self.DELTA)
+        self.assertAlmostEqual(a[1], 0, delta=self.DELTA)
+        self.assertAlmostEqual(b[0], 5, delta=self.DELTA)
+        self.assertAlmostEqual(b[1], 3, delta=self.DELTA)
+
+    def test_find_best_n_motifs_consecutive(self):
+        stomp_result = stomp_self_join(Array([10.1, 11, 10.1, 10.15, 10.075, 10.1, 11, 10.1, 10.15], dtype.f32), 3)
+
+        find_best_n_motifs_result = find_best_n_motifs(stomp_result[0], stomp_result[1], 3, 2)
+        a = find_best_n_motifs_result[1].to_numpy()
+        b = find_best_n_motifs_result[2].to_numpy()
+        self.assertAlmostEqual(a[1], 6, delta=self.DELTA)
+        self.assertAlmostEqual(b[1], 3, delta=self.DELTA)
 
     def test_find_best_n_discords(self):
-        stomp_result = stomp(Array(np.array([1, 1, 1])),
-                             Array(np.array([1, 1, 1])),
-                             1)
+        stomp_result = stomp(Array(np.array([11, 10, 11, 10, 11, 10, 11, 10, 11, 10, 11, 10, 11])),
+                             Array(np.array([9, 10.1, 10.2, 10.1, 10.2, 10.1, 10.2, 10.1, 10.2, 10.1, 10.2, 10.1, 9])),
+                             3)
         find_best_n_discords_result = find_best_n_discords(stomp_result[0],
-                                                           stomp_result[1], 2)
+                                                           stomp_result[1], 3, 2)
         a = find_best_n_discords_result[2].to_numpy()
 
         self.assertEqual(a[0], 0)
+        self.assertEqual(a[1], 10)
+
+    def test_find_best_n_discords_multiple_profiles(self):
+        stomp_result = stomp(Array(np.array([[11, 10, 11, 10, 11, 10, 11, 10, 11, 10, 11, 10, 11],
+                                             [11, 10, 11, 10, 11, 10, 11, 10, 11, 10, 11, 10, 11]])),
+                             Array(np.array([[9, 10.1, 10.2, 10.1, 10.2, 10.1, 10.2, 10.1, 10.2, 10.1, 10.2, 10.1, 9],
+                                             [9, 10.1, 10.2, 10.1, 10.2, 10.1, 10.2, 10.1, 10.2, 10.1, 10.2, 10.1,
+                                              9]])),
+                             3)
+        find_best_n_discords_result = find_best_n_discords(stomp_result[0],
+                                                           stomp_result[1], 3, 2)
+        a = find_best_n_discords_result[2].to_numpy()
+
+        np.testing.assert_array_almost_equal(a, np.array([[[0, 10], [0, 10]], [[0, 10], [0, 10]]]),
+                                             decimal=self.DECIMAL)
+
+    def test_find_best_n_discords_mirror(self):
+        stomp_result = stomp_self_join(Array(np.array([10, 11, 10, 10, 11, 10])), 3)
+        find_best_n_discords_result = find_best_n_discords(stomp_result[0],
+                                                           stomp_result[1], 3, 1, True)
+        a = find_best_n_discords_result[1].to_numpy()
+        b = find_best_n_discords_result[2].to_numpy()
+
+        self.assertEqual(a, 3)
+        self.assertEqual(b, 1)
+
+    def test_find_best_n_discords_consecutive(self):
+        stomp_result = stomp_self_join(
+            Array(np.array([10, 11, 10, 11, 10, 11, 10, 11, 10, 11, 10, 11, 10, 9.999, 9.998]), dtype.f32), 3)
+        find_best_n_discords_result = find_best_n_discords(stomp_result[0],
+                                                           stomp_result[1], 3, 2, True)
+        a = find_best_n_discords_result[2].to_numpy()
+
+        self.assertEqual(a[0], 12)
+        self.assertNotEqual(a[1], 11)
 
 
 if __name__ == '__main__':
