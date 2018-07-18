@@ -7,13 +7,14 @@
 image:
     - Visual Studio 2017
 environment:
+    GENERATOR: "Visual Studio 15 Win64"
     BOOST_ROOT: C:\Libraries\boost_1_67_0
     AF_PATH: C:\Program Files\ArrayFire\v3
     KHIVA_PATH: C:\Program Files\Khiva\v0
     matrix:
         - PATH: $(AF_PATH)\lib;$(KHIVA_PATH)\lib;C:\Python36-x64;C:\Python36-x64\Scripts;$(PATH)
-        - PATH: $(AF_PATH)\lib;$(KHIVA_PATH)\lib;C:\Python35-x64;C:\Python35-x64\Scripts;$(PATH)
 cache:
+    - c:\tools\vcpkg\installed
     - C:\Program Files\ArrayFire
     - C:\Program Files\Khiva
 clone_folder: C:\khiva-python
@@ -23,8 +24,19 @@ before_build:
     - ps: if(!(Test-Path -Path "C:\Program Files\ArrayFire" )){ appveyor DownloadFile "https://www.dropbox.com/s/ndt1eaouriiu4qi/ArrayFire-v3.5.1.zip?dl=1" -FileName ArrayFire-v3.5.1.zip }
     - ps: if(!(Test-Path -Path "C:\Program Files\ArrayFire" )){ 7z x ArrayFire-v3.5.1.zip -o"C:\Program Files" }
     - reg add HKCU\Software\Kitware\CMake\Packages\ArrayFire /v ArrayFire_CMake_DIR /d "C:\Program Files\ArrayFire\v3\cmake" /f
-    - ps: if(!(Test-Path -Path "C:\Program Files\Khiva" )){ appveyor DownloadFile "https://github.com/shapelets/khiva/releases/download/v0.1.0/khiva-v0.1.0-unattended.exe" -FileName khiva-v0.1.0-unattended.exe }
-    - ps: if(!(Test-Path -Path "C:\Program Files\Khiva" )){ .\khiva-v0.1.0-unattended.exe /S }
+    - vcpkg install --triplet x64-windows gtest eigen3
+    - ps: if ($env:INSTALL_KHIVA_METHOD -eq "installer"){
+            if(!(Test-Path -Path "C:\Program Files\Khiva" )){ appveyor DownloadFile "https://github.com/shapelets/khiva/releases/download/v0.1.0/khiva-v0.1.0-unattended.exe" -FileName khiva-v0.1.0-unattended.exe };
+            if(!(Test-Path -Path "C:\Program Files\Khiva" )){ .\khiva-v0.1.0-unattended.exe /S };
+          }else{
+            git clone -q https://github.com/shapelets/khiva.git C:\khiva-library ;
+            cd C:\khiva-library;
+            mkdir build;
+            cd build;
+            cmake .. -DCMAKE_TOOLCHAIN_FILE=c:/tools/vcpkg/scripts/buildsystems/vcpkg.cmake -DKHIVA_USE_CONAN=OFF -DKHIVA_BUILD_DOCUMENTATION=OFF -DKHIVA_BUILD_BENCHMARKS=OFF -DKHIVA_ONLY_CPU_BACKEND=ON -G"$env:GENERATOR";
+            cmake --build . --config Release --target INSTALL -- /m;
+          }
+    - cd C:\khiva-python
     - pip install -r requirements.txt
     - pip install -r test-requirements.txt
     - pip install codecov
