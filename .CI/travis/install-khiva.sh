@@ -50,6 +50,7 @@ else
      conan remote add conan-mpusz https://api.bintray.com/conan/mpusz/conan-mpusz
      if [$? -ne 0]; then
          conan remote update conan-mpusz https://api.bintray.com/conan/mpusz/conan-mpusz
+     fi
 
     # Cloning Github repo into khiva-library folder
     git clone https://github.com/shapelets/khiva.git khiva-library
