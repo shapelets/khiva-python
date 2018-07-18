@@ -23,7 +23,7 @@ def find_best_n_discords(profile, index, m, n, self_join=False):
     :param m: Subsequence length value used to calculate the input matrix profile.
     :param n: Number of discords to extract.
     :param self_join: Indicates whether the input profile comes from a self join operation or not. It determines
-    whether the mirror similar region is included in the output or not.
+                      whether the mirror similar region is included in the output or not.
     :return: KHIVA arrays with the discord distances, the discord indices and the subsequence indices.
     """
     b = ctypes.c_void_p(0)
@@ -51,7 +51,7 @@ def find_best_n_motifs(profile, index, m, n, self_join=False):
     :param m: Subsequence length value used to calculate the input matrix profile.
     :param n: Number of motifs to extract.
     :param self_join: Indicates whether the input profile comes from a self join operation or not. It determines
-    whether the mirror similar region is included in the output or not.
+                      whether the mirror similar region is included in the output or not.
     :return: KHIVA arrays with the motif distances, the motif indices and the subsequence indices.
     """
     b = ctypes.c_void_p(0)
