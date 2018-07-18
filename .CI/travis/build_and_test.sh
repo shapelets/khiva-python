@@ -8,7 +8,7 @@
 # Build the project
 
 if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
-    sudo python${PYTHON_VERSION} setup.py install
+    python${PYTHON_VERSION} setup.py install
 else
     python setup.py install
 fi
