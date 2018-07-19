@@ -1,3 +1,6 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+#
 # Copyright (c) 2018 Shapelets.io
 #
 # This Source Code Form is subject to the terms of the Mozilla Public
@@ -236,7 +239,7 @@ class Array:
         if self._is_complex():
             result *= 2
 
-        return result
+        return int(result)
 
     def get_dims(self):
         """ Gets the dimensions of the KHIVA array.
@@ -303,9 +306,9 @@ class Array:
 
     def display(self):
         """
-        Prints the data stored in the KHIVA array.
+        Dispays the data stored in the KHIVA array.
         """
-        KhivaLibrary().c_khiva_library.print(ctypes.pointer(self.arr_reference))
+        KhivaLibrary().c_khiva_library.display(ctypes.pointer(self.arr_reference))
 
     def __len__(self):
         """
@@ -718,7 +721,9 @@ class Array:
         """
         Returns if the Array is non-zero.
         """
-        return self != Array(np.zeros(self.get_dims()))
+        ne = self != Array(np.zeros(self.get_dims()))
+        ne_host = ne.to_numpy()
+        return int(np.all(ne_host))
 
     def __repr__(self):
         """

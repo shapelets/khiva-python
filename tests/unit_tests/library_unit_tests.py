@@ -1,3 +1,6 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+#
 # Copyright (c) 2018 Shapelets.io
 #
 # This Source Code Form is subject to the terms of the Mozilla Public
@@ -9,7 +12,6 @@
 # IMPORT
 ########################################################################################################################
 import unittest
-import io
 import re
 import os
 import requests
@@ -25,16 +27,6 @@ class LibraryTest(unittest.TestCase):
     def test_get_backend_info(self):
         info = get_backend_info()
         word = info.split()[0]
-        self.assertEqual(word, "ArrayFire")
-
-    def test_print_backend_info(self):
-        captured_output = io.StringIO()
-        # Redirect stdout.
-        sys.stdout = captured_output
-        print_backend_info()
-        # Reset redirect.
-        sys.stdout = sys.__stdout__
-        word = captured_output.getvalue().split()[0]
         self.assertEqual(word, "ArrayFire")
 
     def test_set_backend(self):

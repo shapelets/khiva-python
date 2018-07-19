@@ -1,5 +1,6 @@
 #!/usr/bin/python
-
+# -*- coding: utf-8 -*-
+#
 # Copyright (c) 2018 Shapelets.io
 #
 # This Source Code Form is subject to the terms of the Mozilla Public
@@ -20,7 +21,7 @@ setup(
     author="Shapelets.io",
     author_email="dev@shapelets.io",
     name="khiva",
-    version='0.1.3',
+    version='0.1.4',
     long_description = LONG_DESC,
     description="Python bindings for khiva",
     license="MPL 2.0",
