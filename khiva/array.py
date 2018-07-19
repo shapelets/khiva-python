@@ -239,7 +239,7 @@ class Array:
         if self._is_complex():
             result *= 2
 
-        return result
+        return int(result)
 
     def get_dims(self):
         """ Gets the dimensions of the KHIVA array.
