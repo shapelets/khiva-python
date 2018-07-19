@@ -15,12 +15,15 @@ from khiva.array import Array
 
 ########################################################################################################################
 
-def find_best_n_discords(profile, index, n):
+def find_best_n_discords(profile, index, m, n, self_join=False):
     """ This function extracts the best N motifs from a previously calculated matrix profile.
 
     :param profile: KHIVA array with the matrix profile containing the minimum distance of each subsequence.
     :param index: KHIVA array with the matrix profile index containing where each minimum occurs.
+    :param m: Subsequence length value used to calculate the input matrix profile.
     :param n: Number of discords to extract.
+    :param self_join: Indicates whether the input profile comes from a self join operation or not. It determines
+                      whether the mirror similar region is included in the output or not.
     :return: KHIVA arrays with the discord distances, the discord indices and the subsequence indices.
     """
     b = ctypes.c_void_p(0)
@@ -29,21 +32,26 @@ def find_best_n_discords(profile, index, n):
 
     KhivaLibrary().c_khiva_library.find_best_n_discords(ctypes.pointer(profile.arr_reference),
                                                         ctypes.pointer(index.arr_reference),
+                                                        ctypes.pointer(ctypes.c_long(m)),
                                                         ctypes.pointer(ctypes.c_long(n)),
                                                         ctypes.pointer(b),
                                                         ctypes.pointer(c),
-                                                        ctypes.pointer(d))
+                                                        ctypes.pointer(d),
+                                                        ctypes.pointer(ctypes.c_bool(self_join)))
 
     return Array(array_reference=b), Array(array_reference=c), Array(
         array_reference=d)
 
 
-def find_best_n_motifs(profile, index, n):
+def find_best_n_motifs(profile, index, m, n, self_join=False):
     """ This function extracts the best N discords from a previously calculated matrix profile.
 
     :param profile: KHIVA array with the matrix profile containing the minimum distance of each subsequence.
     :param index: KHIVA array with the matrix profile index containing where each minimum occurs.
+    :param m: Subsequence length value used to calculate the input matrix profile.
     :param n: Number of motifs to extract.
+    :param self_join: Indicates whether the input profile comes from a self join operation or not. It determines
+                      whether the mirror similar region is included in the output or not.
     :return: KHIVA arrays with the motif distances, the motif indices and the subsequence indices.
     """
     b = ctypes.c_void_p(0)
@@ -52,10 +60,12 @@ def find_best_n_motifs(profile, index, n):
 
     KhivaLibrary().c_khiva_library.find_best_n_motifs(ctypes.pointer(profile.arr_reference),
                                                       ctypes.pointer(index.arr_reference),
+                                                      ctypes.pointer(ctypes.c_long(m)),
                                                       ctypes.pointer(ctypes.c_long(n)),
                                                       ctypes.pointer(b),
                                                       ctypes.pointer(c),
-                                                      ctypes.pointer(d))
+                                                      ctypes.pointer(d),
+                                                      ctypes.pointer(ctypes.c_bool(self_join)))
 
     return Array(array_reference=b), Array(array_reference=c), Array(
         array_reference=d)
