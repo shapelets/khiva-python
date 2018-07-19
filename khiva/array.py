@@ -303,10 +303,9 @@ class Array:
 
     def display(self):
         """
-        Prints the data stored in the KHIVA array.
+        Dispays the data stored in the KHIVA array.
         """
-        KhivaLibrary().c_khiva_library.print(ctypes.pointer(self.arr_reference))
-
+        KhivaLibrary().c_khiva_library.display(ctypes.pointer(self.arr_reference))
     def __len__(self):
         """
         Return the length.
