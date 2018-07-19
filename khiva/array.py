@@ -1,3 +1,6 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+#
 # Copyright (c) 2018 Shapelets.io
 #
 # This Source Code Form is subject to the terms of the Mozilla Public
@@ -717,7 +720,9 @@ class Array:
         """
         Returns if the Array is non-zero.
         """
-        return self != Array(np.zeros(self.get_dims()))
+        ne = self != Array(np.zeros(self.get_dims()))
+        ne_host = ne.to_numpy()
+        return int(np.all(ne_host))
 
     def __repr__(self):
         """

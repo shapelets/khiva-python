@@ -19,7 +19,7 @@ This Python library called 'khiva' provides all the functionalities of the KHIVA
 ## Set up
 It is just needed to execute the next command in the root directory of the project:
 ```bash
-python3 setup.py install
+python setup.py install
 ```
 > Note: By now, only 64-bit Python versions are supported. 
 
