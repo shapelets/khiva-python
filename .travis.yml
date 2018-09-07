@@ -29,6 +29,15 @@ matrix:
           - ${TRAVIS_BUILD_DIR}/installers
           - ${HOME}/.conan
           - ${TRAVIS_BUILD_DIR}/cmake
+    - os: linux
+      dist: trusty
+      sudo: required
+      python: "2.7"
+      cache:
+        directories:
+          - ${TRAVIS_BUILD_DIR}/installers
+          - ${HOME}/.conan
+          - ${TRAVIS_BUILD_DIR}/cmake
     - os: osx
       osx_image: xcode9.3
       language: generic
@@ -55,7 +64,18 @@ matrix:
           - $HOME/Library/Caches/Homebrew
           - ${HOME}/.conan
           - ${TRAVIS_BUILD_DIR}/cmake
-
+    - os: osx
+      osx_image: xcode9.3
+      language: generic
+      env:
+        - TRAVIS_PYTHON_VERSION=2.7.15
+      cache:
+        directories:
+          - ${TRAVIS_BUILD_DIR}/installers
+          - $HOME/.pyenv
+          - $HOME/Library/Caches/Homebrew
+          - ${HOME}/.conan
+          - ${TRAVIS_BUILD_DIR}/cmake
 install:
   - source .CI/travis/install.sh
   - source .CI/travis/install-arrayfire.sh

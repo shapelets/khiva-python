@@ -1,3 +1,6 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+#
 # Copyright (c) 2018 Shapelets.io
 #
 # This Source Code Form is subject to the terms of the Mozilla Public
@@ -261,7 +264,7 @@ class FeaturesTest(unittest.TestCase):
     def test_mean_absolute_change(self):
         mean_absolute_change_result = mean_absolute_change(
             Array([[0, 1, 2, 3, 4, 5], [8, 10, 12, 14, 16, 18]])).to_numpy()
-        r = 5 / 6
+        r = 5.0 / 6.0
         self.assertAlmostEqual(mean_absolute_change_result[0], r, delta=self.DELTA)
         self.assertAlmostEqual(mean_absolute_change_result[1], r * 2, delta=self.DELTA)
 
@@ -381,8 +384,8 @@ class FeaturesTest(unittest.TestCase):
     def test_mean_change(self):
         mean_change_result = mean_change(Array([[0, 1, 2, 3, 4, 5],
                                                 [8, 10, 12, 14, 16, 18]])).to_numpy()
-        self.assertAlmostEqual(mean_change_result[0], 5 / 6, delta=self.DELTA)
-        self.assertAlmostEqual(mean_change_result[1], 10 / 6, delta=self.DELTA)
+        self.assertAlmostEqual(mean_change_result[0], 5.0 / 6.0, delta=self.DELTA)
+        self.assertAlmostEqual(mean_change_result[1], 10.0 / 6.0, delta=self.DELTA)
 
     def test_max_langevin_fixed_point(self):
         max_langevin_fixed_point_result = max_langevin_fixed_point(
@@ -440,8 +443,8 @@ class FeaturesTest(unittest.TestCase):
     def test_percentage_of_reocurring_values_to_all_values(self):
         result = percentage_of_reoccurring_values_to_all_values(
             Array([[1, 1, 2, 3, 4, 4, 5, 6], [1, 2, 2, 3, 4, 5, 6, 7]]), False).to_numpy()
-        self.assertEqual(result[0], 4 / 8)
-        self.assertEqual(result[1], 2 / 8)
+        self.assertEqual(result[0], 4.0 / 8.0)
+        self.assertEqual(result[1], 2.0 / 8.0)
 
     def test_quantile(self):
         result = quantile(Array([[0, 0, 0, 0, 3, 4, 13], [0, 0, 0, 0, 3, 4, 13]]),
@@ -463,8 +466,8 @@ class FeaturesTest(unittest.TestCase):
     def test_ratio_value_number_to_time_series_length(self):
         result = ratio_value_number_to_time_series_length(
             Array([[3, 0, 0, 4, 0, 0, 13], [3, 5, 0, 4, 6, 0, 13]])).to_numpy()
-        self.assertAlmostEqual(result[0], 4 / 7, delta=1e-4)
-        self.assertAlmostEqual(result[1], 6 / 7, delta=1e-4)
+        self.assertAlmostEqual(result[0], 4.0 / 7.0, delta=1e-4)
+        self.assertAlmostEqual(result[1], 6.0 / 7.0, delta=1e-4)
 
     def test_sample_entropy(self):
         result = sample_entropy(Array([[3, 0, 0, 4, 0, 0, 13], [3, 0, 0, 4, 0, 0, 13]])).to_numpy()

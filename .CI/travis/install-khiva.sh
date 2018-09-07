@@ -44,10 +44,13 @@ else
      if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
         pip install conan
      else
-        pip${PYTHON_VERSION} install conan
+        pip${PYTHON_VERSION} install conan==1.6.1
      fi
-     conan remote add conan-mpusz https://api.bintray.com/conan/mpusz/conan-mpusz
 
+     conan remote add conan-mpusz https://api.bintray.com/conan/mpusz/conan-mpusz
+     if [$? -ne 0]; then
+         conan remote update conan-mpusz https://api.bintray.com/conan/mpusz/conan-mpusz
+     fi
 
     # Cloning Github repo into khiva-library folder
     git clone https://github.com/shapelets/khiva.git khiva-library
