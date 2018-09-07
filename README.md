@@ -17,11 +17,28 @@ This project is licensed under [MPL-v2](https://www.mozilla.org/en-US/MPL/2.0/).
 This Python library called 'khiva' provides all the functionalities of the KHIVA library for time series analytics.
 
 ## Set up
-It is just needed to execute the next command in the root directory of the project:
+In order to use this library, you need to install Khiva.
+
+### Prerequisites
+- [Python 64-bits](https://www.python.org/downloads/)
+
+> Note: By now, only 64-bit Python versions are supported.
+
+> Note **Windows' users**: Search your 64-bits version [here](https://www.python.org/downloads/windows/)
+
+### Install latest version
+Install latest stable version of Khiva. Follow the steps in the respository [Khiva repository](https://github.com/shapelets/khiva)
+
+Install Khiva-python. It is just needed to execute the next command in your command line console in the root directory of the project:
 ```bash
 python setup.py install
 ```
-> Note: By now, only 64-bit Python versions are supported. 
+
+### Install any release
+Donwload and install you selected Khiva release from [Khiva repository](https://github.com/shapelets/khiva/releases)
+
+Install the python library compatible with the Khiva library installed previously. Follow the steps to install the Khiva python library explained in [pypi](https://pypi.org/project/khiva/).
+
 
 ## Executing the tests:
 The tests can be executed and they are located in <project-root-dir>/tests/unit_tests.
