@@ -103,7 +103,6 @@ def stomp_self_join(time_series, subsequence_length):
     """ Stomp algorithm to calculate the matrix profile between `t` and itself using a subsequence length of `m`.
     This method filters the trivial matches.
 
-
     [1] Yan Zhu, Zachary Zimmerman, Nader Shakibay Senobari, Chin-Chia Michael Yeh, Gareth Funning, Abdullah Mueen,
     Philip Brisk and Eamonn Keogh (2016). Matrix Profile II: Exploiting a Novel Algorithm and GPUs to break the one
     Hundred Million Barrier for Time Series Motifs and Joins. IEEE ICDM 2016.
