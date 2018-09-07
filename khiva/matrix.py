@@ -77,6 +77,10 @@ def find_best_n_motifs(profile, index, m, n, self_join=False):
 def stomp(first_time_series, second_time_series, subsequence_length):
     """ Stomp algorithm to calculate the matrix profile between `ta` and `tb` using a subsequence length of `m`.
 
+    [1] Yan Zhu, Zachary Zimmerman, Nader Shakibay Senobari, Chin-Chia Michael Yeh, Gareth Funning, Abdullah Mueen,
+    Philip Brisk and Eamonn Keogh (2016). Matrix Profile II: Exploiting a Novel Algorithm and GPUs to break the one
+    Hundred Million Barrier for Time Series Motifs and Joins. IEEE ICDM 2016.
+
     :param first_time_series: KHIVA array with the first time series.
     :param second_time_series: KHIVA array with the second time series.
     :param subsequence_length: Length of the subsequence.
@@ -98,6 +102,11 @@ def stomp(first_time_series, second_time_series, subsequence_length):
 def stomp_self_join(time_series, subsequence_length):
     """ Stomp algorithm to calculate the matrix profile between `t` and itself using a subsequence length of `m`.
     This method filters the trivial matches.
+
+
+    [1] Yan Zhu, Zachary Zimmerman, Nader Shakibay Senobari, Chin-Chia Michael Yeh, Gareth Funning, Abdullah Mueen,
+    Philip Brisk and Eamonn Keogh (2016). Matrix Profile II: Exploiting a Novel Algorithm and GPUs to break the one
+    Hundred Million Barrier for Time Series Motifs and Joins. IEEE ICDM 2016.
 
     :param time_series: The query and reference time series in KHIVA array format.
     :param subsequence_length: Lenght of the subsequence
