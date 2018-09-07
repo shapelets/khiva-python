@@ -9,7 +9,7 @@ Install Khiva
 
 First of all, the Khiva C++ library should be installed:
 
-`Shapelets <http://shapelets.io>`__.
+`Shapelets <https://github.com/shapelets/khiva>`__.
 
 
 Then, install the compiled Khiva package that is hosted on the Python Package Index (PyPI) with pip:
