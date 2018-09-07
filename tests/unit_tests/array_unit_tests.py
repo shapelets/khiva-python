@@ -294,6 +294,11 @@ class ArrayTest(unittest.TestCase):
         a += b
         np.testing.assert_array_equal(a.to_numpy(), np.array([2, 4, 6, 8]))
 
+    def testIaddSelfArray(self):
+        a = Array([1, 2, 3, 4, 5])
+        a += a
+        np.testing.assert_array_equal(a.to_numpy(), np.array([2, 4, 6, 8, 10]))
+
     def testISub(self):
         a = Array([1, 2, 3, 4])
         b = Array([1, 2, 3, 4])
