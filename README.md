@@ -14,20 +14,37 @@ This is the Khiva Python binding, it allows the usage of Khiva library from Pyth
 This project is licensed under [MPL-v2](https://www.mozilla.org/en-US/MPL/2.0/). 
 
 ## Quick Summary
-This Python library called 'khiva' provides all the functionalities of the KHIVA library for time series analytics.
+This Python binding called 'khiva' provides all the functionalities of the KHIVA library for time series analytics.
 
 ## Set up
-It is just needed to execute the next command in the root directory of the project:
+In order to use this binding, you need to install Khiva library.
+
+### Prerequisites
+- [Python 64-bits](https://www.python.org/downloads/)
+
+> Note: By now, only 64-bit Python versions are supported.
+
+> Note **Windows' users**: Search your 64-bits version [here](https://www.python.org/downloads/windows/)
+
+### Install latest version
+Install latest stable version of Khiva library. Follow the steps in the "Installation" section of the [Khiva repository](https://github.com/shapelets/khiva)
+
+To install the Khiva Python binding, we just need to execute the following command:
 ```bash
 python setup.py install
 ```
-> Note: By now, only 64-bit Python versions are supported. 
+
+### Install any release
+Install the prerequisites listed in the "Installation" section of the [Khiva library repository](https://github.com/shapelets/khiva). Download and install your selected Khiva release from [Khiva repository](https://github.com/shapelets/khiva/releases).
+
+Install the Khiva python binding compatible with the Khiva library installed previously. Follow the steps to install the Khiva python binding explained in [pypi](https://pypi.org/project/khiva/).
+
 
 ## Executing the tests:
-The tests can be executed and they are located in <project-root-dir>/tests/unit_tests.
+All tests can be executed separately, please find them in <project-root-dir>/tests/unit_tests.
  
 ## Documentation
-This Python library follows the standard way of writing documentation of Python by using Sphinx.
+This Khiva Python binding follows the standard way of writing documentation of Python by using Sphinx.
 
 In order to generate the documentation (in html format), run the following command under the <project-root-dir>/docs folder:
 ```bash
