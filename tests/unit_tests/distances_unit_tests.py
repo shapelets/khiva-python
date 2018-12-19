@@ -62,7 +62,6 @@ class DistancesTest(unittest.TestCase):
         np.testing.assert_array_almost_equal(squared_euclidean_result, expected, decimal=1)
 
 
-
 if __name__ == '__main__':
     suite = unittest.TestLoader().loadTestsFromTestCase(DistancesTest)
     unittest.TextTestRunner(verbosity=2).run(suite)
