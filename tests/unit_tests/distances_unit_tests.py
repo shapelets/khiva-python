@@ -31,12 +31,6 @@ class DistancesTest(unittest.TestCase):
         expected = np.array([0, 0, 0, 8, 0, 0, 16, 8, 0])
         np.testing.assert_array_almost_equal(euclidean_result, expected, decimal=1)
 
-    def test_squared_euclidean(self):
-        squared_euclidean_result = squared_euclidean(
-            Array(data=[[0, 1, 2, 3], [4, 5, 6, 7], [8, 9, 10, 11]])).to_numpy().flatten()
-        expected = np.array([0, 0, 0, 64, 0, 0, 256, 64, 0])
-        np.testing.assert_array_almost_equal(squared_euclidean_result, expected, decimal=1)
-
     def test_dtw(self):
         euclidean_result = dtw(Array(
             data=[[1, 1, 1, 1, 1], [2, 2, 2, 2, 2], [3, 3, 3, 3, 3], [4, 4, 4, 4, 4], [5, 5, 5, 5, 5]])).to_numpy()
@@ -60,6 +54,13 @@ class DistancesTest(unittest.TestCase):
             Array(data=[[1, 2, 3, 4, 5], [1, 1, 0, 1, 1], [10, 12, 0, 0, 1]])).to_numpy().flatten()
         expected = np.array([0, 0, 0, 0.505025, 0, 0, 0.458583, 0.564093, 0])
         np.testing.assert_array_almost_equal(sbd_result, expected, decimal=1)
+
+    def test_squared_euclidean(self):
+        squared_euclidean_result = squared_euclidean(
+            Array(data=[[0, 1, 2, 3], [4, 5, 6, 7], [8, 9, 10, 11]])).to_numpy().flatten()
+        expected = np.array([0, 0, 0, 64, 0, 0, 256, 64, 0])
+        np.testing.assert_array_almost_equal(squared_euclidean_result, expected, decimal=1)
+
 
 
 if __name__ == '__main__':

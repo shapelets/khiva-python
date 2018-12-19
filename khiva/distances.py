@@ -74,20 +74,6 @@ def manhattan(tss):
     return Array(array_reference=b)
 
 
-def squared_euclidean(tss):
-    """ Calculates the non squared version of the euclidean distance.
-
-    :param tss: Expects an input array whose dimension zero is the length of the time series (all the same) and
-                dimension one indicates the number of time series.
-    :return: Array with an upper triangular matrix where each position corresponds to the distance between two time series.
-            Diagonal elements will be zero. For example: Position row 0 column 1 records the distance between time series 0
-            and time series 1.
-    """
-    b = ctypes.c_void_p(0)
-    KhivaLibrary().c_khiva_library.squared_euclidean(ctypes.pointer(tss.arr_reference), ctypes.pointer(b))
-    return Array(array_reference=b)
-
-
 def sbd(tss):
     """ Calculates the Shape-Based distance (SBD). It computes the normalized cross-correlation and
     it returns the value that maximizes the correlation value between time series.
@@ -100,4 +86,18 @@ def sbd(tss):
     """
     b = ctypes.c_void_p(0)
     KhivaLibrary().c_khiva_library.sbd(ctypes.pointer(tss.arr_reference), ctypes.pointer(b))
+    return Array(array_reference=b)
+
+
+def squared_euclidean(tss):
+    """ Calculates the non squared version of the euclidean distance.
+
+    :param tss: Expects an input array whose dimension zero is the length of the time series (all the same) and
+                dimension one indicates the number of time series.
+    :return: Array with an upper triangular matrix where each position corresponds to the distance between two time series.
+            Diagonal elements will be zero. For example: Position row 0 column 1 records the distance between time series 0
+            and time series 1.
+    """
+    b = ctypes.c_void_p(0)
+    KhivaLibrary().c_khiva_library.squared_euclidean(ctypes.pointer(tss.arr_reference), ctypes.pointer(b))
     return Array(array_reference=b)
