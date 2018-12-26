@@ -5,7 +5,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-if [["$INSTALL_KHIVA_METHOD" == "installer"]]; then
+if [[ "$INSTALL_KHIVA_METHOD" == "installer" ]]; then
    if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
         if [ ! -e "./installers/khiva-v0.1.0.pkg" ]; then
             wget https://github.com/shapelets/khiva/releases/download/v0.1.0/khiva-v0.1.0-OnlyCPU.pkg -O ./installers/khiva-v0.1.0-OnlyCPU.pkg
@@ -42,7 +42,7 @@ else
      fi
 
      conan remote add conan-mpusz https://api.bintray.com/conan/mpusz/conan-mpusz
-     if [$? -ne 0]; then
+     if [ $? -ne 0 ]; then
          conan remote update conan-mpusz https://api.bintray.com/conan/mpusz/conan-mpusz
      fi
 

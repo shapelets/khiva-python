@@ -29,4 +29,5 @@ else
     sudo cp -R /opt/arrayfire-3/include/* /usr/local/include
     sudo cp -R /opt/arrayfire-3/lib/* /usr/local/lib
     sudo cp -R /opt/arrayfire-3/share/* /usr/local/share
+    sudo ldconfig
 fi
