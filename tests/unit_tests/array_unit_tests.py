@@ -282,7 +282,7 @@ class ArrayTest(unittest.TestCase):
     def testFromPandas(self):
         df = pd.DataFrame([[1, 2, 3, 4], [5, 6, 7, 8]])
         df_array = Array(df, khiva_type=dtype.s32)
-        np.testing.assert_array_equal(df.as_matrix(), df_array.to_pandas().as_matrix())
+        np.testing.assert_array_equal(df.values, df_array.to_pandas().values)
 
     def testLength(self):
         a = Array([1, 2, 3, 4])
