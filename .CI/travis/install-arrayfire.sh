@@ -24,6 +24,7 @@ else
         wget http://arrayfire.s3.amazonaws.com/3.6.2/ArrayFire-v3.6.2_Linux_x86_64.sh -O installers/ArrayFire-v3.6.2_Linux_x86_64.sh
     fi
 
+    sudo mkdir -p /opt/arrayfire-3
     sudo bash installers/ArrayFire-v3.6.2_Linux_x86_64.sh --prefix=/opt/arrayfire-3 --skip-license
     sudo cp /opt/arrayfire-3/include/* /usr/local/include
     sudo cp /opt/arrayfire-3/lib/* /usr/local/lib
