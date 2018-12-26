@@ -26,7 +26,7 @@ else
 
     sudo mkdir -p /opt/arrayfire-3
     sudo bash installers/ArrayFire-v3.6.2_Linux_x86_64.sh --prefix=/opt/arrayfire-3 --skip-license
-    sudo cp /opt/arrayfire-3/include/* /usr/local/include
-    sudo cp /opt/arrayfire-3/lib/* /usr/local/lib
-    sudo cp /opt/arrayfire-3/share/* /usr/local/share
+    sudo cp -R /opt/arrayfire-3/include/* /usr/local/include
+    sudo cp -R /opt/arrayfire-3/lib/* /usr/local/lib
+    sudo cp -R /opt/arrayfire-3/share/* /usr/local/share
 fi
