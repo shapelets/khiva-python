@@ -6,7 +6,7 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
-    brew install fftw freeimage fontconfig glfw glbinding
+    brew install --force fftw freeimage fontconfig glfw glbinding
     if [ ! -e "./installers/ArrayFire-v3.6.2_OSX_x86_64.pkg" ]; then
         wget http://arrayfire.s3.amazonaws.com/3.6.2/ArrayFire-v3.6.2_OSX_x86_64.pkg -O installers/ArrayFire-v3.6.2_OSX_x86_64.pkg
     fi

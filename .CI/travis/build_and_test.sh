@@ -13,5 +13,7 @@ else
     python setup.py install
 fi
 
+export AF_VERBOSE_LOADS=1
+
 coverage run -m unittest discover tests/unit_tests *_tests.py -f -v
 
