@@ -17,7 +17,7 @@ matrix:
         directories:
           - ${TRAVIS_BUILD_DIR}/installers
           - ${HOME}/.conan
-          - ${TRAVIS_BUILD_DIR}/cmake
+          - ${TRAVIS_BUILD_DIR}/cmakebin
       after_success:
         - codecov -F Linux -X gcov
     - os: linux
@@ -28,7 +28,7 @@ matrix:
         directories:
           - ${TRAVIS_BUILD_DIR}/installers
           - ${HOME}/.conan
-          - ${TRAVIS_BUILD_DIR}/cmake
+          - ${TRAVIS_BUILD_DIR}/cmakebin
     - os: linux
       dist: trusty
       sudo: required
@@ -37,7 +37,7 @@ matrix:
         directories:
           - ${TRAVIS_BUILD_DIR}/installers
           - ${HOME}/.conan
-          - ${TRAVIS_BUILD_DIR}/cmake
+          - ${TRAVIS_BUILD_DIR}/cmakebin
     - os: osx
       osx_image: xcode9.3
       language: generic
@@ -49,7 +49,6 @@ matrix:
           - $HOME/.pyenv
           - $HOME/Library/Caches/Homebrew
           - ${HOME}/.conan
-          - ${TRAVIS_BUILD_DIR}/cmake
       after_success:
         - codecov -F MacOS -X gcov
     - os: osx
@@ -63,7 +62,6 @@ matrix:
           - $HOME/.pyenv
           - $HOME/Library/Caches/Homebrew
           - ${HOME}/.conan
-          - ${TRAVIS_BUILD_DIR}/cmake
     - os: osx
       osx_image: xcode9.3
       language: generic
@@ -75,7 +73,6 @@ matrix:
           - $HOME/.pyenv
           - $HOME/Library/Caches/Homebrew
           - ${HOME}/.conan
-          - ${TRAVIS_BUILD_DIR}/cmake
 install:
   - source .CI/travis/install.sh
   - source .CI/travis/install-arrayfire.sh
