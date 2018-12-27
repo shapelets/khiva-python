@@ -43,7 +43,6 @@ matrix:
       language: generic
       env:
         - TRAVIS_PYTHON_VERSION=3.6.5
-        - DYLD_LIBRARY_PATH=/opt/arrayfire-3/lib
       cache:
         directories:
           - ${TRAVIS_BUILD_DIR}/installers
@@ -57,7 +56,6 @@ matrix:
       language: generic
       env:
         - TRAVIS_PYTHON_VERSION=3.5.5
-        - DYLD_LIBRARY_PATH=/opt/arrayfire-3/lib
       cache:
         directories:
           - ${TRAVIS_BUILD_DIR}/installers
@@ -69,7 +67,6 @@ matrix:
       language: generic
       env:
         - TRAVIS_PYTHON_VERSION=2.7.15
-        - DYLD_LIBRARY_PATH=/opt/arrayfire-3/lib
       cache:
         directories:
           - ${TRAVIS_BUILD_DIR}/installers

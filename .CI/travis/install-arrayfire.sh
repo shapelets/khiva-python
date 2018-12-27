@@ -7,12 +7,12 @@
 
 if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
     brew install --force fftw freeimage fontconfig glfw glbinding
-    if [ ! -e "./installers/ArrayFire-v3.6.2_OSX_x86_64.pkg" ]; then
-        wget http://arrayfire.s3.amazonaws.com/3.6.2/ArrayFire-v3.6.2_OSX_x86_64.pkg -O installers/ArrayFire-v3.6.2_OSX_x86_64.pkg
+    if [ ! -e "./installers/arrayfire-no-gl.pkg" ]; then
+        wget https://github.com/shapelets/arrayfire/releases/download/v3.6.2/arrayfire-no-gl.pkg -O installers/arrayfire-no-gl.pkg
     fi
 
     # Installs arrayfire
-    sudo installer -pkg ./installers/ArrayFire-v3.6.2_OSX_x86_64.pkg -target /
+    sudo installer -pkg ./installers/arrayfire-no-gl.pkg -target /
 else
     if [ ! -e "./installers/arrayfire-no-gl.sh" ]; then
         wget https://github.com/shapelets/arrayfire/releases/download/v3.6.2/arrayfire-no-gl.sh -O installers/arrayfire-no-gl.sh
