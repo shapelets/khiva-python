@@ -10,7 +10,7 @@ matrix:
   fast_finish: true
   include:
     - os: linux
-      dist: trusty
+      dist: xenial
       sudo: required
       python: "3.6"
       cache:
@@ -21,7 +21,7 @@ matrix:
       after_success:
         - codecov -F Linux -X gcov
     - os: linux
-      dist: trusty
+      dist: xenial
       sudo: required
       python: "3.5"
       cache:
@@ -30,7 +30,7 @@ matrix:
           - ${HOME}/.conan
           - ${TRAVIS_BUILD_DIR}/cmakebin
     - os: linux
-      dist: trusty
+      dist: xenial
       sudo: required
       python: "2.7"
       cache:
