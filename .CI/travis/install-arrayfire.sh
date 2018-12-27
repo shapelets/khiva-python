@@ -15,10 +15,7 @@ if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
     sudo installer -pkg ./installers/ArrayFire-v3.6.2_OSX_x86_64.pkg -target /
 
     # The new ArrayFire installer installs to /opt/arrayfire, moving to /usr/local/lib
-    sudo mv /opt/arrayfire/include/* /usr/local/include
-    sudo mv /opt/arrayfire/lib/* /usr/local/lib
-    sudo mv /opt/arrayfire/share/* /usr/local/share
-    sudo rm -rf /opt/arrayfire
+    export DYLD_LIBRARY_PATH=/opt/arrayfire/lib:${DYLD_LIBRARY_PATH}
 else
     if [ ! -e "./installers/ArrayFire-v3.6.2_Linux_x86_64.sh" ]; then
         wget http://arrayfire.s3.amazonaws.com/3.6.2/ArrayFire-v3.6.2_Linux_x86_64.sh -O installers/ArrayFire-v3.6.2_Linux_x86_64.sh
