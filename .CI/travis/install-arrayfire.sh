@@ -14,6 +14,15 @@ if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
     # Installs arrayfire
     sudo installer -pkg ./installers/arrayfire-no-gl.pkg -target /
 else
+    sudo apt-get update && \
+    sudo apt-get install -y libboost-all-dev \
+    libfftw3-dev \
+    libfontconfig1-dev \
+    libfreeimage-dev \
+    liblapack-dev \
+    liblapacke-dev \
+    libopenblas-dev
+
     if [ ! -e "./installers/arrayfire-no-gl.sh" ]; then
         wget https://github.com/shapelets/arrayfire/releases/download/v3.6.2/arrayfire-no-gl.sh -O installers/arrayfire-no-gl.sh
     fi
