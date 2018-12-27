@@ -15,12 +15,11 @@ if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
     sudo installer -pkg ./installers/ArrayFire-v3.6.2_OSX_x86_64.pkg -target /
 else
     if [ ! -e "./installers/ArrayFire-v3.6.2_Linux_x86_64.sh" ]; then
-        wget http://arrayfire.s3.amazonaws.com/3.6.2/ArrayFire-v3.6.2_Linux_x86_64.sh -O installers/ArrayFire-v3.6.2_Linux_x86_64.sh
+        wget https://github.com/shapelets/arrayfire/releases/download/v3.6.2/arrayfire-no-gl.sh -O installers/arrayfire-no-gl.sh
     fi
 
     sudo mkdir -p /opt/arrayfire-3
-    sudo bash installers/ArrayFire-v3.6.2_Linux_x86_64.sh --prefix=/opt/arrayfire-3 --skip-license
-    sudo ln -s /opt/arrayfire-3/lib64 /opt/arrayfire-3/lib
+    sudo bash installers/arrayfire-no-gl.sh --prefix=/opt/arrayfire-3 --skip-license
     echo "/opt/arrayfire-3/lib" | sudo tee /etc/ld.so.conf.d/arrayfire.conf
     sudo ldconfig
 fi
