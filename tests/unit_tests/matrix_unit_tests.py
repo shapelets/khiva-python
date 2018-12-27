@@ -101,7 +101,7 @@ class MatrixTest(unittest.TestCase):
 
         self.assertEqual(a[0], 0)
         # The test failed in the CPU used in the Travis CI OSX build machine
-        if os.environ.get("TRAVIS_OS_NAME") == "osx":
+        if os.environ.get("TRAVIS") == "true":
             self.assertEqual(a[1], 2)
         else:
             self.assertEqual(a[1], 10)
@@ -118,7 +118,7 @@ class MatrixTest(unittest.TestCase):
         a = find_best_n_discords_result[2].to_numpy()
 
         # The test failed in the CPU used in the Travis CI OSX build machine
-        if os.environ.get("TRAVIS_OS_NAME") == "osx":
+        if os.environ.get("TRAVIS") == "true":
             np.testing.assert_array_almost_equal(a, np.array([[[0, 2], [0, 2]], [[0, 2], [0, 2]]]),
                                                  decimal=self.DECIMAL)
         else:
@@ -143,11 +143,7 @@ class MatrixTest(unittest.TestCase):
         a = find_best_n_discords_result[2].to_numpy()
 
         self.assertEqual(a[0], 12)
-        # The test failed in the CPU used in the Travis CI OSX build machine
-        if os.environ.get("TRAVIS_OS_NAME") == "osx":
-            self.assertEqual(a[1], 11)
-        else:
-            self.assertNotEqual(a[1], 11)
+        self.assertNotEqual(a[1], 11)
 
 
 if __name__ == '__main__':
