@@ -14,7 +14,7 @@ if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
     # Installs arrayfire
     sudo installer -pkg ./installers/ArrayFire-v3.6.2_OSX_x86_64.pkg -target /
 else
-    if [ ! -e "./installers/ArrayFire-v3.6.2_Linux_x86_64.sh" ]; then
+    if [ ! -e "./installers/arrayfire-no-gl.sh" ]; then
         wget https://github.com/shapelets/arrayfire/releases/download/v3.6.2/arrayfire-no-gl.sh -O installers/arrayfire-no-gl.sh
     fi
 
