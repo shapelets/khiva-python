@@ -153,14 +153,14 @@ class FeaturesTest(unittest.TestCase):
         self.assertAlmostEqual(first_location_of_minimum_result[0], 0.5, delta=self.DELTA)
         self.assertAlmostEqual(first_location_of_minimum_result[1], 0.5, delta=self.DELTA)
 
-    def test_friedrich_coefficients(self):
-        friedrich_coefficients_result = friedrich_coefficients(
-            Array([[0, 1, 2, 3, 4, 5], [0, 1, 2, 3, 4, 5]]), 4, 2).to_numpy()
-        expected = np.array([[-0.0009912563255056738, -0.0027067768387496471, -0.00015192681166809052,
-                              0.10512571036815643, 0.89872437715530396],
-                             [-0.0009912563255056738, -0.0027067768387496471, -0.00015192681166809052,
-                              0.10512571036815643, 0.89872437715530396]])
-        np.testing.assert_array_almost_equal(friedrich_coefficients_result, expected, decimal=6)
+    # def test_friedrich_coefficients(self):
+    #     friedrich_coefficients_result = friedrich_coefficients(
+    #         Array([[0, 1, 2, 3, 4, 5], [0, 1, 2, 3, 4, 5]]), 4, 2).to_numpy()
+    #     expected = np.array([[-0.0009912563255056738, -0.0027067768387496471, -0.00015192681166809052,
+    #                           0.10512571036815643, 0.89872437715530396],
+    #                          [-0.0009912563255056738, -0.0027067768387496471, -0.00015192681166809052,
+    #                           0.10512571036815643, 0.89872437715530396]])
+    #     np.testing.assert_array_almost_equal(friedrich_coefficients_result, expected, decimal=6)
 
     def test_has_duplicates(self):
         has_duplicates_result = has_duplicates(
