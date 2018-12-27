@@ -7,17 +7,29 @@
 
 if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
     brew install fftw freeimage
-    if [ ! -e "./installers/arrayfire-unified-3.5.1.pkg " ]; then
-        wget https://github.com/shapelets/arrayfire/releases/download/v3.5.1/arrayfire-unified-3.5.1.pkg -O ./installers/arrayfire-unified-3.5.1.pkg
+    if [ ! -e "./installers/arrayfire-no-gl.pkg" ]; then
+        wget https://github.com/shapelets/arrayfire/releases/download/v3.6.2/arrayfire-no-gl.pkg -O installers/arrayfire-no-gl.pkg
     fi
 
     # Installs arrayfire
-    sudo installer -pkg ./installers/arrayfire-unified-3.5.1.pkg -target /
+    sudo installer -pkg ./installers/arrayfire-no-gl.pkg -target /
 else
-    if [ ! -e "./installers/ArrayFire-no-gl-v3.5.1_Linux_x86_64.sh" ]; then
-        wget http://arrayfire.s3.amazonaws.com/3.5.1/ArrayFire-no-gl-v3.5.1_Linux_x86_64.sh -O ./installers/ArrayFire-no-gl-v3.5.1_Linux_x86_64.sh
-        chmod +x ./installers/ArrayFire-no-gl-v3.5.1_Linux_x86_64.sh
+    sudo apt-get update && \
+    sudo apt-get install -y libboost-all-dev \
+    libfftw3-dev \
+    libfontconfig1-dev \
+    libfreeimage-dev \
+    liblapack-dev \
+    liblapacke-dev \
+    libopenblas-dev
+
+    if [ ! -e "./installers/arrayfire-no-gl.sh" ]; then
+        wget https://github.com/shapelets/arrayfire/releases/download/v3.6.2/arrayfire-no-gl.sh -O installers/arrayfire-no-gl.sh
     fi
 
-    sudo ./installers/ArrayFire-no-gl-v3.5.1_Linux_x86_64.sh --prefix=/usr/local --skip-license
+    sudo mkdir -p /opt/arrayfire-3
+    sudo bash installers/arrayfire-no-gl.sh --prefix=/opt/arrayfire-3 --skip-license
+    sudo ln -s /opt/arrayfire-3/lib64 /opt/arrayfire-3/lib
+    echo "/opt/arrayfire-3/lib" | sudo tee /etc/ld.so.conf.d/arrayfire.conf
+    sudo ldconfig
 fi

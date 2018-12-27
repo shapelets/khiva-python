@@ -171,7 +171,7 @@ class Array:
         if isinstance(data, list):
             data = np.asarray(data)
         if isinstance(data, pd.DataFrame):
-            data = data.as_matrix()
+            data = data.values
         shape = np.array(data.shape)
         shape = shape[shape > 1]
         shape = deque(shape)
