@@ -22,7 +22,7 @@ sys.path.insert(0, os.path.abspath('..'))
 # -- Project information -----------------------------------------------------
 
 project = 'khiva'
-copyright = '2018, Shapelets'
+copyright = '2019, Shapelets'
 author = 'Shapelets.io'
 
 # The short X.Y version
