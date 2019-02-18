@@ -24,9 +24,7 @@ def k_means(tss, k, initial_centroids=None, initial_labels=None, tolerance=1e-10
     dimension one indicates the number of time series.
     :param k:                   The number of means to be computed.
     :param initial_centroids:   The initial means or centroids.
-    :param centroids:           The resulting means or centroids.
     :param initial_labels:      The initial labels.
-    :param labels:              The resulting labels of each time series which is the closest centroid.
     :param tolerance:           The error tolerance to stop the computation of the centroids.
     :param max_iterations:      The maximum number of iterations allowed.
     """
@@ -61,9 +59,7 @@ def k_shape(tss, k, initial_centroids=None, initial_labels=None, tolerance=1e-10
     dimension one indicates the number of time series.
     :param k:                   The number of means to be computed.
     :param initial_centroids:   The initial means or centroids.
-    :param centroids:           The resulting means or centroids.
     :param initial_labels:      The initial labels.
-    :param labels:              The resulting labels of each time series which is the closest centroid.
     :param tolerance:           The error tolerance to stop the computation of the centroids.
     :param max_iterations:      The maximum number of iterations allowed.
     """
