@@ -79,7 +79,7 @@ class LibraryTest(unittest.TestCase):
     def get_khiva_version_from_github(self):
         # Hit Github API to get the list of tags.
         r = requests.get('https://api.github.com/repos/shapelets/khiva/tags')
-        tag_name = '0.1.0'
+        tag_name = '0.2.0'
 
         if r.status_code == 200:
             response = r.json()
