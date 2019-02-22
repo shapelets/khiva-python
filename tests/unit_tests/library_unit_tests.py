@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 #
-# Copyright (c) 2018 Shapelets.io
+# Copyright (c) 2019 Shapelets.io
 #
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -79,7 +79,7 @@ class LibraryTest(unittest.TestCase):
     def get_khiva_version_from_github(self):
         # Hit Github API to get the list of tags.
         r = requests.get('https://api.github.com/repos/shapelets/khiva/tags')
-        tag_name = '0.1.0'
+        tag_name = '0.2.0'
 
         if r.status_code == 200:
             response = r.json()
