@@ -49,35 +49,6 @@ class ClusteringTest(unittest.TestCase):
                                    expected_c[1, i] +
                                    expected_c[2, i], delta=self.DELTA)
 
-
-    def test_kmeans2(self):
-        tss = Array([[0.0,   1.0,  2.0,  3.0],
-                     [6.0,   7.0,  8.0,  9.0],
-                     [2.0,  -2.0,  4.0, -4.0],
-                     [8.0,   5.0,  3.0,  1.0],
-                     [15.0, 10.0,  5.0,  0.0],
-                     [7.0,  -7.0,  1.0, -1.0]])
-
-        expected_c = np.array([[0.0, 0.1667, 0.3333, 0.5],
-                               [1.5, -1.5, 0.8333, -0.8333],
-                               [4.8333, 3.6667, 2.6667, 1.6667]])
-
-        initial_centroids = Array([[0, 0, 0, 0],
-                                   [0, 0, 0, 0],
-                                   [0, 0, 0, 0]])
-
-        initial_labels = Array([0, 1, 2, 0, 1, 2])
-
-        result = k_means(tss, 3, initial_centroids, initial_labels)
-        result_c = result[0].to_numpy()
-
-        for i in range(0, 4):
-            self.assertAlmostEqual(result_c[0, i] + result_c[1, i] +
-                                   result_c[2, i],
-                                   expected_c[0, i] +
-                                   expected_c[1, i] +
-                                   expected_c[2, i], delta=self.DELTA)
-
     # def test_k_shape(self):
     #     tss = Array([[1.0,   2.0,   3.0,  4.0,  5.0,  6.0, 7.0],
     #                  [0.0,  10.0,   4.0,  5.0,  7.0, -3.0, 0.0],
