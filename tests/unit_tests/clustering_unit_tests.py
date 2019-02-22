@@ -61,7 +61,6 @@ class ClusteringTest(unittest.TestCase):
         expected_c = np.array([[0.0, 0.1667, 0.3333, 0.5],
                                [1.5, -1.5, 0.8333, -0.8333],
                                [4.8333, 3.6667, 2.6667, 1.6667]])
-        expected_l = np.array([0, 2, 1, 2, 2, 1])
 
         initial_centroids = Array([[0, 0, 0, 0],
                                    [0, 0, 0, 0],
@@ -70,7 +69,7 @@ class ClusteringTest(unittest.TestCase):
         initial_labels = Array([0, 1, 2, 0, 1, 2])
 
         result = k_means(tss, 3, initial_centroids, initial_labels)
-        result_c =result[0].to_numpy()
+        result_c = result[0].to_numpy()
 
         for i in range(0, 4):
             self.assertAlmostEqual(result_c[0, i] + result_c[1, i] +
