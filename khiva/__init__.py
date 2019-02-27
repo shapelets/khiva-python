@@ -8,6 +8,7 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 from khiva.array import *
+from khiva.clustering import *
 from khiva.dimensionality import *
 from khiva.distances import *
 from khiva.features import *
