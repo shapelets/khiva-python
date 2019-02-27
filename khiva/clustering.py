@@ -25,6 +25,8 @@ def k_means(tss, k, tolerance=1e-10, max_iterations=100):
     :param k:                   The number of means to be computed.
     :param tolerance:           The error tolerance to stop the computation of the centroids.
     :param max_iterations:      The maximum number of iterations allowed.
+
+    :return: Array of centroids and Array of Labels.
     """
     centroids = ctypes.c_void_p(0)
     labels = ctypes.c_void_p(0)
@@ -47,6 +49,8 @@ def k_shape(tss, k, tolerance=1e-10, max_iterations=100):
     :param k:                   The number of means to be computed.
     :param tolerance:           The error tolerance to stop the computation of the centroids.
     :param max_iterations:      The maximum number of iterations allowed.
+
+    :return: Array of centroids and Array of Labels.
     """
     centroids = ctypes.c_void_p(0)
     labels = ctypes.c_void_p(0)
