@@ -37,7 +37,7 @@ class DimensionalityTest(unittest.TestCase):
     def test_visvalingam(self):
         a = Array([[0, 1, 2, 3, 4, 5, 6, 7, 8, 9], [0, 0.1, -0.1, 5.0, 6.0, 7.0, 8.1, 9.0, 9.0, 9.0]])
         visvalingam_result = visvalingam(a, 5).to_numpy()
-        expected = np.array([[0, 2, 5, 7, 9], [0, -0.1, 7.0, 9.0, 9.0]])
+        expected = np.array([[0, 2, 3, 7, 9], [0, -0.1, 5.0, 9.0, 9.0]], dtype=np.float32)
         np.testing.assert_array_almost_equal(visvalingam_result, expected, decimal=self.DECIMAL)
 
     def test_paa(self):
@@ -49,10 +49,10 @@ class DimensionalityTest(unittest.TestCase):
         np.testing.assert_array_almost_equal(paa_result, expected, decimal=self.DECIMAL)
 
     def test_sax(self):
-        a = Array([[0.05, 2.45, 6.5, 8.55, 9.0], [0.05, 2.45, 6.5, 8.55, 9.0]])
+        a = Array([[0.0, 0.1, -0.1, 5.0, 6.0], [7.0, 8.1, 9.0, 9.0, 9.0]])
         sax_result = sax(a, 3).to_numpy()
 
-        expected = np.array([[0, 0, 1, 2, 2], [0, 0, 1, 2, 2]], dtype=np.int32)
+        expected = np.array([[0.0, 0.1, -0.1, 5.0, 6.0], [0.0, 1.0, 2.0, 2.0, 2.0]], dtype=np.float32)
         np.testing.assert_array_almost_equal(sax_result, expected, decimal=self.DECIMAL)
 
     def test_pip(self):
