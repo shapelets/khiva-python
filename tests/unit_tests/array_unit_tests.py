@@ -284,8 +284,9 @@ class ArrayTest(unittest.TestCase):
 
     def testArrayfire(self):
         a = af.Array([1, 2, 3, 4])
+        a_data = a.to_list()
         b = Array.from_arrayfire(a)
-        np.testing.assert_array_equal(np.asarray(a.to_list()), np.asarray(b.to_list()))
+        np.testing.assert_array_equal(np.asarray(a_data), np.asarray(b.to_list()))
 
     def testFromPandas(self):
         df = pd.DataFrame([[1, 2, 3, 4], [5, 6, 7, 8]])
