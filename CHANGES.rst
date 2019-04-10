@@ -4,6 +4,16 @@ Changelog
 
 KHIVA uses `Semantic Versioning <http://semver.org/>`_
 
+Version 0.2.2
+=============
+
+Added
+ - Join function for KHIVA arrays.
+
+Fixed
+ - to_arrayfire and from_arrayfire functions.
+ - KShape for double precision data.
+
 Version 0.2.0
 =============
 

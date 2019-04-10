@@ -21,7 +21,7 @@ setup(
     author="Shapelets.io",
     author_email="dev@shapelets.io",
     name="khiva",
-    version='0.2.0',
+    version='0.2.2',
     long_description = LONG_DESC,
     description="Python bindings for khiva",
     license="MPL 2.0",

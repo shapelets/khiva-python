@@ -10,14 +10,17 @@
 ########################################################################################################################
 # IMPORT
 ########################################################################################################################
-import numpy as np
+
 import ctypes
-from collections import deque
-from khiva.library import KhivaLibrary
-from enum import Enum
-import pandas as pd
 import logging
 import sys
+from collections import deque
+from enum import Enum
+
+import numpy as np
+import pandas as pd
+
+from khiva.library import KhivaLibrary
 
 
 ########################################################################################################################
@@ -159,7 +162,8 @@ class Array:
         """
         result = ctypes.c_void_p(0)
         KhivaLibrary().c_khiva_library.from_arrayfire(ctypes.pointer(arrayfire.arr), ctypes.pointer(result))
-        return cls(array_reference=result, arrayfire_reference=True)
+        arrayfire.arr.value = 0
+        return cls(array_reference=result, arrayfire_reference=False)
 
     def _create_array(self, data):
         """ Creates the KHIVA array in the device.
@@ -306,9 +310,23 @@ class Array:
 
     def display(self):
         """
-        Dispays the data stored in the KHIVA array.
+        Displays the data stored in the KHIVA array.
         """
         KhivaLibrary().c_khiva_library.display(ctypes.pointer(self.arr_reference))
+
+    def join(self, dim, other):
+        """
+        Joins the first and second KHIVA arrays along the specified dimension.
+        :param dim: The dimension along which the join occurs.
+        :param other: The second input array.
+        :return: KHIVA Array with the result of this operation.
+        """
+        result = ctypes.c_void_p(0)
+        KhivaLibrary().c_khiva_library.join(ctypes.pointer(ctypes.c_int(dim)),
+                                            ctypes.pointer(self.arr_reference),
+                                            ctypes.pointer(other.arr_reference),
+                                            ctypes.pointer(result))
+        return Array(array_reference=result)
 
     def __len__(self):
         """
