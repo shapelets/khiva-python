@@ -12,10 +12,12 @@
 # IMPORT
 ########################################################################################################################
 import unittest
+
+import arrayfire as af
 import numpy as np
 import pandas as pd
+
 from khiva.array import Array, dtype
-import arrayfire as af
 from khiva.library import set_backend, KHIVABackend
 
 
@@ -119,6 +121,12 @@ class ArrayTest(unittest.TestCase):
         a = Array([[1, 2, 3, 4], [5, 6, 7, 8]], khiva_type=dtype.s64)
         expected = dtype.s64
         self.assertEqual(a.get_type(), expected)
+
+    def test_join(self):
+        a = Array([1, 2, 3, 4], khiva_type=dtype.f64)
+        b = Array([5, 6, 7, 8], khiva_type=dtype.f64)
+        c = a.join(0, b)
+        np.testing.assert_array_equal(c.to_numpy(), np.array([1, 2, 3, 4, 5, 6, 7, 8]))
 
     def testPlus(self):
         a = Array([1, 2, 3, 4])
