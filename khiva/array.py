@@ -213,7 +213,11 @@ class Array:
         KhivaLibrary().c_khiva_library.get_data(ctypes.pointer(self.arr_reference), ctypes.pointer(c_result_array))
 
         dims = self.get_dims()
-        dims = dims[dims > 1]
+        if dims[dims > 1].size > 0:
+            dims = dims[dims > 1]
+        else:
+            dims = np.array([1])
+
         a = np.array(c_result_array)
 
         if self._is_complex():
