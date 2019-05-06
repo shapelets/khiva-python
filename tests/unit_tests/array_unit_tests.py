@@ -404,7 +404,6 @@ class ArrayTest(unittest.TestCase):
         self.assertEqual(a.to_list()[0], 1)
 
 
-
 if __name__ == '__main__':
     suite = unittest.TestLoader().loadTestsFromTestCase(ArrayTest)
     unittest.TextTestRunner(verbosity=2).run(suite)
