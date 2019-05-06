@@ -396,11 +396,12 @@ class ArrayTest(unittest.TestCase):
 
     def testGetData1(self):
         a = Array([1])
-        np.testing.assert_array_equal(a.to_numpy(), np.array([1]))
+        np.testing.assert_array_equal(a._get_data(), np.array([1]))
 
     def testToList1(self):
         a = Array([1])
         self.assertIs(type(a.to_list()), list)
+        self.assertEqual(a.to_list()[0], 1)
 
 
 
