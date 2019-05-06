@@ -394,6 +394,15 @@ class ArrayTest(unittest.TestCase):
         a = Array([1, 2, 3, 4])
         self.assertTrue(a)
 
+    def testGetData1(self):
+        a = Array([1])
+        np.testing.assert_array_equal(a._get_data(), np.array([1]))
+
+    def testToList1(self):
+        a = Array([1])
+        self.assertIs(type(a.to_list()), list)
+        self.assertEqual(a.to_list()[0], 1)
+
 
 if __name__ == '__main__':
     suite = unittest.TestLoader().loadTestsFromTestCase(ArrayTest)
