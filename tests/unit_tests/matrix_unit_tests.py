@@ -68,8 +68,8 @@ class MatrixTest(unittest.TestCase):
         find_best_n_motifs_result = find_best_n_motifs(stomp_result[0], stomp_result[1], 3, 1)
         a = find_best_n_motifs_result[1].to_numpy()
         b = find_best_n_motifs_result[2].to_numpy()
-        np.testing.assert_array_almost_equal(a, np.array([[12, 12], [12, 12]]), decimal=self.DECIMAL)
-        np.testing.assert_array_almost_equal(b, np.array([[1, 1], [1, 1]]), decimal=self.DECIMAL)
+        np.testing.assert_array_almost_equal(a, np.array([[[12], [12]], [[12], [12]]]), decimal=self.DECIMAL)
+        np.testing.assert_array_almost_equal(b, np.array([[[1], [1]], [[1], [1]]]), decimal=self.DECIMAL)
 
     def test_find_best_n_motifs_mirror(self):
         stomp_result = stomp_self_join(Array([10.1, 11, 10.2, 10.15, 10.775, 10.1, 11, 10.2], dtype.f32), 3)
