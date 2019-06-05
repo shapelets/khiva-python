@@ -74,6 +74,63 @@ def find_best_n_motifs(profile, index, m, n, self_join=False):
         array_reference=d)
 
 
+def find_best_n_occurrences(query_time_series, time_series, number_of_occurrences):
+    """ Calculates the N best matches of several queries in several time series.
+
+     The result has the following structure:
+        - 1st dimension corresponds to the nth best match.
+        - 2nd dimension corresponds to the number of queries.
+        - 3rd dimension corresponds to the number of time series.
+
+    For example, the distance in the position (1, 2, 3) corresponds to the second best distance of the third query in the
+    fourth time series. The index in the position (1, 2, 3) is the index of the subsequence which leads to the
+    second best distance of the third query in the fourth time series.
+
+    :param query_time_series: Array whose first dimension is the length of the query time series and the second
+    dimension is the number of queries.
+    :param time_series: Array whose first dimension is the length of the time series and the second dimension is the
+    number of time series.
+    :param number_of_occurrences: Number of matches to return.
+    :return: KHIVA arrays with the distances and indexes.
+    """
+
+    distances = ctypes.c_void_p(0)
+    indexes = ctypes.c_void_p(0)
+    KhivaLibrary().c_khiva_library.find_best_n_occurrences(ctypes.pointer(query_time_series.arr_reference),
+                                                           ctypes.pointer(time_series.arr_reference),
+                                                           ctypes.pointer(ctypes.c_long(number_of_occurrences)),
+                                                           ctypes.pointer(distances),
+                                                           ctypes.pointer(indexes))
+
+    return Array(array_reference=distances), Array(array_reference=indexes)
+
+
+def mass(query_time_series, time_series):
+    """ Mueen's Algorithm for Similarity Search.
+
+     The result has the following structure:
+        - 1st dimension corresponds to the index of the subsequence in the time series.
+        - 2nd dimension corresponds to the number of queries.
+        - 3rd dimension corresponds to the number of time series.
+
+    For example, the distance in the position (1, 2, 3) correspond to the distance of the third query to the fourth time
+    series for the second subsequence in the time series.
+
+    :param query_time_series: Array whose first dimension is the length of the query time series and the second
+    dimension is the number of queries.
+    :param time_series: Array whose first dimension is the length of the time series and the second dimension is the
+    number of time series.
+    :return: KHIVA array with the distances.
+    """
+
+    distances = ctypes.c_void_p(0)
+    KhivaLibrary().c_khiva_library.mass(ctypes.pointer(query_time_series.arr_reference),
+                                                           ctypes.pointer(time_series.arr_reference),
+                                                           ctypes.pointer(distances))
+
+    return Array(array_reference=distances)
+
+
 def stomp(first_time_series, second_time_series, subsequence_length):
     """ Stomp algorithm to calculate the matrix profile between `ta` and `tb` using a subsequence length of `m`.
 
