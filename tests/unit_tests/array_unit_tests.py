@@ -30,19 +30,41 @@ class ArrayTest(unittest.TestCase):
     def setUp(self):
         set_backend(KHIVABackend.KHIVA_BACKEND_CPU)
 
+    def test_real_1d_creation(self):
+        a = Array([1, 5, 3, 1])
+        np.testing.assert_array_equal(a.dims, np.array([4, 1, 1, 1]))
+
+    def test_single_value_creation(self):
+        a = Array([1])
+        np.testing.assert_array_equal(a.dims, np.array([1, 1, 1, 1]))
+
     def test_real_1d(self):
         a = Array([1, 2, 3, 4, 5, 6, 7, 8])
         expected = np.array([1, 2, 3, 4, 5, 6, 7, 8])
         np.testing.assert_array_equal(a.to_numpy(), expected)
+
+    def test_real_2d_creation(self):
+        a = Array([[1, 5, 3, 1], [2, 6, 9, 8], [3, 4, 1, 3]])
+        np.testing.assert_array_equal(a.dims, np.array([4, 3, 1, 1]))
 
     def test_real_2d(self):
         a = Array([[1, 2, 3, 4], [5, 6, 7, 8]])
         expected = np.array([[1, 2, 3, 4], [5, 6, 7, 8]])
         np.testing.assert_array_equal(a.to_numpy(), expected)
 
+    def test_real_3d_creation(self):
+        a = Array([[[1, 5, 3, 1], [2, 6, 9, 8], [3, 4, 1, 3]],
+                   [[3, 7, 4, 2], [4, 8, 1, 9], [1, 5, 9, 2]]])
+        np.testing.assert_array_equal(a.dims, np.array([4, 3, 2, 1]))
+
     def test_real_3d(self):
         a = Array([[[1, 5], [2, 6]], [[3, 7], [4, 8]]])
         expected = np.array([[[1, 5], [2, 6]], [[3, 7], [4, 8]]])
+        np.testing.assert_array_equal(a.to_numpy(), expected)
+
+    def test_real_3d_large_column(self):
+        a = Array([[[1, 5, 3], [2, 6, 9]], [[3, 7, 4], [4, 8, 1]]])
+        expected = np.array([[[1, 5, 3], [2, 6, 9]], [[3, 7, 4], [4, 8, 1]]])
         np.testing.assert_array_equal(a.to_numpy(), expected)
 
     def test_real_4d(self):
@@ -254,7 +276,7 @@ class ArrayTest(unittest.TestCase):
     def testRow(self):
         a = Array(np.transpose([[1, 2], [3, 4]]), dtype.s32)
         c = a.get_row(0)
-        np.testing.assert_array_equal(c.to_numpy(), [1, 2])
+        np.testing.assert_array_equal(c.to_numpy(), np.transpose(np.array([[1, 2]])))
 
     def testRows(self):
         a = Array(np.transpose([[1, 2], [3, 4], [5, 6]]), dtype.s32)

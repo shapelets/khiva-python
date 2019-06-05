@@ -14,7 +14,6 @@
 import ctypes
 import logging
 import sys
-from collections import deque
 from enum import Enum
 
 import numpy as np
@@ -177,21 +176,24 @@ class Array:
         if isinstance(data, pd.DataFrame):
             data = data.values
         shape = np.array(data.shape)
-        shape = shape[shape > 1]
-        shape = deque(shape)
-        shape.rotate(1)
+
+        if data.size > 1:
+            trimmed_dims = shape
+            for _ in range(0, 3):
+                if trimmed_dims[-1] == 1:
+                    trimmed_dims = trimmed_dims[:-1]
+            shape = trimmed_dims[::-1]
+        else:
+            shape = np.array([1])
+
         c_array_n = (ctypes.c_longlong * len(shape))(*(np.array(shape)).astype(np.longlong))
         c_ndims = ctypes.c_uint(len(shape))
         c_complex = np.iscomplexobj(data)
 
         if c_complex:
-            data = np.array([data.real, data.imag])
-            c = deque(range(1, len(data.shape)))
-            c.rotate(1)
-            c.append(0)
-            array_joint = np.transpose(data, c).flatten()
-        else:
-            array_joint = data.flatten()
+            data = np.dstack((data.real.flatten(), data.imag.flatten()))
+
+        array_joint = data.flatten()
 
         c_array_joint = (_get_array_type(self.khiva_type.value) * len(array_joint))(
             *array_joint)
@@ -212,25 +214,22 @@ class Array:
         c_result_array = (_get_array_type(self.khiva_type.value) * self.result_l)(*initialized_result_array)
         KhivaLibrary().c_khiva_library.get_data(ctypes.pointer(self.arr_reference), ctypes.pointer(c_result_array))
 
-        dims = self.get_dims()
-        if dims[dims > 1].size > 0:
-            dims = dims[dims > 1]
-        else:
-            dims = np.array([1])
-
         a = np.array(c_result_array)
 
         if self._is_complex():
             a = np.array(np.split(a, self.result_l / 2))
             a = np.apply_along_axis(lambda args: [complex(*args)], 1, a)
-            a = a.reshape(dims)
-            c = deque(range(len(a.shape)))
-            c.rotate(-1)
-            a = np.transpose(a, c)
+
+        # Clean up the last n dimensions if these are equal to 1
+        if a.size > 1:
+            trimmed_dims = self.get_dims()
+            for _ in range(0, 3):
+                if trimmed_dims[-1] == 1:
+                    trimmed_dims = trimmed_dims[:-1]
         else:
-            dims = deque(dims)
-            dims.rotate(1)
-            a = a.reshape(dims)
+            trimmed_dims = np.array([1])
+
+        a = a.reshape(trimmed_dims[::-1])
 
         a = a.astype(_get_numpy_type(self.khiva_type.value))
         return a
