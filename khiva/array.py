@@ -300,6 +300,11 @@ class Array:
     def to_numpy(self):
         """ Converts the KHIVA array to a numpy array.
 
+        The returned numpy array shape matches the Array dimensions as follows:
+          - For an Array with dims equal to [4, 2, 1, 1] the numpy shape will be (2, 4).
+          - For an Array with dims equal to [4, 3, 2, 1] the numpy shape will be (2, 3, 4).
+          - For an Array with dims equal to [4, 1, 2, 3] the numpy shape will be (3, 2, 1, 4).
+
         :return: KHIVA array converted to numpy.array.
         """
         return self._get_data()
