@@ -125,8 +125,8 @@ def mass(query_time_series, time_series):
 
     distances = ctypes.c_void_p(0)
     KhivaLibrary().c_khiva_library.mass(ctypes.pointer(query_time_series.arr_reference),
-                                                           ctypes.pointer(time_series.arr_reference),
-                                                           ctypes.pointer(distances))
+                                        ctypes.pointer(time_series.arr_reference),
+                                        ctypes.pointer(distances))
 
     return Array(array_reference=distances)
 
@@ -175,5 +175,53 @@ def stomp_self_join(time_series, subsequence_length):
                                                    ctypes.pointer(ctypes.c_long(subsequence_length)),
                                                    ctypes.pointer(b),
                                                    ctypes.pointer(c))
+
+    return Array(array_reference=b), Array(array_reference=c)
+
+
+def matrix_profile(first_time_series, second_time_series, subsequence_length):
+    """ Calculate the matrix profile between `ta` and `tb` using a subsequence length of `m`.
+
+    [1] Yan Zhu, Zachary Zimmerman, Nader Shakibay Senobari, Chin-Chia Michael Yeh, Gareth Funning, Abdullah Mueen,
+    Philip Brisk and Eamonn Keogh (2016). Matrix Profile II: Exploiting a Novel Algorithm and GPUs to break the one
+    Hundred Million Barrier for Time Series Motifs and Joins. IEEE ICDM 2016.
+
+    :param first_time_series: KHIVA array with the first time series.
+    :param second_time_series: KHIVA array with the second time series.
+    :param subsequence_length: Length of the subsequence.
+    :return: KHIVA arrays with the profile and index.
+    """
+
+    b = ctypes.c_void_p(0)
+    c = ctypes.c_void_p(0)
+
+    KhivaLibrary().c_khiva_library.matrix_profile(ctypes.pointer(first_time_series.arr_reference),
+                                                  ctypes.pointer(second_time_series.arr_reference),
+                                                  ctypes.pointer(ctypes.c_long(subsequence_length)),
+                                                  ctypes.pointer(b),
+                                                  ctypes.pointer(c))
+
+    return Array(array_reference=b), Array(array_reference=c)
+
+
+def matrix_profile_self_join(time_series, subsequence_length):
+    """ Calculate the matrix profile between `t` and itself using a subsequence length of `m`.
+    This method filters the trivial matches.
+
+    [1] Yan Zhu, Zachary Zimmerman, Nader Shakibay Senobari, Chin-Chia Michael Yeh, Gareth Funning, Abdullah Mueen,
+    Philip Brisk and Eamonn Keogh (2016). Matrix Profile II: Exploiting a Novel Algorithm and GPUs to break the one
+    Hundred Million Barrier for Time Series Motifs and Joins. IEEE ICDM 2016.
+
+    :param time_series: The query and reference time series in KHIVA array format.
+    :param subsequence_length: Lenght of the subsequence
+    :return: KHIVA arrays with the profile and index.
+    """
+    b = ctypes.c_void_p(0)
+    c = ctypes.c_void_p(0)
+
+    KhivaLibrary().c_khiva_library.matrix_profile_self_join(ctypes.pointer(time_series.arr_reference),
+                                                            ctypes.pointer(ctypes.c_long(subsequence_length)),
+                                                            ctypes.pointer(b),
+                                                            ctypes.pointer(c))
 
     return Array(array_reference=b), Array(array_reference=c)
