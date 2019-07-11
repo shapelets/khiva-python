@@ -49,6 +49,7 @@ else
     # Cloning Github repo into khiva-library folder
     git clone https://github.com/shapelets/khiva.git khiva-library
     cd khiva-library
+    git submodule update --init
     mkdir -p build && cd build
     if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
         conan install .. -s compiler=apple-clang -s compiler.version=9.1 -s compiler.libcxx=libc++ --build missing
