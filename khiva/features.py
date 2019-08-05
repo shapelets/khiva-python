@@ -416,7 +416,7 @@ def friedrich_coefficients(arr, m, r):
     :param arr: KHIVA array with the time series.
     :param m: Order of polynom to fit for estimating fixed points of dynamics.
     :param r: Number of quantiles to use for averaging.
-    :return: KHIVA array with the coefficients for each time seriess.
+    :return: KHIVA array with the coefficients for each time series.
     """
     b = ctypes.c_void_p(0)
 

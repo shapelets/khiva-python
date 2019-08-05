@@ -417,9 +417,15 @@ class Array:
         Return self * other.
         """
         result = ctypes.c_void_p(0)
+        error_code = ctypes.c_int(3)
+        error_message = ctypes.create_string_buffer(256)
         KhivaLibrary().c_khiva_library.khiva_mul(ctypes.pointer(self.arr_reference),
                                                  ctypes.pointer(other.arr_reference),
-                                                 ctypes.pointer(result))
+                                                 ctypes.pointer(result),
+                                                 ctypes.pointer(error_code),
+                                                 error_message)
+        if error_code != 0:
+            raise Exception(str(error_message.value.decode()))
         return Array(array_reference=result)
 
     def __imul__(self, other):
