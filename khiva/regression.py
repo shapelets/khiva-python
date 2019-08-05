@@ -40,6 +40,8 @@ def linear(xss, yss):
     e = ctypes.c_void_p(0)
     f = ctypes.c_void_p(0)
 
+    error_code = ctypes.c_int(0)
+    error_message = ctypes.Creat(256)
     KhivaLibrary().c_khiva_library.linear(ctypes.pointer(xss.arr_reference),
                                           ctypes.pointer(yss.arr_reference),
                                           ctypes.pointer(b),
@@ -47,6 +49,9 @@ def linear(xss, yss):
                                           ctypes.pointer(d),
                                           ctypes.pointer(e),
                                           ctypes.pointer(f)
-                                          )
+                                          , ctypes.pointer(error_code), error_message)
+    if error_code != 0:
+        raise Exception(str(error_message.value.decode()))
+
     return Array(array_reference=b), Array(array_reference=c), Array(array_reference=d), Array(
         array_reference=e), Array(array_reference=f)

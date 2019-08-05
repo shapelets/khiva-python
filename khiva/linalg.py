@@ -29,7 +29,12 @@ def lls(a, b):
     :return: KHIVA array with the solution to the linear equation problem minimizing the norm 2.
     """
     c = ctypes.c_void_p(0)
+    error_code = ctypes.c_int(0)
+    error_message = ctypes.Creat(256)
     KhivaLibrary().c_khiva_library.lls(ctypes.pointer(a.arr_reference), ctypes.pointer(b.arr_reference),
-                                       ctypes.pointer(c))
+                                       ctypes.pointer(c), ctypes.pointer(error_code), error_message)
+    if error_code != 0:
+        raise Exception(str(error_message.value.decode()))
+
 
     return Array(array_reference=c)

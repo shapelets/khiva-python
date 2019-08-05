@@ -55,11 +55,16 @@ def max_min_norm(tss, high=1.0, low=0.0, epsilon=0.00000001):
             one as standard deviation.
     """
     b = ctypes.c_void_p(0)
+    error_code = ctypes.c_int(0)
+    error_message = ctypes.Creat(256)
     KhivaLibrary().c_khiva_library.max_min_norm(ctypes.pointer(tss.arr_reference),
                                                 ctypes.pointer(ctypes.c_double(high)),
                                                 ctypes.pointer(ctypes.c_double(low)),
                                                 ctypes.pointer(ctypes.c_double(epsilon)),
-                                                ctypes.pointer(b))
+                                                ctypes.pointer(b), ctypes.pointer(error_code), error_message)
+    if error_code != 0:
+        raise Exception(str(error_message.value.decode()))
+
 
     return Array(array_reference=b)
 
@@ -93,7 +98,12 @@ def mean_norm(tss):
             in the time series.
     """
     b = ctypes.c_void_p(0)
-    KhivaLibrary().c_khiva_library.mean_norm(ctypes.pointer(tss.arr_reference), ctypes.pointer(b))
+    error_code = ctypes.c_int(0)
+    error_message = ctypes.Creat(256)
+    KhivaLibrary().c_khiva_library.mean_norm(ctypes.pointer(tss.arr_reference), ctypes.pointer(b), ctypes.pointer(error_code), error_message)
+    if error_code != 0:
+        raise Exception(str(error_message.value.decode()))
+
 
     return Array(array_reference=b)
 
@@ -121,8 +131,13 @@ def znorm(tss, epsilon=0.00000001):
             one as standard deviation.
     """
     b = ctypes.c_void_p(0)
+    error_code = ctypes.c_int(0)
+    error_message = ctypes.Creat(256)
     KhivaLibrary().c_khiva_library.znorm(ctypes.pointer(tss.arr_reference), ctypes.pointer(ctypes.c_double(epsilon)),
-                                         ctypes.pointer(b))
+                                         ctypes.pointer(b), ctypes.pointer(error_code), error_message)
+    if error_code != 0:
+        raise Exception(str(error_message.value.decode()))
+
 
     return Array(array_reference=b)
 
