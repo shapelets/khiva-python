@@ -35,7 +35,7 @@ def k_means(tss, k, tolerance=1e-10, max_iterations=100):
     labels = ctypes.c_void_p(0)
 
     error_code = ctypes.c_int(0)
-    error_message = ctypes.Creat(256)
+    error_message = ctypes.create_string_buffer(256)
     KhivaLibrary().c_khiva_library.k_means(ctypes.pointer(tss.arr_reference),
                                            ctypes.pointer(ctypes.c_int(k)),
                                            ctypes.pointer(centroids),
@@ -68,7 +68,7 @@ def k_shape(tss, k, tolerance=1e-10, max_iterations=100):
     labels = ctypes.c_void_p(0)
 
     error_code = ctypes.c_int(0)
-    error_message = ctypes.Creat(256)
+    error_message = ctypes.create_string_buffer(256)
     KhivaLibrary().c_khiva_library.k_shape(ctypes.pointer(tss.arr_reference),
                                                           ctypes.pointer(ctypes.c_int(k)),
                                                           ctypes.pointer(centroids),

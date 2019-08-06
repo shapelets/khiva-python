@@ -37,7 +37,7 @@ def paa(a, bins):
     """
     b = ctypes.c_void_p(0)
     error_code = ctypes.c_int(0)
-    error_message = ctypes.Creat(256)
+    error_message = ctypes.create_string_buffer(256)
     KhivaLibrary().c_khiva_library.paa(ctypes.pointer(a.arr_reference), ctypes.pointer(ctypes.c_int(bins)),
                                        ctypes.pointer(b), ctypes.pointer(error_code), error_message)
     if error_code != 0:
@@ -60,7 +60,7 @@ def pip(a, number_ips):
     """
     b = ctypes.c_void_p(0)
     error_code = ctypes.c_int(0)
-    error_message = ctypes.Creat(256)
+    error_message = ctypes.create_string_buffer(256)
     KhivaLibrary().c_khiva_library.pip(ctypes.pointer(a.arr_reference), ctypes.pointer(ctypes.c_int(number_ips)),
                                        ctypes.pointer(b), ctypes.pointer(error_code), error_message)
     if error_code != 0:
@@ -84,7 +84,7 @@ def pla_bottom_up(ts, max_error):
     """
     b = ctypes.c_void_p(0)
     error_code = ctypes.c_int(0)
-    error_message = ctypes.Creat(256)
+    error_message = ctypes.create_string_buffer(256)
     KhivaLibrary().c_khiva_library.pla_bottom_up(ctypes.pointer(ts.arr_reference),
                                                  ctypes.pointer(ctypes.c_float(max_error)),
                                                  ctypes.pointer(b), ctypes.pointer(error_code), error_message)
@@ -109,7 +109,7 @@ def pla_sliding_window(ts, max_error):
     """
     b = ctypes.c_void_p(0)
     error_code = ctypes.c_int(0)
-    error_message = ctypes.Creat(256)
+    error_message = ctypes.create_string_buffer(256)
     KhivaLibrary().c_khiva_library.pla_sliding_window(ctypes.pointer(ts.arr_reference),
                                                       ctypes.pointer(ctypes.c_float(max_error)),
                                                       ctypes.pointer(b), ctypes.pointer(error_code), error_message)
@@ -139,7 +139,7 @@ def ramer_douglas_peucker(a, epsilon):
     """
     b = ctypes.c_void_p(0)
     error_code = ctypes.c_int(0)
-    error_message = ctypes.Creat(256)
+    error_message = ctypes.create_string_buffer(256)
     KhivaLibrary().c_khiva_library.ramer_douglas_peucker(ctypes.pointer(a.arr_reference),
                                                          ctypes.pointer(ctypes.c_double(epsilon)),
                                                          ctypes.pointer(b), ctypes.pointer(error_code), error_message)
@@ -169,7 +169,7 @@ def sax(a, alphabet_size):
     """
     b = ctypes.c_void_p(0)
     error_code = ctypes.c_int(0)
-    error_message = ctypes.Creat(256)
+    error_message = ctypes.create_string_buffer(256)
     KhivaLibrary().c_khiva_library.sax(ctypes.pointer(a.arr_reference), ctypes.pointer(ctypes.c_int(alphabet_size)),
                                        ctypes.pointer(b), ctypes.pointer(error_code), error_message)
     if error_code != 0:
@@ -194,7 +194,7 @@ def visvalingam(a, num_points):
     """
     b = ctypes.c_void_p(0)
     error_code = ctypes.c_int(0)
-    error_message = ctypes.Creat(256)
+    error_message = ctypes.create_string_buffer(256)
     KhivaLibrary().c_khiva_library.visvalingam(ctypes.pointer(a.arr_reference),
                                                ctypes.pointer(ctypes.c_int(num_points)),
                                                ctypes.pointer(b), ctypes.pointer(error_code), error_message)

@@ -41,7 +41,7 @@ def group_by(tss, aggregation_function, n_columns_key=1, n_columns_value=1):
     """
     b = ctypes.c_void_p(0)
     error_code = ctypes.c_int(0)
-    error_message = ctypes.Creat(256)
+    error_message = ctypes.create_string_buffer(256)
     KhivaLibrary().c_khiva_library.group_by(ctypes.pointer(tss.arr_reference),
                                             ctypes.pointer(ctypes.c_int(aggregation_function)),
                                             ctypes.pointer(ctypes.c_int(n_columns_key)),

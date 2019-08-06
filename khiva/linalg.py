@@ -30,7 +30,7 @@ def lls(a, b):
     """
     c = ctypes.c_void_p(0)
     error_code = ctypes.c_int(0)
-    error_message = ctypes.Creat(256)
+    error_message = ctypes.create_string_buffer(256)
     KhivaLibrary().c_khiva_library.lls(ctypes.pointer(a.arr_reference), ctypes.pointer(b.arr_reference),
                                        ctypes.pointer(c), ctypes.pointer(error_code), error_message)
     if error_code != 0:
