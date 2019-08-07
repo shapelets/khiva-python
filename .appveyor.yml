@@ -32,6 +32,7 @@ before_build:
           }else{
             git clone -q https://github.com/shapelets/khiva.git C:\khiva-library ;
             cd C:\khiva-library;
+            git submodule update --init;
             mkdir build;
             cd build;
             cmake .. -DCMAKE_TOOLCHAIN_FILE=c:/tools/vcpkg/scripts/buildsystems/vcpkg.cmake -DBOOST_ROOT="$($env:BOOST_PATH)" -DKHIVA_USE_CONAN=OFF -DKHIVA_BUILD_DOCUMENTATION=OFF -DKHIVA_BUILD_BENCHMARKS=OFF -DKHIVA_ONLY_CPU_BACKEND=ON -G"$env:GENERATOR";
