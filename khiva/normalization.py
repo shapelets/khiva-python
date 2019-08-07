@@ -31,7 +31,7 @@ def decimal_scaling_norm(tss):
     error_code = ctypes.c_int(0)
     error_message = ctypes.create_string_buffer(256)
     KhivaLibrary().c_khiva_library.decimal_scaling_norm(ctypes.pointer(tss.arr_reference), ctypes.pointer(b), ctypes.pointer(error_code), error_message)
-    if error_code != 0:
+    if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
 
 
@@ -46,7 +46,7 @@ def decimal_scaling_norm_in_place(tss):
     error_code = ctypes.c_int(0)
     error_message = ctypes.create_string_buffer(256)
     KhivaLibrary().c_khiva_library.decimal_scaling_norm_in_place(ctypes.pointer(tss.arr_reference), ctypes.pointer(error_code), error_message)
-    if error_code != 0:
+    if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
 
 def max_min_norm(tss, high=1.0, low=0.0, epsilon=0.00000001):
@@ -70,7 +70,7 @@ def max_min_norm(tss, high=1.0, low=0.0, epsilon=0.00000001):
                                                 ctypes.pointer(ctypes.c_double(low)),
                                                 ctypes.pointer(ctypes.c_double(epsilon)),
                                                 ctypes.pointer(b), ctypes.pointer(error_code), error_message)
-    if error_code != 0:
+    if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
 
 
@@ -92,7 +92,7 @@ def max_min_norm_in_place(tss, high=1.0, low=0.0, epsilon=0.00000001):
                                                          ctypes.pointer(ctypes.c_double(high)),
                                                          ctypes.pointer(ctypes.c_double(low)),
                                                          ctypes.pointer(ctypes.c_double(epsilon)), ctypes.pointer(error_code), error_message)
-    if error_code != 0:
+    if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
 
 
@@ -113,7 +113,7 @@ def mean_norm(tss):
     error_code = ctypes.c_int(0)
     error_message = ctypes.create_string_buffer(256)
     KhivaLibrary().c_khiva_library.mean_norm(ctypes.pointer(tss.arr_reference), ctypes.pointer(b), ctypes.pointer(error_code), error_message)
-    if error_code != 0:
+    if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
 
 
@@ -132,7 +132,7 @@ def mean_norm_in_place(tss):
     error_code = ctypes.c_int(0)
     error_message = ctypes.create_string_buffer(256)
     KhivaLibrary().c_khiva_library.mean_norm_in_place(ctypes.pointer(tss.arr_reference), ctypes.pointer(error_code), error_message)
-    if error_code != 0:
+    if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
 
 
@@ -151,7 +151,7 @@ def znorm(tss, epsilon=0.00000001):
     error_message = ctypes.create_string_buffer(256)
     KhivaLibrary().c_khiva_library.znorm(ctypes.pointer(tss.arr_reference), ctypes.pointer(ctypes.c_double(epsilon)),
                                          ctypes.pointer(b), ctypes.pointer(error_code), error_message)
-    if error_code != 0:
+    if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
 
 
@@ -170,5 +170,5 @@ def znorm_in_place(tss, epsilon=0.00000001):
     error_message = ctypes.create_string_buffer(256)
     KhivaLibrary().c_khiva_library.znorm_in_place(ctypes.pointer(tss.arr_reference),
                                                   ctypes.pointer(ctypes.c_double(epsilon)), ctypes.pointer(error_code), error_message)
-    if error_code != 0:
+    if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))

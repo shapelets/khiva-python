@@ -47,7 +47,7 @@ def group_by(tss, aggregation_function, n_columns_key=1, n_columns_value=1):
                                             ctypes.pointer(ctypes.c_int(n_columns_key)),
                                             ctypes.pointer(ctypes.c_int(n_columns_value)),
                                             ctypes.pointer(b), ctypes.pointer(error_code), error_message)
-    if error_code != 0:
+    if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
 
 

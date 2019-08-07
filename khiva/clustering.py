@@ -41,9 +41,9 @@ def k_means(tss, k, tolerance=1e-10, max_iterations=100):
                                            ctypes.pointer(centroids),
                                            ctypes.pointer(labels),
                                            ctypes.pointer(ctypes.c_float(tolerance)),
-                                           ctypes.pointer(ctypes.c_int(max_iterations))
-                                           , ctypes.pointer(error_code), error_message)
-    if error_code != 0:
+                                           ctypes.pointer(ctypes.c_int(max_iterations)),
+                                           ctypes.pointer(error_code), error_message)
+    if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
 
     return Array(array_reference=centroids), Array(array_reference=labels)
@@ -76,7 +76,7 @@ def k_shape(tss, k, tolerance=1e-10, max_iterations=100):
                                                           ctypes.pointer(ctypes.c_float(tolerance)),
                                                           ctypes.pointer(ctypes.c_int(max_iterations))
                                                           , ctypes.pointer(error_code), error_message)
-    if error_code != 0:
+    if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
 
     return Array(array_reference=centroids), Array(array_reference=labels)

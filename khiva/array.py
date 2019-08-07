@@ -160,7 +160,12 @@ class Array:
         :return: a KHIVA array.
         """
         result = ctypes.c_void_p(0)
-        KhivaLibrary().c_khiva_library.from_arrayfire(ctypes.pointer(arrayfire.arr), ctypes.pointer(result))
+        error_code = ctypes.c_int(0)
+        error_message = ctypes.create_string_buffer(256)
+        KhivaLibrary().c_khiva_library.from_arrayfire(ctypes.pointer(arrayfire.arr),
+                                                      ctypes.pointer(result),
+                                                      ctypes.pointer(error_code), error_message)
+
         arrayfire.arr.value = 0
         return cls(array_reference=result, arrayfire_reference=False)
 
@@ -198,11 +203,14 @@ class Array:
         c_array_joint = (_get_array_type(self.khiva_type.value) * len(array_joint))(
             *array_joint)
         opaque_pointer = ctypes.c_void_p(0)
+        error_code = ctypes.c_int(0)
+        error_message = ctypes.create_string_buffer(256)
         KhivaLibrary().c_khiva_library.create_array(ctypes.pointer(c_array_joint),
                                                     ctypes.pointer(c_ndims),
                                                     ctypes.pointer(c_array_n),
                                                     ctypes.pointer(opaque_pointer),
-                                                    ctypes.pointer(ctypes.c_int(self.khiva_type.value)))
+                                                    ctypes.pointer(ctypes.c_int(self.khiva_type.value)),
+                                                    ctypes.pointer(error_code), error_message)
         return opaque_pointer
 
     def _get_data(self):
@@ -210,9 +218,15 @@ class Array:
 
         :return A numpy array with the data.
         """
+        error_code = ctypes.c_int(0)
+        error_message = ctypes.create_string_buffer(256)
         initialized_result_array = np.zeros(self.result_l).astype(_get_array_type(self.khiva_type.value))
         c_result_array = (_get_array_type(self.khiva_type.value) * self.result_l)(*initialized_result_array)
-        KhivaLibrary().c_khiva_library.get_data(ctypes.pointer(self.arr_reference), ctypes.pointer(c_result_array))
+        KhivaLibrary().c_khiva_library.get_data(ctypes.pointer(self.arr_reference),
+                                                ctypes.pointer(c_result_array),
+                                                ctypes.pointer(error_code), error_message)
+        if error_code.value != 0:
+            raise Exception(str(error_message.value.decode()))
 
         a = np.array(c_result_array)
 
@@ -254,7 +268,12 @@ class Array:
         :return: The dimensions of the KHIVA array.
         """
         c_array_n = (ctypes.c_longlong * 4)(*(np.zeros(4)).astype(np.longlong))
-        KhivaLibrary().c_khiva_library.get_dims(ctypes.pointer(self.arr_reference), ctypes.pointer(c_array_n))
+        error_code = ctypes.c_int(0)
+        error_message = ctypes.create_string_buffer(256)
+        KhivaLibrary().c_khiva_library.get_dims(ctypes.pointer(self.arr_reference),
+                                                ctypes.pointer(c_array_n),
+                                                ctypes.pointer(error_code),
+                                                error_message)
         return np.array(c_array_n)
 
     def get_type(self):
@@ -263,7 +282,12 @@ class Array:
         :return: The type of the KHIVA array.
         """
         c_type = ctypes.c_int()
-        KhivaLibrary().c_khiva_library.get_type(ctypes.pointer(self.arr_reference), ctypes.pointer(c_type))
+        error_code = ctypes.c_int(0)
+        error_message = ctypes.create_string_buffer(256)
+        KhivaLibrary().c_khiva_library.get_type(ctypes.pointer(self.arr_reference),
+                                                ctypes.pointer(c_type),
+                                                ctypes.pointer(error_code),
+                                                error_message)
         return dtype(c_type.value)
 
     def _is_complex(self):
@@ -320,7 +344,11 @@ class Array:
         """
         Displays the data stored in the KHIVA array.
         """
-        KhivaLibrary().c_khiva_library.display(ctypes.pointer(self.arr_reference))
+        error_code = ctypes.c_int(0)
+        error_message = ctypes.create_string_buffer(256)
+        KhivaLibrary().c_khiva_library.display(ctypes.pointer(self.arr_reference),
+                                               ctypes.pointer(error_code),
+                                               error_message)
 
     def join(self, dim, other):
         """
@@ -336,7 +364,7 @@ class Array:
                                             ctypes.pointer(self.arr_reference),
                                             ctypes.pointer(other.arr_reference),
                                             ctypes.pointer(result), ctypes.pointer(error_code), error_message)
-        if error_code != 0:
+        if error_code.value != 0:
             raise Exception(str(error_message.value.decode()))
 
         return Array(array_reference=result)
@@ -367,7 +395,7 @@ class Array:
         KhivaLibrary().c_khiva_library.khiva_add(ctypes.pointer(self.arr_reference),
                                                  ctypes.pointer(other.arr_reference),
                                                  ctypes.pointer(result), ctypes.pointer(error_code), error_message)
-        if error_code != 0:
+        if error_code.value != 0:
             raise Exception(str(error_message.value.decode()))
 
         return Array(array_reference=result)
@@ -382,7 +410,7 @@ class Array:
         KhivaLibrary().c_khiva_library.khiva_add(ctypes.pointer(self.arr_reference),
                                                  ctypes.pointer(other.arr_reference),
                                                  ctypes.pointer(result), ctypes.pointer(error_code), error_message)
-        if error_code != 0:
+        if error_code.value != 0:
             raise Exception(str(error_message.value.decode()))
 
         return Array(array_reference=result)
@@ -397,7 +425,7 @@ class Array:
         KhivaLibrary().c_khiva_library.khiva_add(ctypes.pointer(self.arr_reference),
                                                  ctypes.pointer(other.arr_reference),
                                                  ctypes.pointer(result), ctypes.pointer(error_code), error_message)
-        if error_code != 0:
+        if error_code.value != 0:
             raise Exception(str(error_message.value.decode()))
 
         return Array(array_reference=result)
@@ -412,7 +440,7 @@ class Array:
         KhivaLibrary().c_khiva_library.khiva_sub(ctypes.pointer(self.arr_reference),
                                                  ctypes.pointer(other.arr_reference),
                                                  ctypes.pointer(result), ctypes.pointer(error_code), error_message)
-        if error_code != 0:
+        if error_code.value != 0:
             raise Exception(str(error_message.value.decode()))
 
         return Array(array_reference=result)
@@ -427,7 +455,7 @@ class Array:
         KhivaLibrary().c_khiva_library.khiva_sub(ctypes.pointer(self.arr_reference),
                                                  ctypes.pointer(other.arr_reference),
                                                  ctypes.pointer(result), ctypes.pointer(error_code), error_message)
-        if error_code != 0:
+        if error_code.value != 0:
             raise Exception(str(error_message.value.decode()))
 
         return Array(array_reference=result)
@@ -442,7 +470,7 @@ class Array:
         KhivaLibrary().c_khiva_library.khiva_sub(ctypes.pointer(self.arr_reference),
                                                  ctypes.pointer(other.arr_reference),
                                                  ctypes.pointer(result), ctypes.pointer(error_code), error_message)
-        if error_code != 0:
+        if error_code.value != 0:
             raise Exception(str(error_message.value.decode()))
 
         return Array(array_reference=result)
@@ -459,7 +487,7 @@ class Array:
                                                  ctypes.pointer(result),
                                                  ctypes.pointer(error_code),
                                                  error_message)
-        if error_code != 0:
+        if error_code.value != 0:
             raise Exception(str(error_message.value.decode()))
 
         return Array(array_reference=result)
@@ -474,7 +502,7 @@ class Array:
         KhivaLibrary().c_khiva_library.khiva_mul(ctypes.pointer(self.arr_reference),
                                                  ctypes.pointer(other.arr_reference),
                                                  ctypes.pointer(result), ctypes.pointer(error_code), error_message)
-        if error_code != 0:
+        if error_code.value != 0:
             raise Exception(str(error_message.value.decode()))
 
         return Array(array_reference=result)
@@ -489,7 +517,7 @@ class Array:
         KhivaLibrary().c_khiva_library.khiva_mul(ctypes.pointer(self.arr_reference),
                                                  ctypes.pointer(other.arr_reference),
                                                  ctypes.pointer(result), ctypes.pointer(error_code), error_message)
-        if error_code != 0:
+        if error_code.value != 0:
             raise Exception(str(error_message.value.decode()))
 
         return Array(array_reference=result)
@@ -504,7 +532,7 @@ class Array:
         KhivaLibrary().c_khiva_library.khiva_div(ctypes.pointer(self.arr_reference),
                                                  ctypes.pointer(other.arr_reference),
                                                  ctypes.pointer(result), ctypes.pointer(error_code), error_message)
-        if error_code != 0:
+        if error_code.value != 0:
             raise Exception(str(error_message.value.decode()))
 
         return Array(array_reference=result)
@@ -519,7 +547,7 @@ class Array:
         KhivaLibrary().c_khiva_library.khiva_div(ctypes.pointer(self.arr_reference),
                                                  ctypes.pointer(other.arr_reference),
                                                  ctypes.pointer(result), ctypes.pointer(error_code), error_message)
-        if error_code != 0:
+        if error_code.value != 0:
             raise Exception(str(error_message.value.decode()))
 
         return Array(array_reference=result)
@@ -534,7 +562,7 @@ class Array:
         KhivaLibrary().c_khiva_library.khiva_div(ctypes.pointer(self.arr_reference),
                                                  ctypes.pointer(other.arr_reference),
                                                  ctypes.pointer(result), ctypes.pointer(error_code), error_message)
-        if error_code != 0:
+        if error_code.value != 0:
             raise Exception(str(error_message.value.decode()))
 
         return Array(array_reference=result)
@@ -549,7 +577,7 @@ class Array:
         KhivaLibrary().c_khiva_library.khiva_div(ctypes.pointer(self.arr_reference),
                                                  ctypes.pointer(other.arr_reference),
                                                  ctypes.pointer(result), ctypes.pointer(error_code), error_message)
-        if error_code != 0:
+        if error_code.value != 0:
             raise Exception(str(error_message.value.decode()))
 
         return Array(array_reference=result)
@@ -564,7 +592,7 @@ class Array:
         KhivaLibrary().c_khiva_library.khiva_div(ctypes.pointer(self.arr_reference),
                                                  ctypes.pointer(other.arr_reference),
                                                  ctypes.pointer(result), ctypes.pointer(error_code), error_message)
-        if error_code != 0:
+        if error_code.value != 0:
             raise Exception(str(error_message.value.decode()))
 
         return Array(array_reference=result)
@@ -579,7 +607,7 @@ class Array:
         KhivaLibrary().c_khiva_library.khiva_div(ctypes.pointer(self.arr_reference),
                                                  ctypes.pointer(other.arr_reference),
                                                  ctypes.pointer(result), ctypes.pointer(error_code), error_message)
-        if error_code != 0:
+        if error_code.value != 0:
             raise Exception(str(error_message.value.decode()))
 
         return Array(array_reference=result)
@@ -594,7 +622,7 @@ class Array:
         KhivaLibrary().c_khiva_library.khiva_mod(ctypes.pointer(self.arr_reference),
                                                  ctypes.pointer(other.arr_reference),
                                                  ctypes.pointer(result), ctypes.pointer(error_code), error_message)
-        if error_code != 0:
+        if error_code.value != 0:
             raise Exception(str(error_message.value.decode()))
 
         return Array(array_reference=result)
@@ -609,7 +637,7 @@ class Array:
         KhivaLibrary().c_khiva_library.khiva_mod(ctypes.pointer(self.arr_reference),
                                                  ctypes.pointer(other.arr_reference),
                                                  ctypes.pointer(result), ctypes.pointer(error_code), error_message)
-        if error_code != 0:
+        if error_code.value != 0:
             raise Exception(str(error_message.value.decode()))
 
         return Array(array_reference=result)
@@ -624,7 +652,7 @@ class Array:
         KhivaLibrary().c_khiva_library.khiva_mod(ctypes.pointer(self.arr_reference),
                                                  ctypes.pointer(other.arr_reference),
                                                  ctypes.pointer(result), ctypes.pointer(error_code), error_message)
-        if error_code != 0:
+        if error_code.value != 0:
             raise Exception(str(error_message.value.decode()))
 
         return Array(array_reference=result)
@@ -639,7 +667,7 @@ class Array:
         KhivaLibrary().c_khiva_library.khiva_pow(ctypes.pointer(self.arr_reference),
                                                  ctypes.pointer(other.arr_reference),
                                                  ctypes.pointer(result), ctypes.pointer(error_code), error_message)
-        if error_code != 0:
+        if error_code.value != 0:
             raise Exception(str(error_message.value.decode()))
 
         return Array(array_reference=result)
@@ -654,7 +682,7 @@ class Array:
         KhivaLibrary().c_khiva_library.khiva_pow(ctypes.pointer(self.arr_reference),
                                                  ctypes.pointer(other.arr_reference),
                                                  ctypes.pointer(result), ctypes.pointer(error_code), error_message)
-        if error_code != 0:
+        if error_code.value != 0:
             raise Exception(str(error_message.value.decode()))
 
         return Array(array_reference=result)
@@ -669,7 +697,7 @@ class Array:
         KhivaLibrary().c_khiva_library.khiva_pow(ctypes.pointer(self.arr_reference),
                                                  ctypes.pointer(other.arr_reference),
                                                  ctypes.pointer(result), ctypes.pointer(error_code), error_message)
-        if error_code != 0:
+        if error_code.value != 0:
             raise Exception(str(error_message.value.decode()))
 
         return Array(array_reference=result)
@@ -683,7 +711,7 @@ class Array:
         error_message = ctypes.create_string_buffer(256)
         KhivaLibrary().c_khiva_library.khiva_lt(ctypes.pointer(self.arr_reference), ctypes.pointer(other.arr_reference),
                                                 ctypes.pointer(result), ctypes.pointer(error_code), error_message)
-        if error_code != 0:
+        if error_code.value != 0:
             raise Exception(str(error_message.value.decode()))
 
         return Array(array_reference=result)
@@ -697,7 +725,7 @@ class Array:
         error_message = ctypes.create_string_buffer(256)
         KhivaLibrary().c_khiva_library.khiva_gt(ctypes.pointer(self.arr_reference), ctypes.pointer(other.arr_reference),
                                                 ctypes.pointer(result), ctypes.pointer(error_code), error_message)
-        if error_code != 0:
+        if error_code.value != 0:
             raise Exception(str(error_message.value.decode()))
 
         return Array(array_reference=result)
@@ -711,7 +739,7 @@ class Array:
         error_message = ctypes.create_string_buffer(256)
         KhivaLibrary().c_khiva_library.khiva_le(ctypes.pointer(self.arr_reference), ctypes.pointer(other.arr_reference),
                                                 ctypes.pointer(result), ctypes.pointer(error_code), error_message)
-        if error_code != 0:
+        if error_code.value != 0:
             raise Exception(str(error_message.value.decode()))
 
         return Array(array_reference=result)
@@ -725,7 +753,7 @@ class Array:
         error_message = ctypes.create_string_buffer(256)
         KhivaLibrary().c_khiva_library.khiva_ge(ctypes.pointer(self.arr_reference), ctypes.pointer(other.arr_reference),
                                                 ctypes.pointer(result), ctypes.pointer(error_code), error_message)
-        if error_code != 0:
+        if error_code.value != 0:
             raise Exception(str(error_message.value.decode()))
 
         return Array(array_reference=result)
@@ -739,7 +767,7 @@ class Array:
         error_message = ctypes.create_string_buffer(256)
         KhivaLibrary().c_khiva_library.khiva_eq(ctypes.pointer(self.arr_reference), ctypes.pointer(other.arr_reference),
                                                 ctypes.pointer(result), ctypes.pointer(error_code), error_message)
-        if error_code != 0:
+        if error_code.value != 0:
             raise Exception(str(error_message.value.decode()))
 
         return Array(array_reference=result)
@@ -753,7 +781,7 @@ class Array:
         error_message = ctypes.create_string_buffer(256)
         KhivaLibrary().c_khiva_library.khiva_ne(ctypes.pointer(self.arr_reference), ctypes.pointer(other.arr_reference),
                                                 ctypes.pointer(result), ctypes.pointer(error_code), error_message)
-        if error_code != 0:
+        if error_code.value != 0:
             raise Exception(str(error_message.value.decode()))
 
         return Array(array_reference=result)
@@ -768,7 +796,7 @@ class Array:
         KhivaLibrary().c_khiva_library.khiva_bitand(ctypes.pointer(self.arr_reference),
                                                     ctypes.pointer(other.arr_reference),
                                                     ctypes.pointer(result), ctypes.pointer(error_code), error_message)
-        if error_code != 0:
+        if error_code.value != 0:
             raise Exception(str(error_message.value.decode()))
 
         return Array(array_reference=result)
@@ -783,7 +811,7 @@ class Array:
         KhivaLibrary().c_khiva_library.khiva_bitand(ctypes.pointer(self.arr_reference),
                                                     ctypes.pointer(other.arr_reference),
                                                     ctypes.pointer(result), ctypes.pointer(error_code), error_message)
-        if error_code != 0:
+        if error_code.value != 0:
             raise Exception(str(error_message.value.decode()))
 
         return Array(array_reference=result)
@@ -798,7 +826,7 @@ class Array:
         KhivaLibrary().c_khiva_library.khiva_bitor(ctypes.pointer(self.arr_reference),
                                                    ctypes.pointer(other.arr_reference),
                                                    ctypes.pointer(result), ctypes.pointer(error_code), error_message)
-        if error_code != 0:
+        if error_code.value != 0:
             raise Exception(str(error_message.value.decode()))
 
         return Array(array_reference=result)
@@ -813,7 +841,7 @@ class Array:
         KhivaLibrary().c_khiva_library.khiva_bitor(ctypes.pointer(self.arr_reference),
                                                    ctypes.pointer(other.arr_reference),
                                                    ctypes.pointer(result), ctypes.pointer(error_code), error_message)
-        if error_code != 0:
+        if error_code.value != 0:
             raise Exception(str(error_message.value.decode()))
 
         return Array(array_reference=result)
@@ -828,7 +856,7 @@ class Array:
         KhivaLibrary().c_khiva_library.khiva_bitxor(ctypes.pointer(self.arr_reference),
                                                     ctypes.pointer(other.arr_reference),
                                                     ctypes.pointer(result), ctypes.pointer(error_code), error_message)
-        if error_code != 0:
+        if error_code.value != 0:
             raise Exception(str(error_message.value.decode()))
 
         return Array(array_reference=result)
@@ -843,7 +871,7 @@ class Array:
         KhivaLibrary().c_khiva_library.khiva_bitxor(ctypes.pointer(self.arr_reference),
                                                     ctypes.pointer(other.arr_reference),
                                                     ctypes.pointer(result), ctypes.pointer(error_code), error_message)
-        if error_code != 0:
+        if error_code.value != 0:
             raise Exception(str(error_message.value.decode()))
 
         return Array(array_reference=result)
@@ -857,7 +885,7 @@ class Array:
         error_message = ctypes.create_string_buffer(256)
         KhivaLibrary().c_khiva_library.khiva_bitshiftl(ctypes.pointer(self.arr_reference),
                                                        ctypes.pointer(ctypes.c_int32(other)), ctypes.pointer(result), ctypes.pointer(error_code), error_message)
-        if error_code != 0:
+        if error_code.value != 0:
             raise Exception(str(error_message.value.decode()))
 
         return Array(array_reference=result)
@@ -871,7 +899,7 @@ class Array:
         error_message = ctypes.create_string_buffer(256)
         KhivaLibrary().c_khiva_library.khiva_bitshiftl(ctypes.pointer(self.arr_reference),
                                                        ctypes.pointer(ctypes.c_int32(other)), ctypes.pointer(result), ctypes.pointer(error_code), error_message)
-        if error_code != 0:
+        if error_code.value != 0:
             raise Exception(str(error_message.value.decode()))
 
         return Array(array_reference=result)
@@ -885,7 +913,7 @@ class Array:
         error_message = ctypes.create_string_buffer(256)
         KhivaLibrary().c_khiva_library.khiva_bitshiftr(ctypes.pointer(self.arr_reference),
                                                        ctypes.pointer(ctypes.c_int32(other)), ctypes.pointer(result), ctypes.pointer(error_code), error_message)
-        if error_code != 0:
+        if error_code.value != 0:
             raise Exception(str(error_message.value.decode()))
 
         return Array(array_reference=result)
@@ -899,7 +927,7 @@ class Array:
         error_message = ctypes.create_string_buffer(256)
         KhivaLibrary().c_khiva_library.khiva_bitshiftr(ctypes.pointer(self.arr_reference),
                                                        ctypes.pointer(ctypes.c_int32(other)), ctypes.pointer(result), ctypes.pointer(error_code), error_message)
-        if error_code != 0:
+        if error_code.value != 0:
             raise Exception(str(error_message.value.decode()))
 
         return Array(array_reference=result)
@@ -925,7 +953,7 @@ class Array:
         error_message = ctypes.create_string_buffer(256)
         KhivaLibrary().c_khiva_library.khiva_not(ctypes.pointer(self.arr_reference), ctypes.pointer(result), ctypes.pointer(error_code), error_message)
 
-        if error_code != 0:
+        if error_code.value != 0:
             raise Exception(str(error_message.value.decode()))
 
         return Array(array_reference=result)
@@ -968,7 +996,7 @@ class Array:
         error_message = ctypes.create_string_buffer(256)
         KhivaLibrary().c_khiva_library.khiva_transpose(ctypes.pointer(self.arr_reference),
                                                        ctypes.pointer(ctypes.c_bool(conjugate)), ctypes.pointer(result), ctypes.pointer(error_code), error_message)
-        if error_code != 0:
+        if error_code.value != 0:
             raise Exception(str(error_message.value.decode()))
 
 
@@ -987,7 +1015,7 @@ class Array:
         KhivaLibrary().c_khiva_library.khiva_col(ctypes.pointer(self.arr_reference),
                                                  ctypes.pointer(ctypes.c_int32(index)),
                                                  ctypes.pointer(result), ctypes.pointer(error_code), error_message)
-        if error_code != 0:
+        if error_code.value != 0:
             raise Exception(str(error_message.value.decode()))
 
         return Array(array_reference=result)
@@ -1007,7 +1035,7 @@ class Array:
                                                   ctypes.pointer(ctypes.c_int32(first)),
                                                   ctypes.pointer(ctypes.c_int32(last)),
                                                   ctypes.pointer(result), ctypes.pointer(error_code), error_message)
-        if error_code != 0:
+        if error_code.value != 0:
             raise Exception(str(error_message.value.decode()))
 
         return Array(array_reference=result)
@@ -1025,7 +1053,7 @@ class Array:
         KhivaLibrary().c_khiva_library.khiva_row(ctypes.pointer(self.arr_reference),
                                                  ctypes.pointer(ctypes.c_int32(index)),
                                                  ctypes.pointer(result), ctypes.pointer(error_code), error_message)
-        if error_code != 0:
+        if error_code.value != 0:
             raise Exception(str(error_message.value.decode()))
 
         return Array(array_reference=result)
@@ -1045,7 +1073,7 @@ class Array:
                                                   ctypes.pointer(ctypes.c_int32(first)),
                                                   ctypes.pointer(ctypes.c_int32(last)),
                                                   ctypes.pointer(result), ctypes.pointer(error_code), error_message)
-        if error_code != 0:
+        if error_code.value != 0:
             raise Exception(str(error_message.value.decode()))
 
         return Array(array_reference=result)
@@ -1063,7 +1091,7 @@ class Array:
         KhivaLibrary().c_khiva_library.khiva_matmul(ctypes.pointer(self.arr_reference),
                                                     ctypes.pointer(other.arr_reference),
                                                     ctypes.pointer(result), ctypes.pointer(error_code), error_message)
-        if error_code != 0:
+        if error_code.value != 0:
             raise Exception(str(error_message.value.decode()))
 
         return Array(array_reference=result)
@@ -1079,7 +1107,7 @@ class Array:
         error_message = ctypes.create_string_buffer(256)
         KhivaLibrary().c_khiva_library.copy(ctypes.pointer(self.arr_reference), ctypes.pointer(result), ctypes.pointer(error_code), error_message)
 
-        if error_code != 0:
+        if error_code.value != 0:
             raise Exception(str(error_message.value.decode()))
 
         return Array(array_reference=result)
@@ -1097,7 +1125,7 @@ class Array:
         KhivaLibrary().c_khiva_library.khiva_as(ctypes.pointer(self.arr_reference),
                                                 ctypes.pointer(ctypes.c_int32(dtype.value)), ctypes.pointer(result), ctypes.pointer(error_code), error_message)
 
-        if error_code != 0:
+        if error_code.value != 0:
             raise Exception(str(error_message.value.decode()))
 
         self.khiva_type = self.get_type()

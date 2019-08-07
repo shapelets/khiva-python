@@ -32,7 +32,7 @@ def covariance(tss, unbiased=False):
     KhivaLibrary().c_khiva_library.covariance_statistics(ctypes.pointer(tss.arr_reference),
                                                          ctypes.pointer(ctypes.c_bool(unbiased)),
                                                          ctypes.pointer(b), ctypes.pointer(error_code), error_message)
-    if error_code != 0:
+    if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
 
     return Array(array_reference=b)
@@ -50,7 +50,7 @@ def kurtosis(tss):
     error_message = ctypes.create_string_buffer(256)
     KhivaLibrary().c_khiva_library.kurtosis_statistics(ctypes.pointer(tss.arr_reference),
                                                        ctypes.pointer(b), ctypes.pointer(error_code), error_message)
-    if error_code != 0:
+    if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
 
     return Array(array_reference=b)
@@ -89,7 +89,7 @@ def ljung_box(tss, lags):
     error_message = ctypes.create_string_buffer(256)
     KhivaLibrary().c_khiva_library.ljung_box(ctypes.pointer(tss.arr_reference), ctypes.pointer(ctypes.c_long(lags)),
                                              ctypes.pointer(ljung_box_out), ctypes.pointer(error_code), error_message)
-    if error_code != 0:
+    if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
 
     return Array(array_reference=ljung_box_out)
@@ -109,7 +109,7 @@ def moment(tss, k):
     KhivaLibrary().c_khiva_library.moment_statistics(ctypes.pointer(tss.arr_reference),
                                                      ctypes.pointer(ctypes.c_int(k)),
                                                      ctypes.pointer(b), ctypes.pointer(error_code), error_message)
-    if error_code != 0:
+    if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
 
     return Array(array_reference=b)
@@ -131,7 +131,7 @@ def quantile(tss, q, precision=1e8):
                                                        ctypes.pointer(q.arr_reference),
                                                        ctypes.pointer(ctypes.c_float(precision)),
                                                        ctypes.pointer(b), ctypes.pointer(error_code), error_message)
-    if error_code != 0:
+    if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
 
     return Array(array_reference=b)
@@ -154,7 +154,7 @@ def quantiles_cut(tss, quantiles, precision=1e-8):
                                                             ctypes.pointer(ctypes.c_float(quantiles)),
                                                             ctypes.pointer(ctypes.c_float(precision)),
                                                             ctypes.pointer(b), ctypes.pointer(error_code), error_message)
-    if error_code != 0:
+    if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
 
     return Array(array_reference=b)
@@ -172,7 +172,7 @@ def sample_stdev(tss):
     error_message = ctypes.create_string_buffer(256)
     KhivaLibrary().c_khiva_library.sample_stdev_statistics(ctypes.pointer(tss.arr_reference),
                                                            ctypes.pointer(b), ctypes.pointer(error_code), error_message)
-    if error_code != 0:
+    if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
 
     return Array(array_reference=b)
@@ -191,7 +191,7 @@ def skewness(tss):
     error_message = ctypes.create_string_buffer(256)
     KhivaLibrary().c_khiva_library.skewness_statistics(ctypes.pointer(tss.arr_reference),
                                                        ctypes.pointer(b), ctypes.pointer(error_code), error_message)
-    if error_code != 0:
+    if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
 
     return Array(array_reference=b)

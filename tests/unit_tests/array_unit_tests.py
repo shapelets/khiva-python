@@ -162,14 +162,12 @@ class ArrayTest(unittest.TestCase):
         c = a * b
         np.testing.assert_array_equal(c.to_numpy(), np.array([1, 4, 9, 16]))
 
-    def testTimes2(self):
-
+    def testTimesException(self):
         a = Array([1, 2, 3, 4, 5])
         b = Array([1, 2, 3, 4])
         with self.assertRaises(Exception) as context:
             c = a * b
         self.assertTrue("ArrayFire" in context.exception.args[0])
-
 
     def testMinus(self):
         a = Array([1, 2, 3, 4])
@@ -328,8 +326,15 @@ class ArrayTest(unittest.TestCase):
         a = Array([1, 2, 3, 4])
         self.assertEqual(len(a), 4)
 
+    def testIaddException(self):
+        with self.assertRaises(Exception) as cm:
+            a = Array([1, 2, 3, 4, 5])
+            b = Array([1, 2, 3, 4])
+            a += b
+        self.assertTrue("ArrayFire" in str(cm.exception))
+
     def testIadd(self):
-        a = Array([1, 2, 3, 4, 5])
+        a = Array([1, 2, 3, 4])
         b = Array([1, 2, 3, 4])
         a += b
         np.testing.assert_array_equal(a.to_numpy(), np.array([2, 4, 6, 8]))

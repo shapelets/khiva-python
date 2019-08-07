@@ -43,7 +43,7 @@ def find_best_n_discords(profile, index, m, n, self_join=False):
                                                         ctypes.pointer(c),
                                                         ctypes.pointer(d),
                                                         ctypes.pointer(ctypes.c_bool(self_join)), ctypes.pointer(error_code), error_message)
-    if error_code != 0:
+    if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
 
 
@@ -76,7 +76,7 @@ def find_best_n_motifs(profile, index, m, n, self_join=False):
                                                       ctypes.pointer(c),
                                                       ctypes.pointer(d),
                                                       ctypes.pointer(ctypes.c_bool(self_join)), ctypes.pointer(error_code), error_message)
-    if error_code != 0:
+    if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
 
 
@@ -113,7 +113,7 @@ def find_best_n_occurrences(query_time_series, time_series, number_of_occurrence
                                                            ctypes.pointer(ctypes.c_long(number_of_occurrences)),
                                                            ctypes.pointer(distances),
                                                            ctypes.pointer(indexes), ctypes.pointer(error_code), error_message)
-    if error_code != 0:
+    if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
 
 
@@ -144,7 +144,7 @@ def mass(query_time_series, time_series):
     KhivaLibrary().c_khiva_library.mass(ctypes.pointer(query_time_series.arr_reference),
                                                            ctypes.pointer(time_series.arr_reference),
                                                            ctypes.pointer(distances), ctypes.pointer(error_code), error_message)
-    if error_code != 0:
+    if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
 
 
@@ -174,7 +174,7 @@ def stomp(first_time_series, second_time_series, subsequence_length):
                                          ctypes.pointer(ctypes.c_long(subsequence_length)),
                                          ctypes.pointer(b),
                                          ctypes.pointer(c), ctypes.pointer(error_code), error_message)
-    if error_code != 0:
+    if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
 
 
@@ -202,6 +202,6 @@ def stomp_self_join(time_series, subsequence_length):
                                                    ctypes.pointer(ctypes.c_long(subsequence_length)),
                                                    ctypes.pointer(b),
                                                    ctypes.pointer(c), ctypes.pointer(error_code), error_message)
-    if error_code != 0:
+    if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
     return Array(array_reference=b), Array(array_reference=c)

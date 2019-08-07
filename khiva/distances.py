@@ -31,7 +31,7 @@ def euclidean(tss):
     error_code = ctypes.c_int(0)
     error_message = ctypes.create_string_buffer(256)
     KhivaLibrary().c_khiva_library.euclidean(ctypes.pointer(tss.arr_reference), ctypes.pointer(b), ctypes.pointer(error_code), error_message)
-    if error_code != 0:
+    if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
 
     return Array(array_reference=b)
@@ -50,7 +50,7 @@ def dtw(tss):
     error_code = ctypes.c_int(0)
     error_message = ctypes.create_string_buffer(256)
     KhivaLibrary().c_khiva_library.dtw(ctypes.pointer(tss.arr_reference), ctypes.pointer(b), ctypes.pointer(error_code), error_message)
-    if error_code != 0:
+    if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
 
     return Array(array_reference=b)
@@ -69,7 +69,7 @@ def hamming(tss):
     error_code = ctypes.c_int(0)
     error_message = ctypes.create_string_buffer(256)
     KhivaLibrary().c_khiva_library.hamming(ctypes.pointer(tss.arr_reference), ctypes.pointer(b), ctypes.pointer(error_code), error_message)
-    if error_code != 0:
+    if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
 
     return Array(array_reference=b)
@@ -88,7 +88,7 @@ def manhattan(tss):
     error_code = ctypes.c_int(0)
     error_message = ctypes.create_string_buffer(256)
     KhivaLibrary().c_khiva_library.manhattan(ctypes.pointer(tss.arr_reference), ctypes.pointer(b), ctypes.pointer(error_code), error_message)
-    if error_code != 0:
+    if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
 
     return Array(array_reference=b)
@@ -108,7 +108,7 @@ def sbd(tss):
     error_code = ctypes.c_int(0)
     error_message = ctypes.create_string_buffer(256)
     KhivaLibrary().c_khiva_library.sbd(ctypes.pointer(tss.arr_reference), ctypes.pointer(b), ctypes.pointer(error_code), error_message)
-    if error_code != 0:
+    if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
 
     return Array(array_reference=b)
@@ -127,7 +127,7 @@ def squared_euclidean(tss):
     error_code = ctypes.c_int(0)
     error_message = ctypes.create_string_buffer(256)
     KhivaLibrary().c_khiva_library.squared_euclidean(ctypes.pointer(tss.arr_reference), ctypes.pointer(b), ctypes.pointer(error_code), error_message)
-    if error_code != 0:
+    if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
 
     return Array(array_reference=b)

@@ -33,7 +33,7 @@ def lls(a, b):
     error_message = ctypes.create_string_buffer(256)
     KhivaLibrary().c_khiva_library.lls(ctypes.pointer(a.arr_reference), ctypes.pointer(b.arr_reference),
                                        ctypes.pointer(c), ctypes.pointer(error_code), error_message)
-    if error_code != 0:
+    if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
 
 

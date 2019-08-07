@@ -50,7 +50,7 @@ def linear(xss, yss):
                                           ctypes.pointer(e),
                                           ctypes.pointer(f)
                                           , ctypes.pointer(error_code), error_message)
-    if error_code != 0:
+    if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
 
     return Array(array_reference=b), Array(array_reference=c), Array(array_reference=d), Array(
