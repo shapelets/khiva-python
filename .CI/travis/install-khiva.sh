@@ -67,6 +67,7 @@ else
 fi
 
 # Export library path to $PATH
-export PATH=export PATH="${PATH}:/usr/local/lib"
+export PATH="/usr/local/lib:PATH"
+export LD_LIBRARY_PATH="/usr/local/lib:$LD_LIBRARY_PATH"
 
 
