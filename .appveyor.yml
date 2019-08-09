@@ -12,8 +12,8 @@ environment:
     AF_PATH: C:\Program Files\ArrayFire\v3
     KHIVA_PATH: C:\Program Files\Khiva\v0
     matrix:
-        - PATH: $(AF_PATH)\lib;$(KHIVA_PATH)\lib;C:\Python36-x64;C:\Python36-x64\Scripts;$(PATH)
-        - PATH: $(AF_PATH)\lib;$(KHIVA_PATH)\lib;C:\Python27-x64;C:\Python27-x64\Scripts;$(PATH)
+        - PATH: $(AF_PATH)\lib;$(KHIVA_PATH)\lib;C:\Python36-x64;C:\Python36-x64\Scripts;$(PATH);$(KHIVA_PATH)\lib
+        - PATH: $(AF_PATH)\lib;$(KHIVA_PATH)\lib;C:\Python27-x64;C:\Python27-x64\Scripts;$(PATH);$(KHIVA_PATH)\lib
 cache:
     - c:\tools\vcpkg\installed
     - C:\Program Files\ArrayFire

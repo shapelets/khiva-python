@@ -27,7 +27,7 @@ class KhivaLibrary(object):
                 if platform.system() == 'Darwin':
                     self.c_khiva_library = ctypes.CDLL('libkhiva_c.dylib')
                 elif platform.system() == 'Windows':
-                    self.c_khiva_library = ctypes.CDLL('C:/Program Files/Khiva/v0/lib/khiva_c.dll')
+                    self.c_khiva_library = ctypes.CDLL('khiva_c.dll')
                 elif platform.system() == 'Linux':
                     self.c_khiva_library = ctypes.CDLL('libkhiva_c.so')
             except:
