@@ -66,4 +66,7 @@ else
     cd ..
 fi
 
+# Export library path to $PATH
+export PATH=export PATH="${PATH}:/usr/local/lib"
+
 
