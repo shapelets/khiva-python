@@ -31,9 +31,7 @@ class KhivaLibrary(object):
                 elif platform.system() == 'Linux':
                     self.c_khiva_library = ctypes.CDLL('libkhiva_c.so')
             except:
-                logging.error(
-                    "Khiva C++ library is required in order to use the Python Khiva library")
-                sys.exit(1)
+                raise Exception("Khiva C++ library is required in order to use the Python Khiva library")
 
     instance = None
 
