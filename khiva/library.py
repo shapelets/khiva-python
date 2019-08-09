@@ -77,7 +77,14 @@ def get_backend_info():
     :return: A string with information from the current backend.
     """
     info_pointer = ctypes.c_char_p((" " * 1000).encode('utf8'))
-    KhivaLibrary().c_khiva_library.backend_info(ctypes.pointer(info_pointer))
+    error_code = ctypes.c_int(0)
+    error_message = ctypes.create_string_buffer(256)
+    KhivaLibrary().c_khiva_library.backend_info(ctypes.pointer(info_pointer),
+                                                ctypes.pointer(error_code),
+                                                error_message)
+
+    if error_code.value != 0:
+        raise Exception(str(error_message.value.decode()))
     return info_pointer.value.decode('utf8')
 
 
@@ -86,7 +93,14 @@ def set_backend(backend):
 
     :param backend: The desired backend. KHIVABackend type.
     """
-    KhivaLibrary().c_khiva_library.set_backend(ctypes.pointer(ctypes.c_int(backend.value)))
+    error_code = ctypes.c_int(0)
+    error_message = ctypes.create_string_buffer(256)
+    KhivaLibrary().c_khiva_library.set_backend(ctypes.pointer(ctypes.c_int(backend.value)),
+                                                ctypes.pointer(error_code),
+                                                error_message)
+
+    if error_code.value != 0:
+        raise Exception(str(error_message.value.decode()))
 
 
 def get_backend():
@@ -95,7 +109,14 @@ def get_backend():
     :return: The active backend. KHIVABackend type.
     """
     backend = (ctypes.c_int * 1)(*[0])
-    KhivaLibrary().c_khiva_library.get_backend(ctypes.pointer(backend))
+    error_code = ctypes.c_int(0)
+    error_message = ctypes.create_string_buffer(256)
+    KhivaLibrary().c_khiva_library.get_backend(ctypes.pointer(backend),
+                                                ctypes.pointer(error_code),
+                                                error_message)
+
+    if error_code.value != 0:
+        raise Exception(str(error_message.value.decode()))
 
     return KHIVABackend(backend[0])
 
@@ -106,7 +127,14 @@ def get_backends():
     :return: The available backends.
     """
     backends = (ctypes.c_int * 1)(*[0])
-    KhivaLibrary().c_khiva_library.get_backends(ctypes.pointer(backends))
+    error_code = ctypes.c_int(0)
+    error_message = ctypes.create_string_buffer(256)
+    KhivaLibrary().c_khiva_library.get_backends(ctypes.pointer(backends),
+                                                ctypes.pointer(error_code),
+                                                error_message)
+
+    if error_code.value != 0:
+        raise Exception(str(error_message.value.decode()))
     return backends[0]
 
 
@@ -115,7 +143,14 @@ def set_device(device):
 
     :param device: The desired device.
     """
-    KhivaLibrary().c_khiva_library.set_device(ctypes.pointer(ctypes.c_int(device)))
+    error_code = ctypes.c_int(0)
+    error_message = ctypes.create_string_buffer(256)
+    KhivaLibrary().c_khiva_library.set_device(ctypes.pointer(ctypes.c_int(device)),
+                                                ctypes.pointer(error_code),
+                                                error_message)
+
+    if error_code.value != 0:
+        raise Exception(str(error_message.value.decode()))
 
 
 def get_device_id():
@@ -124,7 +159,14 @@ def get_device_id():
     :return: The active device.
     """
     device = (ctypes.c_int * 1)(*[0])
-    KhivaLibrary().c_khiva_library.get_device_id(ctypes.pointer(device))
+    error_code = ctypes.c_int(0)
+    error_message = ctypes.create_string_buffer(256)
+    KhivaLibrary().c_khiva_library.get_device_id(ctypes.pointer(device),
+                                                ctypes.pointer(error_code),
+                                                error_message)
+
+    if error_code.value != 0:
+        raise Exception(str(error_message.value.decode()))
     return device[0]
 
 
@@ -134,7 +176,14 @@ def get_device_count():
     :return: The devices count.
     """
     device_count = (ctypes.c_int * 1)(*[0])
-    KhivaLibrary().c_khiva_library.get_device_count(ctypes.pointer(device_count))
+    error_code = ctypes.c_int(0)
+    error_message = ctypes.create_string_buffer(256)
+    KhivaLibrary().c_khiva_library.get_device_count(ctypes.pointer(device_count),
+                                                ctypes.pointer(error_code),
+                                                error_message)
+
+    if error_code.value != 0:
+        raise Exception(str(error_message.value.decode()))
     return device_count[0]
 
 
@@ -144,5 +193,13 @@ def version():
     :return: A string with the current version of the library.
     """
     v = ctypes.c_char_p((" " * 40).encode('utf8'))
-    KhivaLibrary().c_khiva_library.version(ctypes.pointer(v))
+    error_code = ctypes.c_int(0)
+    error_message = ctypes.create_string_buffer(256)
+    KhivaLibrary().c_khiva_library.version(ctypes.pointer(v),
+                                                ctypes.pointer(error_code),
+                                                error_message)
+
+    if error_code.value != 0:
+        raise Exception(str(error_message.value.decode()))
+
     return v.value.decode('utf8')

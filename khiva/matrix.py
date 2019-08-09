@@ -142,8 +142,9 @@ def mass(query_time_series, time_series):
     error_code = ctypes.c_int(0)
     error_message = ctypes.create_string_buffer(256)
     KhivaLibrary().c_khiva_library.mass(ctypes.pointer(query_time_series.arr_reference),
-                                                           ctypes.pointer(time_series.arr_reference),
-                                                           ctypes.pointer(distances), ctypes.pointer(error_code), error_message)
+                                        ctypes.pointer(time_series.arr_reference),
+                                        ctypes.pointer(distances),
+                                        ctypes.pointer(error_code), error_message)
     if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
 
@@ -224,11 +225,16 @@ def matrix_profile(first_time_series, second_time_series, subsequence_length):
     b = ctypes.c_void_p(0)
     c = ctypes.c_void_p(0)
 
+    error_code = ctypes.c_int(0)
+    error_message = ctypes.create_string_buffer(256)
     KhivaLibrary().c_khiva_library.matrix_profile(ctypes.pointer(first_time_series.arr_reference),
                                                   ctypes.pointer(second_time_series.arr_reference),
                                                   ctypes.pointer(ctypes.c_long(subsequence_length)),
                                                   ctypes.pointer(b),
-                                                  ctypes.pointer(c))
+                                                  ctypes.pointer(c),
+                                                  ctypes.pointer(error_code), error_message)
+    if error_code.value != 0:
+        raise Exception(str(error_message.value.decode()))
 
     return Array(array_reference=b), Array(array_reference=c)
 
@@ -248,10 +254,15 @@ def matrix_profile_self_join(time_series, subsequence_length):
     b = ctypes.c_void_p(0)
     c = ctypes.c_void_p(0)
 
+    error_code = ctypes.c_int(0)
+    error_message = ctypes.create_string_buffer(256)
     KhivaLibrary().c_khiva_library.matrix_profile_self_join(ctypes.pointer(time_series.arr_reference),
                                                             ctypes.pointer(ctypes.c_long(subsequence_length)),
                                                             ctypes.pointer(b),
-                                                            ctypes.pointer(c))
+                                                            ctypes.pointer(c),
+                                                            ctypes.pointer(error_code), error_message)
+    if error_code.value != 0:
+        raise Exception(str(error_message.value.decode()))
 
     return Array(array_reference=b), Array(array_reference=c)
 
@@ -277,8 +288,13 @@ def get_chains(time_series, subsequence_length):
     """
     c = ctypes.c_void_p(0)
 
+    error_code = ctypes.c_int(0)
+    error_message = ctypes.create_string_buffer(256)
     KhivaLibrary().c_khiva_library.get_chains(ctypes.pointer(time_series.arr_reference),
                                               ctypes.pointer(ctypes.c_long(subsequence_length)),
-                                              ctypes.pointer(c))
+                                              ctypes.pointer(c),
+                                              ctypes.pointer(error_code), error_message)
+    if error_code.value != 0:
+        raise Exception(str(error_message.value.decode()))
 
     return Array(array_reference=c)
