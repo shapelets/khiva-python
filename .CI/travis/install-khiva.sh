@@ -65,9 +65,3 @@ else
     cd ..
     cd ..
 fi
-
-# Export library path to $PATH
-export PATH="/usr/local/lib:$PATH"
-export LD_LIBRARY_PATH="/usr/local/lib:$LD_LIBRARY_PATH"
-
-

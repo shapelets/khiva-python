@@ -2,3 +2,4 @@ pandas == 0.25.0
 numpy == 1.17.0
 arrayfire == 3.6.20181017
 enum34 == 1.1.6
+pylzma == 0.5.0
