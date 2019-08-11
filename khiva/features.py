@@ -1031,10 +1031,11 @@ def partial_autocorrelation(arr, lags):
     error_message = ctypes.create_string_buffer(256)
     KhivaLibrary().c_khiva_library.partial_autocorrelation(ctypes.pointer(arr.arr_reference),
                                                            ctypes.pointer(lags.arr_reference),
-                                                           ctypes.pointer(b), ctypes.pointer(error_code), error_message)
+                                                           ctypes.pointer(b),
+                                                           ctypes.pointer(error_code),
+                                                           error_message)
     if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
-
 
     return Array(array_reference=b)
 
