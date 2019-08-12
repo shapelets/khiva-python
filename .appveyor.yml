@@ -12,7 +12,7 @@ environment:
     AF_PATH: C:\Program Files\ArrayFire\v3
     KHIVA_PATH: C:\Program Files\Khiva\v0
     matrix:
-        - PATH: $(AF_PATH)\lib;$(KHIVA_PATH)\lib;C:\Python36-x64;C:\Python36-x64\Scripts;;$(PATH)
+        - PATH: $(AF_PATH)\lib;$(KHIVA_PATH)\lib;C:\Python36-x64;C:\Python36-x64\Scripts;$(PATH)
 cache:
     - c:\tools\vcpkg\installed
     - C:\Program Files\ArrayFire
@@ -35,7 +35,7 @@ before_build:
             git submodule -q update --init;
             mkdir build;
             cd build;
-            cmake .. -DCMAKE_TOOLCHAIN_FILE=c:/tools/vcpkg/scripts/buildsystems/vcpkg.cmake -DBOOST_ROOT="$($env:BOOST_PATH)" -DKHIVA_USE_CONAN=OFF -DKHIVA_BUILD_DOCUMENTATION=OFF -DKHIVA_BUILD_BENCHMARKS=OFF -DKHIVA_ONLY_CPU_BACKEND=ON -G"$env:GENERATOR";
+            cmake .. -DCMAKE_TOOLCHAIN_FILE=c:/tools/vcpkg/scripts/buildsystems/vcpkg.cmake -DBOOST_ROOT="$($env:BOOST_PATH)" -DKHIVA_USE_CONAN=OFF -DKHIVA_BUILD_DOCUMENTATION=OFF -DKHIVA_BUILD_BENCHMARKS=OFF -DKHIVA_BUILD_EXAMPLES=OFF -DKHIVA_BUILD_TESTS=OFF -DKHIVA_ONLY_CPU_BACKEND=ON -G"$env:GENERATOR";
           }
     - cmake --build . --config Release -- /m
     - cmake --build . --config Release --target INSTALL
