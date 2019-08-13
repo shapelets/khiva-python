@@ -29,7 +29,7 @@ before_build:
             if(!(Test-Path -Path "C:\Program Files\Khiva" )){ appveyor DownloadFile "https://github.com/shapelets/khiva/releases/download/v0.2.0/khiva-v0.2.0-unattended.exe" -FileName khiva-v0.2.0-unattended.exe };
             if(!(Test-Path -Path "C:\Program Files\Khiva" )){ .\khiva-v0.2.0-unattended.exe /S };
           }else{
-            git clone -q -b fix/EigenCI  https://github.com/shapelets/khiva.git C:\khiva-library;
+            git clone -q https://github.com/shapelets/khiva.git C:\khiva-library;
 
             cd C:\khiva-library;
             git submodule -q update --init;
