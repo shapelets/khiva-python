@@ -267,6 +267,44 @@ def matrix_profile_self_join(time_series, subsequence_length):
     return Array(array_reference=b), Array(array_reference=c)
 
 
+def matrix_profile_lr(time_series, subsequence_length):
+    """ Calculate Calculate the matrix profile to the left and to the right for 'time_series' using a subsequence length of 'subsequence_length'.
+
+    [1] Yan Zhu, Makoto Imamura, Daniel Nikovski, and Eamonn Keogh. Matrix Profile VII: Time Series Chains: A New
+    Primitive for Time Series Data Mining. IEEE ICDM 2017
+
+    :param time_series Time series to compute the matrix profile.
+    :param subsequence_length Subsequence length.
+    :return KHIVA arrays with:
+       - Left profile.
+       - Left subsequence indexes.
+       - Right profile.
+       - Right subsequence indexes.
+
+    Notice that when there is no match the subsequence index is the length of time_series.
+    """
+    pl = ctypes.c_void_p(0)
+    il = ctypes.c_void_p(0)
+    pr = ctypes.c_void_p(0)
+    ir = ctypes.c_void_p(0)
+
+    error_code = ctypes.c_int(0)
+    error_message = ctypes.create_string_buffer(256)
+
+    KhivaLibrary().c_khiva_library.matrix_profile_lr(ctypes.pointer(time_series.arr_reference),
+                                                            ctypes.pointer(ctypes.c_long(subsequence_length)),
+                                                            ctypes.pointer(pl),
+                                                            ctypes.pointer(il),
+                                                            ctypes.pointer(pr),
+                                                            ctypes.pointer(ir),
+                                                            ctypes.pointer(error_code), error_message)
+
+    if error_code.value != 0:
+        raise Exception(str(error_message.value.decode()))
+
+    return Array(array_reference=pl), Array(array_reference=il), Array(array_reference=pr), Array(array_reference=ir)
+
+
 def get_chains(time_series, subsequence_length):
     """ Calculate all the chains within `tss` using a subsequence length of `m`.
 
