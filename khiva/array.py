@@ -306,9 +306,9 @@ class Array:
         """
         try:
             import arrayfire as af
-        except ModuleNotFoundError:
-            logging.error("In order to use `to_arrayfire()` function, you need to install the Arrayfire Python library")
-            sys.exit(1)
+        except ModuleNotFoundError as e:
+            raise ModuleNotFoundError(f"{e}. In order to use `to_arrayfire()` function, you need to install the Arrayfire Python library.")
+
         result = af.Array()
         result.arr = self.arr_reference
         self.arrayfire_reference = True
