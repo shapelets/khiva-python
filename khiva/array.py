@@ -307,7 +307,7 @@ class Array:
         try:
             import arrayfire as af
         except ModuleNotFoundError as e:
-            raise ModuleNotFoundError(f"{e}. In order to use `to_arrayfire()` function, you need to install the Arrayfire Python library.")
+            raise ModuleNotFoundError("{}. In order to use `to_arrayfire()` function, you need to install the Arrayfire Python library.".format(e))
 
         result = af.Array()
         result.arr = self.arr_reference
