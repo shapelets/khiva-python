@@ -13,9 +13,9 @@ environment:
     KHIVA_PATH: C:\Program Files\Khiva\v0
     PATH: $(AF_PATH)\lib;$(KHIVA_PATH)\lib;$(PATH)
     matrix:
-        - PYTHON=C:\Python36-x64;C:\Python36-x64\Scripts
-        - PYTHON=C:\Python37-x64;C:\Python37-x64\Scripts
-        - PYTHON=C:\Python38-x64;C:\Python38-x64\Scripts
+        - PYTHON: "C:\\Python36-x64;C:\\Python36-x64\\Scripts"
+        - PYTHON: "C:\\Python37-x64;C:\\Python37-x64\\Scripts"
+        - PYTHON: "C:\\Python38-x64;C:\\Python38-x64\\Scripts"
 cache:
     - C:\tools\vcpkg\installed
     - C:\Program Files\ArrayFire
