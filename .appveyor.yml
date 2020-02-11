@@ -23,7 +23,7 @@ before_build:
     - ps: systeminfo
     - ps: if(!(Test-Path -Path "C:\Program Files\ArrayFire" )){
         Start-FileDownload "http://arrayfire.s3.amazonaws.com/3.6.2/ArrayFire-v3.6.2.exe";
-        ArrayFire-v3.6.2.exe /S; }
+        .\ArrayFire-v3.6.2.exe /S; }
     - ps: dir "%AF_PATH%\lib\"
     - ps: vcpkg install --triplet x64-windows gtest eigen3
     - ps: if ($env:INSTALL_KHIVA_METHOD -eq "installer"){
