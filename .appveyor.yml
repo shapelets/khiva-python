@@ -9,10 +9,10 @@ image:
 environment:
     GENERATOR: "Visual Studio 15 Win64"
     BOOST_PATH: C:\Libraries\boost_1_67_0
-    AF_PATH: C:\Program Files\ArrayFire\v3
+    # AF_PATH: C:\Program Files\ArrayFire\v3
     KHIVA_PATH: C:\Program Files\Khiva\v0
     matrix:
-        - PATH: $(AF_PATH)\lib;$(KHIVA_PATH)\lib;C:\Python36-x64;C:\Python36-x64\Scripts;$(PATH)
+        - PATH: $(KHIVA_PATH)\lib;C:\Python36-x64;C:\Python36-x64\Scripts;$(PATH)
 cache:
     - c:\tools\vcpkg\installed
     - C:\Program Files\ArrayFire
@@ -24,7 +24,8 @@ before_build:
     - ps: if(!(Test-Path -Path "C:\Program Files\ArrayFire" )){
         Start-FileDownload "http://arrayfire.s3.amazonaws.com/3.6.2/ArrayFire-v3.6.2.exe";
         .\ArrayFire-v3.6.2.exe /S; }
-    - ps: dir "%AF_PATH%\lib\"
+    - ps: dir "$env:AF_PATH\lib\"
+    - ps: echo $env:PATH
     - ps: vcpkg install --triplet x64-windows gtest eigen3
     - ps: if ($env:INSTALL_KHIVA_METHOD -eq "installer"){
             if(!(Test-Path -Path "C:\Program Files\Khiva" )){ appveyor DownloadFile "https://github.com/shapelets/khiva/releases/download/v0.2.0/khiva-v0.2.0-unattended.exe" -FileName khiva-v0.2.0-unattended.exe };
