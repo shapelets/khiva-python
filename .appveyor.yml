@@ -21,12 +21,11 @@ platform:
     - x64
 before_build:
     - ps: systeminfo
-    - ps: if(!(Test-Path -Path "C:\Program Files\ArrayFire" )){ appveyor DownloadFile "http://arrayfire.s3.amazonaws.com/3.6.2/ArrayFire-v3.6.2.exe" -FileName ArrayFire-v3.6.2.exe }
-    - ps: if(!(Test-Path -Path "C:\Program Files\ArrayFire" )){ ArrayFire-v3.6.2.exe /S }
+    - ps: if(!(Test-Path -Path "C:\Program Files\ArrayFire" )){
+        Start-FileDownload "http://arrayfire.s3.amazonaws.com/3.6.2/ArrayFire-v3.6.2.exe";
+        ArrayFire-v3.6.2.exe /S; }
     - ps: dir "%AF_PATH%\lib\"
-    # - reg add HKCU\Software\Kitware\CMake\Packages\ArrayFire /v ArrayFire_CMake_DIR /d "C:\Program Files\ArrayFire\v3\cmake" /f
-    - vcpkg install --triplet x64-windows gtest eigen3
-
+    - ps: vcpkg install --triplet x64-windows gtest eigen3
     - ps: if ($env:INSTALL_KHIVA_METHOD -eq "installer"){
             if(!(Test-Path -Path "C:\Program Files\Khiva" )){ appveyor DownloadFile "https://github.com/shapelets/khiva/releases/download/v0.2.0/khiva-v0.2.0-unattended.exe" -FileName khiva-v0.2.0-unattended.exe };
             if(!(Test-Path -Path "C:\Program Files\Khiva" )){ .\khiva-v0.2.0-unattended.exe /S };
