@@ -24,7 +24,7 @@ platform:
     - x64
 before_build:
     - ps: systeminfo
-    - ps: $env:PATH=$env:PYTHON;$env:PATH
+    - ps: $env:PATH="$env:PYTHON;$env:PATH"
     - ps: echo $env:PATH
     - ps: python --version
     - ps: if(!(Test-Path -Path "C:\Program Files\ArrayFire" )){ appveyor DownloadFile "http://arrayfire.s3.amazonaws.com/3.6.2/ArrayFire-v3.6.2.exe"};
