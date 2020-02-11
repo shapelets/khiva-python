@@ -14,8 +14,8 @@ environment:
     PATH: $(AF_PATH)\lib;$(KHIVA_PATH)\lib;$(PATH)
     matrix:
         - PYTHON: "C:\\Python36-x64;C:\\Python36-x64\\Scripts"
-        - PYTHON: "C:\\Python37-x64;C:\\Python37-x64\\Scripts"
-        - PYTHON: "C:\\Python38-x64;C:\\Python38-x64\\Scripts"
+        # - PYTHON: "C:\\Python37-x64;C:\\Python37-x64\\Scripts"
+        # - PYTHON: "C:\\Python38-x64;C:\\Python38-x64\\Scripts"
 cache:
     - C:\tools\vcpkg\installed
     - C:\Program Files\ArrayFire
@@ -27,6 +27,7 @@ before_build:
     - ps: $env:PATH="$env:PYTHON;$env:PATH"
     - ps: echo $env:PATH
     - ps: python --version
+    - ps: python -m pip install --upgrade pip
     - ps: if(!(Test-Path -Path "C:\Program Files\ArrayFire" )){ appveyor DownloadFile "http://arrayfire.s3.amazonaws.com/3.6.2/ArrayFire-v3.6.2.exe"};
     - ps: if(!(Test-Path -Path "C:\Program Files\ArrayFire" )){ .\ArrayFire-v3.6.2.exe /S };
     - ps: vcpkg install --triplet x64-windows gtest eigen3
@@ -44,18 +45,18 @@ before_build:
           }
     - ps: cmake --build . --config Release --target INSTALL -- /m
     - ps: cd C:\khiva-python
-    - ps: pip install -r requirements.txt
-    - ps: pip install -r test-requirements.txt
-    - ps: pip install codecov
+    - ps: python -m pip install -r requirements.txt
+    - ps: python -m pip install -r test-requirements.txt
+    - ps: python -m pip install codecov
 build_script:
     - ps: python --version
     - ps: python setup.py install
 test_script:
     - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
-    - ps: coverage run -m unittest discover tests/unit_tests *_tests.py -f -v
-    - ps: python -m xmlrunner discover tests/unit_tests *_tests.py
+    - coverage run -m unittest discover tests/unit_tests *_tests.py -f -v
+    - python -m xmlrunner discover tests/unit_tests *_tests.py
 on_finish:    
-    - ps: codecov -F Windows -X gcov
+    - codecov -F Windows -X gcov
     - ps: |
         $files = Get-ChildItem -Path . -File -Filter *.xml
         foreach ($file in $files) {
