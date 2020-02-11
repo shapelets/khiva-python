@@ -19,6 +19,7 @@ environment:
 cache:
     - C:\tools\vcpkg\installed
     - C:\Program Files\ArrayFire
+    - C:\Program Files\Khiva
 clone_folder: C:\khiva-python
 platform:
     - x64
