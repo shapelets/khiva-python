@@ -38,9 +38,8 @@ before_build:
             cd build;
             cmake .. -DCMAKE_TOOLCHAIN_FILE=c:/tools/vcpkg/scripts/buildsystems/vcpkg.cmake -DBOOST_ROOT="$($env:BOOST_PATH)" -DKHIVA_USE_CONAN=OFF -DKHIVA_BUILD_DOCUMENTATION=OFF -DKHIVA_BUILD_BENCHMARKS=OFF -DKHIVA_BUILD_EXAMPLES=OFF -DKHIVA_BUILD_TESTS=OFF -DKHIVA_ONLY_CPU_BACKEND=ON -G"$env:GENERATOR";
           }
-    - cmake --build . --config Release -- /m
-    - cmake --build . --config Release --target INSTALL
-
+    - cmake --build . --config Release --target INSTALL -- /m
+    - dir $env:AF_PATH/lib
     - cd C:\khiva-python
     - pip install -r requirements.txt
     - pip install -r test-requirements.txt
