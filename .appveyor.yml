@@ -39,20 +39,17 @@ before_build:
             cmake .. -DCMAKE_TOOLCHAIN_FILE=c:/tools/vcpkg/scripts/buildsystems/vcpkg.cmake -DBOOST_ROOT="$($env:BOOST_PATH)" -DKHIVA_USE_CONAN=OFF -DKHIVA_BUILD_DOCUMENTATION=OFF -DKHIVA_BUILD_BENCHMARKS=OFF -DKHIVA_BUILD_EXAMPLES=OFF -DKHIVA_BUILD_TESTS=OFF -DKHIVA_ONLY_CPU_BACKEND=ON -G"$env:GENERATOR";
           }
     - cmake --build . --config Release --target INSTALL -- /m
-    - dir $env:AF_PATH/lib
     - cd C:\khiva-python
     - pip install -r requirements.txt
     - pip install -r test-requirements.txt
     - pip install codecov
 build_script:
     - python setup.py install
-# init:
-#     - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
 test_script:
+    - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
     - coverage run -m unittest discover tests/unit_tests *_tests.py -f -v
     - python -m xmlrunner discover tests/unit_tests *_tests.py
-on_finish:
-    - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+on_finish:    
     - codecov -F Windows -X gcov
     - ps: |
         $files = Get-ChildItem -Path . -File -Filter *.xml
