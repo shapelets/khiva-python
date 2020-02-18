@@ -38,7 +38,7 @@ else
      if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
         pip install conan
      else
-        pip${PYTHON_VERSION} install conan==1.6.1
+        pip${PYTHON_VERSION} install conan==1.22.2
      fi
 
     # Cloning Github repo into khiva-library folder
