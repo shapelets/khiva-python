@@ -7,8 +7,8 @@
 image:
     - Visual Studio 2017
 environment:
-    GENERATOR: "Visual Studio 15 Win64"
-    BOOST_PATH: C:\Libraries\boost_1_67_0
+    GENERATOR: "Visual Studio 15 2017 Win64"
+    BOOST_PATH: C:\Libraries\boost_1_69_0
     AF_PATH: C:\Program Files\ArrayFire\v3
     KHIVA_PATH: C:\Program Files\Khiva\v0
     PATH: $(AF_PATH)\lib;$(KHIVA_PATH)\lib;$(PATH)
@@ -41,7 +41,7 @@ before_build:
             git submodule -q update --init;
             mkdir build;
             cd build;
-            cmake .. -DCMAKE_TOOLCHAIN_FILE=c:/tools/vcpkg/scripts/buildsystems/vcpkg.cmake -DBOOST_ROOT="$($env:BOOST_PATH)" -DKHIVA_USE_CONAN=OFF -DKHIVA_BUILD_DOCUMENTATION=OFF -DKHIVA_BUILD_BENCHMARKS=OFF -DKHIVA_BUILD_EXAMPLES=OFF -DKHIVA_BUILD_TESTS=OFF -DKHIVA_ONLY_CPU_BACKEND=ON -G"$env:GENERATOR";
+            cmake .. -G"$env:GENERATOR" -DArrayFire_DIR="$env:AF_PATH/cmake" -DCMAKE_TOOLCHAIN_FILE=c:/tools/vcpkg/scripts/buildsystems/vcpkg.cmake -DBOOST_ROOT="$env:BOOST_PATH" -DKHIVA_USE_CONAN=OFF -DKHIVA_BUILD_DOCUMENTATION=OFF -DKHIVA_BUILD_BENCHMARKS=OFF -DKHIVA_BUILD_EXAMPLES=OFF -DKHIVA_BUILD_TESTS=OFF -DKHIVA_ONLY_CPU_BACKEND=ON;
           }
     - ps: cmake --build . --config Release --target INSTALL -- /m    
     - ps: cd C:\khiva-python
@@ -55,7 +55,7 @@ test_script:
     - coverage run -m unittest discover tests/unit_tests *_tests.py -f -v
     - python -m xmlrunner discover tests/unit_tests *_tests.py
 on_finish:
-    - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))    
+    #- ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))    
     - codecov -F Windows -X gcov
     - ps: |
         $files = Get-ChildItem -Path . -File -Filter *.xml
