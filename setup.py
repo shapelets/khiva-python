@@ -26,6 +26,5 @@ setup(
     description="Python bindings for khiva",
     license="MPL 2.0",
     url="http://shapelets.io",
-    packages=find_packages(),
-    zip_safe=True
+    packages=find_packages()
 )
