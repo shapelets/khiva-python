@@ -21,11 +21,10 @@ setup(
     author="Shapelets.io",
     author_email="dev@shapelets.io",
     name="khiva",
-    version='0.3.5',
+    version='0.5.0',
     long_description = LONG_DESC,
     description="Python bindings for khiva",
     license="MPL 2.0",
     url="http://shapelets.io",
-    packages=find_packages(),
-    zip_safe=True
+    packages=find_packages()
 )
