@@ -27,9 +27,14 @@ def covariance(tss, unbiased=False):
     :return: The covariance matrix of the time series.
     """
     b = ctypes.c_void_p(0)
+    error_code = ctypes.c_int(0)
+    error_message = ctypes.create_string_buffer(256)
     KhivaLibrary().c_khiva_library.covariance_statistics(ctypes.pointer(tss.arr_reference),
                                                          ctypes.pointer(ctypes.c_bool(unbiased)),
-                                                         ctypes.pointer(b))
+                                                         ctypes.pointer(b), ctypes.pointer(error_code), error_message)
+    if error_code.value != 0:
+        raise Exception(str(error_message.value.decode()))
+
     return Array(array_reference=b)
 
 
@@ -41,8 +46,13 @@ def kurtosis(tss):
     :return: The kurtosis of tss.
     """
     b = ctypes.c_void_p(0)
+    error_code = ctypes.c_int(0)
+    error_message = ctypes.create_string_buffer(256)
     KhivaLibrary().c_khiva_library.kurtosis_statistics(ctypes.pointer(tss.arr_reference),
-                                                       ctypes.pointer(b))
+                                                       ctypes.pointer(b), ctypes.pointer(error_code), error_message)
+    if error_code.value != 0:
+        raise Exception(str(error_message.value.decode()))
+
     return Array(array_reference=b)
 
 
@@ -75,8 +85,13 @@ def ljung_box(tss, lags):
     :return: Array containing the Ljung-Box statistic test.
     """
     ljung_box_out = ctypes.c_void_p(0)
+    error_code = ctypes.c_int(0)
+    error_message = ctypes.create_string_buffer(256)
     KhivaLibrary().c_khiva_library.ljung_box(ctypes.pointer(tss.arr_reference), ctypes.pointer(ctypes.c_long(lags)),
-                                             ctypes.pointer(ljung_box_out))
+                                             ctypes.pointer(ljung_box_out), ctypes.pointer(error_code), error_message)
+    if error_code.value != 0:
+        raise Exception(str(error_message.value.decode()))
+
     return Array(array_reference=ljung_box_out)
 
 
@@ -89,9 +104,14 @@ def moment(tss, k):
     :return: The kth moment of the given time series.
     """
     b = ctypes.c_void_p(0)
+    error_code = ctypes.c_int(0)
+    error_message = ctypes.create_string_buffer(256)
     KhivaLibrary().c_khiva_library.moment_statistics(ctypes.pointer(tss.arr_reference),
                                                      ctypes.pointer(ctypes.c_int(k)),
-                                                     ctypes.pointer(b))
+                                                     ctypes.pointer(b), ctypes.pointer(error_code), error_message)
+    if error_code.value != 0:
+        raise Exception(str(error_message.value.decode()))
+
     return Array(array_reference=b)
 
 
@@ -105,10 +125,15 @@ def quantile(tss, q, precision=1e8):
     :return: Values at the given quantile.
     """
     b = ctypes.c_void_p(0)
+    error_code = ctypes.c_int(0)
+    error_message = ctypes.create_string_buffer(256)
     KhivaLibrary().c_khiva_library.quantile_statistics(ctypes.pointer(tss.arr_reference),
                                                        ctypes.pointer(q.arr_reference),
                                                        ctypes.pointer(ctypes.c_float(precision)),
-                                                       ctypes.pointer(b))
+                                                       ctypes.pointer(b), ctypes.pointer(error_code), error_message)
+    if error_code.value != 0:
+        raise Exception(str(error_message.value.decode()))
+
     return Array(array_reference=b)
 
 
@@ -123,10 +148,15 @@ def quantiles_cut(tss, quantiles, precision=1e-8):
             the end in the second category.
     """
     b = ctypes.c_void_p(0)
+    error_code = ctypes.c_int(0)
+    error_message = ctypes.create_string_buffer(256)
     KhivaLibrary().c_khiva_library.quantiles_cut_statistics(ctypes.pointer(tss.arr_reference),
                                                             ctypes.pointer(ctypes.c_float(quantiles)),
                                                             ctypes.pointer(ctypes.c_float(precision)),
-                                                            ctypes.pointer(b))
+                                                            ctypes.pointer(b), ctypes.pointer(error_code), error_message)
+    if error_code.value != 0:
+        raise Exception(str(error_message.value.decode()))
+
     return Array(array_reference=b)
 
 
@@ -138,8 +168,13 @@ def sample_stdev(tss):
     :return: The sample standard deviation.
     """
     b = ctypes.c_void_p(0)
+    error_code = ctypes.c_int(0)
+    error_message = ctypes.create_string_buffer(256)
     KhivaLibrary().c_khiva_library.sample_stdev_statistics(ctypes.pointer(tss.arr_reference),
-                                                           ctypes.pointer(b))
+                                                           ctypes.pointer(b), ctypes.pointer(error_code), error_message)
+    if error_code.value != 0:
+        raise Exception(str(error_message.value.decode()))
+
     return Array(array_reference=b)
 
 
@@ -152,6 +187,11 @@ def skewness(tss):
     :return: Array containing the skewness of each time series in tss.
     """
     b = ctypes.c_void_p(0)
+    error_code = ctypes.c_int(0)
+    error_message = ctypes.create_string_buffer(256)
     KhivaLibrary().c_khiva_library.skewness_statistics(ctypes.pointer(tss.arr_reference),
-                                                       ctypes.pointer(b))
+                                                       ctypes.pointer(b), ctypes.pointer(error_code), error_message)
+    if error_code.value != 0:
+        raise Exception(str(error_message.value.decode()))
+
     return Array(array_reference=b)
