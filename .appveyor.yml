@@ -26,7 +26,6 @@ platform:
 before_build:
     - ps: systeminfo
     - ps: $env:PATH="$env:PYTHON;$env:PATH"
-    - ps: echo $env:PATH
     - ps: python --version
     - ps: python -m pip install --upgrade pip
     - ps: if(!(Test-Path -Path "C:\Program Files\ArrayFire" )){ appveyor DownloadFile "http://arrayfire.s3.amazonaws.com/3.6.2/ArrayFire-v3.6.2.exe"};
@@ -45,6 +44,7 @@ before_build:
             cmake .. -DCMAKE_TOOLCHAIN_FILE=c:/tools/vcpkg/scripts/buildsystems/vcpkg.cmake -DBOOST_ROOT="$($env:BOOST_PATH)" -DKHIVA_USE_CONAN=OFF -DKHIVA_BUILD_DOCUMENTATION=OFF -DKHIVA_BUILD_BENCHMARKS=OFF -DKHIVA_BUILD_EXAMPLES=OFF -DKHIVA_BUILD_TESTS=OFF -DKHIVA_ONLY_CPU_BACKEND=ON -G"$env:GENERATOR";
           }
     - ps: cmake --build . --config Release --target INSTALL -- /m
+    - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
     - ps: cd C:\khiva-python
     - ps: python -m pip install -r requirements.txt
     - ps: python -m pip install -r test-requirements.txt
