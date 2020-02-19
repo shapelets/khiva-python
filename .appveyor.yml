@@ -43,8 +43,7 @@ before_build:
             cd build;
             cmake .. -DCMAKE_TOOLCHAIN_FILE=c:/tools/vcpkg/scripts/buildsystems/vcpkg.cmake -DBOOST_ROOT="$($env:BOOST_PATH)" -DKHIVA_USE_CONAN=OFF -DKHIVA_BUILD_DOCUMENTATION=OFF -DKHIVA_BUILD_BENCHMARKS=OFF -DKHIVA_BUILD_EXAMPLES=OFF -DKHIVA_BUILD_TESTS=OFF -DKHIVA_ONLY_CPU_BACKEND=ON -G"$env:GENERATOR";
           }
-    - ps: cmake --build . --config Release --target INSTALL -- /m
-    - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+    - ps: cmake --build . --config Release --target INSTALL -- /m    
     - ps: cd C:\khiva-python
     - ps: python -m pip install -r requirements.txt
     - ps: python -m pip install -r test-requirements.txt
@@ -55,7 +54,8 @@ build_script:
 test_script:
     - coverage run -m unittest discover tests/unit_tests *_tests.py -f -v
     - python -m xmlrunner discover tests/unit_tests *_tests.py
-on_finish:    
+on_finish:
+    - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))    
     - codecov -F Windows -X gcov
     - ps: |
         $files = Get-ChildItem -Path . -File -Filter *.xml
