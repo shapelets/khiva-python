@@ -70,7 +70,7 @@ else
         conan install .. -s compiler.libcxx=libstdc++11 --build missing
         cmake .. -DKHIVA_ENABLE_COVERAGE=ON -DKHIVA_BUILD_DOCUMENTATION=OFF -DKHIVA_BUILD_EXAMPLES=OFF -DKHIVA_BUILD_BENCHMARKS=OFF
         check-error "Error generating CMake configuration"
-        cmake --build . --target install -- -j8
+        sudo cmake --build . --target install -- -j8
         check-error "Error building Khiva"
         sudo ldconfig
     fi
