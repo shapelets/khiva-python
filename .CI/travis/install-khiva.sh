@@ -61,6 +61,7 @@ else
     else
         conan profile update settings.compiler.libcxx=libstdc++11 default
         conan profile update settings.compiler.version=7 default
+        conan install .. --build missing
         cmake .. -DKHIVA_ENABLE_COVERAGE=ON -DKHIVA_BUILD_DOCUMENTATION=OFF -DKHIVA_BUILD_EXAMPLES=OFF -DKHIVA_BUILD_BENCHMARKS=OFF
         check-error "Error generating CMake configuration"
         make install -j8
