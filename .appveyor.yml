@@ -14,8 +14,11 @@ environment:
     PATH: $(AF_PATH)\lib;$(KHIVA_PATH)\lib;$(PATH)
     matrix:
         - PYTHON: "C:\\Python36-x64;C:\\Python36-x64\\Scripts"
+          PATH: $(PYTHON);$(PATH)
         - PYTHON: "C:\\Python37-x64;C:\\Python37-x64\\Scripts"
+          PATH: $(PYTHON);$(PATH)
         - PYTHON: "C:\\Python38-x64;C:\\Python38-x64\\Scripts"
+          PATH: $(PYTHON);$(PATH)
 cache:
     - C:\tools\vcpkg\installed
     - C:\Program Files\ArrayFire
@@ -25,7 +28,6 @@ platform:
     - x64
 before_build:
     - ps: systeminfo
-    - ps: $env:PATH="$env:PYTHON;$env:PATH"
     - ps: python --version
     - ps: python -m pip install --upgrade pip
     - ps: if(!(Test-Path -Path "C:\Program Files\ArrayFire" )){ appveyor DownloadFile "http://arrayfire.s3.amazonaws.com/3.6.2/ArrayFire-v3.6.2.exe"};
