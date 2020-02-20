@@ -34,12 +34,17 @@ else
         sudo bash cmakebin/cmake-3.13.2-Linux-x86_64.sh --prefix=./cmakebin/ --skip-license
     fi
 
-     #Installing conan and dependencies
-     if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+    #Installing conan and dependencies
+    if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
         pip install conan
-     else
+    else
         pip${PYTHON_VERSION} install conan==1.22.2
-     fi
+    fi
+
+    conan remote add conan-mpusz https://api.bintray.com/conan/mpusz/conan-mpusz
+    if [ $? -ne 0 ]; then
+        conan remote update conan-mpusz https://api.bintray.com/conan/mpusz/conan-mpusz
+    fi
 
     # Cloning Github repo into khiva-library folder
     git clone https://github.com/shapelets/khiva.git khiva-library
@@ -49,11 +54,11 @@ else
     if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
         conan install .. -s compiler=apple-clang -s compiler.version=9.1 -s compiler.libcxx=libc++ --build missing
         cmake .. -DKHIVA_ONLY_CPU_BACKEND=ON -DKHIVA_BUILD_DOCUMENTATION=OFF -DKHIVA_BUILD_EXAMPLES=OFF -DKHIVA_BUILD_BENCHMARKS=OFF
-         make install -j8
+        cmake --build . --target install -- -j8
     else
         conan install .. -s compiler.libcxx=libstdc++11 --build missing
         ../../cmakebin/bin/cmake .. -DKHIVA_ENABLE_COVERAGE=ON -DKHIVA_BUILD_DOCUMENTATION=OFF -DKHIVA_BUILD_EXAMPLES=OFF -DKHIVA_BUILD_BENCHMARKS=OFF
-        sudo make install -j8
+        cmake --build . --target install -- -j8
         sudo ldconfig
     fi
     # Switching back to the khiva-python folder
