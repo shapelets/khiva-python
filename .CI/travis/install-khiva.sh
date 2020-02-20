@@ -5,6 +5,14 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+function check-error() {
+  KHIVA_ERROR=$?
+  if [ $KHIVA_ERROR -ne 0 ]; then
+      echo "$1: $KHIVA_ERROR"
+      exit $KHIVA_ERROR
+  fi
+}
+
 if [[ "$INSTALL_KHIVA_METHOD" == "installer" ]]; then
    if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
         if [ ! -e "./installers/khiva-v0.1.0.pkg" ]; then
@@ -32,6 +40,7 @@ else
         fi
         # Install cmake
         sudo bash cmakebin/cmake-3.13.2-Linux-x86_64.sh --prefix=./cmakebin/ --skip-license
+        ln -s /cmakebin/bin/cmake /usr/local/bin/cmake
     fi
 
     #Installing conan and dependencies
@@ -54,11 +63,11 @@ else
     if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
         conan install .. -s compiler=apple-clang -s compiler.version=9.1 -s compiler.libcxx=libc++ --build missing
         cmake .. -DKHIVA_ONLY_CPU_BACKEND=ON -DKHIVA_BUILD_DOCUMENTATION=OFF -DKHIVA_BUILD_EXAMPLES=OFF -DKHIVA_BUILD_BENCHMARKS=OFF
-        cmake --build . --target install -- -j8
+        sudo cmake --build . --target install -- -j8
     else
         conan install .. -s compiler.libcxx=libstdc++11 --build missing
-        ../../cmakebin/bin/cmake .. -DKHIVA_ENABLE_COVERAGE=ON -DKHIVA_BUILD_DOCUMENTATION=OFF -DKHIVA_BUILD_EXAMPLES=OFF -DKHIVA_BUILD_BENCHMARKS=OFF
-        cmake --build . --target install -- -j8
+        cmake .. -DKHIVA_ENABLE_COVERAGE=ON -DKHIVA_BUILD_DOCUMENTATION=OFF -DKHIVA_BUILD_EXAMPLES=OFF -DKHIVA_BUILD_BENCHMARKS=OFF
+        sudo cmake --build . --target install -- -j8
         sudo ldconfig
     fi
     # Switching back to the khiva-python folder
