@@ -30,20 +30,7 @@ if [[ "$INSTALL_KHIVA_METHOD" == "installer" ]]; then
     fi
 
 else
-    # GitHub method
-    # Install cmake in Linux, it is already installed in osx
-    if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
-        # Check if the file already exists
-        if [ ! -e "${TRAVIS_BUILD_DIR}/cmakebin/cmake-3.13.2-Linux-x86_64.sh" ]; then
-            mkdir -p cmakebin
-            wget https://github.com/Kitware/CMake/releases/download/v3.13.2/cmake-3.13.2-Linux-x86_64.sh -O cmakebin/cmake-3.13.2-Linux-x86_64.sh
-        fi
-        # Install cmake
-        sudo bash cmakebin/cmake-3.13.2-Linux-x86_64.sh --prefix=./cmakebin/ --skip-license
-        PATH=$(pwd)/cmakebin/bin/cmake:${PATH}
-        cmake --version
-    fi
-
+    cmake --version
     #Installing conan and dependencies
     if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
         pip install conan==1.22.2
