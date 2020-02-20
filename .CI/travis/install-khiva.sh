@@ -46,7 +46,7 @@ else
 
     #Installing conan and dependencies
     if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
-        pip install conan
+        pip install conan==1.22.2
     else
         pip${PYTHON_VERSION} install conan==1.22.2
     fi
@@ -61,14 +61,19 @@ else
     cd khiva-library
     git submodule update --init
     mkdir -p build && cd build
+    conan profile new --detect --force default
     if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
-        conan install .. -s compiler=apple-clang -s compiler.version=9.1 -s compiler.libcxx=libc++ --build missing
+        conan profile update settings.compiler.libcxx=libc++ default
+        conan profile update settings.compiler=apple-clang default
+        conan profile update settings.compiler.version=9.1 default
+        conan install .. --build missing
         cmake .. -DKHIVA_ONLY_CPU_BACKEND=ON -DKHIVA_BUILD_DOCUMENTATION=OFF -DKHIVA_BUILD_EXAMPLES=OFF -DKHIVA_BUILD_BENCHMARKS=OFF
         check-error "Error generating CMake configuration"
         make install -j8
         check-error "Error building Khiva"
     else
-        conan install .. -s compiler.libcxx=libstdc++11 --build missing
+        conan profile update settings.compiler.libcxx=libstdc++11 default
+        conan profile update settings.compiler.version=7 default
         cmake .. -DKHIVA_ENABLE_COVERAGE=ON -DKHIVA_BUILD_DOCUMENTATION=OFF -DKHIVA_BUILD_EXAMPLES=OFF -DKHIVA_BUILD_BENCHMARKS=OFF
         check-error "Error generating CMake configuration"
         make install -j8
