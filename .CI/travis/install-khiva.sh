@@ -40,7 +40,7 @@ else
         fi
         # Install cmake
         sudo bash cmakebin/cmake-3.13.2-Linux-x86_64.sh --prefix=./cmakebin/ --skip-license
-        ln -s ./cmakebin/bin/cmake /usr/local/bin/cmake
+        sudo ln -s ./cmakebin/bin/cmake /usr/local/bin/cmake
     fi
 
     #Installing conan and dependencies
