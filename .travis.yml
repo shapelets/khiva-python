@@ -10,7 +10,7 @@ matrix:
   fast_finish: true
   include:
     - os: linux
-      dist: xenial
+      dist: bionic
       sudo: required
       python: "3.6"
       cache:
@@ -21,7 +21,7 @@ matrix:
       after_success:
         - codecov -F Linux -X gcov
     - os: linux
-      dist: xenial
+      dist: bionic
       sudo: required
       python: "3.5"
       cache:

@@ -7,15 +7,19 @@
 image:
     - Visual Studio 2017
 environment:
+  global:
     GENERATOR: "Visual Studio 15 2017 Win64"
     BOOST_PATH: C:\Libraries\boost_1_69_0
     AF_PATH: C:\Program Files\ArrayFire\v3
     KHIVA_PATH: C:\Program Files\Khiva\v0
     PATH: $(AF_PATH)\lib;$(KHIVA_PATH)\lib;$(PATH)
-    matrix:
-        - PYTHON: "C:\\Python36-x64;C:\\Python36-x64\\Scripts"
-        - PYTHON: "C:\\Python37-x64;C:\\Python37-x64\\Scripts"
-        - PYTHON: "C:\\Python38-x64;C:\\Python38-x64\\Scripts"
+  matrix:
+  - PYTHON: "C:\\Python36-x64;C:\\Python36-x64\\Scripts"
+    PATH: $(PYTHON);$(PATH)
+  - PYTHON: "C:\\Python37-x64;C:\\Python37-x64\\Scripts"
+    PATH: $(PYTHON);$(PATH)
+  - PYTHON: "C:\\Python38-x64;C:\\Python38-x64\\Scripts"
+    PATH: $(PYTHON);$(PATH)
 cache:
     - C:\tools\vcpkg\installed
     - C:\Program Files\ArrayFire
@@ -25,7 +29,8 @@ platform:
     - x64
 before_build:
     - ps: systeminfo
-    - ps: $env:PATH="$env:PYTHON;$env:PATH"
+    - ps: $env:PATH="$env:AF_PATH\lib;$env:KHIVA_PATH\lib;$env:PATH"
+    - cmd: set
     - ps: python --version
     - ps: python -m pip install --upgrade pip
     - ps: if(!(Test-Path -Path "C:\Program Files\ArrayFire" )){ appveyor DownloadFile "http://arrayfire.s3.amazonaws.com/3.6.2/ArrayFire-v3.6.2.exe"};
@@ -55,7 +60,7 @@ test_script:
     - coverage run -m unittest discover tests/unit_tests *_tests.py -f -v
     - python -m xmlrunner discover tests/unit_tests *_tests.py
 on_finish:
-    #- ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))    
+#    - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
     - codecov -F Windows -X gcov
     - ps: |
         $files = Get-ChildItem -Path . -File -Filter *.xml
