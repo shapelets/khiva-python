@@ -29,7 +29,7 @@ platform:
     - x64
 before_build:
     - ps: systeminfo
-    - ps: echo $env:PATH
+    - ps: $env:PATH="$env:AF_PATH\lib;$env:KHIVA_PATH\lib;$env:PATH"
     - cmd: set
     - ps: python --version
     - ps: python -m pip install --upgrade pip
