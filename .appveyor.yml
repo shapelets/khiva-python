@@ -30,6 +30,7 @@ platform:
 before_build:
     - ps: systeminfo
     - ps: echo $env:PATH
+    - cmd: set
     - ps: python --version
     - ps: python -m pip install --upgrade pip
     - ps: if(!(Test-Path -Path "C:\Program Files\ArrayFire" )){ appveyor DownloadFile "http://arrayfire.s3.amazonaws.com/3.6.2/ArrayFire-v3.6.2.exe"};
