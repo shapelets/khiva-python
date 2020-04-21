@@ -9,17 +9,17 @@ image:
 environment:
   global:
     GENERATOR: "Visual Studio 15 2017 Win64"
-    BOOST_PATH: C:\Libraries\boost_1_69_0
+    BOOST_PATH: C:\Libraries\boost_1_70_0
     AF_PATH: C:\Program Files\ArrayFire\v3
     KHIVA_PATH: C:\Program Files\Khiva\v0
     PATH: $(AF_PATH)\lib;$(KHIVA_PATH)\lib;$(PATH)
   matrix:
   - PYTHON: "C:\\Python36-x64;C:\\Python36-x64\\Scripts"
-    PATH: $(PYTHON);$(PATH)
-  - PYTHON: "C:\\Python37-x64;C:\\Python37-x64\\Scripts"
-    PATH: $(PYTHON);$(PATH)
-  - PYTHON: "C:\\Python38-x64;C:\\Python38-x64\\Scripts"
-    PATH: $(PYTHON);$(PATH)
+    PATH: $(PYTHON);$(AF_PATH)\\lib;$(KHIVA_PATH)\\lib;$(PATH)
+  - PYTHON: "C:\\Pyt$(AF_PATH)\\lib;$(KHIVA_PATH)\\lib;hon37-x64;C:\\Python37-x64\\Scripts"
+    PATH: $(PYTHON);$(AF_PATH)\\lib;$(KHIVA_PATH)\\lib;$(PATH)
+  - PYTHON: "C:\\Pyt$(AF_PATH)\\lib;$(KHIVA_PATH)\\lib;hon38-x64;C:\\Python38-x64\\Scripts"
+    PATH: $(PYTHON);$(AF_PATH)\\lib;$(KHIVA_PATH)\\lib;$(PATH)
 cache:
     - C:\tools\vcpkg\installed
     - C:\Program Files\ArrayFire
@@ -28,34 +28,29 @@ clone_folder: C:\khiva-python
 platform:
     - x64
 before_build:
-    - ps: systeminfo
-    - ps: $env:PATH="$env:AF_PATH\lib;$env:KHIVA_PATH\lib;$env:PATH"
-    - cmd: set
-    - ps: python --version
-    - ps: python -m pip install --upgrade pip
-    - ps: if(!(Test-Path -Path "C:\Program Files\ArrayFire" )){ appveyor DownloadFile "http://arrayfire.s3.amazonaws.com/3.6.2/ArrayFire-v3.6.2.exe"};
-    - ps: if(!(Test-Path -Path "C:\Program Files\ArrayFire" )){ .\ArrayFire-v3.6.2.exe /S };
-    - ps: vcpkg install --triplet x64-windows gtest eigen3
-    - ps: if ($env:INSTALL_KHIVA_METHOD -eq "installer"){
-            if(!(Test-Path -Path "C:\Program Files\Khiva" )){ appveyor DownloadFile "https://github.com/shapelets/khiva/releases/download/v0.2.0/khiva-v0.2.0-unattended.exe" -FileName khiva-v0.2.0-unattended.exe };
-            if(!(Test-Path -Path "C:\Program Files\Khiva" )){ .\khiva-v0.2.0-unattended.exe /S };
-          }else{
-            git clone -q https://github.com/shapelets/khiva.git C:\khiva-library;
-
-            cd C:\khiva-library;
-            git submodule -q update --init;
-            mkdir build;
-            cd build;
-            cmake .. -G"$env:GENERATOR" -DArrayFire_DIR="$env:AF_PATH/cmake" -DCMAKE_TOOLCHAIN_FILE=c:/tools/vcpkg/scripts/buildsystems/vcpkg.cmake -DBOOST_ROOT="$env:BOOST_PATH" -DKHIVA_USE_CONAN=OFF -DKHIVA_BUILD_DOCUMENTATION=OFF -DKHIVA_BUILD_BENCHMARKS=OFF -DKHIVA_BUILD_EXAMPLES=OFF -DKHIVA_BUILD_TESTS=OFF -DKHIVA_ONLY_CPU_BACKEND=ON;
-          }
-    - ps: cmake --build . --config Release --target INSTALL -- /m    
-    - ps: cd C:\khiva-python
-    - ps: python -m pip install -r requirements.txt
-    - ps: python -m pip install -r test-requirements.txt
-    - ps: python -m pip install codecov
+    - ps: |
+        systeminfo
+        env
+        python --version
+        python -m pip install --upgrade pip
+        if(!(Test-Path -Path "C:\Program Files\ArrayFire" )){ appveyor DownloadFile "http://arrayfire.s3.amazonaws.com/3.6.2/ArrayFire-v3.6.2.exe"}
+        if(!(Test-Path -Path "C:\Program Files\ArrayFire" )){ .\ArrayFire-v3.6.2.exe /S }
+        vcpkg install --triplet x64-windows gtest eigen3
+        git clone -q https://github.com/shapelets/khiva.git C:\khiva-library
+        cd C:\khiva-library
+        git submodule -q update --init
+        mkdir build
+        cd build
+        cmake .. -G"$env:GENERATOR" -DArrayFire_DIR="$env:AF_PATH/cmake" -DCMAKE_TOOLCHAIN_FILE=c:/tools/vcpkg/scripts/buildsystems/vcpkg.cmake -DBOOST_ROOT="$env:BOOST_PATH" -DKHIVA_USE_CONAN=OFF -DKHIVA_BUILD_DOCUMENTATION=OFF -DKHIVA_BUILD_BENCHMARKS=OFF -DKHIVA_BUILD_EXAMPLES=OFF -DKHIVA_BUILD_TESTS=OFF -DKHIVA_ONLY_CPU_BACKEND=ON
+        cmake --build . --config Release --target INSTALL -- /m    
+        cd C:\khiva-python
+        python -m pip install -r requirements.txt
+        python -m pip install -r test-requirements.txt
+        python -m pip install codecov
 build_script:
-    - ps: python --version
-    - ps: python setup.py install
+    - ps: |
+        python --version
+        python setup.py install
 test_script:
     - coverage run -m unittest discover tests/unit_tests *_tests.py -f -v
     - python -m xmlrunner discover tests/unit_tests *_tests.py
