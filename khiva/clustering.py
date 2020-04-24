@@ -4,19 +4,18 @@
 # Copyright (c) 2019 Shapelets.io
 #
 # This Source Code Form is subject to the terms of the Mozilla Public
-# License, v. 2.0. If a copy of the MPL was not distributed with this
+# License, v.  2.0.  If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 ########################################################################################################################
 # IMPORT
 ########################################################################################################################
 import ctypes
-from khiva.library import KhivaLibrary
+from khiva.library import KhivaLibrary, KHIVA_ERROR_LENGTH
 from khiva.array import Array
 
 
 ########################################################################################################################
-
 def k_means(tss, k, tolerance=1e-10, max_iterations=100):
     """ Calculates the K-Means algorithm.
 
@@ -35,7 +34,7 @@ def k_means(tss, k, tolerance=1e-10, max_iterations=100):
     labels = ctypes.c_void_p(0)
 
     error_code = ctypes.c_int(0)
-    error_message = ctypes.create_string_buffer(256)
+    error_message = ctypes.create_string_buffer(KHIVA_ERROR_LENGTH)
     KhivaLibrary().c_khiva_library.k_means(ctypes.pointer(tss.arr_reference),
                                            ctypes.pointer(ctypes.c_int(k)),
                                            ctypes.pointer(centroids),
@@ -68,7 +67,7 @@ def k_shape(tss, k, tolerance=1e-10, max_iterations=100):
     labels = ctypes.c_void_p(0)
 
     error_code = ctypes.c_int(0)
-    error_message = ctypes.create_string_buffer(256)
+    error_message = ctypes.create_string_buffer(KHIVA_ERROR_LENGTH)
     KhivaLibrary().c_khiva_library.k_shape(ctypes.pointer(tss.arr_reference),
                                                           ctypes.pointer(ctypes.c_int(k)),
                                                           ctypes.pointer(centroids),

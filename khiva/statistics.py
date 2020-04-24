@@ -11,7 +11,7 @@
 # IMPORT
 ########################################################################################################################
 import ctypes
-from khiva.library import KhivaLibrary
+from khiva.library import KhivaLibrary, KHIVA_ERROR_LENGTH
 from khiva.array import Array
 
 
@@ -21,14 +21,14 @@ from khiva.array import Array
 def covariance(tss, unbiased=False):
     """ Returns the covariance matrix of the time series contained in tss.
 
-    :param tss: Expects an input array whose dimension zero is the length of the time series (all the same) and dimension
-                one indicates the number of time series.
+    :param tss: Expects an input array whose dimension zero is the length of the time series (all the same) and 
+                dimension one indicates the number of time series.
     :param unbiased: Determines whether it divides by n - 1 (if false) or n (if true).
     :return: The covariance matrix of the time series.
     """
     b = ctypes.c_void_p(0)
     error_code = ctypes.c_int(0)
-    error_message = ctypes.create_string_buffer(256)
+    error_message = ctypes.create_string_buffer(KHIVA_ERROR_LENGTH)
     KhivaLibrary().c_khiva_library.covariance_statistics(ctypes.pointer(tss.arr_reference),
                                                          ctypes.pointer(ctypes.c_bool(unbiased)),
                                                          ctypes.pointer(b), ctypes.pointer(error_code), error_message)
@@ -47,7 +47,7 @@ def kurtosis(tss):
     """
     b = ctypes.c_void_p(0)
     error_code = ctypes.c_int(0)
-    error_message = ctypes.create_string_buffer(256)
+    error_message = ctypes.create_string_buffer(KHIVA_ERROR_LENGTH)
     KhivaLibrary().c_khiva_library.kurtosis_statistics(ctypes.pointer(tss.arr_reference),
                                                        ctypes.pointer(b), ctypes.pointer(error_code), error_message)
     if error_code.value != 0:
@@ -86,7 +86,7 @@ def ljung_box(tss, lags):
     """
     ljung_box_out = ctypes.c_void_p(0)
     error_code = ctypes.c_int(0)
-    error_message = ctypes.create_string_buffer(256)
+    error_message = ctypes.create_string_buffer(KHIVA_ERROR_LENGTH)
     KhivaLibrary().c_khiva_library.ljung_box(ctypes.pointer(tss.arr_reference), ctypes.pointer(ctypes.c_long(lags)),
                                              ctypes.pointer(ljung_box_out), ctypes.pointer(error_code), error_message)
     if error_code.value != 0:
@@ -105,7 +105,7 @@ def moment(tss, k):
     """
     b = ctypes.c_void_p(0)
     error_code = ctypes.c_int(0)
-    error_message = ctypes.create_string_buffer(256)
+    error_message = ctypes.create_string_buffer(KHIVA_ERROR_LENGTH)
     KhivaLibrary().c_khiva_library.moment_statistics(ctypes.pointer(tss.arr_reference),
                                                      ctypes.pointer(ctypes.c_int(k)),
                                                      ctypes.pointer(b), ctypes.pointer(error_code), error_message)
@@ -126,7 +126,7 @@ def quantile(tss, q, precision=1e8):
     """
     b = ctypes.c_void_p(0)
     error_code = ctypes.c_int(0)
-    error_message = ctypes.create_string_buffer(256)
+    error_message = ctypes.create_string_buffer(KHIVA_ERROR_LENGTH)
     KhivaLibrary().c_khiva_library.quantile_statistics(ctypes.pointer(tss.arr_reference),
                                                        ctypes.pointer(q.arr_reference),
                                                        ctypes.pointer(ctypes.c_float(precision)),
@@ -149,7 +149,7 @@ def quantiles_cut(tss, quantiles, precision=1e-8):
     """
     b = ctypes.c_void_p(0)
     error_code = ctypes.c_int(0)
-    error_message = ctypes.create_string_buffer(256)
+    error_message = ctypes.create_string_buffer(KHIVA_ERROR_LENGTH)
     KhivaLibrary().c_khiva_library.quantiles_cut_statistics(ctypes.pointer(tss.arr_reference),
                                                             ctypes.pointer(ctypes.c_float(quantiles)),
                                                             ctypes.pointer(ctypes.c_float(precision)),
@@ -169,7 +169,7 @@ def sample_stdev(tss):
     """
     b = ctypes.c_void_p(0)
     error_code = ctypes.c_int(0)
-    error_message = ctypes.create_string_buffer(256)
+    error_message = ctypes.create_string_buffer(KHIVA_ERROR_LENGTH)
     KhivaLibrary().c_khiva_library.sample_stdev_statistics(ctypes.pointer(tss.arr_reference),
                                                            ctypes.pointer(b), ctypes.pointer(error_code), error_message)
     if error_code.value != 0:
@@ -188,7 +188,7 @@ def skewness(tss):
     """
     b = ctypes.c_void_p(0)
     error_code = ctypes.c_int(0)
-    error_message = ctypes.create_string_buffer(256)
+    error_message = ctypes.create_string_buffer(KHIVA_ERROR_LENGTH)
     KhivaLibrary().c_khiva_library.skewness_statistics(ctypes.pointer(tss.arr_reference),
                                                        ctypes.pointer(b), ctypes.pointer(error_code), error_message)
     if error_code.value != 0:

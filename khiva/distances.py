@@ -11,7 +11,7 @@
 # IMPORT
 ########################################################################################################################
 import ctypes
-from khiva.library import KhivaLibrary
+from khiva.library import KhivaLibrary, KHIVA_ERROR_LENGTH
 from khiva.array import Array
 
 
@@ -29,7 +29,7 @@ def euclidean(tss):
     """
     b = ctypes.c_void_p(0)
     error_code = ctypes.c_int(0)
-    error_message = ctypes.create_string_buffer(256)
+    error_message = ctypes.create_string_buffer(KHIVA_ERROR_LENGTH)
     KhivaLibrary().c_khiva_library.euclidean(ctypes.pointer(tss.arr_reference), ctypes.pointer(b), ctypes.pointer(error_code), error_message)
     if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
@@ -48,7 +48,7 @@ def dtw(tss):
     """
     b = ctypes.c_void_p(0)
     error_code = ctypes.c_int(0)
-    error_message = ctypes.create_string_buffer(256)
+    error_message = ctypes.create_string_buffer(KHIVA_ERROR_LENGTH)
     KhivaLibrary().c_khiva_library.dtw(ctypes.pointer(tss.arr_reference), ctypes.pointer(b), ctypes.pointer(error_code), error_message)
     if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
@@ -67,7 +67,7 @@ def hamming(tss):
     """
     b = ctypes.c_void_p(0)
     error_code = ctypes.c_int(0)
-    error_message = ctypes.create_string_buffer(256)
+    error_message = ctypes.create_string_buffer(KHIVA_ERROR_LENGTH)
     KhivaLibrary().c_khiva_library.hamming(ctypes.pointer(tss.arr_reference), ctypes.pointer(b), ctypes.pointer(error_code), error_message)
     if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
@@ -86,7 +86,7 @@ def manhattan(tss):
     """
     b = ctypes.c_void_p(0)
     error_code = ctypes.c_int(0)
-    error_message = ctypes.create_string_buffer(256)
+    error_message = ctypes.create_string_buffer(KHIVA_ERROR_LENGTH)
     KhivaLibrary().c_khiva_library.manhattan(ctypes.pointer(tss.arr_reference), ctypes.pointer(b), ctypes.pointer(error_code), error_message)
     if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
@@ -106,7 +106,7 @@ def sbd(tss):
     """
     b = ctypes.c_void_p(0)
     error_code = ctypes.c_int(0)
-    error_message = ctypes.create_string_buffer(256)
+    error_message = ctypes.create_string_buffer(KHIVA_ERROR_LENGTH)
     KhivaLibrary().c_khiva_library.sbd(ctypes.pointer(tss.arr_reference), ctypes.pointer(b), ctypes.pointer(error_code), error_message)
     if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
@@ -125,7 +125,7 @@ def squared_euclidean(tss):
     """
     b = ctypes.c_void_p(0)
     error_code = ctypes.c_int(0)
-    error_message = ctypes.create_string_buffer(256)
+    error_message = ctypes.create_string_buffer(KHIVA_ERROR_LENGTH)
     KhivaLibrary().c_khiva_library.squared_euclidean(ctypes.pointer(tss.arr_reference), ctypes.pointer(b), ctypes.pointer(error_code), error_message)
     if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))

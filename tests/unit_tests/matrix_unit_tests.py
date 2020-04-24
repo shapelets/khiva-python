@@ -150,7 +150,7 @@ class MatrixTest(unittest.TestCase):
     def test_find_best_n_motifs_consecutive(self):
         stomp_result = stomp_self_join(Array([10.1, 11, 10.1, 10.15, 10.075, 10.1, 11, 10.1, 10.15], dtype.f32), 3)
 
-        find_best_n_motifs_result = find_best_n_motifs(stomp_result[0], stomp_result[1], 3, 2)
+        find_best_n_motifs_result = find_best_n_motifs(stomp_result[0], stomp_result[1], 3, 2, True)
         a = find_best_n_motifs_result[1].to_numpy()
         b = find_best_n_motifs_result[2].to_numpy()
         self.assertAlmostEqual(a[1], 6, delta=self.DELTA)
