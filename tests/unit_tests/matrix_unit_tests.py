@@ -203,13 +203,13 @@ class MatrixTest(unittest.TestCase):
 
     def test_find_best_n_discords_consecutive(self):
         stomp_result = stomp_self_join(
-            Array.from_numpy(np.array([10, 11, 10, 11, 10, 11, 10, 11, 10, 11, 10, 11, 10, 9.999, 9.998]), dtype.f32), 3)
+            Array.from_numpy(np.array([10.0, 11.0, 14.0, 11.0, -2.0, 11.0, 18.0, 11.0, 1.0, 25.0, 10.0, 11.0, 1.0, 0.0, 19.0]), dtype.f32), 3)
         find_best_n_discords_result = find_best_n_discords(stomp_result[0],
                                                            stomp_result[1], 3, 2, True)
-        a = find_best_n_discords_result[2].to_numpy()
+        a = find_best_n_discords_result.subsequence_indexes.to_numpy()
 
-        self.assertEqual(a[0], 12)
-        self.assertNotEqual(a[1], 11)
+        self.assertEqual(a[0], 9)
+        self.assertEqual(a[1], 3)
 
     def test_mass(self):
         mass_result = mass(Array.from_numpy(np.array([4, 3, 8]), dtype.f32),

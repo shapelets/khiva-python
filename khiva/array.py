@@ -203,7 +203,7 @@ class Array:
         """
         Creates a KHIVA array from a Pandas dataframe.
 
-        :param input_list: A Pandas dataframe.
+        :param input_list: A Numpy multidimensional array.
         :param khiva_type: The KHIVA type of the elements of the Pandas dataframe.
         :return: a KHIVA array.
         """
