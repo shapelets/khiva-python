@@ -176,11 +176,7 @@ class MatrixTest(unittest.TestCase):
         a = find_best_n_discords_result[2].to_numpy()
 
         self.assertEqual(a[0], 0)
-        # The test failed in the CPU used in the Travis CI build machine
-        if os.environ.get("TRAVIS") == "true":
-            self.assertEqual(a[1], 2)
-        else:
-            self.assertEqual(a[1], 10)
+        self.assertEqual(a[1], 10)
 
     def test_find_best_n_discords_multiple_profiles(self):
         stomp_result = stomp(Array.from_numpy(np.array([[11, 10, 11, 10, 11, 10, 11, 10, 11, 10, 11, 10, 11],
@@ -191,13 +187,7 @@ class MatrixTest(unittest.TestCase):
         find_best_n_discords_result = find_best_n_discords(stomp_result[0],
                                                            stomp_result[1], 3, 2)
         a = find_best_n_discords_result[2].to_numpy()
-
-        # The test failed in the CPU used in the Travis CI build machine
-        if os.environ.get("TRAVIS") == "true":
-            np.testing.assert_array_almost_equal(a, np.array([[[0, 2], [0, 2]], [[0, 2], [0, 2]]]),
-                                                 decimal=self.DECIMAL)
-        else:
-            np.testing.assert_array_almost_equal(a, np.array([[[0, 10], [0, 10]], [[0, 10], [0, 10]]]),
+        np.testing.assert_array_almost_equal(a, np.array([[[0, 10], [0, 10]], [[0, 10], [0, 10]]]),
                                                  decimal=self.DECIMAL)
 
     def test_find_best_n_discords_mirror(self):
@@ -219,11 +209,7 @@ class MatrixTest(unittest.TestCase):
         a = find_best_n_discords_result[2].to_numpy()
 
         self.assertEqual(a[0], 12)
-        # The test failed in the CPU used in the Travis CI build machine
-        if os.environ.get("TRAVIS") == "true":
-            self.assertEqual(a[1], 11)
-        else:
-            self.assertNotEqual(a[1], 11)
+        self.assertNotEqual(a[1], 11)
 
     def test_mass(self):
         mass_result = mass(Array.from_numpy(np.array([4, 3, 8]), dtype.f32),
