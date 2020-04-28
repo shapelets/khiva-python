@@ -26,7 +26,7 @@ class LinalgTest(unittest.TestCase):
         set_backend(KHIVABackend.KHIVA_BACKEND_CPU)
 
     def test_lls(self):
-        lls_result = lls(Array(np.array([[4, 3], [-1, -2]])), Array([3, 1], dtype.f32))
+        lls_result = lls(Array.from_numpy(np.array([[4, 3], [-1, -2]]), dtype.f32), Array.from_list([3, 1], dtype.f32))
         a = lls_result.to_numpy()
         self.assertAlmostEqual(a[0], 1, delta=self.DELTA)
         self.assertAlmostEqual(a[1], 1, delta=self.DELTA)

@@ -14,7 +14,7 @@
 import unittest
 import numpy as np
 from khiva.normalization import *
-from khiva.array import Array
+from khiva.array import Array, dtype
 from khiva.library import set_backend, KHIVABackend
 
 
@@ -28,14 +28,18 @@ class NormalizationTest(unittest.TestCase):
         set_backend(KHIVABackend.KHIVA_BACKEND_CPU)
 
     def test_znorm(self):
-        znorm_result = znorm(Array([[0, 1, 2, 3], [4, 5, 6, 7]]), 0.00000001).to_numpy().flatten()
-        expected = [-1.341640786499870, -0.447213595499958, 0.447213595499958, 1.341640786499870]
+        znorm_result = znorm(Array.from_list(
+            [[0, 1, 2, 3], [4, 5, 6, 7]], dtype.s32), 0.00000001).to_numpy().flatten()
+        expected = [-1.341640786499870, -0.447213595499958,
+                    0.447213595499958, 1.341640786499870]
         for i in range(len(expected)):
-            self.assertAlmostEqual(znorm_result[i], expected[i], delta=self.DELTA)
-            self.assertAlmostEqual(znorm_result[i + 4], expected[i], delta=self.DELTA)
+            self.assertAlmostEqual(
+                znorm_result[i], expected[i], delta=self.DELTA)
+            self.assertAlmostEqual(
+                znorm_result[i + 4], expected[i], delta=self.DELTA)
 
     def test_znorm_in_place(self):
-        tss = Array(data=[[0, 1, 2, 3], [4, 5, 6, 7]])
+        tss = Array.from_list([[0, 1, 2, 3], [4, 5, 6, 7]], dtype.f32)
         znorm_in_place(tss)
         tss = tss.to_numpy()
         self.assertAlmostEqual(tss[0][0], -1.341640786499870, delta=self.DELTA)
@@ -49,39 +53,52 @@ class NormalizationTest(unittest.TestCase):
         self.assertAlmostEqual(tss[1][3], 1.341640786499870, delta=self.DELTA)
 
     def test_max_min_norm(self):
-        max_min_norm_result = max_min_norm(Array([[0, 1, 2, 3], [4, 5, 6, 7]]), 2.0, 1.0).to_numpy()
-        expected = np.array([[1.0, 1.3333333333333, 1.66666667, 2.0], [1.0, 1.3333333333333, 1.66666667, 2.0]])
-        np.testing.assert_array_almost_equal(max_min_norm_result, expected, decimal=self.DECIMAL)
+        max_min_norm_result = max_min_norm(Array.from_list(
+            [[0, 1, 2, 3], [4, 5, 6, 7]], dtype.s32), 2.0, 1.0).to_numpy()
+        expected = np.array([[1.0, 1.3333333333333, 1.66666667, 2.0], [
+                            1.0, 1.3333333333333, 1.66666667, 2.0]])
+        np.testing.assert_array_almost_equal(
+            max_min_norm_result, expected, decimal=self.DECIMAL)
 
     def test_max_min_norm_in_place(self):
-        tss = Array([[0, 1, 2, 3], [4, 5, 6, 7]])
+        tss = Array.from_list([[0, 1, 2, 3], [4, 5, 6, 7]], dtype.f32)
         max_min_norm_in_place(tss, 2.0, 1.0)
         tss = tss.to_numpy()
-        expected = np.array([[1.0, 1.3333333333333, 1.66666667, 2.0], [1.0, 1.3333333333333, 1.66666667, 2.0]])
-        np.testing.assert_array_almost_equal(tss, expected, decimal=self.DECIMAL)
+        expected = np.array([[1.0, 1.3333333333333, 1.66666667, 2.0], [
+                            1.0, 1.3333333333333, 1.66666667, 2.0]])
+        np.testing.assert_array_almost_equal(
+            tss, expected, decimal=self.DECIMAL)
 
     def test_decimal_scaling_norm(self):
-        decimal_scaling_norm_result = decimal_scaling_norm(Array([[0, 1, -2, 3], [40, 50, 60, -70]])).to_numpy()
+        decimal_scaling_norm_result = decimal_scaling_norm(Array.from_list(
+            [[0, 1, -2, 3], [40, 50, 60, -70]], dtype.s32)).to_numpy()
         expected = np.array([[0.0, 0.1, -0.2, 0.3], [0.4, 0.5, 0.6, -0.7]])
-        np.testing.assert_array_almost_equal(decimal_scaling_norm_result, expected, decimal=self.DECIMAL)
+        np.testing.assert_array_almost_equal(
+            decimal_scaling_norm_result, expected, decimal=self.DECIMAL)
 
     def test_decimal_scaling_norm_in_place(self):
-        tss = Array([[0, 1, -2, 3], [40, 50, 60, -70]])
+        tss = Array.from_list([[0, 1, -2, 3], [40, 50, 60, -70]], dtype.f32)
         decimal_scaling_norm_in_place(tss)
         tss = tss.to_numpy()
         expected = np.array([[0.0, 0.1, -0.2, 0.3], [0.4, 0.5, 0.6, -0.7]])
-        np.testing.assert_array_almost_equal(tss, expected, decimal=self.DECIMAL)
+        np.testing.assert_array_almost_equal(
+            tss, expected, decimal=self.DECIMAL)
 
     def test_mean_norm(self):
-        result = mean_norm(Array([[0, 1, 2, 3], [4, 5, 6, 7]])).to_numpy()
-        expected = np.array([[-0.5, -0.166666667, 0.166666667, 0.5], [-0.5, -0.166666667, 0.166666667, 0.5]])
-        np.testing.assert_array_almost_equal(result, expected, decimal=self.DECIMAL)
+        result = mean_norm(Array.from_list(
+            [[0, 1, 2, 3], [4, 5, 6, 7]], dtype.s32)).to_numpy()
+        expected = np.array(
+            [[-0.5, -0.166666667, 0.166666667, 0.5], [-0.5, -0.166666667, 0.166666667, 0.5]])
+        np.testing.assert_array_almost_equal(
+            result, expected, decimal=self.DECIMAL)
 
     def test_mean_norm_in_place(self):
-        a = Array([[0, 1, 2, 3], [4, 5, 6, 7]])
+        a = Array.from_list([[0, 1, 2, 3], [4, 5, 6, 7]], dtype.f32)
         mean_norm_in_place(a)
-        expected = np.array([[-0.5, -0.166666667, 0.166666667, 0.5], [-0.5, -0.166666667, 0.166666667, 0.5]])
-        np.testing.assert_array_almost_equal(a.to_numpy(), expected, decimal=self.DECIMAL)
+        expected = np.array(
+            [[-0.5, -0.166666667, 0.166666667, 0.5], [-0.5, -0.166666667, 0.166666667, 0.5]])
+        np.testing.assert_array_almost_equal(
+            a.to_numpy(), expected, decimal=self.DECIMAL)
 
 
 if __name__ == '__main__':
