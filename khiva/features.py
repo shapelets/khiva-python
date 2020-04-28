@@ -721,11 +721,7 @@ def linear_trend(arr):
     if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
 
-    return Array(array_reference=pvalue), \
-        Array(array_reference=rvalue), \
-        Array(array_reference=intercept), \
-        Array(array_reference=slope), \
-        Array(array_reference=stdrr)
+    return LinearTrendResult(pvalue=Array(pvalue), rvalue=Array(rvalue), intercept=Array(intercept), slope=Array(slope), stdrr=Array(stdrr))
 
 
 def local_maximals(arr):
