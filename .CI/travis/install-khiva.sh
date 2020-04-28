@@ -12,6 +12,7 @@ function check-error() {
       exit $KHIVA_ERROR
   fi
 }
+
 cmake --version
 #Installing conan and dependencies
 if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then

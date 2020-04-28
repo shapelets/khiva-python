@@ -16,9 +16,9 @@ environment:
   matrix:
   - PYTHON: "C:\\Python36-x64;C:\\Python36-x64\\Scripts"
     PATH: $(PYTHON);$(AF_PATH)\\lib;$(KHIVA_PATH)\\lib;$(PATH)
-  - PYTHON: "C:\\Pyt$(AF_PATH)\\lib;$(KHIVA_PATH)\\lib;hon37-x64;C:\\Python37-x64\\Scripts"
+  - PYTHON: "C:\\Python37-x64;C:\\Python37-x64\\Scripts"
     PATH: $(PYTHON);$(AF_PATH)\\lib;$(KHIVA_PATH)\\lib;$(PATH)
-  - PYTHON: "C:\\Pyt$(AF_PATH)\\lib;$(KHIVA_PATH)\\lib;hon38-x64;C:\\Python38-x64\\Scripts"
+  - PYTHON: "C:\\Python38-x64;C:\\Python38-x64\\Scripts"
     PATH: $(PYTHON);$(AF_PATH)\\lib;$(KHIVA_PATH)\\lib;$(PATH)
 cache:
     - C:\tools\vcpkg\installed
