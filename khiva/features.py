@@ -13,9 +13,13 @@
 import ctypes
 from khiva.library import KhivaLibrary, KHIVA_ERROR_LENGTH
 from khiva.array import Array
-
+from collections import namedtuple
 
 ########################################################################################################################
+
+LinearTrendResult = namedtuple(
+    "LinearTrendResult", ["pvalue", "rvalue", "intercept", "slope", "stdrr"])
+FftCoefficientResult = namedtuple("FftCoefficientResult", ["real", "imag", "abs", "angle"])
 
 
 def abs_energy(arr):
@@ -77,11 +81,11 @@ def aggregated_autocorrelation(arr, aggregation_function):
     error_code = ctypes.c_int(0)
     error_message = ctypes.create_string_buffer(KHIVA_ERROR_LENGTH)
     KhivaLibrary().c_khiva_library.aggregated_autocorrelation(ctypes.pointer(arr.arr_reference),
-                                                              ctypes.pointer(ctypes.c_int(aggregation_function)),
+                                                              ctypes.pointer(ctypes.c_int(
+                                                                  aggregation_function)),
                                                               ctypes.pointer(b), ctypes.pointer(error_code), error_message)
     if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
-
 
     return Array(array_reference=b)
 
@@ -106,27 +110,34 @@ def aggregated_linear_trend(arr, chunk_size, aggregation_function):
             slope: KHIVA array with the slope for all time series.
             stdrr: KHIVA array with the stderr values for all time series. )
     """
-    b = ctypes.c_void_p(0)
-    c = ctypes.c_void_p(0)
-    d = ctypes.c_void_p(0)
-    e = ctypes.c_void_p(0)
-    f = ctypes.c_void_p(0)
+    pvalue = ctypes.c_void_p(0)
+    rvalue = ctypes.c_void_p(0)
+    intercept = ctypes.c_void_p(0)
+    slope = ctypes.c_void_p(0)
+    stdrr = ctypes.c_void_p(0)
 
     error_code = ctypes.c_int(0)
     error_message = ctypes.create_string_buffer(KHIVA_ERROR_LENGTH)
     KhivaLibrary().c_khiva_library.aggregated_linear_trend(ctypes.pointer(arr.arr_reference),
-                                                           ctypes.pointer(ctypes.c_long(chunk_size)),
-                                                           ctypes.pointer(ctypes.c_int(aggregation_function)),
-                                                           ctypes.pointer(b),
-                                                           ctypes.pointer(c),
-                                                           ctypes.pointer(d),
-                                                           ctypes.pointer(e),
-                                                           ctypes.pointer(f),
+                                                           ctypes.pointer(
+                                                               ctypes.c_long(chunk_size)),
+                                                           ctypes.pointer(ctypes.c_int(
+                                                               aggregation_function)),
+                                                           ctypes.pointer(
+                                                               pvalue),
+                                                           ctypes.pointer(
+                                                               rvalue),
+                                                           ctypes.pointer(
+                                                               intercept),
+                                                           ctypes.pointer(
+                                                               slope),
+                                                           ctypes.pointer(
+                                                               stdrr),
                                                            ctypes.pointer(error_code), error_message)
     if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
 
-    return Array(array_reference=b), Array(array_reference=c, khiva_type=arr.khiva_type), Array(array_reference=d), Array(array_reference=e), Array(array_reference=f)
+    return LinearTrendResult(pvalue=Array(pvalue), rvalue=Array(rvalue), intercept=Array(intercept), slope=Array(slope), stdrr=Array(stdrr))
 
 
 def approximate_entropy(arr, m, r):
@@ -147,12 +158,13 @@ def approximate_entropy(arr, m, r):
     error_code = ctypes.c_int(0)
     error_message = ctypes.create_string_buffer(KHIVA_ERROR_LENGTH)
     KhivaLibrary().c_khiva_library.approximate_entropy(ctypes.pointer(arr.arr_reference),
-                                                       ctypes.pointer(ctypes.c_int(m)),
-                                                       ctypes.pointer(ctypes.c_float(r)),
+                                                       ctypes.pointer(
+                                                           ctypes.c_int(m)),
+                                                       ctypes.pointer(
+                                                           ctypes.c_float(r)),
                                                        ctypes.pointer(b), ctypes.pointer(error_code), error_message)
     if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
-
 
     return Array(array_reference=b)
 
@@ -170,11 +182,11 @@ def cross_covariance(xss, yss, unbiased):
     error_code = ctypes.c_int(0)
     error_message = ctypes.create_string_buffer(KHIVA_ERROR_LENGTH)
     KhivaLibrary().c_khiva_library.cross_covariance(ctypes.pointer(xss.arr_reference),
-                                                    ctypes.pointer(yss.arr_reference),
+                                                    ctypes.pointer(
+                                                        yss.arr_reference),
                                                     ctypes.pointer(ctypes.c_bool(unbiased)), ctypes.pointer(b), ctypes.pointer(error_code), error_message)
     if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
-
 
     return Array(array_reference=b)
 
@@ -190,11 +202,11 @@ def auto_covariance(arr, unbiased=False):
     error_code = ctypes.c_int(0)
     error_message = ctypes.create_string_buffer(KHIVA_ERROR_LENGTH)
     KhivaLibrary().c_khiva_library.auto_covariance(ctypes.pointer(arr.arr_reference),
-                                                   ctypes.pointer(ctypes.c_bool(unbiased)),
+                                                   ctypes.pointer(
+                                                       ctypes.c_bool(unbiased)),
                                                    ctypes.pointer(b), ctypes.pointer(error_code), error_message)
     if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
-
 
     return Array(array_reference=b)
 
@@ -212,11 +224,11 @@ def cross_correlation(xss, yss, unbiased):
     error_code = ctypes.c_int(0)
     error_message = ctypes.create_string_buffer(KHIVA_ERROR_LENGTH)
     KhivaLibrary().c_khiva_library.cross_correlation(ctypes.pointer(xss.arr_reference),
-                                                     ctypes.pointer(yss.arr_reference),
+                                                     ctypes.pointer(
+                                                         yss.arr_reference),
                                                      ctypes.pointer(ctypes.c_bool(unbiased)), ctypes.pointer(b), ctypes.pointer(error_code), error_message)
     if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
-
 
     return Array(array_reference=b)
 
@@ -233,12 +245,13 @@ def auto_correlation(arr, max_lag, unbiased):
     error_code = ctypes.c_int(0)
     error_message = ctypes.create_string_buffer(KHIVA_ERROR_LENGTH)
     KhivaLibrary().c_khiva_library.auto_correlation(ctypes.pointer(arr.arr_reference),
-                                                    ctypes.pointer(ctypes.c_long(max_lag)),
-                                                    ctypes.pointer(ctypes.c_bool(unbiased)),
+                                                    ctypes.pointer(
+                                                        ctypes.c_long(max_lag)),
+                                                    ctypes.pointer(
+                                                        ctypes.c_bool(unbiased)),
                                                     ctypes.pointer(b), ctypes.pointer(error_code), error_message)
     if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
-
 
     return Array(array_reference=b)
 
@@ -254,11 +267,11 @@ def binned_entropy(arr, max_bins):
     error_code = ctypes.c_int(0)
     error_message = ctypes.create_string_buffer(KHIVA_ERROR_LENGTH)
     KhivaLibrary().c_khiva_library.binned_entropy(ctypes.pointer(arr.arr_reference),
-                                                  ctypes.pointer(ctypes.c_int(max_bins)),
+                                                  ctypes.pointer(
+                                                      ctypes.c_int(max_bins)),
                                                   ctypes.pointer(b), ctypes.pointer(error_code), error_message)
     if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
-
 
     return Array(array_reference=b)
 
@@ -280,7 +293,6 @@ def c3(arr, lag):
     if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
 
-
     return Array(array_reference=b)
 
 
@@ -301,7 +313,6 @@ def cid_ce(arr, z_normalize):
     if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
 
-
     return Array(array_reference=b)
 
 
@@ -319,7 +330,6 @@ def count_above_mean(arr):
                                                     ctypes.pointer(b), ctypes.pointer(error_code), error_message)
     if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
-
 
     return Array(array_reference=b)
 
@@ -339,7 +349,6 @@ def count_below_mean(arr):
     if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
 
-
     return Array(array_reference=b)
 
 
@@ -357,13 +366,15 @@ def cwt_coefficients(tss, widths, coeff, w):
     error_code = ctypes.c_int(0)
     error_message = ctypes.create_string_buffer(KHIVA_ERROR_LENGTH)
     KhivaLibrary().c_khiva_library.cwt_coefficients(ctypes.pointer(tss.arr_reference),
-                                                    ctypes.pointer(widths.arr_reference),
-                                                    ctypes.pointer(ctypes.c_int(coeff)),
-                                                    ctypes.pointer(ctypes.c_int(w)),
+                                                    ctypes.pointer(
+                                                        widths.arr_reference),
+                                                    ctypes.pointer(
+                                                        ctypes.c_int(coeff)),
+                                                    ctypes.pointer(
+                                                        ctypes.c_int(w)),
                                                     ctypes.pointer(b), ctypes.pointer(error_code), error_message)
     if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
-
 
     return Array(array_reference=b)
 
@@ -382,12 +393,13 @@ def energy_ratio_by_chunks(arr, num_segments, segment_focus):
     error_code = ctypes.c_int(0)
     error_message = ctypes.create_string_buffer(KHIVA_ERROR_LENGTH)
     KhivaLibrary().c_khiva_library.energy_ratio_by_chunks(ctypes.pointer(arr.arr_reference),
-                                                          ctypes.pointer(ctypes.c_long(num_segments)),
-                                                          ctypes.pointer(ctypes.c_long(segment_focus)),
+                                                          ctypes.pointer(
+                                                              ctypes.c_long(num_segments)),
+                                                          ctypes.pointer(
+                                                              ctypes.c_long(segment_focus)),
                                                           ctypes.pointer(b), ctypes.pointer(error_code), error_message)
     if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
-
 
     return Array(array_reference=b)
 
@@ -403,10 +415,10 @@ def fft_aggregated(arr):
     b = ctypes.c_void_p(0)
     error_code = ctypes.c_int(0)
     error_message = ctypes.create_string_buffer(KHIVA_ERROR_LENGTH)
-    KhivaLibrary().c_khiva_library.fft_aggregated(ctypes.pointer(arr.arr_reference), ctypes.pointer(b), ctypes.pointer(error_code), error_message)
+    KhivaLibrary().c_khiva_library.fft_aggregated(ctypes.pointer(arr.arr_reference),
+                                                  ctypes.pointer(b), ctypes.pointer(error_code), error_message)
     if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
-
 
     return Array(array_reference=b)
 
@@ -423,27 +435,24 @@ def fft_coefficient(arr, coefficient):
         abs: KHIVA array with the absolute value of the coefficient.
         angle: KHIVA array with the angle of the coefficient.
     """
-    b = ctypes.c_void_p(0)
-    c = ctypes.c_void_p(0)
-    d = ctypes.c_void_p(0)
-    e = ctypes.c_void_p(0)
+    real = ctypes.c_void_p(0)
+    imag = ctypes.c_void_p(0)
+    abs_ = ctypes.c_void_p(0)
+    angle = ctypes.c_void_p(0)
 
     error_code = ctypes.c_int(0)
     error_message = ctypes.create_string_buffer(KHIVA_ERROR_LENGTH)
     KhivaLibrary().c_khiva_library.fft_coefficient(ctypes.pointer(arr.arr_reference),
-                                                   ctypes.pointer(ctypes.c_long(coefficient)),
-                                                   ctypes.pointer(b),
-                                                   ctypes.pointer(c),
-                                                   ctypes.pointer(d),
-                                                   ctypes.pointer(e)
-                                                   , ctypes.pointer(error_code), error_message)
+                                                   ctypes.pointer(
+                                                       ctypes.c_long(coefficient)),
+                                                   ctypes.pointer(real),
+                                                   ctypes.pointer(imag),
+                                                   ctypes.pointer(abs_),
+                                                   ctypes.pointer(angle), ctypes.pointer(error_code), error_message)
     if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
 
-
-    return Array(array_reference=b), Array(array_reference=c,
-                                           khiva_type=arr.khiva_type), Array(
-        array_reference=d), Array(array_reference=e)
+    return FftCoefficientResult(real=Array(real), imag=Array(imag), abs=Array(abs_), angle=Array(angle))
 
 
 def first_location_of_maximum(arr):
@@ -460,7 +469,6 @@ def first_location_of_maximum(arr):
                                                              ctypes.pointer(b), ctypes.pointer(error_code), error_message)
     if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
-
 
     return Array(array_reference=b)
 
@@ -479,7 +487,6 @@ def first_location_of_minimum(arr):
                                                              ctypes.pointer(b), ctypes.pointer(error_code), error_message)
     if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
-
 
     return Array(array_reference=b)
 
@@ -507,12 +514,13 @@ def friedrich_coefficients(arr, m, r):
     error_code = ctypes.c_int(0)
     error_message = ctypes.create_string_buffer(KHIVA_ERROR_LENGTH)
     KhivaLibrary().c_khiva_library.friedrich_coefficients(ctypes.pointer(arr.arr_reference),
-                                                          ctypes.pointer(ctypes.c_int(m)),
-                                                          ctypes.pointer(ctypes.c_float(r)),
+                                                          ctypes.pointer(
+                                                              ctypes.c_int(m)),
+                                                          ctypes.pointer(
+                                                              ctypes.c_float(r)),
                                                           ctypes.pointer(b), ctypes.pointer(error_code), error_message)
     if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
-
 
     return Array(array_reference=b)
 
@@ -528,10 +536,10 @@ def has_duplicates(arr):
     b = ctypes.c_void_p(0)
     error_code = ctypes.c_int(0)
     error_message = ctypes.create_string_buffer(KHIVA_ERROR_LENGTH)
-    KhivaLibrary().c_khiva_library.has_duplicates(ctypes.pointer(arr.arr_reference), ctypes.pointer(b), ctypes.pointer(error_code), error_message)
+    KhivaLibrary().c_khiva_library.has_duplicates(ctypes.pointer(arr.arr_reference),
+                                                  ctypes.pointer(b), ctypes.pointer(error_code), error_message)
     if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
-
 
     return Array(array_reference=b)
 
@@ -546,10 +554,10 @@ def has_duplicate_max(arr):
     b = ctypes.c_void_p(0)
     error_code = ctypes.c_int(0)
     error_message = ctypes.create_string_buffer(KHIVA_ERROR_LENGTH)
-    KhivaLibrary().c_khiva_library.has_duplicate_max(ctypes.pointer(arr.arr_reference), ctypes.pointer(b), ctypes.pointer(error_code), error_message)
+    KhivaLibrary().c_khiva_library.has_duplicate_max(ctypes.pointer(arr.arr_reference),
+                                                     ctypes.pointer(b), ctypes.pointer(error_code), error_message)
     if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
-
 
     return Array(array_reference=b)
 
@@ -563,10 +571,10 @@ def has_duplicate_min(arr):
     b = ctypes.c_void_p(0)
     error_code = ctypes.c_int(0)
     error_message = ctypes.create_string_buffer(KHIVA_ERROR_LENGTH)
-    KhivaLibrary().c_khiva_library.has_duplicate_min(ctypes.pointer(arr.arr_reference), ctypes.pointer(b), ctypes.pointer(error_code), error_message)
+    KhivaLibrary().c_khiva_library.has_duplicate_min(ctypes.pointer(arr.arr_reference),
+                                                     ctypes.pointer(b), ctypes.pointer(error_code), error_message)
     if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
-
 
     return Array(array_reference=b)
 
@@ -583,11 +591,11 @@ def index_mass_quantile(arr, q):
     error_code = ctypes.c_int(0)
     error_message = ctypes.create_string_buffer(KHIVA_ERROR_LENGTH)
     KhivaLibrary().c_khiva_library.index_mass_quantile(ctypes.pointer(arr.arr_reference),
-                                                       ctypes.pointer(ctypes.c_float(q)),
+                                                       ctypes.pointer(
+                                                           ctypes.c_float(q)),
                                                        ctypes.pointer(b), ctypes.pointer(error_code), error_message)
     if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
-
 
     return Array(array_reference=b)
 
@@ -607,7 +615,6 @@ def kurtosis(arr):
     if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
 
-
     return Array(array_reference=b)
 
 
@@ -623,11 +630,11 @@ def large_standard_deviation(arr, r):
     error_code = ctypes.c_int(0)
     error_message = ctypes.create_string_buffer(KHIVA_ERROR_LENGTH)
     KhivaLibrary().c_khiva_library.large_standard_deviation(ctypes.pointer(arr.arr_reference),
-                                                            ctypes.pointer(ctypes.c_float(r)),
+                                                            ctypes.pointer(
+                                                                ctypes.c_float(r)),
                                                             ctypes.pointer(b), ctypes.pointer(error_code), error_message)
     if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
-
 
     return Array(array_reference=b)
 
@@ -647,7 +654,6 @@ def last_location_of_maximum(arr):
     if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
 
-
     return Array(array_reference=b)
 
 
@@ -666,7 +672,6 @@ def last_location_of_minimum(arr):
     if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
 
-
     return Array(array_reference=b)
 
 
@@ -684,7 +689,6 @@ def length(arr):
     if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
 
-
     return Array(array_reference=b)
 
 
@@ -700,30 +704,28 @@ def linear_trend(arr):
             slope: KHIVA array the slope for all time series.
             stdrr: KHIVA array the stderr values for all time series.
     """
-    b = ctypes.c_void_p(0)
-    c = ctypes.c_void_p(0)
-    d = ctypes.c_void_p(0)
-    e = ctypes.c_void_p(0)
-    f = ctypes.c_void_p(0)
+    pvalue = ctypes.c_void_p(0)
+    rvalue = ctypes.c_void_p(0)
+    intercept = ctypes.c_void_p(0)
+    slope = ctypes.c_void_p(0)
+    stdrr = ctypes.c_void_p(0)
 
     error_code = ctypes.c_int(0)
     error_message = ctypes.create_string_buffer(KHIVA_ERROR_LENGTH)
     KhivaLibrary().c_khiva_library.linear_trend(ctypes.pointer(arr.arr_reference),
-                                                ctypes.pointer(b),
-                                                ctypes.pointer(c),
-                                                ctypes.pointer(d),
-                                                ctypes.pointer(e),
-                                                ctypes.pointer(f)
-                                                , ctypes.pointer(error_code), error_message)
+                                                ctypes.pointer(pvalue),
+                                                ctypes.pointer(rvalue),
+                                                ctypes.pointer(intercept),
+                                                ctypes.pointer(slope),
+                                                ctypes.pointer(stdrr), ctypes.pointer(error_code), error_message)
     if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
 
-
-    return Array(array_reference=b), \
-           Array(array_reference=c), \
-           Array(array_reference=d), \
-           Array(array_reference=e), \
-           Array(array_reference=f)
+    return Array(array_reference=pvalue), \
+        Array(array_reference=rvalue), \
+        Array(array_reference=intercept), \
+        Array(array_reference=slope), \
+        Array(array_reference=stdrr)
 
 
 def local_maximals(arr):
@@ -739,7 +741,6 @@ def local_maximals(arr):
                                                   ctypes.pointer(b), ctypes.pointer(error_code), error_message)
     if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
-
 
     return Array(array_reference=b)
 
@@ -759,7 +760,6 @@ def longest_strike_above_mean(arr):
     if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
 
-
     return Array(array_reference=b)
 
 
@@ -777,7 +777,6 @@ def longest_strike_below_mean(arr):
                                                              ctypes.pointer(b), ctypes.pointer(error_code), error_message)
     if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
-
 
     return Array(array_reference=b)
 
@@ -803,12 +802,13 @@ def max_langevin_fixed_point(arr, m, r):
     error_code = ctypes.c_int(0)
     error_message = ctypes.create_string_buffer(KHIVA_ERROR_LENGTH)
     KhivaLibrary().c_khiva_library.max_langevin_fixed_point(ctypes.pointer(arr.arr_reference),
-                                                            ctypes.pointer(ctypes.c_int(m)),
-                                                            ctypes.pointer(ctypes.c_float(r)),
+                                                            ctypes.pointer(
+                                                                ctypes.c_int(m)),
+                                                            ctypes.pointer(
+                                                                ctypes.c_float(r)),
                                                             ctypes.pointer(b), ctypes.pointer(error_code), error_message)
     if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
-
 
     return Array(array_reference=b)
 
@@ -827,7 +827,6 @@ def maximum(arr):
     if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
 
-
     return Array(array_reference=b)
 
 
@@ -840,10 +839,10 @@ def mean(arr):
     b = ctypes.c_void_p(0)
     error_code = ctypes.c_int(0)
     error_message = ctypes.create_string_buffer(KHIVA_ERROR_LENGTH)
-    KhivaLibrary().c_khiva_library.mean(ctypes.pointer(arr.arr_reference), ctypes.pointer(b), ctypes.pointer(error_code), error_message)
+    KhivaLibrary().c_khiva_library.mean(ctypes.pointer(arr.arr_reference),
+                                        ctypes.pointer(b), ctypes.pointer(error_code), error_message)
     if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
-
 
     return Array(array_reference=b)
 
@@ -862,7 +861,6 @@ def mean_absolute_change(arr):
     if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
 
-
     return Array(array_reference=b)
 
 
@@ -875,10 +873,10 @@ def mean_change(arr):
     b = ctypes.c_void_p(0)
     error_code = ctypes.c_int(0)
     error_message = ctypes.create_string_buffer(KHIVA_ERROR_LENGTH)
-    KhivaLibrary().c_khiva_library.mean_change(ctypes.pointer(arr.arr_reference), ctypes.pointer(b), ctypes.pointer(error_code), error_message)
+    KhivaLibrary().c_khiva_library.mean_change(ctypes.pointer(arr.arr_reference),
+                                               ctypes.pointer(b), ctypes.pointer(error_code), error_message)
     if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
-
 
     return Array(array_reference=b)
 
@@ -897,7 +895,6 @@ def mean_second_derivative_central(arr):
     if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
 
-
     return Array(array_reference=b)
 
 
@@ -910,10 +907,10 @@ def median(arr):
     b = ctypes.c_void_p(0)
     error_code = ctypes.c_int(0)
     error_message = ctypes.create_string_buffer(KHIVA_ERROR_LENGTH)
-    KhivaLibrary().c_khiva_library.median(ctypes.pointer(arr.arr_reference), ctypes.pointer(b), ctypes.pointer(error_code), error_message)
+    KhivaLibrary().c_khiva_library.median(ctypes.pointer(arr.arr_reference),
+                                          ctypes.pointer(b), ctypes.pointer(error_code), error_message)
     if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
-
 
     return Array(array_reference=b)
 
@@ -932,7 +929,6 @@ def minimum(arr):
     if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
 
-
     return Array(array_reference=b)
 
 
@@ -949,11 +945,11 @@ def number_crossing_m(arr, m):
     error_code = ctypes.c_int(0)
     error_message = ctypes.create_string_buffer(KHIVA_ERROR_LENGTH)
     KhivaLibrary().c_khiva_library.number_crossing_m(ctypes.pointer(arr.arr_reference),
-                                                     ctypes.pointer(ctypes.c_int(m)),
+                                                     ctypes.pointer(
+                                                         ctypes.c_int(m)),
                                                      ctypes.pointer(b), ctypes.pointer(error_code), error_message)
     if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
-
 
     return Array(array_reference=b)
 
@@ -971,11 +967,11 @@ def number_cwt_peaks(arr, max_w):
     error_code = ctypes.c_int(0)
     error_message = ctypes.create_string_buffer(KHIVA_ERROR_LENGTH)
     KhivaLibrary().c_khiva_library.number_cwt_peaks(ctypes.pointer(arr.arr_reference),
-                                                    ctypes.pointer(ctypes.c_int(max_w)),
+                                                    ctypes.pointer(
+                                                        ctypes.c_int(max_w)),
                                                     ctypes.pointer(b), ctypes.pointer(error_code), error_message)
     if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
-
 
     return Array(array_reference=b)
 
@@ -996,7 +992,6 @@ def number_peaks(arr, n):
                                                 ctypes.pointer(b), ctypes.pointer(error_code), error_message)
     if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
-
 
     return Array(array_reference=b)
 
@@ -1030,9 +1025,11 @@ def partial_autocorrelation(arr, lags):
     error_code = ctypes.c_int(0)
     error_message = ctypes.create_string_buffer(KHIVA_ERROR_LENGTH)
     KhivaLibrary().c_khiva_library.partial_autocorrelation(ctypes.pointer(arr.arr_reference),
-                                                           ctypes.pointer(lags.arr_reference),
+                                                           ctypes.pointer(
+                                                               lags.arr_reference),
                                                            ctypes.pointer(b),
-                                                           ctypes.pointer(error_code),
+                                                           ctypes.pointer(
+                                                               error_code),
                                                            error_message)
     if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
@@ -1064,8 +1061,7 @@ def percentage_of_reoccurring_datapoints_to_all_datapoints(arr, is_sorted):
         ctypes.pointer(
             b), ctypes.pointer(error_code), error_message)
     if error_code.value != 0:
-            raise Exception(str(error_message.value.decode()))
-
+        raise Exception(str(error_message.value.decode()))
 
     return Array(array_reference=b)
 
@@ -1094,7 +1090,6 @@ def percentage_of_reoccurring_values_to_all_values(arr, is_sorted):
     if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
 
-
     return Array(array_reference=b)
 
 
@@ -1110,11 +1105,11 @@ def quantile(arr, q, precision=1e8):
     error_code = ctypes.c_int(0)
     error_message = ctypes.create_string_buffer(KHIVA_ERROR_LENGTH)
     KhivaLibrary().c_khiva_library.quantile(ctypes.pointer(arr.arr_reference), ctypes.pointer(q.arr_reference),
-                                            ctypes.pointer(ctypes.c_float(precision)),
+                                            ctypes.pointer(
+                                                ctypes.c_float(precision)),
                                             ctypes.pointer(b), ctypes.pointer(error_code), error_message)
     if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
-
 
     return Array(array_reference=b)
 
@@ -1131,12 +1126,13 @@ def range_count(arr, min, max):
     error_code = ctypes.c_int(0)
     error_message = ctypes.create_string_buffer(KHIVA_ERROR_LENGTH)
     KhivaLibrary().c_khiva_library.range_count(ctypes.pointer(arr.arr_reference),
-                                               ctypes.pointer(ctypes.c_int(min)),
-                                               ctypes.pointer(ctypes.c_float(max)),
+                                               ctypes.pointer(
+                                                   ctypes.c_int(min)),
+                                               ctypes.pointer(
+                                                   ctypes.c_float(max)),
                                                ctypes.pointer(b), ctypes.pointer(error_code), error_message)
     if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
-
 
     return Array(array_reference=b)
 
@@ -1154,11 +1150,11 @@ def ratio_beyond_r_sigma(arr, r):
     error_code = ctypes.c_int(0)
     error_message = ctypes.create_string_buffer(KHIVA_ERROR_LENGTH)
     KhivaLibrary().c_khiva_library.ratio_beyond_r_sigma(ctypes.pointer(arr.arr_reference),
-                                                        ctypes.pointer(ctypes.c_float(r)),
+                                                        ctypes.pointer(
+                                                            ctypes.c_float(r)),
                                                         ctypes.pointer(b), ctypes.pointer(error_code), error_message)
     if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
-
 
     return Array(array_reference=b)
 
@@ -1181,7 +1177,6 @@ def ratio_value_number_to_time_series_length(arr):
     if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
 
-
     return Array(array_reference=b)
 
 
@@ -1201,10 +1196,10 @@ def sample_entropy(arr):
     b = ctypes.c_void_p(0)
     error_code = ctypes.c_int(0)
     error_message = ctypes.create_string_buffer(KHIVA_ERROR_LENGTH)
-    KhivaLibrary().c_khiva_library.sample_entropy(ctypes.pointer(arr.arr_reference), ctypes.pointer(b), ctypes.pointer(error_code), error_message)
+    KhivaLibrary().c_khiva_library.sample_entropy(ctypes.pointer(arr.arr_reference),
+                                                  ctypes.pointer(b), ctypes.pointer(error_code), error_message)
     if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
-
 
     return Array(array_reference=b)
 
@@ -1219,10 +1214,10 @@ def skewness(arr):
     b = ctypes.c_void_p(0)
     error_code = ctypes.c_int(0)
     error_message = ctypes.create_string_buffer(KHIVA_ERROR_LENGTH)
-    KhivaLibrary().c_khiva_library.skewness(ctypes.pointer(arr.arr_reference), ctypes.pointer(b), ctypes.pointer(error_code), error_message)
+    KhivaLibrary().c_khiva_library.skewness(ctypes.pointer(arr.arr_reference),
+                                            ctypes.pointer(b), ctypes.pointer(error_code), error_message)
     if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
-
 
     return Array(array_reference=b)
 
@@ -1251,7 +1246,6 @@ def spkt_welch_density(arr, coeff):
     if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
 
-
     return Array(array_reference=b)
 
 
@@ -1269,7 +1263,6 @@ def standard_deviation(arr):
     if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
 
-
     return Array(array_reference=b)
 
 
@@ -1284,11 +1277,11 @@ def sum_of_reoccurring_datapoints(arr, is_sorted=False):
     error_code = ctypes.c_int(0)
     error_message = ctypes.create_string_buffer(KHIVA_ERROR_LENGTH)
     KhivaLibrary().c_khiva_library.sum_of_reoccurring_datapoints(ctypes.pointer(arr.arr_reference),
-                                                                 ctypes.pointer(ctypes.c_bool(is_sorted)),
+                                                                 ctypes.pointer(
+                                                                     ctypes.c_bool(is_sorted)),
                                                                  ctypes.pointer(b), ctypes.pointer(error_code), error_message)
     if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
-
 
     return Array(array_reference=b)
 
@@ -1304,11 +1297,11 @@ def sum_of_reoccurring_values(arr, is_sorted=False):
     error_code = ctypes.c_int(0)
     error_message = ctypes.create_string_buffer(KHIVA_ERROR_LENGTH)
     KhivaLibrary().c_khiva_library.sum_of_reoccurring_values(ctypes.pointer(arr.arr_reference),
-                                                             ctypes.pointer(ctypes.c_bool(is_sorted)),
+                                                             ctypes.pointer(
+                                                                 ctypes.c_bool(is_sorted)),
                                                              ctypes.pointer(b), ctypes.pointer(error_code), error_message)
     if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
-
 
     return Array(array_reference=b)
 
@@ -1327,7 +1320,6 @@ def sum_values(arr):
                                               ctypes.pointer(b), ctypes.pointer(error_code), error_message)
     if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
-
 
     return Array(array_reference=b)
 
@@ -1348,11 +1340,11 @@ def symmetry_looking(arr, r):
     error_code = ctypes.c_int(0)
     error_message = ctypes.create_string_buffer(KHIVA_ERROR_LENGTH)
     KhivaLibrary().c_khiva_library.symmetry_looking(ctypes.pointer(arr.arr_reference),
-                                                    ctypes.pointer(ctypes.c_float(r)),
+                                                    ctypes.pointer(
+                                                        ctypes.c_float(r)),
                                                     ctypes.pointer(b), ctypes.pointer(error_code), error_message)
     if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
-
 
     return Array(array_reference=b)
 
@@ -1381,11 +1373,11 @@ def time_reversal_asymmetry_statistic(arr, lag):
     error_code = ctypes.c_int(0)
     error_message = ctypes.create_string_buffer(KHIVA_ERROR_LENGTH)
     KhivaLibrary().c_khiva_library.time_reversal_asymmetry_statistic(ctypes.pointer(arr.arr_reference),
-                                                                     ctypes.pointer(ctypes.c_int(lag)),
+                                                                     ctypes.pointer(
+                                                                         ctypes.c_int(lag)),
                                                                      ctypes.pointer(b), ctypes.pointer(error_code), error_message)
     if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
-
 
     return Array(array_reference=b)
 
@@ -1405,7 +1397,6 @@ def value_count(arr, v):
     if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
 
-
     return Array(array_reference=b)
 
 
@@ -1418,10 +1409,10 @@ def variance(arr):
     b = ctypes.c_void_p(0)
     error_code = ctypes.c_int(0)
     error_message = ctypes.create_string_buffer(KHIVA_ERROR_LENGTH)
-    KhivaLibrary().c_khiva_library.variance(ctypes.pointer(arr.arr_reference), ctypes.pointer(b), ctypes.pointer(error_code), error_message)
+    KhivaLibrary().c_khiva_library.variance(ctypes.pointer(arr.arr_reference),
+                                            ctypes.pointer(b), ctypes.pointer(error_code), error_message)
     if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
-
 
     return Array(array_reference=b)
 
@@ -1440,6 +1431,4 @@ def variance_larger_than_standard_deviation(arr):
                                                                            ctypes.pointer(b), ctypes.pointer(error_code), error_message)
     if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
-
-
     return Array(array_reference=b)

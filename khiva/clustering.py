@@ -13,9 +13,13 @@
 import ctypes
 from khiva.library import KhivaLibrary, KHIVA_ERROR_LENGTH
 from khiva.array import Array
-
+from collections import namedtuple
 
 ########################################################################################################################
+
+ClusteringResult = namedtuple("ClusteringResult", ["centroids", "labels"])
+
+
 def k_means(tss, k, tolerance=1e-10, max_iterations=100):
     """ Calculates the K-Means algorithm.
 
@@ -39,13 +43,15 @@ def k_means(tss, k, tolerance=1e-10, max_iterations=100):
                                            ctypes.pointer(ctypes.c_int(k)),
                                            ctypes.pointer(centroids),
                                            ctypes.pointer(labels),
-                                           ctypes.pointer(ctypes.c_float(tolerance)),
-                                           ctypes.pointer(ctypes.c_int(max_iterations)),
+                                           ctypes.pointer(
+                                               ctypes.c_float(tolerance)),
+                                           ctypes.pointer(
+                                               ctypes.c_int(max_iterations)),
                                            ctypes.pointer(error_code), error_message)
     if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
 
-    return Array(array_reference=centroids), Array(array_reference=labels)
+    return ClusteringResult(centroids = Array(centroids), labels=Array(labels))
 
 
 def k_shape(tss, k, tolerance=1e-10, max_iterations=100):
@@ -69,15 +75,16 @@ def k_shape(tss, k, tolerance=1e-10, max_iterations=100):
     error_code = ctypes.c_int(0)
     error_message = ctypes.create_string_buffer(KHIVA_ERROR_LENGTH)
     KhivaLibrary().c_khiva_library.k_shape(ctypes.pointer(tss.arr_reference),
-                                                          ctypes.pointer(ctypes.c_int(k)),
-                                                          ctypes.pointer(centroids),
-                                                          ctypes.pointer(labels),
-                                                          ctypes.pointer(ctypes.c_float(tolerance)),
-                                                          ctypes.pointer(ctypes.c_int(max_iterations)),
-                                                          ctypes.pointer(error_code), error_message)
+                                           ctypes.pointer(ctypes.c_int(k)),
+                                           ctypes.pointer(centroids),
+                                           ctypes.pointer(labels),
+                                           ctypes.pointer(
+                                               ctypes.c_float(tolerance)),
+                                           ctypes.pointer(
+                                               ctypes.c_int(max_iterations)),
+                                           ctypes.pointer(error_code), error_message)
     if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
 
-    return Array(array_reference=centroids), Array(array_reference=labels)
-
+    return ClusteringResult(centroids = Array(centroids), labels=Array(labels))
 

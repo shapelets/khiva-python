@@ -43,7 +43,6 @@ def paa(a, bins):
     if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
 
-
     return Array(array_reference=b)
 
 
@@ -66,7 +65,6 @@ def pip(a, number_ips):
     if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
 
-
     return Array(array_reference=b)
 
 
@@ -86,11 +84,11 @@ def pla_bottom_up(ts, max_error):
     error_code = ctypes.c_int(0)
     error_message = ctypes.create_string_buffer(KHIVA_ERROR_LENGTH)
     KhivaLibrary().c_khiva_library.pla_bottom_up(ctypes.pointer(ts.arr_reference),
-                                                 ctypes.pointer(ctypes.c_float(max_error)),
+                                                 ctypes.pointer(
+                                                     ctypes.c_float(max_error)),
                                                  ctypes.pointer(b), ctypes.pointer(error_code), error_message)
     if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
-
 
     return Array(array_reference=b)
 
@@ -111,11 +109,11 @@ def pla_sliding_window(ts, max_error):
     error_code = ctypes.c_int(0)
     error_message = ctypes.create_string_buffer(KHIVA_ERROR_LENGTH)
     KhivaLibrary().c_khiva_library.pla_sliding_window(ctypes.pointer(ts.arr_reference),
-                                                      ctypes.pointer(ctypes.c_float(max_error)),
+                                                      ctypes.pointer(
+                                                          ctypes.c_float(max_error)),
                                                       ctypes.pointer(b), ctypes.pointer(error_code), error_message)
     if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
-
 
     return Array(array_reference=b)
 
@@ -141,11 +139,11 @@ def ramer_douglas_peucker(a, epsilon):
     error_code = ctypes.c_int(0)
     error_message = ctypes.create_string_buffer(KHIVA_ERROR_LENGTH)
     KhivaLibrary().c_khiva_library.ramer_douglas_peucker(ctypes.pointer(a.arr_reference),
-                                                         ctypes.pointer(ctypes.c_double(epsilon)),
+                                                         ctypes.pointer(
+                                                             ctypes.c_double(epsilon)),
                                                          ctypes.pointer(b), ctypes.pointer(error_code), error_message)
     if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
-
 
     return Array(array_reference=b)
 
@@ -175,7 +173,6 @@ def sax(a, alphabet_size):
     if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
 
-
     return Array(array_reference=b)
 
 
@@ -196,10 +193,9 @@ def visvalingam(a, num_points):
     error_code = ctypes.c_int(0)
     error_message = ctypes.create_string_buffer(KHIVA_ERROR_LENGTH)
     KhivaLibrary().c_khiva_library.visvalingam(ctypes.pointer(a.arr_reference),
-                                               ctypes.pointer(ctypes.c_int(num_points)),
+                                               ctypes.pointer(
+                                                   ctypes.c_int(num_points)),
                                                ctypes.pointer(b), ctypes.pointer(error_code), error_message)
     if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
-
-
     return Array(array_reference=b)
