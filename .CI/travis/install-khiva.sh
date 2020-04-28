@@ -22,9 +22,8 @@ else
 fi
 
 # Cloning Github repo into khiva-library folder
-git clone https://github.com/shapelets/khiva.git khiva-library
+git clone --depth 1 --recurse-submodules -q https://github.com/shapelets/khiva.git khiva-library
 cd khiva-library
-git submodule update --init
 mkdir -p build && cd build
 conan profile new --detect --force default
 if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
