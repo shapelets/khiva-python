@@ -174,7 +174,6 @@ class ArrayTest(unittest.TestCase):
         b = Array.from_list([1, 2, 3, 4], dtype.s32)
         with self.assertRaises(Exception) as context:
             a * b
-        self.assertTrue("ArrayFire" in context.exception.args[0])
 
     def testMinus(self):
         a = Array.from_list([1, 2, 3, 4], dtype.s32)
