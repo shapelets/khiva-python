@@ -115,7 +115,7 @@ def moment(tss, k):
     return Array(array_reference=b)
 
 
-def quantile(tss, q, precision=1e8):
+def quantile(tss, q, precision=1e-8):
     """  Returns values at the given quantile.
 
     :param tss: Expects an input array whose dimension zero is the length of the time series (all the same) and dimension
