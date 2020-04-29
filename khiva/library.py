@@ -20,6 +20,10 @@ import sys
 
 ########################################################################################################################
 
+KHIVA_ERROR_LENGTH = 256
+
+########################################################################################################################
+
 class KhivaLibrary(object):
     class __KhivaLibrary:
         def __init__(self):
@@ -79,7 +83,7 @@ def get_backend_info():
     """
     info_pointer = ctypes.c_char_p((" " * 1000).encode('utf8'))
     error_code = ctypes.c_int(0)
-    error_message = ctypes.create_string_buffer(256)
+    error_message = ctypes.create_string_buffer(KHIVA_ERROR_LENGTH)
     KhivaLibrary().c_khiva_library.backend_info(ctypes.pointer(info_pointer),
                                                 ctypes.pointer(error_code),
                                                 error_message)
@@ -95,7 +99,7 @@ def set_backend(backend):
     :param backend: The desired backend. KHIVABackend type.
     """
     error_code = ctypes.c_int(0)
-    error_message = ctypes.create_string_buffer(256)
+    error_message = ctypes.create_string_buffer(KHIVA_ERROR_LENGTH)
     KhivaLibrary().c_khiva_library.set_backend(ctypes.pointer(ctypes.c_int(backend.value)),
                                                 ctypes.pointer(error_code),
                                                 error_message)
@@ -111,7 +115,7 @@ def get_backend():
     """
     backend = (ctypes.c_int * 1)(*[0])
     error_code = ctypes.c_int(0)
-    error_message = ctypes.create_string_buffer(256)
+    error_message = ctypes.create_string_buffer(KHIVA_ERROR_LENGTH)
     KhivaLibrary().c_khiva_library.get_backend(ctypes.pointer(backend),
                                                 ctypes.pointer(error_code),
                                                 error_message)
@@ -129,7 +133,7 @@ def get_backends():
     """
     backends = (ctypes.c_int * 1)(*[0])
     error_code = ctypes.c_int(0)
-    error_message = ctypes.create_string_buffer(256)
+    error_message = ctypes.create_string_buffer(KHIVA_ERROR_LENGTH)
     KhivaLibrary().c_khiva_library.get_backends(ctypes.pointer(backends),
                                                 ctypes.pointer(error_code),
                                                 error_message)
@@ -145,7 +149,7 @@ def set_device(device):
     :param device: The desired device.
     """
     error_code = ctypes.c_int(0)
-    error_message = ctypes.create_string_buffer(256)
+    error_message = ctypes.create_string_buffer(KHIVA_ERROR_LENGTH)
     KhivaLibrary().c_khiva_library.set_device(ctypes.pointer(ctypes.c_int(device)),
                                                 ctypes.pointer(error_code),
                                                 error_message)
@@ -161,7 +165,7 @@ def get_device_id():
     """
     device = (ctypes.c_int * 1)(*[0])
     error_code = ctypes.c_int(0)
-    error_message = ctypes.create_string_buffer(256)
+    error_message = ctypes.create_string_buffer(KHIVA_ERROR_LENGTH)
     KhivaLibrary().c_khiva_library.get_device_id(ctypes.pointer(device),
                                                 ctypes.pointer(error_code),
                                                 error_message)
@@ -178,7 +182,7 @@ def get_device_count():
     """
     device_count = (ctypes.c_int * 1)(*[0])
     error_code = ctypes.c_int(0)
-    error_message = ctypes.create_string_buffer(256)
+    error_message = ctypes.create_string_buffer(KHIVA_ERROR_LENGTH)
     KhivaLibrary().c_khiva_library.get_device_count(ctypes.pointer(device_count),
                                                 ctypes.pointer(error_code),
                                                 error_message)
@@ -195,7 +199,7 @@ def version():
     """
     v = ctypes.c_char_p((" " * 40).encode('utf8'))
     error_code = ctypes.c_int(0)
-    error_message = ctypes.create_string_buffer(256)
+    error_message = ctypes.create_string_buffer(KHIVA_ERROR_LENGTH)
     KhivaLibrary().c_khiva_library.version(ctypes.pointer(v),
                                                 ctypes.pointer(error_code),
                                                 error_message)

@@ -13,7 +13,7 @@
 ########################################################################################################################
 import unittest
 from khiva.regression import *
-from khiva.array import Array
+from khiva.array import Array, dtype
 from khiva.library import set_backend, KHIVABackend
 
 
@@ -27,25 +27,30 @@ class RegressionTest(unittest.TestCase):
         set_backend(KHIVABackend.KHIVA_BACKEND_CPU)
 
     def test_linear(self):
-        euclidean_result = linear(Array([0.24580423, 0.59642861, 0.35879163, 0.37891011, 0.02445137,
-                                         0.23830957, 0.38793433, 0.68054104, 0.83934083, 0.76073689]),
-                                  Array([0.2217416, 0.06344161, 0.77944375, 0.72174137, 0.19413884,
-                                         0.51146167, 0.06880307, 0.39414268, 0.98172767, 0.30490851]))
-        self.assertAlmostEqual(euclidean_result[0].to_numpy(), 0.344864266, delta=self.DELTA)
-        self.assertAlmostEqual(euclidean_result[1].to_numpy(), 0.268578232, delta=self.DELTA)
-        self.assertAlmostEqual(euclidean_result[2].to_numpy(), 0.283552942, delta=self.DELTA)
-        self.assertAlmostEqual(euclidean_result[3].to_numpy(), 0.427239418, delta=self.DELTA)
-        self.assertAlmostEqual(euclidean_result[4].to_numpy(), 0.412351891, delta=self.DELTA)
+        euclidean_result = linear(Array.from_list([0.24580423, 0.59642861, 0.35879163, 0.37891011, 0.02445137,
+                                                   0.23830957, 0.38793433, 0.68054104, 0.83934083, 0.76073689], dtype.f32),
+                                  Array.from_list([0.2217416, 0.06344161, 0.77944375, 0.72174137, 0.19413884,
+                                                   0.51146167, 0.06880307, 0.39414268, 0.98172767, 0.30490851], dtype.f32))
+        self.assertAlmostEqual(
+            euclidean_result[0].to_numpy(), 0.344864266, delta=self.DELTA)
+        self.assertAlmostEqual(
+            euclidean_result[1].to_numpy(), 0.268578232, delta=self.DELTA)
+        self.assertAlmostEqual(
+            euclidean_result[2].to_numpy(), 0.283552942, delta=self.DELTA)
+        self.assertAlmostEqual(
+            euclidean_result[3].to_numpy(), 0.427239418, delta=self.DELTA)
+        self.assertAlmostEqual(
+            euclidean_result[4].to_numpy(), 0.412351891, delta=self.DELTA)
 
     def test_linear_multiple_time_series(self):
-        euclidean_result = linear(Array([[0.24580423, 0.59642861, 0.35879163, 0.37891011, 0.02445137,
-                                          0.23830957, 0.38793433, 0.68054104, 0.83934083, 0.76073689],
-                                         [0.24580423, 0.59642861, 0.35879163, 0.37891011, 0.02445137,
-                                          0.23830957, 0.38793433, 0.68054104, 0.83934083, 0.76073689]]),
-                                  Array([[0.2217416, 0.06344161, 0.77944375, 0.72174137, 0.19413884,
-                                          0.51146167, 0.06880307, 0.39414268, 0.98172767, 0.30490851],
-                                         [0.2217416, 0.06344161, 0.77944375, 0.72174137, 0.19413884,
-                                          0.51146167, 0.06880307, 0.39414268, 0.98172767, 0.30490851]]))
+        euclidean_result = linear(Array.from_list([[0.24580423, 0.59642861, 0.35879163, 0.37891011, 0.02445137,
+                                                    0.23830957, 0.38793433, 0.68054104, 0.83934083, 0.76073689],
+                                                   [0.24580423, 0.59642861, 0.35879163, 0.37891011, 0.02445137,
+                                                    0.23830957, 0.38793433, 0.68054104, 0.83934083, 0.76073689]], dtype.f32),
+                                  Array.from_list([[0.2217416, 0.06344161, 0.77944375, 0.72174137, 0.19413884,
+                                                    0.51146167, 0.06880307, 0.39414268, 0.98172767, 0.30490851],
+                                                   [0.2217416, 0.06344161, 0.77944375, 0.72174137, 0.19413884,
+                                                    0.51146167, 0.06880307, 0.39414268, 0.98172767, 0.30490851]], dtype.f32))
         slope = euclidean_result[0].to_numpy()
         intercept = euclidean_result[1].to_numpy()
         rvalue = euclidean_result[2].to_numpy()

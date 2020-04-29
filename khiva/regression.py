@@ -11,7 +11,7 @@
 # IMPORT
 ########################################################################################################################
 import ctypes
-from khiva.library import KhivaLibrary
+from khiva.library import KhivaLibrary, KHIVA_ERROR_LENGTH
 from khiva.array import Array
 
 
@@ -41,7 +41,7 @@ def linear(xss, yss):
     f = ctypes.c_void_p(0)
 
     error_code = ctypes.c_int(0)
-    error_message = ctypes.create_string_buffer(256)
+    error_message = ctypes.create_string_buffer(KHIVA_ERROR_LENGTH)
     KhivaLibrary().c_khiva_library.linear(ctypes.pointer(xss.arr_reference),
                                           ctypes.pointer(yss.arr_reference),
                                           ctypes.pointer(b),

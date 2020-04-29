@@ -12,11 +12,18 @@
 # IMPORT
 ########################################################################################################################
 import ctypes
-from khiva.library import KhivaLibrary
+from khiva.library import KhivaLibrary, KHIVA_ERROR_LENGTH
 from khiva.array import Array
+from collections import namedtuple
 
 
 ########################################################################################################################
+MatrixProfileResult = namedtuple("MatrixProfileResult", ["profile", "index"])
+BestNResult = namedtuple(
+    "BestNResult", ["distances", "indexes", "subsequence_indexes"])
+BestNResultOcurrences = namedtuple(
+    "BestNResultOcurrences", ["distances", "indexes"])
+
 
 def find_best_n_discords(profile, index, m, n, self_join=False):
     """ This function extracts the best N motifs from a previously calculated matrix profile.
@@ -27,28 +34,31 @@ def find_best_n_discords(profile, index, m, n, self_join=False):
     :param n: Number of discords to extract.
     :param self_join: Indicates whether the input profile comes from a self join operation or not. It determines
                       whether the mirror similar region is included in the output or not.
-    :return: KHIVA arrays with the discord distances, the discord indices and the subsequence indices.
+    :return: KHIVA arrays with the discord distances, the discord indexes and the subsequence indexes.
     """
     b = ctypes.c_void_p(0)
     c = ctypes.c_void_p(0)
     d = ctypes.c_void_p(0)
 
     error_code = ctypes.c_int(0)
-    error_message = ctypes.create_string_buffer(256)
+    error_message = ctypes.create_string_buffer(KHIVA_ERROR_LENGTH)
     KhivaLibrary().c_khiva_library.find_best_n_discords(ctypes.pointer(profile.arr_reference),
-                                                        ctypes.pointer(index.arr_reference),
-                                                        ctypes.pointer(ctypes.c_long(m)),
-                                                        ctypes.pointer(ctypes.c_long(n)),
+                                                        ctypes.pointer(
+                                                            index.arr_reference),
+                                                        ctypes.c_long(m),
+                                                        ctypes.c_long(n),
                                                         ctypes.pointer(b),
                                                         ctypes.pointer(c),
                                                         ctypes.pointer(d),
-                                                        ctypes.pointer(ctypes.c_bool(self_join)), ctypes.pointer(error_code), error_message)
+                                                        ctypes.c_bool(
+                                                            self_join),
+                                                        ctypes.pointer(
+                                                            error_code),
+                                                        error_message)
     if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
 
-
-    return Array(array_reference=b), Array(array_reference=c), Array(
-        array_reference=d)
+    return BestNResult(distances=Array(b), indexes=Array(c), subsequence_indexes=Array(d))
 
 
 def find_best_n_motifs(profile, index, m, n, self_join=False):
@@ -60,28 +70,30 @@ def find_best_n_motifs(profile, index, m, n, self_join=False):
     :param n: Number of motifs to extract.
     :param self_join: Indicates whether the input profile comes from a self join operation or not. It determines
                       whether the mirror similar region is included in the output or not.
-    :return: KHIVA arrays with the motif distances, the motif indices and the subsequence indices.
+    :return: KHIVA arrays with the motif distances, the motif indexes and the subsequence indexes.
     """
     b = ctypes.c_void_p(0)
     c = ctypes.c_void_p(0)
     d = ctypes.c_void_p(0)
 
     error_code = ctypes.c_int(0)
-    error_message = ctypes.create_string_buffer(256)
+    error_message = ctypes.create_string_buffer(KHIVA_ERROR_LENGTH)
     KhivaLibrary().c_khiva_library.find_best_n_motifs(ctypes.pointer(profile.arr_reference),
-                                                      ctypes.pointer(index.arr_reference),
-                                                      ctypes.pointer(ctypes.c_long(m)),
-                                                      ctypes.pointer(ctypes.c_long(n)),
+                                                      ctypes.pointer(
+                                                          index.arr_reference),
+                                                      ctypes.c_long(m),
+                                                      ctypes.c_long(n),
                                                       ctypes.pointer(b),
                                                       ctypes.pointer(c),
                                                       ctypes.pointer(d),
-                                                      ctypes.pointer(ctypes.c_bool(self_join)), ctypes.pointer(error_code), error_message)
+                                                      ctypes.c_bool(self_join),
+                                                      ctypes.pointer(
+                                                          error_code),
+                                                      error_message)
     if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
 
-
-    return Array(array_reference=b), Array(array_reference=c), Array(
-        array_reference=d)
+    return BestNResult(distances=Array(b), indexes=Array(c), subsequence_indexes=Array(d))
 
 
 def find_best_n_occurrences(query_time_series, time_series, number_of_occurrences):
@@ -107,17 +119,23 @@ def find_best_n_occurrences(query_time_series, time_series, number_of_occurrence
     distances = ctypes.c_void_p(0)
     indexes = ctypes.c_void_p(0)
     error_code = ctypes.c_int(0)
-    error_message = ctypes.create_string_buffer(256)
+    error_message = ctypes.create_string_buffer(KHIVA_ERROR_LENGTH)
     KhivaLibrary().c_khiva_library.find_best_n_occurrences(ctypes.pointer(query_time_series.arr_reference),
-                                                           ctypes.pointer(time_series.arr_reference),
-                                                           ctypes.pointer(ctypes.c_long(number_of_occurrences)),
-                                                           ctypes.pointer(distances),
-                                                           ctypes.pointer(indexes), ctypes.pointer(error_code), error_message)
+                                                           ctypes.pointer(
+                                                               time_series.arr_reference),
+                                                           ctypes.c_long(
+                                                               number_of_occurrences),
+                                                           ctypes.pointer(
+                                                               distances),
+                                                           ctypes.pointer(
+                                                               indexes),
+                                                           ctypes.pointer(
+                                                               error_code),
+                                                           error_message)
     if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
 
-
-    return Array(array_reference=distances), Array(array_reference=indexes)
+    return BestNResultOcurrences(distances=Array(distances), indexes=Array(indexes))
 
 
 def mass(query_time_series, time_series):
@@ -140,15 +158,15 @@ def mass(query_time_series, time_series):
 
     distances = ctypes.c_void_p(0)
     error_code = ctypes.c_int(0)
-    error_message = ctypes.create_string_buffer(256)
+    error_message = ctypes.create_string_buffer(KHIVA_ERROR_LENGTH)
     KhivaLibrary().c_khiva_library.mass(ctypes.pointer(query_time_series.arr_reference),
-                                        ctypes.pointer(time_series.arr_reference),
+                                        ctypes.pointer(
+                                            time_series.arr_reference),
                                         ctypes.pointer(distances),
-                                        ctypes.pointer(error_code), error_message)
+                                        ctypes.pointer(error_code),
+                                        error_message)
     if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
-
-
 
     return Array(array_reference=distances)
 
@@ -166,21 +184,23 @@ def stomp(first_time_series, second_time_series, subsequence_length):
     :return: KHIVA arrays with the profile and index.
     """
 
-    b = ctypes.c_void_p(0)
-    c = ctypes.c_void_p(0)
+    profile = ctypes.c_void_p(0)
+    index = ctypes.c_void_p(0)
 
     error_code = ctypes.c_int(0)
-    error_message = ctypes.create_string_buffer(256)
+    error_message = ctypes.create_string_buffer(KHIVA_ERROR_LENGTH)
     KhivaLibrary().c_khiva_library.stomp(ctypes.pointer(first_time_series.arr_reference),
-                                         ctypes.pointer(second_time_series.arr_reference),
-                                         ctypes.pointer(ctypes.c_long(subsequence_length)),
-                                         ctypes.pointer(b),
-                                         ctypes.pointer(c), ctypes.pointer(error_code), error_message)
+                                         ctypes.pointer(
+                                             second_time_series.arr_reference),
+                                         ctypes.c_long(subsequence_length),
+                                         ctypes.pointer(profile),
+                                         ctypes.pointer(index),
+                                         ctypes.pointer(error_code),
+                                         error_message)
     if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
 
-
-    return Array(array_reference=b), Array(array_reference=c)
+    return MatrixProfileResult(profile=Array(profile), index=Array(index))
 
 
 def stomp_self_join(time_series, subsequence_length):
@@ -195,18 +215,21 @@ def stomp_self_join(time_series, subsequence_length):
     :param subsequence_length: Lenght of the subsequence
     :return: KHIVA arrays with the profile and index.
     """
-    b = ctypes.c_void_p(0)
-    c = ctypes.c_void_p(0)
-    
+    profile = ctypes.c_void_p(0)
+    index = ctypes.c_void_p(0)
+
     error_code = ctypes.c_int(0)
-    error_message = ctypes.create_string_buffer(256)
+    error_message = ctypes.create_string_buffer(KHIVA_ERROR_LENGTH)
     KhivaLibrary().c_khiva_library.stomp_self_join(ctypes.pointer(time_series.arr_reference),
-                                                   ctypes.pointer(ctypes.c_long(subsequence_length)),
-                                                   ctypes.pointer(b),
-                                                   ctypes.pointer(c), ctypes.pointer(error_code), error_message)
+                                                   ctypes.c_long(
+                                                       subsequence_length),
+                                                   ctypes.pointer(profile),
+                                                   ctypes.pointer(index),
+                                                   ctypes.pointer(error_code),
+                                                   error_message)
     if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
-    return Array(array_reference=b), Array(array_reference=c)
+    return MatrixProfileResult(profile=Array(profile), index=Array(index))
 
 
 def matrix_profile(first_time_series, second_time_series, subsequence_length):
@@ -222,21 +245,24 @@ def matrix_profile(first_time_series, second_time_series, subsequence_length):
     :return: KHIVA arrays with the profile and index.
     """
 
-    b = ctypes.c_void_p(0)
-    c = ctypes.c_void_p(0)
+    profile = ctypes.c_void_p(0)
+    index = ctypes.c_void_p(0)
 
     error_code = ctypes.c_int(0)
-    error_message = ctypes.create_string_buffer(256)
+    error_message = ctypes.create_string_buffer(KHIVA_ERROR_LENGTH)
     KhivaLibrary().c_khiva_library.matrix_profile(ctypes.pointer(first_time_series.arr_reference),
-                                                  ctypes.pointer(second_time_series.arr_reference),
-                                                  ctypes.pointer(ctypes.c_long(subsequence_length)),
-                                                  ctypes.pointer(b),
-                                                  ctypes.pointer(c),
-                                                  ctypes.pointer(error_code), error_message)
+                                                  ctypes.pointer(
+                                                      second_time_series.arr_reference),
+                                                  ctypes.c_long(
+                                                      subsequence_length),
+                                                  ctypes.pointer(profile),
+                                                  ctypes.pointer(index),
+                                                  ctypes.pointer(error_code),
+                                                  error_message)
     if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
 
-    return Array(array_reference=b), Array(array_reference=c)
+    return MatrixProfileResult(profile=Array(profile), index=Array(index))
 
 
 def matrix_profile_self_join(time_series, subsequence_length):
@@ -251,20 +277,23 @@ def matrix_profile_self_join(time_series, subsequence_length):
     :param subsequence_length: Lenght of the subsequence
     :return: KHIVA arrays with the profile and index.
     """
-    b = ctypes.c_void_p(0)
-    c = ctypes.c_void_p(0)
+    profile = ctypes.c_void_p(0)
+    index = ctypes.c_void_p(0)
 
     error_code = ctypes.c_int(0)
-    error_message = ctypes.create_string_buffer(256)
+    error_message = ctypes.create_string_buffer(KHIVA_ERROR_LENGTH)
     KhivaLibrary().c_khiva_library.matrix_profile_self_join(ctypes.pointer(time_series.arr_reference),
-                                                            ctypes.pointer(ctypes.c_long(subsequence_length)),
-                                                            ctypes.pointer(b),
-                                                            ctypes.pointer(c),
-                                                            ctypes.pointer(error_code), error_message)
+                                                            ctypes.c_long(
+                                                                subsequence_length),
+                                                            ctypes.pointer(profile),
+                                                            ctypes.pointer(index),
+                                                            ctypes.pointer(
+                                                                error_code),
+                                                            error_message)
     if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
 
-    return Array(array_reference=b), Array(array_reference=c)
+    return MatrixProfileResult(profile=Array(profile), index=Array(index))
 
 
 def get_chains(time_series, subsequence_length):
@@ -289,11 +318,13 @@ def get_chains(time_series, subsequence_length):
     c = ctypes.c_void_p(0)
 
     error_code = ctypes.c_int(0)
-    error_message = ctypes.create_string_buffer(256)
+    error_message = ctypes.create_string_buffer(KHIVA_ERROR_LENGTH)
     KhivaLibrary().c_khiva_library.get_chains(ctypes.pointer(time_series.arr_reference),
-                                              ctypes.pointer(ctypes.c_long(subsequence_length)),
+                                              ctypes.c_long(
+                                                  subsequence_length),
                                               ctypes.pointer(c),
-                                              ctypes.pointer(error_code), error_message)
+                                              ctypes.pointer(error_code),
+                                              error_message)
     if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
 

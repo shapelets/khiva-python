@@ -12,7 +12,7 @@
 # IMPORT
 ########################################################################################################################
 import ctypes
-from khiva.library import KhivaLibrary
+from khiva.library import KhivaLibrary, KHIVA_ERROR_LENGTH
 from khiva.array import Array
 
 
@@ -30,7 +30,7 @@ def polyfit(x, y, deg):
     """
     b = ctypes.c_void_p(0)
     error_code = ctypes.c_int(0)
-    error_message = ctypes.create_string_buffer(256)
+    error_message = ctypes.create_string_buffer(KHIVA_ERROR_LENGTH)
     KhivaLibrary().c_khiva_library.polyfit(ctypes.pointer(x.arr_reference), ctypes.pointer(y.arr_reference),
                                            ctypes.pointer(ctypes.c_int(deg)),
                                            ctypes.pointer(b), ctypes.pointer(error_code), error_message)
@@ -55,7 +55,7 @@ def roots(p):
     """
     b = ctypes.c_void_p(0)
     error_code = ctypes.c_int(0)
-    error_message = ctypes.create_string_buffer(256)
+    error_message = ctypes.create_string_buffer(KHIVA_ERROR_LENGTH)
     KhivaLibrary().c_khiva_library.roots(ctypes.pointer(p.arr_reference), ctypes.pointer(b), ctypes.pointer(error_code), error_message)
     if error_code.value != 0:
         raise Exception(str(error_message.value.decode()))
