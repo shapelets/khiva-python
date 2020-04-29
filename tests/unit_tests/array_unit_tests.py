@@ -364,7 +364,6 @@ class ArrayTest(unittest.TestCase):
             a = Array.from_list([1, 2, 3, 4, 5], dtype.s32)
             b = Array.from_list([1, 2, 3, 4], dtype.s32)
             a += b
-        self.assertTrue("ArrayFire" in str(cm.exception))
 
     def testIadd(self):
         a = Array.from_list([1, 2, 3, 4], dtype.s32)
