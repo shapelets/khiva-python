@@ -44,7 +44,7 @@ Then, you can create an array in the device:
 .. code-block:: python
 
     from khiva.array import *
-    a = Array([1, 2, 3, 4, 5, 6, 7, 8])
+    a = Array.from_list([1, 2, 3, 4, 5, 6, 7, 8], dtype.s32)
     a.display()
 
 The previous lines print the dimensions and the content of the created array:
@@ -101,7 +101,7 @@ The result is the next one:
 |8|8.00   |
 +-+-------+
 
-Now let's dive into the asynchronous usage of the library.
+Now, let's dive into the asynchronous usage of the library.
 Khiva library provides us several time series analysis functionalities which include features extraction,
 time-series re-dimension, distance calculations, motifs and discords detection, tools for similarity study,
 statistical parameters extraction or time series normalization.
@@ -112,9 +112,9 @@ the moment that you do not use the functions of this library:
 .. code-block:: python
 
     from khiva.matrix import *
-    stomp_result = stomp(Array(np.array([11, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 11])),
-                             Array(np.array([9, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 9])),
-                             3)
+    stomp_result = stomp(Array.from_numpy(np.array([11, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 11]), dtype.s32),
+                         Array.from_numpy(np.array([9, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 9]), dtype.s32),
+                         3)
     find_best_n_discords_result = find_best_n_discords(stomp_result[0],
                                                            stomp_result[1], 2)
     a = find_best_n_discords_result[2].to_numpy()
@@ -139,11 +139,11 @@ different devices, knowing that the operations should be executed in the same de
     from khiva.features import *
     set_backend(KHIVABackend.KHIVA_BACKEND_OPENCL)
     set_device(0)
-    a = Array([1, 2, 3, 4, 5, 6, 7, 8])
+    a = Array.from_list([1, 2, 3, 4, 5, 6, 7, 8], dtype.s32)
     b = mean(a)
 
     set_device(1)
-    c = Array([1, 2, 3, 4, 5, 6, 7, 8])
+    c = Array.from_list([1, 2, 3, 4, 5, 6, 7, 8], dtype.s32)
     d = mean(c)
 
     set_backend(KHIVABackend.KHIVA_BACKEND_CPU)
@@ -211,18 +211,18 @@ The available data types are the next ones:
 There are functions that do not support 32 bits floating point data type, so it is necessary to indicate the data type.
 The following is an example function requiring a 32-bit signed integer array:
 
-.. code-block:: python
+.. code:: python
 
-    cwt_coefficients_result = cwt_coefficients(Array([[0.1, 0.2, 0.3], [0.1, 0.2, 0.3]]),
-                                                Array(data=[1, 2, 3], khiva_type=dtype.s32), 2, 2).to_numpy()
+    cwt_coefficients_result = cwt_coefficients(Array.from_list([[0.1, 0.2, 0.3], [0.1, 0.2, 0.3]], dtype.s32),
+                                                Array.from_list([1, 2, 3], dtype.s32), 2, 2).to_numpy()
     print(cwt_coefficients_result)
-
 
 The output is:
 
 +-------------------------+
 | [0.26517162 0.26517162] |
 +-------------------------+
+
 
 
 Limitations

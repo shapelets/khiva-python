@@ -285,8 +285,10 @@ def matrix_profile_self_join(time_series, subsequence_length):
     KhivaLibrary().c_khiva_library.matrix_profile_self_join(ctypes.pointer(time_series.arr_reference),
                                                             ctypes.c_long(
                                                                 subsequence_length),
-                                                            ctypes.pointer(profile),
-                                                            ctypes.pointer(index),
+                                                            ctypes.pointer(
+                                                                profile),
+                                                            ctypes.pointer(
+                                                                index),
                                                             ctypes.pointer(
                                                                 error_code),
                                                             error_message)
@@ -329,3 +331,65 @@ def get_chains(time_series, subsequence_length):
         raise Exception(str(error_message.value.decode()))
 
     return Array(array_reference=c)
+
+
+def matrix_profile_self_threshold(time_series, subsequence_length, threshold):
+    """ Calculates the sum of correlations above a threshold between 'tss' and itself using a subsequence length 
+     of 'm' at each location in 'tss'.
+
+    [1] Yan Zhu, Zachary Zimmerman, Nader Shakibay Senobari, Chin-Chia Michael Yeh, Gareth Funning, Abdullah Mueen,
+    Philip Brisk and Eamonn Keogh (2016). Matrix Profile II: Exploiting a Novel Algorithm and GPUs to break the one
+    Hundred Million Barrier for Time Series Motifs and Joins. IEEE ICDM 2016.
+
+    :param time_series: Query and reference time series..
+    :param subsequence_length: Subsequence length.
+    :param threshold: Threshold.
+    :return The sum of correlations above a threshold between 'time_series' and itself using a subsequence length
+    of 'subsequence_length' at each location in 'time_series'.
+    """
+    sums = ctypes.c_void_p(0)
+
+    error_code = ctypes.c_int(0)
+    error_message = ctypes.create_string_buffer(KHIVA_ERROR_LENGTH)
+    KhivaLibrary().c_khiva_library.matrix_profile_self_threshold(ctypes.pointer(time_series.arr_reference),
+                                                                 ctypes.c_long(subsequence_length),
+                                                                 ctypes.c_double(threshold),
+                                                                 ctypes.pointer(sums),
+                                                                 ctypes.pointer(error_code),
+                                                                 error_message)
+    if error_code.value != 0:
+        raise Exception(str(error_message.value.decode()))
+
+    return Array(array_reference=sums)
+
+
+def matrix_profile_threshold(first_time_series, second_time_series, subsequence_length, threshold):
+    """ Calculates the sum of correlations above a threshold between 'tss' and itself using a subsequence length 
+     of 'm' at each location in 'tss'.
+
+    [1] Yan Zhu, Zachary Zimmerman, Nader Shakibay Senobari, Chin-Chia Michael Yeh, Gareth Funning, Abdullah Mueen,
+    Philip Brisk and Eamonn Keogh (2016). Matrix Profile II: Exploiting a Novel Algorithm and GPUs to break the one
+    Hundred Million Barrier for Time Series Motifs and Joins. IEEE ICDM 2016.
+
+    :param first_time_series: Query and reference time series.
+    :param second_time_series: Reference time series.
+    :param subsequence_length: Subsequence length.
+    :param threshold: Threshold.
+    :return The sum of correlations above a threshold between 'time_series' and itself using a subsequence length
+    of 'subsequence_length' at each location in 'time_series'.
+    """
+    sums = ctypes.c_void_p(0)
+
+    error_code = ctypes.c_int(0)
+    error_message = ctypes.create_string_buffer(KHIVA_ERROR_LENGTH)
+    KhivaLibrary().c_khiva_library.matrix_profile_threshold(ctypes.pointer(first_time_series.arr_reference),
+                                                            ctypes.pointer(second_time_series.arr_reference),
+                                                            ctypes.c_long(subsequence_length),
+                                                            ctypes.c_double(threshold),
+                                                            ctypes.pointer(sums),
+                                                            ctypes.pointer(error_code),
+                                                            error_message)
+    if error_code.value != 0:
+        raise Exception(str(error_message.value.decode()))
+
+    return Array(array_reference=sums)
