@@ -1,4 +1,4 @@
 pandas == 0.25.3
-numpy == 1.18.1
+numpy == 1.22.0
 arrayfire == 3.6.20181017
 enum34 == 1.1.6
